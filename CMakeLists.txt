@@ -1,8 +1,6 @@
-message (STATUS "Running with CMake ${CMAKE_VERSION}")
-cmake_minimum_required (VERSION 3.15)
+cmake_minimum_required (VERSION 3.15...3.20)
 
-project (agent_pp VERSION 4.3.1 LANGUAGES CXX)
-enable_language (CXX)
+project (agent_pp VERSION 4.5.0 LANGUAGES CXX)
 
 include (CheckIncludeFiles)
 include (CheckFunctionExists)
@@ -135,7 +133,7 @@ check_type_size ("int" SIZEOF_INT LANGUAGE CXX)
 
 if (SIZEOF_PTHREAD_T EQUAL SIZEOF_LONG)
   set (AGENTPP_OPAQUE_PTHREAD_T "long")
-elseif (SIZEOF_PTHREAD_T EQUAL SIZEOF_INT)
+elseif ()
   set (AGENTPP_OPAQUE_PTHREAD_T "long")
 else ()
   message (FATAL_ERROR "Can't map pthread_t to int or long")
@@ -169,7 +167,7 @@ endif ()
 check_struct_has_member ("struct sockaddr_storage"
             ss_family "${SOCKADDR_HEADERS}"
             CNF_HAVE_STRUCT_SOCKADDR_STORAGE_SS_FAMILY LANGUAGE CXX)
-            
+
 check_struct_has_member ("struct sockaddr_storage"
             __ss_family "${SOCKADDR_HEADERS}"
             CNF_HAVE_STRUCT_SOCKADDR_STORAGE___SS_FAMILY LANGUAGE CXX)
@@ -224,13 +222,9 @@ check_function_exists (pthread_mutex_timedlock HAVE_PTHREAD_MUTEX_TIMEDLOCK)
 
 
 find_package (snmp_pp)
-if (SNMP_PP_FOUND)
-  include_directories (${SNMP_PP_INCLUDE_DIR})
-  link_libraries (${SNMP_PP_LIBRARIES})
-else (SNMP_PP_FOUND)
+if (NOT SNMP_PP_FOUND)
   message (FATAL_ERROR " Lib snmp++ NOT found, try to call cmake with '-D SNMP_PP_ROOT_DIR=/install/path')")
-endif (SNMP_PP_FOUND)
-
+endif ()
 
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
@@ -238,23 +232,13 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_libagent.h.in ${CMAKE_CURRENT_
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_libagent.h.in ${CMAKE_CURRENT_SOURCE_DIR}/include/system/libagent.h)
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/include/agent_pp/agent++.h.in ${CMAKE_CURRENT_SOURCE_DIR}/include/agent_pp/agent++.h)
 
-set (CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -DHAVE_CONFIG_H")
-
 if (MSVC)
     # warning level 4 (all warnings as errors: /WX)
     add_compile_options (/W4 /WX)
 else ()
-    # lots of warnings (more: -Wextra -pedantic)
-    add_compile_options (-Wall )
+    add_compile_options (-Wall)
+    # TODO: lots of warnings (more: -Wextra -Wpedantic)
 endif ()
-
-
-include_directories (${CMAKE_BINARY_DIR})
-include_directories (.)
-include_directories (include)
-include_directories (include/agent_pp)
-include_directories (include/system)
-include_directories (agent_pp)
 
 
 set (MY_HEADER_FILES
@@ -345,15 +329,19 @@ add_library (agent++ SHARED
 set_property (TARGET agent++ PROPERTY POSITION_INDEPENDENT_CODE 1)
 # Set .so version as autoconf does: agent++ version 1.2.3 will go to .so.12.0.3!
 set_target_properties (agent++ PROPERTIES VERSION ${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}.0.${PROJECT_VERSION_PATCH} SOVERSION ${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR})
+target_link_libraries (agent++ PUBLIC ${SNMP_PP_LIBRARIES})
+target_compile_definitions (agent++ PUBLIC -DHAVE_CONFIG_H)
+target_include_directories (agent++ SYSTEM BEFORE PUBLIC ${CMAKE_BINARY_DIR} . include include/system ${SNMP_PP_INCLUDE_DIR})
+
 
 macro (subdirlist result curdir)
-  #message (INFO " # Get subdirectories for ${curdir} ")
+  #message (STATUS " # Get subdirectories for ${curdir} ")
   file (GLOB children RELATIVE ${curdir} ${curdir}/*)
   set (dirlist "")
   foreach (child ${children})
-    #message (INFO " ## check ${child}")
+    #message (STATUS " ## check ${child}")
     if (IS_DIRECTORY ${curdir}/${child})
-      #message (INFO " ### Add ${child}")
+      #message (STATUS " ### Add ${child}")
       list (APPEND dirlist ${child})
     endif ()
   endforeach ()
@@ -375,27 +363,27 @@ if (OPTION_AGENPRO OR OPTION_AGENPRO_SIMAGENT)
 endif ()
 
 foreach (EXE_BASE_DIR ${EXE_BASE_DIRS})
-  message (INFO " # Process dir ${EXE_BASE_DIR}")
+  message (STATUS " # Process dir ${EXE_BASE_DIR}")
   subdirlist (EXE_SUB_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/${EXE_BASE_DIR})
   foreach (EXE_SUB_DIR ${EXE_SUB_DIRS})
-    message (INFO " ## Process executable in ${EXE_SUB_DIR}")
+    message (STATUS " ## Process executable in ${EXE_SUB_DIR}")
 
     if (OPTION_PROXY_FORWARDER AND
        (${EXE_SUB_DIR} STREQUAL "proxy") AND
        (${EXE_BASE_DIR} STREQUAL "examples"))
-      message (INFO " ## Do not build ${EXE_BASE_DIR}/${EXE_SUB_DIR}, as OPTION_PROXY_FORWARDER is enabled")
+      message (STATUS " ## Do not build ${EXE_BASE_DIR}/${EXE_SUB_DIR}, as OPTION_PROXY_FORWARDER is enabled")
       continue ()
     endif ()
 
     if (${EXE_BASE_DIR} STREQUAL "agenpro")
       if ((${EXE_SUB_DIR} STREQUAL "agent") AND
          NOT OPTION_AGENPRO)
-        message (INFO " ## Do not build ${EXE_BASE_DIR}/${EXE_SUB_DIR}, as OPTION_AGENPRO is disabled")
+        message (STATUS " ## Do not build ${EXE_BASE_DIR}/${EXE_SUB_DIR}, as OPTION_AGENPRO is disabled")
         continue ()
       endif ()
       if ((${EXE_SUB_DIR} STREQUAL "simagent") AND
          NOT OPTION_AGENPRO_SIMAGENT)
-        message (INFO " ## Do not build ${EXE_BASE_DIR}/${EXE_SUB_DIR}, OPTION_AGENPRO_SIMAGENT is disabled")
+        message (STATUS " ## Do not build ${EXE_BASE_DIR}/${EXE_SUB_DIR}, OPTION_AGENPRO_SIMAGENT is disabled")
         continue ()
       endif ()
     endif ()
@@ -418,12 +406,16 @@ endforeach ()
 
 add_library (agent++_static STATIC
   ${MY_HEADER_FILES}
+  ${MY_HEADER_LIB_FILES}
+  config.h
   ${MY_SRC_FILES}
 )
+target_link_libraries (agent++_static PUBLIC ${SNMP_PP_LIBRARIES})
+target_compile_definitions (agent++_static PUBLIC -DHAVE_CONFIG_H)
+target_include_directories (agent++_static SYSTEM BEFORE PRIVATE ${CMAKE_BINARY_DIR} . include include/system ${SNMP_PP_INCLUDE_DIR})
 
 install (TARGETS agent++ DESTINATION lib)
 install (TARGETS agent++_static DESTINATION lib)
 install (FILES ${MY_HEADER_LIB_FILES} DESTINATION include)
 install (FILES ${MY_HEADER_FILES} DESTINATION include/agent_pp)
-
 
