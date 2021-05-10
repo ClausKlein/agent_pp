@@ -231,6 +231,7 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_config.h.in config.h)
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_libagent.h.in libagent.h)
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/include/agent_pp/agent++.h.in ${CMAKE_CURRENT_SOURCE_DIR}/include/agent_pp/agent++.h)
 
+
 if (MSVC)
     # warning level 4 (all warnings as errors: /WX)
     add_compile_options (/W4 /WX)
@@ -330,7 +331,7 @@ set_property (TARGET agent++ PROPERTY POSITION_INDEPENDENT_CODE 1)
 set_target_properties (agent++ PROPERTIES VERSION ${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}.0.${PROJECT_VERSION_PATCH} SOVERSION ${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR})
 target_link_libraries (agent++ PUBLIC ${SNMP_PP_LIBRARIES})
 target_compile_definitions (agent++ PUBLIC -DHAVE_CONFIG_H)
-target_include_directories (agent++ SYSTEM BEFORE PUBLIC ${CMAKE_BINARY_DIR} . include include/system ${SNMP_PP_INCLUDE_DIR})
+target_include_directories (agent++ SYSTEM BEFORE PUBLIC ${CMAKE_BINARY_DIR} . include ${SNMP_PP_INCLUDE_DIR})
 
 
 macro (subdirlist result curdir)
@@ -411,7 +412,7 @@ add_library (agent++_static STATIC
 )
 target_link_libraries (agent++_static PUBLIC ${SNMP_PP_LIBRARIES})
 target_compile_definitions (agent++_static PUBLIC -DHAVE_CONFIG_H)
-target_include_directories (agent++_static SYSTEM BEFORE PRIVATE ${CMAKE_BINARY_DIR} . include include/system ${SNMP_PP_INCLUDE_DIR})
+target_include_directories (agent++_static SYSTEM BEFORE PRIVATE ${CMAKE_BINARY_DIR} . include ${SNMP_PP_INCLUDE_DIR})
 
 install (TARGETS agent++ DESTINATION lib)
 install (TARGETS agent++_static DESTINATION lib)
