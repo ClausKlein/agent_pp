@@ -1,0 +1,27 @@
+INSTALL
+=======
+
+Since version 4.5.0 cmake and autoconf are supported by AGENT++.
+For autoconf see the README.autoconf file.
+
+The binaries of this distribution are installed with
+make install
+
+AGENPRO TEMPLATES
+=================
+
+To setup your own build environment for an AgenPro generated (simulation)
+agent:
+
+1. Generate the source files into the agenpro/agent/src directory and the header
+files into the agenpro/agent/include directory using AgenPro. 
+
+2. Build the agent. Run in the agent++ directory:
+./configure --with-agenpro
+make
+
+To enable persistent storage for an agent, create an empty folder
+"config" in the "src" directory of your agent, for example:
+
+mkdir agent++/agenpro/agent/src/config
+

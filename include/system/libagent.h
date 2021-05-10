@@ -1,0 +1,246 @@
+/*_############################################################################
+  _## 
+  _##  AGENT++ 4.5 - cmake_libagent.h.in  
+  _## 
+  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+  _##  
+  _##  Licensed under the Apache License, Version 2.0 (the "License");
+  _##  you may not use this file except in compliance with the License.
+  _##  You may obtain a copy of the License at
+  _##  
+  _##      http://www.apache.org/licenses/LICENSE-2.0
+  _##  
+  _##  Unless required by applicable law or agreed to in writing, software
+  _##  distributed under the License is distributed on an "AS IS" BASIS,
+  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  _##  See the License for the specific language governing permissions and
+  _##  limitations under the License.
+  _##  
+  _##########################################################################*/
+#ifndef __LIBAGENT_H_INCLUDED__
+#define __LIBAGENT_H_INCLUDED__
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+#define CNF_HAVE_SYS_TYPES_H
+#ifdef CNF_HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+#define CNF_HAVE_SYS_STAT_H
+#ifdef CNF_HAVE_SYS_STAT_H
+# include <sys/stat.h>
+#endif
+
+#define CNF_STDCXX_98_HEADERS
+#define CNF_STDC_HEADERS
+#define CNF_HAVE_STDLIB_H
+#define CNF_HAVE_STRING_H
+#define CNF_HAVE_MEMORY_H
+#define CNF_HAVE_STRINGS_H
+#define CNF_HAVE_INTTYPES_H
+#define CNF_HAVE_CTYPE_H
+#define CNF_HAVE_SIGNAL_H
+#define CNF_HAVE_ERRNO_H
+#define CNF_HAVE_TIME_H
+#define HAVE_STDIO_H
+#define CNF_HAVE_IOSTREAM
+
+#ifdef CNF_STDCXX_98_HEADERS
+# include <cctype>
+# include <cerrno>
+# include <climits>
+# include <csignal>
+# include <cstddef>
+# include <cstdio>
+# include <cstdlib>
+# include <cstring>
+# include <ctime>
+#else
+# ifdef HAVE_STDIO_H
+#   include <stdio.h>
+# endif
+# ifdef CNF_STDC_HEADERS
+#  include <stdlib.h>
+#  include <stddef.h>
+# else
+#  ifdef CNF_HAVE_STDLIB_H
+#   include <stdlib.h>
+#  endif
+# endif
+# ifdef CNF_HAVE_STRING_H
+#  if !defined(CNF_STDC_HEADERS) && defined(CNF_HAVE_MEMORY_H)
+#   include <memory.h>
+#  endif
+#  include <string.h>
+# endif
+# ifdef CNF_HAVE_STRINGS_H
+#  include <strings.h>
+# endif
+# ifdef CNF_HAVE_INTTYPES_H
+#  include <inttypes.h>
+# endif
+# ifdef CNF_HAVE_CTYPE_H
+#  include <ctype.h>
+# endif
+# ifdef CNF_HAVE_SIGNAL_H
+#  include <signal.h>
+# endif
+# ifdef CNF_HAVE_ERRNO_H
+#  include <errno.h>
+# endif
+# ifdef CNF_HAVE_TIME_H
+#  include <time.h>
+# endif
+#endif
+
+#define CNF_HAVE_UNISTD_H
+#define CNF_HAVE_SYS_UNISTD_H
+#ifdef CNF_HAVE_UNISTD_H
+# include <unistd.h>
+#else
+# ifdef CNF_HAVE_SYS_UNISTD_H
+#  include <sys/unistd.h>
+# endif
+#endif
+
+#define CNF_HAVE_STDINT_H
+#ifdef CNF_HAVE_STDINT_H
+# include <stdint.h>
+#endif
+
+#define CNF_HAVE_SYS_TIME_H
+#ifdef CNF_HAVE_SYS_TIME_H
+#include <sys/time.h>
+#endif
+#define CNF_HAVE_SYS_TIMEB_H
+#ifdef CNF_HAVE_SYS_TIMEB_H
+#include <sys/timeb.h> // and _ftime
+#endif
+
+/* #undef CNF_HAVE_WINSOCK2_H */
+/* #undef CNF_HAVE_WS2TCPIP_H */
+/* #undef CNF_HAVE_WSPIAPI_H */
+/* #undef CNF_HAVE_WINSOCK_H */
+#define CNF_HAVE_NETDB_H
+#define CNF_HAVE_SYS_SOCKET_H
+#define CNF_HAVE_ARPA_INET_H
+#define CNF_HAVE_NETINET_IN_H
+
+#ifdef CNF_HAVE_WINSOCK2_H
+# include <winsock2.h>
+# ifdef CNF_HAVE_WS2TCPIP_H
+#  include <ws2tcpip.h>
+# endif
+# ifdef CNF_HAVE_WSPIAPI_H
+#  include <wspiapi.h>
+# endif
+#elif defined(CNF_HAVE_WINSOCK_H)
+  /* IIRC winsock.h must be included before windows.h */
+# include <winsock.h>
+#else
+# ifdef CNF_HAVE_NETDB_H
+#  include <netdb.h>
+# endif
+# ifdef CNF_HAVE_SYS_SOCKET_H
+#  include <sys/socket.h>
+# endif
+# ifdef CNF_HAVE_ARPA_INET_H
+#  include <arpa/inet.h>
+# endif
+# ifdef CNF_HAVE_NETINET_IN_H
+#  include <netinet/in.h>
+# endif
+#endif
+
+#define CNF_HAVE_POLL_H
+#define CNF_HAVE_SYS_SELECT_H
+#ifdef CNF_HAVE_POLL_H
+# include <poll.h>
+#endif
+#ifdef CNF_HAVE_SYS_SELECT_H
+# include <sys/select.h>
+#endif
+
+/* #undef CNF_HAVE_IO_H */
+/* #undef CNF_HAVE_PROCESS_H */
+#ifdef _WIN32
+# ifdef CNF_HAVE_IO_H
+#  include <io.h>
+# endif
+# ifdef CNF_HAVE_PROCESS_H
+#  include <process.h>
+# endif
+# include <windows.h>
+#endif
+
+#define CNF_HAVE_GETPID
+/* #undef CNF_HAVE__GETPID */
+#if !defined(CNF_HAVE_GETPID)
+# ifdef CNF_HAVE__GETPID
+#  define getpid _getpid
+# endif
+#endif
+
+#define CNF_HAVE_STRUCT_SOCKADDR_STORAGE_SS_FAMILY
+/* #undef CNF_HAVE_STRUCT_SOCKADDR_STORAGE___SS_FAMILY */
+#if !defined(CNF_HAVE_STRUCT_SOCKADDR_STORAGE_SS_FAMILY)
+# ifdef CNF_HAVE_STRUCT_SOCKADDR_STORAGE___SS_FAMILY
+#  define ss_family __ss_family
+# endif
+#endif
+
+/* Minimum of signed integral types.  */
+#ifndef INT8_MIN
+# define INT8_MIN               (-128)
+#endif
+#ifndef INT16_MIN
+# define INT16_MIN              (-32767-1)
+#endif
+#ifndef INT32_MIN
+# define INT32_MIN              (-2147483647-1)
+#endif
+/* Maximum of signed integral types.  */
+#ifndef INT_MAX
+# define INT8_MAX               (127)
+#endif
+#ifndef INT16_MAX
+# define INT16_MAX              (32767)
+#endif
+#ifndef INT32_MAX
+# define INT32_MAX              (2147483647)
+#endif
+
+/* Maximum of unsigned integral types.  */
+#ifndef UINT8_MAX
+# define UINT8_MAX              (255)
+#endif
+#ifndef UINT16_MAX
+# define UINT16_MAX             (65535)
+#endif
+#ifndef UINT32_MAX
+# define UINT32_MAX             (4294967295U)
+#endif
+
+#ifndef NULL
+#define NULL	0
+#endif
+
+#ifdef CNF_HAVE_IOSTREAM
+# include <iostream>
+#else
+# include <iostream.h>
+#endif
+
+#include <snmp_pp/config_snmp_pp.h>
+#include <snmp_pp/log.h>
+#ifdef _THREADS
+#ifndef _WIN32THREADS
+#include <pthread.h>
+#endif
+#endif
+
+#include <agent_pp/agent++.h>
+
+#endif /* ?__LIBAGENT_H_INCLUDED__ */
