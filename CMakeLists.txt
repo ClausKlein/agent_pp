@@ -227,9 +227,8 @@ if (NOT SNMP_PP_FOUND)
 endif ()
 
 
-configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
-configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_libagent.h.in ${CMAKE_CURRENT_SOURCE_DIR}/libagent.h)
-configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_libagent.h.in ${CMAKE_CURRENT_SOURCE_DIR}/include/system/libagent.h)
+configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_config.h.in config.h)
+configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_libagent.h.in libagent.h)
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/include/agent_pp/agent++.h.in ${CMAKE_CURRENT_SOURCE_DIR}/include/agent_pp/agent++.h)
 
 if (MSVC)
@@ -282,7 +281,7 @@ set (MY_HEADER_FILES
   )
 
 set (MY_HEADER_LIB_FILES
-  libagent.h
+  ${CMAKE_BINARY_DIR}/libagent.h
   )
 
 set (MY_SRC_FILES
@@ -322,7 +321,7 @@ set (MY_SRC_FILES
 add_library (agent++ SHARED
   ${MY_HEADER_FILES}
   ${MY_HEADER_LIB_FILES}
-  config.h
+  ${CMAKE_BINARY_DIR}/config.h
   ${MY_SRC_FILES}
 )
 
@@ -407,7 +406,7 @@ endforeach ()
 add_library (agent++_static STATIC
   ${MY_HEADER_FILES}
   ${MY_HEADER_LIB_FILES}
-  config.h
+  ${CMAKE_BINARY_DIR}/config.h
   ${MY_SRC_FILES}
 )
 target_link_libraries (agent++_static PUBLIC ${SNMP_PP_LIBRARIES})
