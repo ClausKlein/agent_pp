@@ -329,6 +329,7 @@ add_library (agent++ SHARED
 set_property (TARGET agent++ PROPERTY POSITION_INDEPENDENT_CODE 1)
 # Set .so version as autoconf does: agent++ version 1.2.3 will go to .so.12.0.3!
 set_target_properties (agent++ PROPERTIES VERSION ${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}.0.${PROJECT_VERSION_PATCH} SOVERSION ${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR})
+set_target_properties (agent++ PROPERTIES CXX_STANDARD ${CMAKE_CXX_STANDARD})
 target_link_libraries (agent++ PUBLIC ${SNMP_PP_LIBRARIES})
 # NOT installed! CK target_compile_definitions (agent++ PUBLIC -DHAVE_CONFIG_H)
 target_include_directories (agent++ SYSTEM BEFORE PUBLIC ${CMAKE_BINARY_DIR} . include ${SNMP_PP_INCLUDE_DIR})
@@ -411,6 +412,7 @@ add_library (agent++_static STATIC
   ${MY_SRC_FILES}
 )
 target_link_libraries (agent++_static PUBLIC ${SNMP_PP_LIBRARIES})
+set_target_properties (agent++_static PROPERTIES CXX_STANDARD ${CMAKE_CXX_STANDARD})
 # NOT installed! CK target_compile_definitions (agent++_static PUBLIC -DHAVE_CONFIG_H)
 target_include_directories (agent++_static SYSTEM BEFORE PRIVATE ${CMAKE_BINARY_DIR} . include ${SNMP_PP_INCLUDE_DIR})
 
