@@ -134,7 +134,7 @@ check_type_size ("int" SIZEOF_INT LANGUAGE CXX)
 if (SIZEOF_PTHREAD_T EQUAL SIZEOF_LONG)
   set (AGENTPP_OPAQUE_PTHREAD_T "long")
 elseif ()
-  set (AGENTPP_OPAQUE_PTHREAD_T "long")
+  set (AGENTPP_OPAQUE_PTHREAD_T "int")
 else ()
   message (FATAL_ERROR "Can't map pthread_t to int or long")
 endif ()
@@ -221,10 +221,7 @@ set (CMAKE_REQUIRED_LINK_OPTIONS "-lpthread")
 check_function_exists (pthread_mutex_timedlock HAVE_PTHREAD_MUTEX_TIMEDLOCK)
 
 
-find_package (snmp_pp)
-if (NOT SNMP_PP_FOUND)
-  message (FATAL_ERROR " Lib snmp++ NOT found, try to call cmake with '-D SNMP_PP_ROOT_DIR=/install/path')")
-endif ()
+find_package (snmp_pp CONFIG 3.4.6 REQUIRED)
 
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_config.h.in config.h)
@@ -279,11 +276,11 @@ set (MY_HEADER_FILES
   include/agent_pp/v3_mib.h
   include/agent_pp/vacm.h
   include/agent_pp/WIN32DLL.h
-  )
+)
 
 set (MY_HEADER_LIB_FILES
   ${CMAKE_BINARY_DIR}/libagent.h
-  )
+)
 
 set (MY_SRC_FILES
   src/agentpp_config_mib.cpp
@@ -317,7 +314,7 @@ set (MY_SRC_FILES
   src/tools.cpp
   src/v3_mib.cpp
   src/vacm.cpp
-  )
+)
 
 add_library (agent++ SHARED
   ${MY_HEADER_FILES}
@@ -330,9 +327,8 @@ set_property (TARGET agent++ PROPERTY POSITION_INDEPENDENT_CODE 1)
 # Set .so version as autoconf does: agent++ version 1.2.3 will go to .so.12.0.3!
 set_target_properties (agent++ PROPERTIES VERSION ${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}.0.${PROJECT_VERSION_PATCH} SOVERSION ${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR})
 set_target_properties (agent++ PROPERTIES CXX_STANDARD ${CMAKE_CXX_STANDARD})
-target_link_libraries (agent++ PUBLIC ${SNMP_PP_LIBRARIES})
-# NOT installed! CK target_compile_definitions (agent++ PUBLIC -DHAVE_CONFIG_H)
-target_include_directories (agent++ SYSTEM BEFORE PUBLIC ${CMAKE_BINARY_DIR} . include ${SNMP_PP_INCLUDE_DIR})
+target_link_libraries (agent++ PUBLIC snmp_pp::snmp_pp)
+target_include_directories (agent++ SYSTEM BEFORE PUBLIC ${CMAKE_BINARY_DIR} include)
 
 
 macro (subdirlist result curdir)
@@ -395,7 +391,7 @@ foreach (EXE_BASE_DIR ${EXE_BASE_DIRS})
       )
 
     add_executable (${EXE_SUB_DIR} ${EXE_SRC})
-    target_link_libraries (${EXE_SUB_DIR} agent++ ${SNMP_PP_LIBRARIES})
+    target_link_libraries (${EXE_SUB_DIR} agent++ snmp_pp::snmp_pp)
     target_include_directories (${EXE_SUB_DIR} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/${EXE_BASE_DIR}/${EXE_SUB_DIR}/include/")
     set_target_properties (${EXE_SUB_DIR} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${EXE_BASE_DIR}/${EXE_SUB_DIR}/src")
     if (NOT ${EXE_BASE_DIR} STREQUAL "tools")
@@ -405,19 +401,54 @@ foreach (EXE_BASE_DIR ${EXE_BASE_DIRS})
   endforeach ()
 endforeach ()
 
-add_library (agent++_static STATIC
+add_library (agent_pp STATIC
   ${MY_HEADER_FILES}
   ${MY_HEADER_LIB_FILES}
   ${CMAKE_BINARY_DIR}/config.h
   ${MY_SRC_FILES}
 )
-target_link_libraries (agent++_static PUBLIC ${SNMP_PP_LIBRARIES})
-set_target_properties (agent++_static PROPERTIES CXX_STANDARD ${CMAKE_CXX_STANDARD})
-# NOT installed! CK target_compile_definitions (agent++_static PUBLIC -DHAVE_CONFIG_H)
-target_include_directories (agent++_static SYSTEM BEFORE PRIVATE ${CMAKE_BINARY_DIR} . include ${SNMP_PP_INCLUDE_DIR})
+target_link_libraries (agent_pp PUBLIC snmp_pp::snmp_pp)
+set_target_properties (agent_pp PROPERTIES CXX_STANDARD ${CMAKE_CXX_STANDARD})
+target_include_directories (agent_pp SYSTEM BEFORE PRIVATE ${CMAKE_BINARY_DIR} ${PROJECT_SOURCE_DIR}/include)
+target_include_directories (agent_pp PUBLIC
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
 
 install (TARGETS agent++ DESTINATION lib)
-install (TARGETS agent++_static DESTINATION lib)
+#XXX install (TARGETS agent_pp DESTINATION lib)
 install (FILES ${MY_HEADER_LIB_FILES} DESTINATION include)
-install (FILES ${MY_HEADER_FILES} DESTINATION include/agent_pp)
+#XXX install (FILES ${MY_HEADER_FILES} DESTINATION include/agent_pp)
+#XXX we use:
+## CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.7.0")
+include(PackageProject)
 
+packageProject(
+  # the name of the target to export
+  NAME ${PROJECT_NAME}
+  # the version of the target to export
+  VERSION ${PROJECT_VERSION}
+  # a temporary directory to create the config files
+  BINARY_DIR ${PROJECT_BINARY_DIR}
+  # location of the target's public headers
+  INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include
+  # should match the target's INSTALL_INTERFACE include directory
+  INCLUDE_DESTINATION include
+  # semicolon separated list of the project's dependencies
+  DEPENDENCIES "snmp_pp 3.4.6"
+  # (optional) create a header containing the version info
+  # Note: that the path to headers should be lowercase
+  ## VERSION_HEADER "${PROJECT_NAME}/version.h"
+  # (optional) create a export header using GenerateExportHeader module
+  ## EXPORT_HEADER "${PROJECT_NAME}/export.h"
+  # (optional) install your library with a namespace (Note: do NOT add extra '::')
+  NAMESPACE ${PROJECT_NAME}
+  # (optional) define the project's version compatibility, defaults to `AnyNewerVersion`
+  # supported values: `AnyNewerVersion|SameMajorVersion|SameMinorVersion|ExactVersion`
+  COMPATIBILITY SameMajorVersion
+  # (optional) option to disable the versioning of install destinations
+  DISABLE_VERSION_SUFFIX YES
+  # (optional) option to ignore target architecture for package resolution
+  # defaults to YES for header only (i.e. INTERFACE) libraries
+  ## ARCH_INDEPENDENT YES
+)
