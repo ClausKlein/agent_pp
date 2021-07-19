@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14...3.20)
 
 project(
   agent_pp
-  VERSION 4.5.0
+  VERSION 4.5.1
   LANGUAGES CXX
 )
 
@@ -13,17 +13,17 @@ include(CheckLibraryExists)
 include(CheckStructHasMember)
 include(CheckTypeSize)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
 
 option(OPTION_NAMESPACE "Use Namespaces" ON)
-option(OPTION_PROXY "Enable Proxy" ON)
+option(OPTION_PROXY "Enable Proxy" OFF)
 option(OPTION_PROXY_FORWARDER "Enable Proxy Forwarder" ON)
 option(OPTION_AGENPRO "build with AgenPro templates (usually disabled)" OFF)
 option(OPTION_AGENPRO_SIMAGENT "build with AgenPro simagent instead regular templates (usually disabled)" OFF)
-option(OPTION_EXAMPLES "build examples" ON)
-option(OPTION_TOOLS "build tools" ON)
+option(OPTION_EXAMPLES "build examples" OFF)
+option(OPTION_TOOLS "build tools" OFF)
 
 set(VERSION ${PROJECT_VERSION})
 set(AGENT_PP_MAJOR_VERSION ${PROJECT_VERSION_MAJOR})
@@ -36,6 +36,7 @@ check_include_files(sys/types.h CNF_HAVE_SYS_TYPES_H)
 check_include_files(sys/stat.h CNF_HAVE_SYS_STAT_H)
 check_include_files("cctype;cerrno;climits;csignal;cstddef;cstdio;cstdlib;cstring;ctime" CNF_STDCXX_98_HEADERS)
 check_include_files("iostream" CNF_HAVE_IOSTREAM)
+
 if(NOT CNF_STDCXX_98_HEADERS)
   check_include_files("stdlib.h;stddef.h" CNF_STDC_HEADERS)
   check_include_files(stdlib.h CNF_HAVE_STDLIB_H)
