@@ -24,6 +24,7 @@
 #include <agent_pp/snmp_request.h>
 #include <snmp_pp/log.h>
 
+#ifdef _USE_PROXY
 #ifndef _PROXY_FORWARDER
 
 #ifdef AGENTPP_NAMESPACE
@@ -673,7 +674,5 @@ int MibProxyV3::process_single(Pdux& pdu, Request* req)
 
 #endif // _PROXY_FORWARDER
 
-
-
-
+#endif // _USE_PROXY
 
