@@ -310,7 +310,7 @@ int agentppCfgStoragePath::commit_set_request(Request* req, int ind)
 	vb.get_value(v);
 	int status = mkdir(v.get_printable(), S_IRWXU);
 	if ((status == -1) && (errno != EEXIST)) {
-	    return SNMP_ERROR_COMITFAIL;
+	    return SNMP_ERROR_COMMITFAIL;
 	}
 #endif
 	return SnmpDisplayString::commit_set_request(req, ind);
@@ -507,7 +507,7 @@ int agentppCfgStorageOperation::set(const Vbx& vb)
 	    return SNMP_ERROR_SUCCESS;
 	}
 	else {
-	    return SNMP_ERROR_COMITFAIL;
+	    return SNMP_ERROR_COMMITFAIL;
 	}
 #endif
 	//--AgentGen END

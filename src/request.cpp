@@ -1040,7 +1040,7 @@ void RequestList::answer(Request* req)
 		    pdu->set_error_status(SNMP_ERROR_NO_SUCH_NAME);
 		    break;
 		case SNMP_ERROR_RESOURCE_UNAVAIL:
-		case SNMP_ERROR_COMITFAIL:
+		case SNMP_ERROR_COMMITFAIL:
 		case SNMP_ERROR_UNDO_FAIL:
 		    pdu->set_error_status(SNMP_ERROR_GENERAL_VB_ERR);
 		    break;

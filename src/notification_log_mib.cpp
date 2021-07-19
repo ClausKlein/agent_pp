@@ -733,7 +733,7 @@ int nlmConfigLogEntryStatus::commit_set_request(Request* req, int ind)
 			      mibView_notify,
 			      req->get_context(), viewName);
 		if (vacmErrorCode != VACM_viewFound)
-			return SNMP_ERROR_COMITFAIL;
+			return SNMP_ERROR_COMMITFAIL;
 
 		my_row->get_nth(nNlmConfigLogEntryStatus+1)->
 		  set_value(viewName);

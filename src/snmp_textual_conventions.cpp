@@ -852,7 +852,7 @@ void DateAndTime::update()
 {
 	time_t c = sysUpTime::get_currentTime();
 	struct tm* dt = localtime(&c);
-	if (!dt) return; // TODO: possibly log an error; Use localtime_r! CK
+	if (!dt) return; // TODO: possibly log an error; Use localtime_r!
 	OctetStr val;
 	val += (unsigned char)((dt->tm_year+1900) >> 8) & 0xFF;
 	val += (unsigned char)(dt->tm_year+1900) & 0xFF;
@@ -867,7 +867,7 @@ void DateAndTime::update()
 		val += '+';
 	else
 		val += '-';
-	long tz = std::abs(dt->tm_gmtoff);
+	unsigned int tz = (unsigned int)abs(dt->tm_gmtoff);
 	long timezone = dt->tm_gmtoff;
 #else
 	// initialize timezone needed?
@@ -879,7 +879,7 @@ void DateAndTime::update()
 		val += '+';
 	else
 		val += '-';
-	long tz = std::abs(timezone);   // prevent warnings on linux! CK
+	unsigned int tz = (unsigned int)abs(timezone);
 #endif
 	val += (unsigned char)((tz / 3600) + 
 			       ((dt->tm_isdst > 0)? ((timezone>0)?-1:1) : 0));

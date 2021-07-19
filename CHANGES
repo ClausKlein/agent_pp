@@ -1,3 +1,13 @@
+Version 4.5.1: CHANGES since Version 4.5.0 (requires SNMP++ 3.4.7 or later)
+===========================================================================
+
+* Fixed: Build failure if older agent++ headers were installed in the same
+  directory as snmp++.
+* Fixed add_v3_trap_destination code to work like v2c code.
+* Fixed: Fixed COMITFAIL typo and fixed add_public method in snmpCommunityMib
+* Fixed: Bug of missing fclose when file read on persistent data fails.
+* Fixed: Documentation of ThreadPool::is_busy() and QueuedThreadPool::is_busy().
+
 Version 4.5.0: CHANGES since Version 4.3.1 (requires SNMP++ 3.4.5 or later)
 ===========================================================================
 

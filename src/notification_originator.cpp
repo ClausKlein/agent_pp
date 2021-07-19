@@ -199,8 +199,10 @@ snmpTargetParamsEntry* NotificationOriginator::get_snmp_target_params_entry() {
 
 snmpNotifyEntry* NotificationOriginator::get_snmp_notify_entry() {
     if (mib || notifyEntry) {
-        notifyEntry = (snmpNotifyEntry*)
-                mib->get(oidSnmpNotifyEntry);
+        if (!notifyEntry) {
+            notifyEntry = (snmpNotifyEntry*)
+                    mib->get(oidSnmpNotifyEntry);
+        }
         return notifyEntry; 
     }
     return snmpNotifyEntry::instance;
@@ -208,8 +210,10 @@ snmpNotifyEntry* NotificationOriginator::get_snmp_notify_entry() {
 
 snmpNotifyFilterEntry* NotificationOriginator::get_snmp_notify_filter_entry() {
     if (mib || notifyFilterEntry) {
-        notifyFilterEntry = (snmpNotifyFilterEntry*)
-                mib->get(oidSnmpNotifyFilterEntry);
+        if (!notifyFilterEntry) {
+            notifyFilterEntry = (snmpNotifyFilterEntry*)
+                    mib->get(oidSnmpNotifyFilterEntry);
+        }
         return notifyFilterEntry; 
     }
     return snmpNotifyFilterEntry::instance;
@@ -592,7 +596,8 @@ bool NotificationOriginator::add_v3_trap_destination(const UdpAddress& addr,
 	address += (addr.get_port() >> 8);
 	address += (addr.get_port() & 0x00FF);
 
-	if (!get_snmp_target_addr_entry() || !get_snmp_target_params_entry())
+	if (!get_snmp_target_addr_entry() || !get_snmp_target_params_entry() ||
+	        !get_snmp_notify_entry())
 	    return FALSE;
 
 	if (get_snmp_target_params_entry()->add_entry(name, // row index

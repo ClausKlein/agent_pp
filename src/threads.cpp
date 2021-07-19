@@ -997,9 +997,9 @@ void TaskManager::run() {
 			delete task;
 			task = 0;
 			unlock();
-                        if (threadPool->is_one_time_execution()) {
-                            return;
-                        }
+            if (threadPool->is_one_time_execution()) {
+                return;
+            }
 			threadPool->idle_notification();
 			lock();
 		}

@@ -73,7 +73,7 @@
 #endif
 
 #ifndef AGENTPP_OPAQUE_PTHREAD_T
-#define AGENTPP_OPAQUE_PTHREAD_T @AGENTPP_OPAQUE_PTHREAD_T@
+#define AGENTPP_OPAQUE_PTHREAD_T int
 #endif
 
 #include <snmp_pp/smi.h>

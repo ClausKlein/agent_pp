@@ -335,7 +335,7 @@ int MibLeaf::commit_set_request(Request* req, int ind)
 	// set is overwritten by subclasses
 	int status = set(req->get_value(ind));
 	if (status != SNMP_ERROR_SUCCESS) {
-		return SNMP_ERROR_COMITFAIL;
+		return SNMP_ERROR_COMMITFAIL;
 	}
 	// do not send answer until cleanup finished
 	req->finish(ind, req->get_value(ind));
@@ -2102,8 +2102,8 @@ int MibTable::commit_set_request(Request* req, int ind)
 {
 	if ((set_value(req, ind)) != SNMP_ERROR_SUCCESS) {
 		// do not answer request, wait for undo
-	    req->error(ind, SNMP_ERROR_COMITFAIL);
-	    return SNMP_ERROR_COMITFAIL;
+	    req->error(ind, SNMP_ERROR_COMMITFAIL);
+	    return SNMP_ERROR_COMMITFAIL;
 	}
 	return SNMP_ERROR_SUCCESS;
 }
@@ -3727,8 +3727,8 @@ int Mib::process_commit_set_request(Request* req)
 			entry = req->get_locked(i);
 			// entry should be available, but we have to be sure:
 			if (!entry) {
-				req->error(i, SNMP_ERROR_COMITFAIL);
-				return SNMP_ERROR_COMITFAIL;
+				req->error(i, SNMP_ERROR_COMMITFAIL);
+				return SNMP_ERROR_COMMITFAIL;
 			}
 			// Entry has been locked already by
 			// prepare_set_request
