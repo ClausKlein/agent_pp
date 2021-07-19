@@ -1241,7 +1241,7 @@ struct index_info {
  * 
  * Whenever the status of a row is changed the fire_row_changed method
  * is called. This calls the row_added, row_delete, row_activated, or
- * row_deactivated method of the owner (accordingly to the ocurred
+ * row_deactivated method of the owner (accordingly to the occurred
  * event) and same method for of all registered listeners.
  *
  * @author Frank Fock
@@ -1476,7 +1476,7 @@ public:
 	 * @param req - A pointer to the whole SNMP SET request.
 	 * @param ind - The index of the subrequest to be processed.
 	 * @return SNMP_ERROR_SUCCESS on success and 
-	 *         SNMP_ERROR_COMITFAIL on failure.
+	 *         SNMP_ERROR_COMMITFAIL on failure.
 	 */
 	virtual int    	commit_set_request(Request*, int);
 	

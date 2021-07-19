@@ -162,7 +162,7 @@ public:
 	 *         SNMP_ERROR_COMITFAIL on failure.
 	 */
 	virtual int		commit_set_request(Request*, int) 
-				  { return SNMP_ERROR_COMITFAIL; }
+				  { return SNMP_ERROR_COMMITFAIL; }
 
 	/**
 	 * Let the receiver prepare a SNMP SET subrequest

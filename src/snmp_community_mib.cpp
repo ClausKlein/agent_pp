@@ -520,7 +520,7 @@ void snmp_community_mib::add_public(Mib* mib)
                     "localAccess",
                     3, 1);
 
-  ind = Oidx::from_string("localAccess");
+  ind = Oidx::from_string("localAccess", FALSE);
   r = snmpTargetAddrExtEntry->find_index(ind);
   if (!r) r = snmpTargetAddrExtEntry->add_row(ind);
   snmpTargetAddrExtEntry->

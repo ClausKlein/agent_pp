@@ -19,8 +19,8 @@
   _##########################################################################*/
 
 
-#ifndef agent_pp_threads_h_
-#define agent_pp_threads_h_
+#ifndef multi_h_
+#define multi_h_
 
 #include <agent_pp/agent++.h>
 
@@ -526,14 +526,14 @@ public:
 	 */
 	virtual bool is_idle();
 
-	/**
-	 * Check whether the ThreadPool is busy (i.e., all threads are 
-         * running a task) or not.
-	 *
-	 * @return
-	 *    TRUE if non of the threads in the pool is currently 
-	 *    idle (not executing any task).
-	 */
+    /**
+     * Check whether the ThreadPool is busy i.e., if there are any threads
+     * running a task or not.
+     *
+     * @return
+     *    TRUE if there exists at least one thread in the pool that is currently
+     *    busy (executing any task).
+     */
 	virtual bool is_busy();
         
 	/**
@@ -689,12 +689,12 @@ public:
 	virtual bool is_idle() { return ThreadPool::is_idle(); }
 
 	/**
-	 * Check whether the ThreadPool is busy (i.e., all threads are 
-         * running a task) or not.
+	 * Check whether the ThreadPool is busy i.e., if there are any threads
+     * running a task or not.
 	 *
 	 * @return
-	 *    TRUE if non of the threads in the pool is currently 
-	 *    idle (not executing any task).
+	 *    TRUE if there exists at least one thread in the pool that is currently
+	 *    busy (executing any task).
 	 */
 	virtual bool is_busy() { return ThreadPool::is_busy(); }
         
@@ -741,13 +741,13 @@ public:
 	 */
 	bool is_idle()	{ return (!task) && thread.is_alive(); }
 
-        /**
-         * Check whether a task is being executed by this TaskManager.
-         * @return 
-         *    TRUE if there is a task assigned this TaskManager.
-         * @since 4.3.0
-         */
-        bool is_busy()          { return (task); }
+    /**
+     * Check whether a task is being executed by this TaskManager.
+     * @return
+     *    TRUE if there is a task assigned this TaskManager.
+     * @since 4.3.0
+     */
+    bool is_busy()          { return (task); }
         
 	/**
 	 * Start thread execution.

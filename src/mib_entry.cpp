@@ -221,9 +221,9 @@ void MibEntry::load_from_file(const char* fname)
 		bytes = fread(buf, sizeof(char), size, f);
 		if (bytes != size) {
 			delete [] buf;
+            fclose(f);
 			return;
 		}
-	       
 		deserialize(buf, bytes);
 		delete [] buf;
 	}
