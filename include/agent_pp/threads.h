@@ -19,8 +19,8 @@
   _##########################################################################*/
 
 
-#ifndef multi_h_
-#define multi_h_
+#ifndef agent_pp_threads_h_
+#define agent_pp_threads_h_
 
 #include <agent_pp/agent++.h>
 
