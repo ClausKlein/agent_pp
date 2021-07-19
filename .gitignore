@@ -1,0 +1,10 @@
+build-aux/
+build/
+m4/
+*.m4
+*.ac
+*.am
+configure
+Makefile.in
+include/snmp_pp/config_snmp_pp.h
+
