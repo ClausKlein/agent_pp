@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14...3.21)
 
 project(
   agent_pp
-  VERSION 4.5.1.1
+  VERSION 4.5.1.2
   LANGUAGES CXX
 )
 
@@ -19,7 +19,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
 option(OPTION_NAMESPACE "Use Namespaces" ON)
 option(OPTION_PROXY "Enable Proxy" OFF)
-option(OPTION_PROXY_FORWARDER "Enable Proxy Forwarder" ON)
+option(OPTION_PROXY_FORWARDER "Enable Proxy Forwarder" OFF)
 option(OPTION_AGENPRO "build with AgenPro templates (usually disabled)" OFF)
 option(OPTION_AGENPRO_SIMAGENT "build with AgenPro simagent instead regular templates (usually disabled)" OFF)
 option(OPTION_EXAMPLES "build examples" OFF)
@@ -57,14 +57,16 @@ check_include_files(stdint.h CNF_HAVE_STDINT_H)
 check_include_files(sys/time.h CNF_HAVE_SYS_TIME_H)
 check_include_files(sys/param.h CNF_HAVE_SYS_PARAM_H)
 check_include_files(sys/timeb.h CNF_HAVE_SYS_TIMEB_H)
-check_include_files(winsock2.h CNF_HAVE_WINSOCK2_H)
-check_include_files(ws2tcpip.h CNF_HAVE_WS2TCPIP_H)
-check_include_files(wspiapi.h CNF_HAVE_WSPIAPI_H)
-check_include_files(winsock.h CNF_HAVE_WINSOCK_H)
+
+if(MSVC)
+  check_include_files(winsock2.h CNF_HAVE_WINSOCK2_H)
+  check_include_files(ws2tcpip.h CNF_HAVE_WS2TCPIP_H)
+  check_include_files(wspiapi.h CNF_HAVE_WSPIAPI_H)
+endif()
+
 check_include_files(netdb.h CNF_HAVE_NETDB_H)
 check_include_files(sys/socket.h CNF_HAVE_SYS_SOCKET_H)
 check_include_files(arpa/inet.h CNF_HAVE_ARPA_INET_H)
-check_include_files(arpa/inet.h HAVE_ARPA_INET_H)
 check_include_files(netinet/in.h CNF_HAVE_NETINET_IN_H)
 check_include_files(poll.h CNF_HAVE_POLL_H)
 check_include_files(sys/select.h CNF_HAVE_SYS_SELECT_H)
@@ -108,33 +110,32 @@ check_include_files(inttypes.h HAVE_INTTYPES_H) # again?
 check_include_files(io.h HAVE_IO_H) # again?
 check_include_files(limits.h HAVE_LIMITS_H)
 check_include_files(memory.h HAVE_MEMORY_H) # again?
-check_include_files(netdb.h HAVE_NETDB_H)   # again?
+check_include_files(netdb.h HAVE_NETDB_H) # again?
 check_include_files(netinet/in.h HAVE_NETINET_IN_H) # again?
 check_include_files(poll.h HAVE_POLL_H) # again?
-check_include_files(process.h HAVE_PROCESS_H)   # again?
+check_include_files(process.h HAVE_PROCESS_H) # again?
 check_include_files(pthread.h HAVE_PTHREAD) # again?
 check_include_files(signal.h HAVE_SIGNAL_H) # again?
 check_include_files(stdint.h HAVE_STDINT_H) # again?
 check_include_files(stdio.h HAVE_STDIO_H)
 check_include_files(stdlib.h HAVE_STDLIB_H) # again?
 check_include_files(string.h HAVE_STRING_H) # again?
-check_include_files(strings.h HAVE_STRINGS_H)   # again?
-check_include_files(sys/param.h HAVE_SYS_PARAM_H)   # again?
+check_include_files(strings.h HAVE_STRINGS_H) # again?
+check_include_files(sys/param.h HAVE_SYS_PARAM_H) # again?
 check_include_files(sys/select.h HAVE_SYS_SELECT_H) # again?
 check_include_files(sys/socket.h HAVE_SYS_SOCKET_H) # again?
 check_include_files(sys/stat.h HAVE_SYS_STAT_H) # again?
 check_include_files(sys/time.h HAVE_SYS_TIME_H) # again?
-check_include_files(sys/timeb.h HAVE_SYS_TIMEB_H)   # again?
-check_include_files(sys/types.h HAVE_SYS_TYPES_H)   # again?
+check_include_files(sys/timeb.h HAVE_SYS_TIMEB_H) # again?
+check_include_files(sys/types.h HAVE_SYS_TYPES_H) # again?
 check_include_files(sys/unistd.h HAVE_SYS_UNISTD_H) # again?
 check_include_files(time.h HAVE_TIME_H) # again?
 check_include_files(unistd.h HAVE_UNISTD_H) # again?
 
 if(MSVC)
-  check_include_files(winsock2.h HAVE_WINSOCK2_H)
-  check_include_files(winsock.h HAVE_WINSOCK_H)
-  check_include_files(ws2tcpip.h HAVE_WS2TCPIP_H)
-  check_include_files(wspiapi.h HAVE_WSPIAPI_H)
+  check_include_files(winsock2.h HAVE_WINSOCK2_H) # again?
+  check_include_files(ws2tcpip.h HAVE_WS2TCPIP_H) # again?
+  check_include_files(wspiapi.h HAVE_WSPIAPI_H) # again?
 endif()
 
 check_function_exists("_getpid" HAVE__GETPID)
@@ -145,10 +146,8 @@ check_type_size("int" SIZEOF_INT LANGUAGE CXX)
 
 if(SIZEOF_PTHREAD_T EQUAL SIZEOF_LONG)
   set(AGENTPP_OPAQUE_PTHREAD_T "long")
-elseif()
-  set(AGENTPP_OPAQUE_PTHREAD_T "int")
 else()
-  message(FATAL_ERROR "Can't map pthread_t to int or long")
+  set(AGENTPP_OPAQUE_PTHREAD_T "int")
 endif()
 message(STATUS "Found AGENTPP_OPAQUE_PTHREAD_T: ${AGENTPP_OPAQUE_PTHREAD_T}")
 
@@ -158,9 +157,6 @@ if(CNF_HAVE_WINSOCK2_H)
 endif()
 if(CNF_HAVE_WS2TCPIP_H)
   set(SOCKADDR_HEADERS ${SOCKADDR_HEADERS} ws2tcpip.h)
-endif()
-if(CNF_HAVE_WINSOCK_H)
-  set(SOCKADDR_HEADERS ${SOCKADDR_HEADERS} winsock.h)
 endif()
 if(CNF_HAVE_NETDB_H)
   set(SOCKADDR_HEADERS ${SOCKADDR_HEADERS} netdb.h)
@@ -237,10 +233,10 @@ check_function_exists(pthread_mutex_timedlock HAVE_PTHREAD_MUTEX_TIMEDLOCK)
 include(CPM)
 
 # XXX find_package(snmp_pp CONFIG 3.4.7 REQUIRED)
-# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.1
+# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.2
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG v3.4.7.1
+  GIT_TAG v3.4.7.2
   GITHUB_REPOSITORY ClausKlein/snmp_pp
 )
 
@@ -327,7 +323,9 @@ set(MY_SRC_FILES
 )
 
 option(BUILD_SHARED_LIBS "Global flag to cause add_library() to create shared libraries if on." ON)
-add_library(${PROJECT_NAME} ${MY_HEADER_FILES} ${MY_HEADER_LIB_FILES} ${CMAKE_CURRENT_BINARY_DIR}/config.h ${MY_SRC_FILES})
+add_library(
+  ${PROJECT_NAME} STATIC ${MY_HEADER_FILES} ${MY_HEADER_LIB_FILES} ${CMAKE_CURRENT_BINARY_DIR}/config.h ${MY_SRC_FILES}
+)
 
 if(MSVC)
   # warning level 4 (all warnings as errors: /WX)
@@ -434,8 +432,8 @@ foreach(EXE_BASE_DIR ${EXE_BASE_DIRS})
 endforeach()
 
 install(FILES ${MY_HEADER_LIB_FILES} DESTINATION include)
-CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.8.0")
-#XXX include(PackageProject)
+# XXX CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.8.0")
+include(PackageProject)
 
 packageProject(
   # the name of the target to export
