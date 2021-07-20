@@ -51,7 +51,9 @@ extern int send_snmp_request(SnmpSocket, unsigned char*,
 namespace Agentpp {
 #endif
 
+#ifndef _NO_LOGGING
 static const char *loggerModuleName = "agent++.snmp_pp_ext";
+#endif
 
 /**
   * class Pdux

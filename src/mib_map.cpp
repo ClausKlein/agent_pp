@@ -46,7 +46,9 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 namespace Agentpp {
 #endif
 
+#ifndef _NO_LOGGING
 static const char *loggerModuleName = "agent++.mib_map";
+#endif
 
 Pix OidxPtrMibEntryPtrMap::seek(OidxPtr  item)
 {

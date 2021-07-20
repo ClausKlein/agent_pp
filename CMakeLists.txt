@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.14...3.20)
+cmake_minimum_required(VERSION 3.14...3.21)
 
 project(
   agent_pp
-  VERSION 4.5.1
+  VERSION 4.5.1.1
   LANGUAGES CXX
 )
 
@@ -15,7 +15,7 @@ include(CheckTypeSize)
 
 set(CMAKE_CXX_STANDARD 17)
 
-list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
 option(OPTION_NAMESPACE "Use Namespaces" ON)
 option(OPTION_PROXY "Enable Proxy" OFF)
@@ -91,48 +91,52 @@ check_function_exists("inet_aton" HAVE_INET_ATON)
 check_function_exists("inet_ntoa" HAVE_INET_NTOA)
 check_function_exists("inet_ntop" HAVE_INET_NTOP)
 check_function_exists("inet_pton" HAVE_INET_PTON)
-check_include_files(inttypes.h HAVE_INTTYPES_H)
-check_include_files(io.h HAVE_IO_H)
 check_function_exists("isdigit" HAVE_ISDIGIT)
-check_include_files(limits.h HAVE_LIMITS_H)
 check_function_exists("localtime_r" HAVE_LOCALTIME_R)
 check_function_exists("malloc" HAVE_MALLOC)
-check_include_files(memory.h HAVE_MEMORY_H)
 check_function_exists("memset" HAVE_MEMSET)
-check_include_files(netdb.h HAVE_NETDB_H)
-check_include_files(netinet/in.h HAVE_NETINET_IN_H)
 check_function_exists("poll" HAVE_POLL)
-check_include_files(poll.h HAVE_POLL_H)
-check_include_files(process.h HAVE_PROCESS_H)
-check_include_files(pthread.h HAVE_PTHREAD) # :-(
 check_function_exists("realloc" HAVE_REALLOC)
 check_function_exists("select" HAVE_SELECT)
-check_include_files(signal.h HAVE_SIGNAL_H)
 check_function_exists("socket" HAVE_SOCKET)
-check_include_files(stdint.h HAVE_STDINT_H)
-check_include_files(stdio.h HAVE_STDIO_H)
-check_include_files(stdlib.h HAVE_STDLIB_H)
 check_function_exists("strcasecmp" HAVE_STRCASECMP)
 check_function_exists("strchr" HAVE_STRCHR)
 check_function_exists("strerror" HAVE_STRERROR)
 check_function_exists("stricmp" HAVE_STRICMP)
-check_include_files(strings.h HAVE_STRINGS_H)
-check_include_files(string.h HAVE_STRING_H)
 check_function_exists("strstr" HAVE_STRSTR)
-check_include_files(sys/param.h HAVE_SYS_PARAM_H)
-check_include_files(sys/select.h HAVE_SYS_SELECT_H)
-check_include_files(sys/socket.h HAVE_SYS_SOCKET_H)
-check_include_files(sys/stat.h HAVE_SYS_STAT_H)
-check_include_files(sys/timeb.h HAVE_SYS_TIMEB_H)
-check_include_files(sys/time.h HAVE_SYS_TIME_H)
-check_include_files(sys/types.h HAVE_SYS_TYPES_H)
-check_include_files(sys/unistd.h HAVE_SYS_UNISTD_H)
-check_include_files(time.h HAVE_TIME_H)
-check_include_files(unistd.h HAVE_UNISTD_H)
-check_include_files(winsock2.h HAVE_WINSOCK2_H)
-check_include_files(winsock.h HAVE_WINSOCK_H)
-check_include_files(ws2tcpip.h HAVE_WS2TCPIP_H)
-check_include_files(wspiapi.h HAVE_WSPIAPI_H)
+check_include_files(inttypes.h HAVE_INTTYPES_H) # again?
+check_include_files(io.h HAVE_IO_H) # again?
+check_include_files(limits.h HAVE_LIMITS_H)
+check_include_files(memory.h HAVE_MEMORY_H) # again?
+check_include_files(netdb.h HAVE_NETDB_H)   # again?
+check_include_files(netinet/in.h HAVE_NETINET_IN_H) # again?
+check_include_files(poll.h HAVE_POLL_H) # again?
+check_include_files(process.h HAVE_PROCESS_H)   # again?
+check_include_files(pthread.h HAVE_PTHREAD) # again?
+check_include_files(signal.h HAVE_SIGNAL_H) # again?
+check_include_files(stdint.h HAVE_STDINT_H) # again?
+check_include_files(stdio.h HAVE_STDIO_H)
+check_include_files(stdlib.h HAVE_STDLIB_H) # again?
+check_include_files(string.h HAVE_STRING_H) # again?
+check_include_files(strings.h HAVE_STRINGS_H)   # again?
+check_include_files(sys/param.h HAVE_SYS_PARAM_H)   # again?
+check_include_files(sys/select.h HAVE_SYS_SELECT_H) # again?
+check_include_files(sys/socket.h HAVE_SYS_SOCKET_H) # again?
+check_include_files(sys/stat.h HAVE_SYS_STAT_H) # again?
+check_include_files(sys/time.h HAVE_SYS_TIME_H) # again?
+check_include_files(sys/timeb.h HAVE_SYS_TIMEB_H)   # again?
+check_include_files(sys/types.h HAVE_SYS_TYPES_H)   # again?
+check_include_files(sys/unistd.h HAVE_SYS_UNISTD_H) # again?
+check_include_files(time.h HAVE_TIME_H) # again?
+check_include_files(unistd.h HAVE_UNISTD_H) # again?
+
+if(MSVC)
+  check_include_files(winsock2.h HAVE_WINSOCK2_H)
+  check_include_files(winsock.h HAVE_WINSOCK_H)
+  check_include_files(ws2tcpip.h HAVE_WS2TCPIP_H)
+  check_include_files(wspiapi.h HAVE_WSPIAPI_H)
+endif()
+
 check_function_exists("_getpid" HAVE__GETPID)
 
 check_type_size("pthread_t" SIZEOF_PTHREAD_T LANGUAGE CXX)
@@ -215,6 +219,7 @@ endif()
 
 if(CNF_STDCXX_98_HEADERS)
   set(STDCXX_98_HEADERS 1)
+  unset(STDC_HEADERS)
 else()
   set(STDCXX_98_HEADERS 0)
 endif()
@@ -226,21 +231,24 @@ check_function_exists("strcasecmp" HAVE_STRCASECMP)
 set(CMAKE_REQUIRED_LINK_OPTIONS "-lpthread")
 check_function_exists(pthread_mutex_timedlock HAVE_PTHREAD_MUTEX_TIMEDLOCK)
 
-find_package(snmp_pp CONFIG 3.4.6 REQUIRED)
+# ---- Add dependencies via CPM ----
+# see https://github.com/cpm-cmake/CPM.cmake for more info
+
+include(CPM)
+
+# XXX find_package(snmp_pp CONFIG 3.4.7 REQUIRED)
+# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.1
+CPMAddPackage(
+  NAME snmp_pp
+  GIT_TAG v3.4.7.1
+  GITHUB_REPOSITORY ClausKlein/snmp_pp
+)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake_config.h.in config.h)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake_libagent.h.in libagent.h)
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/include/agent_pp/agent++.h.in ${CMAKE_CURRENT_SOURCE_DIR}/include/agent_pp/agent++.h
 )
-
-if(MSVC)
-  # warning level 4 (all warnings as errors: /WX)
-  add_compile_options(/W4 /WX)
-else()
-  add_compile_options(-Wall)
-  # TODO: lots of warnings (more: -Wextra -Wpedantic)
-endif()
 
 set(MY_HEADER_FILES
     include/agent_pp/agent++.h
@@ -282,7 +290,7 @@ set(MY_HEADER_FILES
     include/agent_pp/WIN32DLL.h
 )
 
-set(MY_HEADER_LIB_FILES ${CMAKE_BINARY_DIR}/libagent.h)
+set(MY_HEADER_LIB_FILES ${CMAKE_CURRENT_BINARY_DIR}/libagent.h)
 
 set(MY_SRC_FILES
     src/agentpp_config_mib.cpp
@@ -319,7 +327,15 @@ set(MY_SRC_FILES
 )
 
 option(BUILD_SHARED_LIBS "Global flag to cause add_library() to create shared libraries if on." ON)
-add_library(${PROJECT_NAME} ${MY_HEADER_FILES} ${MY_HEADER_LIB_FILES} ${CMAKE_BINARY_DIR}/config.h ${MY_SRC_FILES})
+add_library(${PROJECT_NAME} ${MY_HEADER_FILES} ${MY_HEADER_LIB_FILES} ${CMAKE_CURRENT_BINARY_DIR}/config.h ${MY_SRC_FILES})
+
+if(MSVC)
+  # warning level 4 (all warnings as errors: /WX)
+  target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX)
+else()
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wno-unused-parameter)
+  # TODO: lots of warnings (more: -Wpedantic)
+endif()
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE 1)
 # Set .so version as autoconf does: agent++ version 1.2.3 will go to .so.12.0.3!
@@ -329,9 +345,15 @@ set_target_properties(
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD ${CMAKE_CXX_STANDARD})
 target_link_libraries(${PROJECT_NAME} PUBLIC snmp_pp::snmp_pp)
-target_include_directories(${PROJECT_NAME} SYSTEM BEFORE PRIVATE ${CMAKE_BINARY_DIR})
+#
+# NOTE: we have to prevent the use of older installed project headers
+#
 target_include_directories(
-  ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>
+  ${PROJECT_NAME} SYSTEM BEFORE PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+target_include_directories(
+  ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+                         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>
 )
 
 macro(subdirlist result curdir)
@@ -397,12 +419,12 @@ foreach(EXE_BASE_DIR ${EXE_BASE_DIRS})
 
     add_executable(${EXE_SUB_DIR} ${EXE_SRC})
     target_link_libraries(${EXE_SUB_DIR} ${PROJECT_NAME} snmp_pp::snmp_pp)
-    target_include_directories(${EXE_SUB_DIR} SYSTEM BEFORE PRIVATE ${CMAKE_BINARY_DIR})
+    target_include_directories(${EXE_SUB_DIR} SYSTEM BEFORE PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
     target_include_directories(
       ${EXE_SUB_DIR} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/${EXE_BASE_DIR}/${EXE_SUB_DIR}/include/"
     )
     set_target_properties(
-      ${EXE_SUB_DIR} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${EXE_BASE_DIR}/${EXE_SUB_DIR}/src"
+      ${EXE_SUB_DIR} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/${EXE_BASE_DIR}/${EXE_SUB_DIR}/src"
     )
     if(NOT ${EXE_BASE_DIR} STREQUAL "tools")
       set_target_properties(${EXE_SUB_DIR} PROPERTIES OUTPUT_NAME "agent")
@@ -412,8 +434,8 @@ foreach(EXE_BASE_DIR ${EXE_BASE_DIRS})
 endforeach()
 
 install(FILES ${MY_HEADER_LIB_FILES} DESTINATION include)
-## CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.7.0")
-include(PackageProject)
+CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.8.0")
+#XXX include(PackageProject)
 
 packageProject(
   # the name of the target to export
@@ -423,7 +445,7 @@ packageProject(
   # a temporary directory to create the config files
   BINARY_DIR ${PROJECT_BINARY_DIR}
   # location of the target's public headers
-  INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include
+  INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include
   # should match the target's INSTALL_INTERFACE include directory
   INCLUDE_DESTINATION include
   # semicolon separated list of the project's dependencies

@@ -39,8 +39,9 @@
 namespace Agentpp {
 #endif
 
+#ifndef _NO_LOGGING
 static const char *loggerModuleName = "agent++.request";
-
+#endif
 /*--------------------------- class Request --------------------------*/
 
 #ifdef NO_FAST_MUTEXES

@@ -29,7 +29,9 @@
 namespace Agentpp {
 #endif
 
+#ifndef _NO_LOGGING
 static const char *loggerModuleName = "agent++.snmp_notification_mib";
+#endif
 
 
 /**

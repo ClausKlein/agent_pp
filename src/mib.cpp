@@ -41,8 +41,9 @@
 namespace Agentpp {
 #endif
 
+#ifndef _NO_LOGGING
 static const char *loggerModuleName = "agent++.mib";
-
+#endif
 /*--------------------------------------------------------------------
  *
  * MibLeaf

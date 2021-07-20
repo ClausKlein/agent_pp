@@ -50,8 +50,9 @@ namespace Agentpp {
     using namespace Snmp_pp;
 #endif
 
+#ifndef _NO_LOGGING
 static const char *loggerModuleName = "agent++.agentpp_config_mib";
-
+#endif
 //--AgentGen BEGIN=_UTIL_CLASSES
 
 #ifndef _NO_THREADS
