@@ -29,7 +29,9 @@
 namespace Agentpp {
 #endif
 
+#ifndef _NO_LOGGING
 static const char *loggerModuleName = "agent++.vacm";
+#endif
 
 const index_info       	iVacmSecurityToGroupTable[2]	=
 { { sNMP_SYNTAX_INT, FALSE, 1, 1 }, { sNMP_SYNTAX_OCTETS, FALSE, 1, 32 } };

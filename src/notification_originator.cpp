@@ -39,8 +39,9 @@
 namespace Agentpp {
 #endif
 
+#ifndef _NO_LOGGING
 static const char *loggerModuleName = "agent++.notification_originator";
-
+#endif
 /*------------------ class NotificationOriginator -----------------------*/
 
 NotificationOriginator::NotificationOriginator()

@@ -35,8 +35,9 @@
 namespace Agentpp {
 #endif
 
+#ifndef _NO_LOGGING
 static const char *loggerModuleName = "agent++.v3_mib";
-
+#endif
 const index_info       	iUsmUserTable[2] = 
 {{ sNMP_SYNTAX_OCTETS, FALSE, 5, 32  },
  { sNMP_SYNTAX_OCTETS, FALSE, 1, 32 }};

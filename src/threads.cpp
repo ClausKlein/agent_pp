@@ -29,7 +29,9 @@
 namespace Agentpp {
 #endif
 
+#ifndef _NO_LOGGING
 static const char *loggerModuleName = "agent++.threads";
+#endif
 
 #ifndef AGENTPP_SYNCHRONIZED_UNLOCK_RETRIES
 #define AGENTPP_SYNCHRONIZED_UNLOCK_RETRIES 1000

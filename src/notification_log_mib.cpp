@@ -48,8 +48,9 @@
 namespace Agentpp {
 #endif
 
+#ifndef _NO_LOGGING
 static const char *loggerModuleName = "agent++.notification_log_mib";
-
+#endif
 nlmConfigLogOperStatus::nlmConfigLogOperStatus(const Oidx& id):
   MibLeaf(id, READONLY, new SnmpInt32(1), VMODE_DEFAULT)
 {

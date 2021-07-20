@@ -30,7 +30,9 @@
 using namespace Agentpp;
 #endif
 
+#ifndef _NO_LOGGING
 static const char *loggerModuleName = "agent++.snmp_textual_conventions";
+#endif
 
 /*--------------------- class snmpDisplayString -------------------------*/
 
