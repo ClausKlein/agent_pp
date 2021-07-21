@@ -7,10 +7,11 @@ install: all
 
 build:
 	mkdir -p $@
-	cmake -B $@ -S . -G Ninja -D OPTION_PROXY=NO -D OPTION_PROXY_FORWARDER=NO -D OPTION_EXAMPLES=NO -D OPTION_TOOLS=NO
+	cmake -B $@ -S . -G Ninja -D CMAKE_EXPORT_COMPILE_COMMANDS=1 -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
 
 clean: build
 	rm -f include/agent_pp/agent++.h
+	rm -f $</*.h
 	-ninja -C $< clean
 
 distclean: clean

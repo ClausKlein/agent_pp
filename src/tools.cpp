@@ -22,6 +22,11 @@
 
 #include <agent_pp/tools.h>
 
+#ifdef WIN32
+#include <direct.h>
+#define mkdir(path,mask) _mkdir(path)
+#endif
+
 #ifdef AGENTPP_NAMESPACE
 namespace Agentpp {
 #endif
@@ -62,12 +67,12 @@ long AgentTools::file_size(FILE *stream)
 bool AgentTools::make_path(std::string path)
 {
     bool result = TRUE;
-    int rc = ::mkdir(path.c_str(), 0775);
+    int rc = mkdir(path.c_str(), 0775);
     if(rc == -1) {
         switch (errno) {
             case ENOENT:
                 if (make_path(path.substr(0, path.find_last_of('/')))) {
-                    result = 0 == ::mkdir(path.c_str(), 0775);
+                    result = 0 == mkdir(path.c_str(), 0775);
                 }
                 else {
                     result = FALSE;
