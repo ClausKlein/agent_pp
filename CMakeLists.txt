@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14...3.21)
 
 project(
   agent_pp
-  VERSION 4.5.1.2
+  VERSION 4.5.1.3
   LANGUAGES CXX
 )
 
@@ -17,13 +17,13 @@ set(CMAKE_CXX_STANDARD 17)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
-option(OPTION_NAMESPACE "Use Namespaces" ON)
-option(OPTION_PROXY "Enable Proxy" OFF)
-option(OPTION_PROXY_FORWARDER "Enable Proxy Forwarder" OFF)
-option(OPTION_AGENPRO "build with AgenPro templates (usually disabled)" OFF)
-option(OPTION_AGENPRO_SIMAGENT "build with AgenPro simagent instead regular templates (usually disabled)" OFF)
-option(OPTION_EXAMPLES "build examples" OFF)
-option(OPTION_TOOLS "build tools" OFF)
+option(AGENT_PP_NAMESPACE "Use Namespaces" ON)
+option(AGENT_PP_PROXY "Enable Proxy" OFF)
+option(AGENT_PP_PROXY_FORWARDER "Enable Proxy Forwarder" OFF)
+option(AGENT_PP_AGENPRO "build with AgenPro templates (usually disabled)" OFF)
+option(AGENT_PP_AGENPRO_SIMAGENT "build with AgenPro simagent instead regular templates (usually disabled)" OFF)
+option(AGENT_PP_EXAMPLES "build examples" OFF)
+option(AGENT_PP_TOOLS "build tools" OFF)
 
 set(VERSION ${PROJECT_VERSION})
 set(AGENT_PP_MAJOR_VERSION ${PROJECT_VERSION_MAJOR})
@@ -45,7 +45,7 @@ if(NOT CNF_STDCXX_98_HEADERS)
   check_include_files(strings.h CNF_HAVE_STRINGS_H)
   check_include_files(inttypes.h CNF_HAVE_INTTYPES_H)
   check_include_files(ctype.h CNF_HAVE_CTYPE_H)
-  check_include_files(ctype.h HAVE_CTYPE_H)
+  check_include_files(ctype.h HAVE_CTYPE_H) # again?
   check_include_files(signal.h CNF_HAVE_SIGNAL_H)
   check_include_files(errno.h CNF_HAVE_ERRNO_H)
   check_include_files(time.h CNF_HAVE_TIME_H)
@@ -62,6 +62,7 @@ if(MSVC)
   check_include_files(winsock2.h CNF_HAVE_WINSOCK2_H)
   check_include_files(ws2tcpip.h CNF_HAVE_WS2TCPIP_H)
   check_include_files(wspiapi.h CNF_HAVE_WSPIAPI_H)
+  check_function_exists("_getpid" CNF_HAVE__GETPID)
 endif()
 
 check_include_files(netdb.h CNF_HAVE_NETDB_H)
@@ -76,7 +77,6 @@ check_include_files(pthread.h CNF_HAVE_PTHREAD_H)
 check_function_exists("strcasecmp" CNF_HAVE_STRCASECMP)
 check_function_exists("stricmp" CNF_HAVE_STRICMP)
 check_function_exists("getpid" CNF_HAVE_GETPID)
-check_function_exists("_getpid" CNF_HAVE__GETPID)
 
 check_function_exists("clock_gettime" HAVE_CLOCK_GETTIME)
 check_function_exists("getaddrinfo" HAVE_GETADDRINFO)
@@ -136,9 +136,8 @@ if(MSVC)
   check_include_files(winsock2.h HAVE_WINSOCK2_H) # again?
   check_include_files(ws2tcpip.h HAVE_WS2TCPIP_H) # again?
   check_include_files(wspiapi.h HAVE_WSPIAPI_H) # again?
+  check_function_exists("_getpid" HAVE__GETPID) # again?
 endif()
-
-check_function_exists("_getpid" HAVE__GETPID)
 
 check_type_size("pthread_t" SIZEOF_PTHREAD_T LANGUAGE CXX)
 check_type_size("long" SIZEOF_LONG LANGUAGE CXX)
@@ -180,30 +179,30 @@ check_struct_has_member(
 )
 
 check_type_size("bool" SIZEOF_BOOL LANGUAGE CXX)
-
 if(SIZEOF_BOOL)
-  message(STATUS "HAVE_BOOL")
+  # message(STATUS "HAVE_BOOL")
   set(NEED_DEFINE_BOOL 0)
 else()
-  message(STATUS "NO HAVE_BOOL")
+  message(WARNING "NO HAVE_BOOL")
   set(NEED_DEFINE_BOOL 1)
 endif()
 
-if(OPTION_PROXY)
+if(AGENT_PP_PROXY)
   set(WITH_PROXY 1)
+  if(AGENT_PP_PROXY_FORWARDER)
+    set(WITH_PROXY_FORWARDER 1)
+  else()
+    set(WITH_PROXY_FORWARDER 0)
+  endif()
 else()
   set(WITH_PROXY 0)
-endif()
-
-if(OPTION_PROXY_FORWARDER)
-  set(WITH_PROXY_FORWARDER 1)
-else()
   set(WITH_PROXY_FORWARDER 0)
 endif()
 
-if(OPTION_NAMESPACE)
+if(AGENT_PP_NAMESPACE)
   set(WITH_NAMESPACE 1)
 else()
+  message(WARNING "NO NAMESPACE?")
   set(WITH_NAMESPACE 0)
 endif()
 
@@ -224,19 +223,22 @@ check_include_files(malloc.h HAVE_MALLOC_H)
 check_include_files("sys/param.h;sys/mount.h" HAVE_SYS_MOUNT_H)
 check_function_exists("strcasecmp" HAVE_STRCASECMP)
 
-set(CMAKE_REQUIRED_LINK_OPTIONS "-lpthread")
-check_function_exists(pthread_mutex_timedlock HAVE_PTHREAD_MUTEX_TIMEDLOCK)
+if(CNF_HAVE_PTHREAD_H)
+  set(CMAKE_REQUIRED_LINK_AGENT_PPS "-lpthread")
+  check_function_exists(pthread_mutex_timedlock HAVE_PTHREAD_MUTEX_TIMEDLOCK)
+endif()
 
 # ---- Add dependencies via CPM ----
 # see https://github.com/cpm-cmake/CPM.cmake for more info
 
 include(CPM)
 
-# XXX find_package(snmp_pp CONFIG 3.4.7 REQUIRED)
-# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.2
+set(SNMP_PP_VERSION 3.4.7)
+# XXX find_package(snmp_pp CONFIG ${SNMP_PP_VERSION} REQUIRED)
+# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.3
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG v3.4.7.2
+  GIT_TAG v${SNMP_PP_VERSION}.3
   GITHUB_REPOSITORY ClausKlein/snmp_pp
 )
 
@@ -329,7 +331,7 @@ add_library(
 
 if(MSVC)
   # warning level 4 (all warnings as errors: /WX)
-  target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX)
+  # FIXME target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX)
 else()
   target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wno-unused-parameter)
   # TODO: lots of warnings (more: -Wpedantic)
@@ -355,7 +357,7 @@ target_include_directories(
 )
 
 macro(subdirlist result curdir)
-  #message (STATUS " # Get subdirectories for ${curdir} ")
+  # message(STATUS " # Get subdirectories for ${curdir} ")
   file(
     GLOB children
     RELATIVE ${curdir}
@@ -363,9 +365,9 @@ macro(subdirlist result curdir)
   )
   set(dirlist "")
   foreach(child ${children})
-    #message (STATUS " ## check ${child}")
+    # message(STATUS " ## check ${child}")
     if(IS_DIRECTORY ${curdir}/${child})
-      #message (STATUS " ### Add ${child}")
+      # message(STATUS " ### Add ${child}")
       list(APPEND dirlist ${child})
     endif()
   endforeach()
@@ -374,15 +376,15 @@ endmacro()
 
 set(EXE_BASE_DIRS)
 
-if(OPTION_EXAMPLES)
+if(AGENT_PP_EXAMPLES)
   list(APPEND EXE_BASE_DIRS examples)
 endif()
 
-if(OPTION_TOOLS)
+if(AGENT_PP_TOOLS)
   list(APPEND EXE_BASE_DIRS tools)
 endif()
 
-if(OPTION_AGENPRO OR OPTION_AGENPRO_SIMAGENT)
+if(AGENT_PP_AGENPRO OR AGENT_PP_AGENPRO_SIMAGENT)
   list(APPEND EXE_BASE_DIRS agenpro)
 endif()
 
@@ -392,21 +394,21 @@ foreach(EXE_BASE_DIR ${EXE_BASE_DIRS})
   foreach(EXE_SUB_DIR ${EXE_SUB_DIRS})
     message(STATUS " ## Process executable in ${EXE_SUB_DIR}")
 
-    if(OPTION_PROXY_FORWARDER
+    if(AGENT_PP_PROXY_FORWARDER
        AND (${EXE_SUB_DIR} STREQUAL "proxy")
        AND (${EXE_BASE_DIR} STREQUAL "examples")
     )
-      message(STATUS " ## Do not build ${EXE_BASE_DIR}/${EXE_SUB_DIR}, as OPTION_PROXY_FORWARDER is enabled")
+      message(STATUS " ## Do not build ${EXE_BASE_DIR}/${EXE_SUB_DIR}, as AGENT_PP_PROXY_FORWARDER is enabled")
       continue()
     endif()
 
     if(${EXE_BASE_DIR} STREQUAL "agenpro")
-      if((${EXE_SUB_DIR} STREQUAL "agent") AND NOT OPTION_AGENPRO)
-        message(STATUS " ## Do not build ${EXE_BASE_DIR}/${EXE_SUB_DIR}, as OPTION_AGENPRO is disabled")
+      if((${EXE_SUB_DIR} STREQUAL "agent") AND NOT AGENT_PP_AGENPRO)
+        message(STATUS " ## Do not build ${EXE_BASE_DIR}/${EXE_SUB_DIR}, as AGENT_PP_AGENPRO is disabled")
         continue()
       endif()
-      if((${EXE_SUB_DIR} STREQUAL "simagent") AND NOT OPTION_AGENPRO_SIMAGENT)
-        message(STATUS " ## Do not build ${EXE_BASE_DIR}/${EXE_SUB_DIR}, OPTION_AGENPRO_SIMAGENT is disabled")
+      if((${EXE_SUB_DIR} STREQUAL "simagent") AND NOT AGENT_PP_AGENPRO_SIMAGENT)
+        message(STATUS " ## Do not build ${EXE_BASE_DIR}/${EXE_SUB_DIR}, AGENT_PP_AGENPRO_SIMAGENT is disabled")
         continue()
       endif()
     endif()
@@ -432,8 +434,9 @@ foreach(EXE_BASE_DIR ${EXE_BASE_DIRS})
 endforeach()
 
 install(FILES ${MY_HEADER_LIB_FILES} DESTINATION include)
-# XXX CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.8.0")
-include(PackageProject)
+
+# XXX include(PackageProject)
+CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.8.0")
 
 packageProject(
   # the name of the target to export
@@ -447,12 +450,12 @@ packageProject(
   # should match the target's INSTALL_INTERFACE include directory
   INCLUDE_DESTINATION include
   # semicolon separated list of the project's dependencies
-  DEPENDENCIES "snmp_pp 3.4.6"
+  DEPENDENCIES "snmp_pp ${SNMP_PP_VERSION}"
   # (optional) create a header containing the version info
   # Note: that the path to headers should be lowercase
-  ## VERSION_HEADER "${PROJECT_NAME}/version.h"
+  VERSION_HEADER "${PROJECT_NAME}/version.h"
   # (optional) create a export header using GenerateExportHeader module
-  ## EXPORT_HEADER "${PROJECT_NAME}/export.h"
+  EXPORT_HEADER "${PROJECT_NAME}/export.h"
   # (optional) install your library with a namespace (Note: do NOT add extra '::')
   NAMESPACE ${PROJECT_NAME}
   # (optional) define the project's version compatibility, defaults to `AnyNewerVersion`

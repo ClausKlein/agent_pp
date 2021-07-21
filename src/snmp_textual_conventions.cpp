@@ -874,7 +874,7 @@ void DateAndTime::update()
 #else
 	// initialize timezone needed?
 	// tzset();
-#ifdef __CYGWIN__
+#ifdef WIN32
 	long timezone = _timezone;
 #endif
 	if (timezone < 0)
