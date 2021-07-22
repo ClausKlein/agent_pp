@@ -122,7 +122,6 @@
 #cmakedefine CNF_HAVE_WINSOCK2_H
 #cmakedefine CNF_HAVE_WS2TCPIP_H
 #cmakedefine CNF_HAVE_WSPIAPI_H
-#cmakedefine CNF_HAVE_WINSOCK_H
 #cmakedefine CNF_HAVE_NETDB_H
 #cmakedefine CNF_HAVE_SYS_SOCKET_H
 #cmakedefine CNF_HAVE_ARPA_INET_H
@@ -136,9 +135,6 @@
 # ifdef CNF_HAVE_WSPIAPI_H
 #  include <wspiapi.h>
 # endif
-#elif defined(CNF_HAVE_WINSOCK_H)
-  /* IIRC winsock.h must be included before windows.h */
-# include <winsock.h>
 #else
 # ifdef CNF_HAVE_NETDB_H
 #  include <netdb.h>

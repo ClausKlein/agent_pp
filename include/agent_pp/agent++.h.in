@@ -34,6 +34,7 @@
 #define AGENTPP_MAX_GETBULK_REPETITIONS 0
 
 #include <libagent.h>
+#include <agent_pp/export.h>
 
 // system dependend witches
 #ifndef NO_NANOSLEEP
@@ -132,27 +133,31 @@
 typedef enum { READING, WRITING } access_types;
 
 #ifndef AGENTPP_DECL
-	#if defined (WIN32) && defined (AGENT_PP_DLL)
-		#ifdef AGENT_PP_EXPORTS
-			#define AGENTPP_DECL __declspec(dllexport)
-			#define AGENTPP_DECL_TEMPL
-			#pragma warning (disable : 4018)	// signed/unsigned mismatch when exporting templates
-		#else
-			#define AGENTPP_DECL __declspec(dllimport)
-			#define AGENTPP_DECL_TEMPL extern
-			#pragma warning (disable : 4231)	// disable warnings on extern before template instantiation
-		#endif
-	#else
-		#define AGENTPP_DECL
-// Seems that a eplicit extern declaration is needed on some 
-// systems. If you encounter linking problems you may uncomment
-// the following:
-//#ifdef WIN32 
-		#define AGENTPP_DECL_TEMPL
-//#else
-//		#define AGENTPP_DECL_TEMPL extern
-//#endif
-	#endif
+#define AGENTPP_DECL AGENT_PP_EXPORT
+// NOTE: Or at least use agent_pp_EXPORTS! CK
+//
+// 	#if defined (WIN32) && defined (agent_pp_EXPORTS)
+// 		#ifdef AGENT_PP_EXPORTS
+// 			#define AGENTPP_DECL __declspec(dllexport)
+// 			#define AGENTPP_DECL_TEMPL
+// 			#pragma warning (disable : 4018)	// signed/unsigned mismatch when exporting templates
+// 		#else
+// 			#define AGENTPP_DECL __declspec(dllimport)
+// 			#define AGENTPP_DECL_TEMPL extern
+// 			#pragma warning (disable : 4231)	// disable warnings on extern before template instantiation
+// 		#endif
+// 	#else
+// 		#define AGENTPP_DECL
+// // Seems that a eplicit extern declaration is needed on some
+// // systems. If you encounter linking problems you may uncomment
+// // the following:
+// //#ifdef WIN32
+// 		#define AGENTPP_DECL_TEMPL
+// //#else
+// //		#define AGENTPP_DECL_TEMPL extern
+// //#endif
+// 	#endif
+
 #endif
 
 #ifdef WIN32
