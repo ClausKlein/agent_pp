@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.14...3.21)
 
 project(
   agent_pp
-  VERSION 4.5.1.3
-  LANGUAGES CXX
+  VERSION 4.5.1.4
+  LANGUAGES CXX C
 )
 
 include(CheckIncludeFiles)
@@ -35,7 +35,6 @@ message(STATUS "agent++ Version ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR
 check_include_files(sys/types.h CNF_HAVE_SYS_TYPES_H)
 check_include_files(sys/stat.h CNF_HAVE_SYS_STAT_H)
 check_include_files("cctype;cerrno;climits;csignal;cstddef;cstdio;cstdlib;cstring;ctime" CNF_STDCXX_98_HEADERS)
-check_include_files("iostream" CNF_HAVE_IOSTREAM)
 
 if(NOT CNF_STDCXX_98_HEADERS)
   check_include_files("stdlib.h;stddef.h" CNF_STDC_HEADERS)
@@ -235,10 +234,10 @@ include(CPM)
 
 set(SNMP_PP_VERSION 3.4.7)
 # XXX find_package(snmp_pp CONFIG ${SNMP_PP_VERSION} REQUIRED)
-# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.3
+# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.4
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG v${SNMP_PP_VERSION}.3
+  GIT_TAG v${SNMP_PP_VERSION}.4
   GITHUB_REPOSITORY ClausKlein/snmp_pp
 )
 

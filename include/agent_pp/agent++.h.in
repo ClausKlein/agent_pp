@@ -33,7 +33,10 @@
 // If that is the case, the upper limit should be 25 or less.
 #define AGENTPP_MAX_GETBULK_REPETITIONS 0
 
+#ifndef __LIBAGENT_H_INCLUDED__
 #include <libagent.h>
+#endif
+
 #include <agent_pp/export.h>
 
 // system dependend witches
