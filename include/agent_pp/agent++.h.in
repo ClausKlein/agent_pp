@@ -27,7 +27,7 @@
 #define AGENTPP_PATCHLEVEL @AGENT_PP_MICRO_VERSION@
 
 // Defines the absolute upper limit for GETBULK repetitions an agent
-// will process. 0 or less disables an upper limit. 
+// will process. 0 or less disables an upper limit.
 // Setting a limit can improve the responsiveness of an agent if
 // there are slow instrumented objects or AgentX subrequests involved.
 // If that is the case, the upper limit should be 25 or less.
@@ -124,7 +124,7 @@
 //         NOTE: if the target object is a table object and
 //               if the target object does not exist an new row is created
 // remove: remove one or more managed objects
-//         NOTE: if the target object is a table object 
+//         NOTE: if the target object is a table object
 //               the complete row is removed
 
 #define MIB_UPDATE		(aSN_UNIVERSAL | aSN_CONSTRUCTOR | 0x0A )
@@ -134,6 +134,8 @@ typedef enum { READING, WRITING } access_types;
 
 #ifndef AGENTPP_DECL
 #define AGENTPP_DECL AGENT_PP_EXPORT
+#define AGENTPP_DECL_TEMPL extern
+
 // NOTE: Or at least use agent_pp_EXPORTS! CK
 //
 // 	#if defined (WIN32) && defined (agent_pp_EXPORTS)

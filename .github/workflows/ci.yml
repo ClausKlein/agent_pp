@@ -8,7 +8,7 @@ env:
   CPM_SOURCE_CACHE: ${{ github.workspace }}/cpm_modules
 
 jobs:
-  test:
+  cmake-build:
     strategy:
       fail-fast: false
 
