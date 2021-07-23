@@ -151,14 +151,15 @@ typedef enum
 #        endif
 #    else
 #        define AGENTPP_DECL
+#        define AGENTPP_DECL_TEMPL
 // Seems that a eplicit extern declaration is needed on some
 // systems. If you encounter linking problems you may uncomment
 // the following:
-#        ifdef WIN32
-#            define AGENTPP_DECL_TEMPL
-#        else
-#            define AGENTPP_DECL_TEMPL extern
-#        endif
+// #        ifdef WIN32
+// #            define AGENTPP_DECL_TEMPL
+// #        else
+// #            define AGENTPP_DECL_TEMPL extern
+// #        endif
 #    endif
 #endif
 
