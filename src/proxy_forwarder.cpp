@@ -33,7 +33,9 @@
 using namespace Agentpp;
 #endif
 
+#ifndef _NO_LOGGING
 static const char *loggerModuleName = "agent++.proxy_forwarder";
+#endif
 
 ProxyForwarder::ProxyForwarder(Mib* mib, const OctetStr& contextEngineID, pdu_type t)
 {

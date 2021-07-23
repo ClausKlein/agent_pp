@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.14...3.21)
 
+# NOTE: We need LANGUAGE C too for libdes, with may be required and build # with snmp_pp! # CK
 project(
   agent_pp
   VERSION 4.5.1.4
@@ -18,11 +19,11 @@ set(CMAKE_CXX_STANDARD 17)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
 option(AGENT_PP_NAMESPACE "Use Namespaces" ON)
-option(AGENT_PP_PROXY "Enable Proxy" OFF)
-option(AGENT_PP_PROXY_FORWARDER "Enable Proxy Forwarder" OFF)
+option(AGENT_PP_PROXY "Enable Proxy" ON)
+option(AGENT_PP_PROXY_FORWARDER "Enable Proxy Forwarder" ON)
 option(AGENT_PP_AGENPRO "build with AgenPro templates (usually disabled)" OFF)
 option(AGENT_PP_AGENPRO_SIMAGENT "build with AgenPro simagent instead regular templates (usually disabled)" OFF)
-option(AGENT_PP_EXAMPLES "build examples" OFF)
+option(AGENT_PP_EXAMPLES "build examples" ON)
 option(AGENT_PP_TOOLS "build tools" OFF)
 
 set(VERSION ${PROJECT_VERSION})
@@ -213,7 +214,7 @@ endif()
 
 if(CNF_STDCXX_98_HEADERS)
   set(STDCXX_98_HEADERS 1)
-  unset(STDC_HEADERS)
+  set(STDC_HEADERS 0)
 else()
   set(STDCXX_98_HEADERS 0)
 endif()
@@ -234,10 +235,10 @@ include(CPM)
 
 set(SNMP_PP_VERSION 3.4.7)
 # XXX find_package(snmp_pp CONFIG ${SNMP_PP_VERSION} REQUIRED)
-# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.4
+# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.5
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG v${SNMP_PP_VERSION}.4
+  GIT_TAG v${SNMP_PP_VERSION}.5
   GITHUB_REPOSITORY ClausKlein/snmp_pp
 )
 
