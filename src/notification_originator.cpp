@@ -246,7 +246,7 @@ v3MP* NotificationOriginator::get_v3mp() {
     if (mib) {
         return mib->get_request_list()->get_v3mp();
     } else {
-        return v3MP::I;
+        return v3MP::instance;
     }
 }
 
