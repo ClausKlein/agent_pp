@@ -44,7 +44,9 @@ using namespace Snmp_pp;
 using namespace Agentpp;
 #endif
 
+#ifndef _NO_LOGGING
 static const char* loggerModuleName = "agent++.cmd_exe_mib";
+#endif
 
 // globals:
 
@@ -57,7 +59,7 @@ bool run = TRUE;
 static void sig(int signo)
 {
 	if ((signo == SIGTERM) || (signo == SIGINT) ||
-	    (signo == SIGQUIT) || (signo == SIGSEGV)) {
+	    (signo == SIGSEGV)) {
 
 		printf ("\n");
       
@@ -68,8 +70,7 @@ static void sig(int signo)
 			exit(1);
 		}
 		case SIGTERM: 
-		case SIGINT:
-		case SIGQUIT: {
+		case SIGINT: {
 			run = FALSE;
 			printf ("User abort\n");
 		}
@@ -82,7 +83,6 @@ void init_signals()
 {
 	signal (SIGTERM, sig);
 	signal (SIGINT, sig);
-	signal (SIGQUIT, sig);
 	signal (SIGSEGV, sig); 
 }	
 

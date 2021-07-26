@@ -193,11 +193,7 @@
 #define NULL	0
 #endif
 
-#if @CNF_STDCXX_98_HEADERS@
 # include <iostream>
-#else
-# include <iostream.h>
-#endif
 
 #include <snmp_pp/config_snmp_pp.h>
 #include <snmp_pp/log.h>

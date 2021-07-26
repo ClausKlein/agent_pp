@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.14...3.21)
 
+# NOTE: We need LANGUAGE C too for libdes. It may be required to build at Windows! CK
 project(
   agent_pp
-  VERSION 4.5.1.3
-  LANGUAGES CXX
+  VERSION 4.5.1.5
+  LANGUAGES CXX C
 )
 
 include(CheckIncludeFiles)
@@ -18,11 +19,11 @@ set(CMAKE_CXX_STANDARD 17)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
 option(AGENT_PP_NAMESPACE "Use Namespaces" ON)
-option(AGENT_PP_PROXY "Enable Proxy" OFF)
-option(AGENT_PP_PROXY_FORWARDER "Enable Proxy Forwarder" OFF)
+option(AGENT_PP_PROXY "Enable Proxy" ON)
+option(AGENT_PP_PROXY_FORWARDER "Enable Proxy Forwarder" ON)
 option(AGENT_PP_AGENPRO "build with AgenPro templates (usually disabled)" OFF)
 option(AGENT_PP_AGENPRO_SIMAGENT "build with AgenPro simagent instead regular templates (usually disabled)" OFF)
-option(AGENT_PP_EXAMPLES "build examples" OFF)
+option(AGENT_PP_EXAMPLES "build examples" ON)
 option(AGENT_PP_TOOLS "build tools" OFF)
 
 set(VERSION ${PROJECT_VERSION})
@@ -35,7 +36,6 @@ message(STATUS "agent++ Version ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR
 check_include_files(sys/types.h CNF_HAVE_SYS_TYPES_H)
 check_include_files(sys/stat.h CNF_HAVE_SYS_STAT_H)
 check_include_files("cctype;cerrno;climits;csignal;cstddef;cstdio;cstdlib;cstring;ctime" CNF_STDCXX_98_HEADERS)
-check_include_files("iostream" CNF_HAVE_IOSTREAM)
 
 if(NOT CNF_STDCXX_98_HEADERS)
   check_include_files("stdlib.h;stddef.h" CNF_STDC_HEADERS)
@@ -214,7 +214,7 @@ endif()
 
 if(CNF_STDCXX_98_HEADERS)
   set(STDCXX_98_HEADERS 1)
-  unset(STDC_HEADERS)
+  set(STDC_HEADERS 0)
 else()
   set(STDCXX_98_HEADERS 0)
 endif()
@@ -235,10 +235,10 @@ include(CPM)
 
 set(SNMP_PP_VERSION 3.4.7)
 # XXX find_package(snmp_pp CONFIG ${SNMP_PP_VERSION} REQUIRED)
-# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.3
+# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.6
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG v${SNMP_PP_VERSION}.3
+  GIT_TAG v${SNMP_PP_VERSION}.6
   GITHUB_REPOSITORY ClausKlein/snmp_pp
 )
 
@@ -326,7 +326,7 @@ set(MY_SRC_FILES
 
 option(BUILD_SHARED_LIBS "Global flag to cause add_library() to create shared libraries if on." ON)
 add_library(
-  ${PROJECT_NAME} STATIC ${MY_HEADER_FILES} ${MY_HEADER_LIB_FILES} ${CMAKE_CURRENT_BINARY_DIR}/config.h ${MY_SRC_FILES}
+  ${PROJECT_NAME} ${MY_HEADER_FILES} ${MY_HEADER_LIB_FILES} ${CMAKE_CURRENT_BINARY_DIR}/config.h ${MY_SRC_FILES}
 )
 
 if(MSVC)
@@ -354,6 +354,15 @@ target_include_directories(
 target_include_directories(
   ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
                          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>
+)
+
+# Note: for SameMajorVersion upgrade stategy
+set_target_properties(
+  ${PROJECT_NAME}
+  PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR}
+             VERSION ${PROJECT_VERSION}
+             VISIBILITY_INLINES_HIDDEN ${BUILD_SHARED_LIBS}
+             CMAKE_VISIBILITY_INLINES_HIDDEN ${BUILD_SHARED_LIBS}
 )
 
 macro(subdirlist result curdir)

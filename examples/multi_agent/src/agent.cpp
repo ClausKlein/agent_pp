@@ -18,8 +18,9 @@
   _##  
   _##########################################################################*/
 
-#include <stdlib.h>
-#include <signal.h>
+#include <cstdlib>
+#include <csignal>
+// XXX #include <vector>
 
 #include <agent_pp/agent++.h>
 #include <agent_pp/snmp_group.h>
@@ -54,7 +55,9 @@ using namespace Snmp_pp;
 using namespace Agentpp;
 #endif
 
+#ifndef _NO_LOGGING
 static const char *loggerModuleName = "agent++.multi.agent";
+#endif
 
 // table size policies
 
@@ -621,19 +624,24 @@ int main(int argc, char *argv[]) {
     DefaultLog::log()->set_filter(INFO_LOG, 5);
     DefaultLog::log()->set_filter(DEBUG_LOG, 1);
 #endif
+
     Snmp::socket_startup();  // Initialize socket subsystem
 
     init_signals();
 
     ThreadPool agentPool(num_agents);
     agentPool.set_one_time_execution(TRUE);
-    SnmpAgent *agents[num_agents];
+
+    // NOTE: error C2131: expression did not evaluate to a constant! CK
+    // XXX std::vector<SnmpAgent *, num_agents> agents;
+    SnmpAgent * agents[MAX_NUMBER_OF_AGENTS];
     for (int i = 0; i < num_agents; i++) {
         UdpAddress inaddr("0.0.0.0");
         inaddr.set_port(port[i]);
         agents[i] = new SnmpAgent(inaddr);
         agentPool.execute(agents[i]);
     }
+
     agentPool.join();
     Snmp::socket_cleanup();  // Shut down socket subsystem
     return 0;
