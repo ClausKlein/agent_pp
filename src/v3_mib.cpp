@@ -105,7 +105,7 @@ V3SnmpEngineMaxMessageSize::V3SnmpEngineMaxMessageSize():
  *  class V3SnmpEngine
  * 
  **********************************************************************/
-V3SnmpEngine::V3SnmpEngine(void): V3SnmpEngine(v3MP::I) 
+V3SnmpEngine::V3SnmpEngine(void): V3SnmpEngine(v3MP::instance)
 {
     
 }
@@ -314,7 +314,7 @@ void usm_callback(const OctetStr &engine_id,
 const Oidx UsmUserTable::auth_base = oidUsmAuthProtocolBase;
 const Oidx UsmUserTable::priv_base = oidUsmPrivProtocolBase;
 
-UsmUserTable::UsmUserTable(): UsmUserTable(v3MP::I) 
+UsmUserTable::UsmUserTable(): UsmUserTable(v3MP::instance)
 {
 }
 
@@ -1590,7 +1590,7 @@ void UsmStatsDecryptionErrors::get_request(Request* req, int index)
  * 
  **********************************************************************/
 
-UsmStats::UsmStats(void): UsmStats(v3MP::I) 
+UsmStats::UsmStats(void): UsmStats(v3MP::instance)
 {
     
 }
@@ -1649,7 +1649,7 @@ void MPDGroupSnmpUnknownPDUHandlers::get_request(Request* req, int index)
   MibLeaf::get_request(req, index);
 }
 
-MPDGroup::MPDGroup(void): MPDGroup(v3MP::I)
+MPDGroup::MPDGroup(void): MPDGroup(v3MP::instance)
 {
     
 }

@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.14...3.21)
 
-# NOTE: We need LANGUAGE C too for libdes, with may be required and build # with snmp_pp! # CK
+# NOTE: We need LANGUAGE C too for libdes. It may be required to build at Windows! CK
 project(
   agent_pp
-  VERSION 4.5.1.4
+  VERSION 4.5.1.5
   LANGUAGES CXX C
 )
 
@@ -235,10 +235,10 @@ include(CPM)
 
 set(SNMP_PP_VERSION 3.4.7)
 # XXX find_package(snmp_pp CONFIG ${SNMP_PP_VERSION} REQUIRED)
-# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.5
+# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.6
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG v${SNMP_PP_VERSION}.5
+  GIT_TAG v${SNMP_PP_VERSION}.6
   GITHUB_REPOSITORY ClausKlein/snmp_pp
 )
 
@@ -354,6 +354,15 @@ target_include_directories(
 target_include_directories(
   ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
                          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>
+)
+
+# Note: for SameMajorVersion upgrade stategy
+set_target_properties(
+  ${PROJECT_NAME}
+  PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR}
+             VERSION ${PROJECT_VERSION}
+             VISIBILITY_INLINES_HIDDEN ${BUILD_SHARED_LIBS}
+             CMAKE_VISIBILITY_INLINES_HIDDEN ${BUILD_SHARED_LIBS}
 )
 
 macro(subdirlist result curdir)

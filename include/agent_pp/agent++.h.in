@@ -150,7 +150,7 @@ typedef enum
 #            pragma warning(disable : 4231) // disable warnings on extern before template instantiation
 #        endif
 #    else
-#        define AGENTPP_DECL
+#        define AGENTPP_DECL AGENT_PP_EXPORT
 #        define AGENTPP_DECL_TEMPL
 // Seems that a eplicit extern declaration is needed on some
 // systems. If you encounter linking problems you may uncomment
