@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.14...3.21)
 # NOTE: We need LANGUAGE C too for libdes. It may be required to build at Windows! CK
 project(
   agent_pp
-  VERSION 4.5.1.5
+  VERSION 4.5.1.6
   LANGUAGES CXX C
 )
 
@@ -238,8 +238,7 @@ set(SNMP_PP_VERSION 3.4.7)
 # see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.7
 CPMAddPackage(
   NAME snmp_pp
-  #TODO GIT_TAG v${SNMP_PP_VERSION}.7
-  GIT_TAG b38e6a373eb3933767eceebbd76d11f036df2547
+  GIT_TAG v${SNMP_PP_VERSION}.7
   GITHUB_REPOSITORY ClausKlein/snmp_pp
 )
 
