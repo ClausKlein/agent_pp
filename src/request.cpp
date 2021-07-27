@@ -995,12 +995,15 @@ void RequestList::report(Request* req)
 
 	pdu->set_error_status(0);
 	pdu->set_error_index(0);
-	pdu->set_type(sNMP_PDU_RESPONSE);	
+	pdu->set_type(sNMP_PDU_RESPONSE);
 
 	requests->remove(req);
-	
-	int status;
-	status = snmp->report(*pdu, req->target);
+
+	int status = snmp->report(*pdu, req->target);
+
+#ifdef _NO_LOGGING
+	(void) status;
+#endif
 
 	LOG_BEGIN(loggerModuleName, EVENT_LOG | 4);
 	LOG("RequestList: sent report (rid)(tid)(to)(err)(send)(sz)");

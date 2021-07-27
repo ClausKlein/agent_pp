@@ -52,6 +52,10 @@ static void *inform_caller(void* ptr)
 	int status;
 	status = SnmpRequest::process_trap(callInfo->target, callInfo->vbs,
 					   callInfo->sz, callInfo->oid, "", TRUE);
+#ifdef _NO_LOGGING
+    (void) status;
+#endif
+
 	delete callInfo;
 	LOG_BEGIN(loggerModuleName, EVENT_LOG | 2);
 	LOG("SnmpRequest: inform thread finished (status)");
