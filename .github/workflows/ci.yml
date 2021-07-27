@@ -63,17 +63,17 @@ jobs:
         #         working-directory: build/test
         #         run: ctest -C Release --output-on-failure
 
-        #       - name: Run clang-tidy on MacOS Host
-        #         if: startsWith(matrix.os, 'macos')
-        #         shell: bash
-        #         run: |
-        #           export PATH=/usr/local/opt/llvm/bin/:${PATH}
-        #           perl -i.bak -pe 's#-I($CPM_SOURCE_CACHE)#-isystem $1#g' build/test/compile_commands.json
-        #           /usr/local/opt/llvm/share/clang/run-clang-tidy.py -p build/test examples
+      - name: Run clang-tidy on MacOS Host
+        if: startsWith(matrix.os, 'macos')
+        shell: bash
+        run: |
+          export PATH=/usr/local/opt/llvm/bin/:${PATH}
+          perl -i.bak -pe 's#-I($CPM_SOURCE_CACHE)#-isystem $1#g' build/compile_commands.json
+          /usr/local/opt/llvm/share/clang/run-clang-tidy.py -p build src
 
-        #       - name: Run clang-tidy on Ubuntu Host
-        #         if: startsWith(matrix.os, 'ubuntu')
-        #         shell: bash
-        #         run: |
-        #           perl -i.bak -pe 's#-I($CPM_SOURCE_CACHE)#-isystem $1#g' build/test/compile_commands.json
-        #           run-clang-tidy-10 -p build/test examples
+      - name: Run clang-tidy on Ubuntu Host
+        if: startsWith(matrix.os, 'ubuntu')
+        shell: bash
+        run: |
+          perl -i.bak -pe 's#-I($CPM_SOURCE_CACHE)#-isystem $1#g' build/compile_commands.json
+          run-clang-tidy-10 -p build src
