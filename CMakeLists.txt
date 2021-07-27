@@ -18,7 +18,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
-option(AGENT_PP_NAMESPACE "Use Namespaces" ON)
+option(AGENT_PP_NAMESPACE "Use Namespaces (needed!)" ON)
 option(AGENT_PP_PROXY "Enable Proxy" ON)
 option(AGENT_PP_PROXY_FORWARDER "Enable Proxy Forwarder" ON)
 option(AGENT_PP_AGENPRO "build with AgenPro templates (usually disabled)" OFF)
@@ -235,10 +235,11 @@ include(CPM)
 
 set(SNMP_PP_VERSION 3.4.7)
 # XXX find_package(snmp_pp CONFIG ${SNMP_PP_VERSION} REQUIRED)
-# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.6
+# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.7
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG v${SNMP_PP_VERSION}.6
+  #TODO GIT_TAG v${SNMP_PP_VERSION}.7
+  GIT_TAG b38e6a373eb3933767eceebbd76d11f036df2547
   GITHUB_REPOSITORY ClausKlein/snmp_pp
 )
 
@@ -325,9 +326,7 @@ set(MY_SRC_FILES
 )
 
 option(BUILD_SHARED_LIBS "Global flag to cause add_library() to create shared libraries if on." ON)
-add_library(
-  ${PROJECT_NAME} ${MY_HEADER_FILES} ${MY_HEADER_LIB_FILES} ${CMAKE_CURRENT_BINARY_DIR}/config.h ${MY_SRC_FILES}
-)
+add_library(${PROJECT_NAME} ${MY_HEADER_FILES} ${MY_HEADER_LIB_FILES} ${CMAKE_CURRENT_BINARY_DIR}/config.h ${MY_SRC_FILES})
 
 if(MSVC)
   # warning level 4 (all warnings as errors: /WX)
@@ -444,9 +443,7 @@ endforeach()
 
 install(FILES ${MY_HEADER_LIB_FILES} DESTINATION include)
 
-# XXX include(PackageProject)
 CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.8.0")
-
 packageProject(
   # the name of the target to export
   NAME ${PROJECT_NAME}

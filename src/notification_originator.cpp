@@ -47,16 +47,17 @@ static const char *loggerModuleName = "agent++.notification_originator";
 NotificationOriginator::NotificationOriginator()
 {
 #ifdef _SNMPv3
-	localEngineID = 0;
+    localEngineID = 0;
+    communityEntry = 0;
+    _nlmLogEntry = 0;
+    v3mp = 0;
 #endif
-        targetAddrEntry = 0;
-        targetParamsEntry = 0;
-        communityEntry = 0;
-        notifyEntry = 0;
-        notifyFilterEntry = 0;
-        _nlmLogEntry = 0;
-        v3mp = 0;
-        mib = Mib::instance;        
+
+    targetAddrEntry = 0;
+    targetParamsEntry = 0;
+    notifyEntry = 0;
+    notifyFilterEntry = 0;
+    mib = Mib::instance;
 }
 
 NotificationOriginator::~NotificationOriginator()
@@ -220,6 +221,7 @@ snmpNotifyFilterEntry* NotificationOriginator::get_snmp_notify_filter_entry() {
     return snmpNotifyFilterEntry::instance;
 }
 
+#ifdef _SNMPv3
 snmpCommunityEntry* NotificationOriginator::get_snmp_community_entry() {
     if (mib || communityEntry) {
         if (!communityEntry) {
@@ -249,6 +251,7 @@ v3MP* NotificationOriginator::get_v3mp() {
         return v3MP::instance;
     }
 }
+#endif
 
 
 bool NotificationOriginator::check_access(ListCursor<MibTableRow>& cur,

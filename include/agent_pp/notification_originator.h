@@ -222,6 +222,7 @@ class AGENTPP_DECL NotificationOriginator: public NotificationSender {
          */
         virtual snmpTargetParamsEntry* get_snmp_target_params_entry();
 
+#ifdef _SNMPv3
         /**
          * Sets the cached reference for the snmpCommunityEntry. If set to 
          * null, the reference will be determined by looking up the OID
@@ -242,6 +243,7 @@ class AGENTPP_DECL NotificationOriginator: public NotificationSender {
          * @since 4.3.0
          */
         virtual snmpCommunityEntry* get_snmp_community_entry();
+#endif
 
         /**
          * Sets the cached reference for the snmpNotifyEntry. If set to 
@@ -286,6 +288,7 @@ class AGENTPP_DECL NotificationOriginator: public NotificationSender {
         virtual snmpNotifyFilterEntry* get_snmp_notify_filter_entry();
 
 
+#ifdef _SNMPv3
         /**
          * Sets the cached reference for the nlmLogyEntry. If set to 
          * null, the reference will be determined by looking up the OID
@@ -308,18 +311,21 @@ class AGENTPP_DECL NotificationOriginator: public NotificationSender {
         virtual nlmLogEntry* get_nlm_log_entry();
                 
         virtual v3MP* get_v3mp();
+#endif
 
  protected:
      
- 
         Mib*                    mib;
         snmpTargetAddrEntry*    targetAddrEntry;
         snmpTargetParamsEntry*  targetParamsEntry;
-        snmpCommunityEntry*     communityEntry;
         snmpNotifyEntry*        notifyEntry;
         snmpNotifyFilterEntry*  notifyFilterEntry;
+
+#ifdef _SNMPv3
+        snmpCommunityEntry* communityEntry;
         nlmLogEntry*            _nlmLogEntry;
         v3MP*                   v3mp;
+#endif
 
 	class NotificationOriginatorParams {
 	public:

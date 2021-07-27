@@ -28,7 +28,7 @@
 #include <agent_pp/snmp_proxy_mib.h>
 #endif
 
-#ifndef _PROXY_FORWARDER
+#ifdef _PROXY_FORWARDER
 
 #ifdef AGENTPP_NAMESPACE
 namespace Agentpp {
