@@ -23,6 +23,7 @@
 
 #include <agent_pp/agent++.h>
 #include <agent_pp/mib.h>
+
 #ifdef _SNMPv3
 #include <agent_pp/snmp_target_mib.h>
 #include <agent_pp/snmp_proxy_mib.h>
@@ -32,7 +33,11 @@
 
 #ifdef AGENTPP_NAMESPACE
 namespace Agentpp {
-    using namespace Snmp_pp;
+#endif
+
+// TODO: no using namespace in headers! CK
+#ifdef SNMP_PP_NAMESPACE
+using namespace Snmp_pp;
 #endif
 
 /*--------------------------- class MibProxy -----------------------------*/
