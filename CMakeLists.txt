@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.14...3.21)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # NOTE: We need LANGUAGE C too for libdes. It may be required to build at Windows! CK
 project(
   agent_pp
