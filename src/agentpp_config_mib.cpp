@@ -273,7 +273,7 @@ int agentppCfgStoragePath::prepare_set_request(Request* req, int& ind)
 	NS_SNMP OctetStr v;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
 	    return SNMP_ERROR_WRONG_TYPE;
-	if (!(((v.len() >= 0) && (v.len() <= 255))))
+	if (!((v.len() <= 255)))
 		 return SNMP_ERROR_WRONG_LENGTH;
 	//--AgentGen BEGIN=agentppCfgStoragePath::prepare_set_request
 	if (((agentppCfgStorageEntry*)my_table)->is_secure_paths()) {

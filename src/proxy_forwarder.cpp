@@ -270,15 +270,17 @@ bool ProxyForwarder::process_multiple(Pdux& pdu, Request* req)
 			LOG(pdu.get_context_engine_id().get_printable());
 			LOG_END;
 
-			int status;
-			status = snmp->send_request(*target, pdu);
-
-			OK = TRUE;
-			delete target;
+			int status = snmp->send_request(*target, pdu);
 			LOG_BEGIN(loggerModuleName, INFO_LOG | 3);
 			LOG("ProxyForwarder: agent contacted: (status)");
 			LOG(status);
 			LOG_END;
+			delete target;
+	        if (status != SNMP_ERROR_SUCCESS) {
+                break;
+            }
+
+			OK = TRUE;  // TODO: may not right! CK
 		}
 		delete targets;
 	}

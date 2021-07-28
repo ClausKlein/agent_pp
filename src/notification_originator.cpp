@@ -403,8 +403,10 @@ int NotificationOriginator::send_notify(ListCursor<MibTableRow>& cur,
 	CTarget*& target = nop.target;
 #endif
 
+#ifndef _NO_LOGGING
 	long targetDomain;
 	targetDomain = ((snmpTargetAddrTDomain*)cur.get()->first())->get_state();
+#endif
 
 	Oidx trapoid(id);
 #ifdef _SNMPv3

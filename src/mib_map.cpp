@@ -36,9 +36,6 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 #include <libagent.h>
 
-#ifdef __GNUG__
-#pragma implementation
-#endif
 #include <agent_pp/mib_map.h>
 #include <snmp_pp/log.h>
 
