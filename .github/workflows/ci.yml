@@ -64,7 +64,7 @@ jobs:
         #         run: ctest -C Release --output-on-failure
 
       - name: Run clang-tidy on MacOS Host
-        if: startsWith(matrix.os, 'macos')
+        if: startsWith(matrix.os, 'macos') && contains(matrix.type, 'static')
         shell: bash
         run: |
           export PATH=/usr/local/opt/llvm/bin/:${PATH}
@@ -72,7 +72,7 @@ jobs:
           /usr/local/opt/llvm/share/clang/run-clang-tidy.py -p build src
 
       - name: Run clang-tidy on Ubuntu Host
-        if: startsWith(matrix.os, 'ubuntu')
+        if: startsWith(matrix.os, 'ubuntu') && contains(matrix.type, 'static')
         shell: bash
         run: |
           perl -i.bak -pe 's#-I($CPM_SOURCE_CACHE)#-isystem $1#g' build/compile_commands.json
