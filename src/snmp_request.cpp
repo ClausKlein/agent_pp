@@ -298,7 +298,7 @@ void SnmpRequest::inform(CTarget& target, Vbx* vbs, int sz, const Oidx& oid)
 #else
     static pthread_attr_t* attr = 0;
 
-	pthread_t thread = nullptr;
+	pthread_t thread{};
 	if (!attr) {
 	  attr = new pthread_attr_t;
 	  pthread_attr_init(attr);

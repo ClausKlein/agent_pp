@@ -3423,7 +3423,7 @@ void Mib::process_request(Request* req)
 	_beginthread(mib_method_routine_caller, 0, call);
 #else
 	static pthread_attr_t* attr = 0;
-	pthread_t thread;
+	pthread_t thread{};
 	if (!attr) {
 		attr = new pthread_attr_t;
 		pthread_attr_init(attr);
