@@ -283,7 +283,7 @@ bool MibLeaf::serialize(char*& buf, int& sz)
 
 bool MibLeaf::deserialize(char* buf, int& sz)
 {
-	Vbx* vbs;
+	Vbx* vbs = nullptr;
 	int size = 0;
 	unsigned char* data = (unsigned char*)buf;
 	int status = Vbx::from_asn1(vbs, size, data, sz);
@@ -409,7 +409,7 @@ Counter32MibLeaf* Counter32MibLeaf::get_instance(Mib* mib, const Oidx& oid,
     }
     else if ((oid.len() > 1) && (ind.len() > 0)) {
         // column
-        Oidx tableOid(oid);
+        const Oidx& tableOid(oid);
         MibTable* table = (MibTable*)mib->get(tableOid);
         if (table) {
             Oidx cellOid(oid);
@@ -431,7 +431,7 @@ Counter32MibLeaf* Counter32MibLeaf::get_instance(Mib* mib,
     }
     else if ((oid.len() > 1) && (ind.len() > 0)) {
         // column
-        Oidx tableOid(oid);
+        const Oidx& tableOid(oid);
         MibTable* table = (MibTable*)mib->get(context, tableOid);
         if (table) {
             Oidx cellOid(oid);
@@ -448,7 +448,7 @@ unsigned long Counter32MibLeaf::incrementScalar(Mib* mib,
     Counter32MibLeaf* counter = get_instance(mib, counterInstanceOid);
     if (counter) {
         counter->increment();
-        unsigned long v;
+        unsigned long v = 0;
         counter->get_value(v);
         return v;
     }
@@ -461,7 +461,7 @@ unsigned long Counter32MibLeaf::incrementColumnar(Mib* mib,
     Counter32MibLeaf* counter = get_instance(mib, columnOid, indexRow);
     if (counter) {
         counter->increment();
-        unsigned long v;
+        unsigned long v = 0;
         counter->get_value(v);
         return v;
     }
@@ -475,7 +475,7 @@ unsigned long Counter32MibLeaf::incrementScalar(Mib* mib,
     Counter32MibLeaf* counter = get_instance(mib, counterInstanceOid);
     if (counter) {
         counter->increment();
-        unsigned long v;
+        unsigned long v = 0;
         counter->get_value(v);
         return v;
     }
@@ -490,7 +490,7 @@ unsigned long Counter32MibLeaf::incrementColumnar(Mib* mib,
     Counter32MibLeaf* counter = get_instance(mib, columnOid, indexRow);
     if (counter) {
         counter->increment();
-        unsigned long v;
+        unsigned long v = 0;
         counter->get_value(v);
         return v;
     }
@@ -551,7 +551,7 @@ int snmpRowStatus::prepare_set_request(Request* req, int& ind)
 
 bool snmpRowStatus::value_ok(const Vbx& v)
 {
-	int l;
+	int l = 0;
 	if (v.get_value(l) != SNMP_CLASS_SUCCESS) return FALSE;
 
 	return ((l == rowCreateAndGo) ||
@@ -563,7 +563,7 @@ bool snmpRowStatus::value_ok(const Vbx& v)
 
 bool snmpRowStatus::transition_ok(const Vbx& v)
 {
-	int l;
+	int l = 0;
 	if (v.get_value(l) != SNMP_CLASS_SUCCESS) return FALSE;
 
 	if (value) {
@@ -598,7 +598,7 @@ bool snmpRowStatus::transition_ok(const Vbx& v)
 
 bool snmpRowStatus::check_state_change(const Vbx& v, Request* req)
 {
-	int l;
+	int l = 0;
 	if (!req || v.get_value(l) != SNMP_CLASS_SUCCESS) return FALSE;
 
 	if (value) {
@@ -662,7 +662,7 @@ int snmpRowStatus::set(const Vbx& vb)
 {
 	if (undo) delete undo;  // paranoia? just to be sure ;-)
 	undo = value->clone();
-	int rs;
+	int rs = 0;
 	if (vb.get_value(rs) != SNMP_CLASS_SUCCESS)
 	    return SNMP_ERROR_WRONG_TYPE;
 	switch (rs) {
@@ -700,7 +700,7 @@ int snmpRowStatus::unset()
 {
   if (undo)
   {
-	int rs;
+	int rs = 0;
 	rs = *(SnmpInt32*)undo;
 
 	switch (rs) {
@@ -1150,7 +1150,7 @@ MibTable::MibTable(const MibTable& other): MibEntry(other.oid, other.access)
 
 	// content should be copied too...
 	content.clearAll();
-	MibTableRow* r;
+	MibTableRow* r = nullptr;
 	OidListCursor<MibTableRow> cur;
 	for (cur.init(&content); cur.get(); cur.next()) {
 		r = content.add(cur.get()->clone());
@@ -1420,7 +1420,7 @@ int MibTable::set_value(Request* req, int reqind)
 {
 	int status = SNMP_ERROR_SUCCESS;
 	Oidx tmpoid(req->get_oid(reqind));
-	MibLeaf* o;
+	MibLeaf* o = nullptr;
 
 	if ((o = find(tmpoid)) != 0) {
 
@@ -1429,7 +1429,7 @@ int MibTable::set_value(Request* req, int reqind)
 			Vbx vb(req->get_value(reqind));
 
 			int new_value = 1;
-			int rs;
+			int rs = 0;
 
 			if (vb.get_value(rs) != SNMP_CLASS_SUCCESS)
 			    return SNMP_ERROR_WRONG_TYPE;
@@ -1726,7 +1726,7 @@ MibLeaf* MibTable::find(const Oidx& o) const
 	Oidx ind = index(o);
 	MibTableRow* row = content.find(&ind);
 	if (row) {
-		MibLeaf* leaf;
+		MibLeaf* leaf = nullptr;
 		if ((leaf = row->get_element(o)) != 0)
 			return leaf;
 	}
@@ -1891,7 +1891,7 @@ bool MibTable::is_index_valid(const Oidx& ind) const
 {
 	Oidx o(ind);
 	unsigned long l = 0;
-	unsigned int i;
+	unsigned int i = 0;
 	for (i=0; ((i<index_len) && (l < o.len())); i++) {
 		if (index_struc[i].implied) {
 			if (i+1 != index_len)
@@ -2047,7 +2047,7 @@ bool MibTable::ready(Vbx* pvbs, int sz, MibTableRow* row)
 
 void MibTable::get_request(Request* req, int ind)
 {
-	MibLeaf* o;
+	MibLeaf* o = nullptr;
 	if ((o = find(req->get_oid(ind))) != 0) {
 
 		if (o->get_access() >= READONLY) {
@@ -2087,7 +2087,7 @@ void MibTable::get_request(Request* req, int ind)
 
 void MibTable::get_next_request(Request* req, int ind)
 {
-	MibLeaf* o;
+	MibLeaf* o = nullptr;
 	if ((o = find(req->get_oid(ind))) != 0) {
 		o->get_request(req, ind);
 	}
@@ -2158,7 +2158,7 @@ int MibTable::check_creation(Request* req, int& ind)
 	get_required_columns(required, pvbs);
 
 	Oidx new_index = index(req->get_oid(ind));
-	int i;
+	int i = 0;
 	int rsIndex = 0;
 
        	for (i=0; i<req->subrequests(); i++) {
@@ -2218,7 +2218,7 @@ int MibTable::check_creation(Request* req, int& ind)
 	}
 	// collect all set requests for the row to be created
 	Pdux pdu;
-	int col;
+	int col = 0;
 
        	for (i=0; i<req->subrequests(); i++) {
 
@@ -2337,7 +2337,7 @@ int MibTable::check_creation(Request* req, int& ind)
 int MibTable::prepare_set_request(Request* req, int& ind)
 {
 	int result = SNMP_ERROR_NO_CREATION;
-	MibLeaf* o;
+	MibLeaf* o = nullptr;
 	if ((o = find(req->get_oid(ind))) != 0) {
 	    if (delete_rows.index(o->my_row) < 0) {
 
@@ -2395,7 +2395,7 @@ int MibTable::prepare_set_request(Request* req, int& ind)
 
 int MibTable::undo_set_request(Request* req, int& ind)
 {
-	MibLeaf* o;
+	MibLeaf* o = nullptr;
 	delete_rows.clear();
 	int result = SNMP_ERROR_SUCCESS;
 	for (int i=0; i < req->subrequests(); i++) {
@@ -2414,7 +2414,7 @@ void MibTable::cleanup_set_request(Request* req, int& ind)
 	// this method is only called once per MibTable
 	// involved in a set request, so we need to
 	// cleanup all sub-request for this table here.
-	MibLeaf* o;
+	MibLeaf* o = nullptr;
 	for (int i=0; i < req->subrequests(); i++) {
 		if ((o = find(req->get_oid(i))) != 0) {
 			o->cleanup_set_request(req, i);
@@ -2703,7 +2703,7 @@ bool MibConfigBER::save(MibContext* context, const NS_SNMP OctetStr& path)
 
 bool MibConfigBER::load(MibContext* context, const NS_SNMP OctetStr& path)
 {
-	OctetStr pathPrefix(path);
+	// OctetStr& pathPrefix(path);
 	LOG_BEGIN(loggerModuleName, INFO_LOG | 1);
 	LOG("Loading MIB context contents BER encoded (context)(path)");
 	LOG(context->get_name().get_printable());
@@ -3276,9 +3276,9 @@ bool Mib::process_request(Request* req, int reqind)
 		LOG(req->get_oid(reqind).get_printable());
 	       	LOG_END;
 
-		MibEntryPtr entry;
+		MibEntryPtr entry = nullptr;
 		Oidx tmpoid(req->get_oid(reqind));
-		int err;
+		int err = 0;
 
 		lock_mib();
 		// entry not available
@@ -3323,7 +3323,7 @@ bool Mib::process_request(Request* req, int reqind)
 		LOG(req->get_oid(reqind).get_printable());
 	       	LOG_END;
 
-		MibEntryPtr entry;
+		MibEntryPtr entry = nullptr;
 		Oidx tmpoid(req->get_oid(reqind));
                 Oidx nextOid;
 		lock_mib();
@@ -3556,7 +3556,7 @@ void Mib::do_process_request(Request* req)
 #endif
 	int n = req->subrequests();
 	if (n > 0) {
-		int i;
+		int i = 0;
 		switch (req->get_type()) {
 		case (sNMP_PDU_GET): {
 
@@ -3653,7 +3653,7 @@ int Mib::process_prepare_set_request(Request* req)
 	LOG(req->get_transaction_id());
 	LOG_END;
 
-	int err;
+	int err = 0;
 	MibEntryPtr entry = 0;
 	// before processing the SET lock all affected MIB objects
 	lock_mib();
@@ -3822,7 +3822,7 @@ void Mib::process_get_bulk_request(Request* req)
 	LOG(req->get_max_rep());
 	LOG_END;
 
-	int id;
+	int id = 0;
 	int subreq = req->subrequests();
 	int nonrep = req->get_non_rep();
 	int maxrep = req->get_max_rep();
@@ -3847,7 +3847,7 @@ void Mib::process_get_bulk_request(Request* req)
 		if (req->is_done(id)) continue;
 
 		Oidx tmpoid(req->get_oid(id));
-		MibEntryPtr entry;
+		MibEntryPtr entry = nullptr;
 		lock_mib();
                 Oidx nextOid;
 #ifdef _SNMPv3
@@ -3949,7 +3949,7 @@ void Mib::process_get_bulk_request(Request* req)
 		  if (!req->is_done(id)) {
 
 			Oidx tmpoid(req->get_oid(id));
-			MibEntryPtr entry;
+			MibEntryPtr entry = nullptr;
 
 			LOG_BEGIN(loggerModuleName, DEBUG_LOG | 6);
 			LOG("Mib: getbulk: processing (id)(until)(oid)");

@@ -378,7 +378,7 @@ MibEntryPtr& OidxPtrMibEntryPtrAVLMap::operator [] (OidxPtr  item)
 
 void OidxPtrMibEntryPtrAVLMap::_del(OidxPtrMibEntryPtrAVLNode* par, OidxPtrMibEntryPtrAVLNode*& t)
 {
-  int comp;
+  int comp = 0;
   if (_already_found)
   {
     if (rthread(t))

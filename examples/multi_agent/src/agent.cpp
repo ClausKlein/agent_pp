@@ -274,7 +274,7 @@ public:
 
     virtual ~SnmpAgent() {}
 
-    virtual void run();
+    void run() override;
 
 protected:
     UdpAddress inaddr;
@@ -290,9 +290,9 @@ OctetStr &path(OctetStr &path) {
 }
 
 void SnmpAgent::run() {
-    Mib *mib;
-    RequestList *reqList;
-    int status;
+    Mib *mib = nullptr;
+    RequestList *reqList = nullptr;
+    int status = 0;
     // bind localhost only -> agent will not be reachable from
     // outside
     // UdpAddress inaddr("127.0.0.1");
@@ -351,7 +351,7 @@ void SnmpAgent::run() {
         exit(1);
     }
 
-    int stat;
+    int stat = 0;
     v3MP *v3mp = new v3MP(engineId, snmpEngineBoots, stat);
     snmp.set_mpv3(v3mp);
 #endif
@@ -587,7 +587,7 @@ void SnmpAgent::run() {
     // send the notification
     mib->notify("", coldOid, vbs, 0);
 
-    Request *req;
+    Request *req = nullptr;
     while (go) {
         req = reqList->receive(2);
         if (req) {

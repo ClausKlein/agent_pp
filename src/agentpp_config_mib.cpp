@@ -178,7 +178,7 @@ void agentppCfgSecSrcAddrValidation::set_state(long l)
 int agentppCfgSecSrcAddrValidation::set(const Vbx& vb)
 {
 	//--AgentGen BEGIN=agentppCfgSecSrcAddrValidation::set
-	int v;
+	int v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
 	    return SNMP_ERROR_WRONG_TYPE;
 	if (v == 1)
@@ -191,7 +191,7 @@ int agentppCfgSecSrcAddrValidation::set(const Vbx& vb)
 
 bool agentppCfgSecSrcAddrValidation::value_ok(const Vbx& vb)
 {
-	long v;
+	long v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
 	    return FALSE;
 	if ((get_state() == 3) && (v == 1)) {
@@ -265,7 +265,7 @@ void agentppCfgStoragePath::set_state(const NS_SNMP OctetStr& s)
 
 int agentppCfgStoragePath::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SnmpDisplayString::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -379,7 +379,7 @@ void agentppCfgStorageFormat::set_state(long l)
 
 bool agentppCfgStorageFormat::value_ok(const Vbx& vb)
 {
-	long v;
+	long v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
 	    return FALSE;
 	if (v != 1)
@@ -395,7 +395,7 @@ bool agentppCfgStorageFormat::value_ok(const Vbx& vb)
 
 int agentppCfgStorageFormat::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -490,7 +490,7 @@ int agentppCfgStorageOperation::set(const Vbx& vb)
 	//--AgentGen BEGIN=agentppCfgStorageOperation::set
 #ifndef _NO_THREADS
 	if ((!operationTask) || (!operationTask->is_alive())) {
-	    int operation;
+	    int operation = 0;
 	    if (vb.get_value(operation) != SNMP_CLASS_SUCCESS)
 		return SNMP_ERROR_WRONG_TYPE;
 
@@ -517,7 +517,7 @@ int agentppCfgStorageOperation::set(const Vbx& vb)
 
 bool agentppCfgStorageOperation::value_ok(const Vbx& vb)
 {
-	long v;
+	long v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
 	    return FALSE;
 	if ((v != -1) && (v != 1) 
@@ -530,7 +530,7 @@ bool agentppCfgStorageOperation::value_ok(const Vbx& vb)
 
 int agentppCfgStorageOperation::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -612,7 +612,7 @@ int agentppCfgStorageStorageType::set(const Vbx& vb)
 
 int agentppCfgStorageStorageType::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = StorageType::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -684,7 +684,7 @@ int agentppCfgStorageStatus::set(const Vbx& vb)
 
 int agentppCfgStorageStatus::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = snmpRowStatus::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -909,7 +909,7 @@ int agentppCfgLogLevel::undo_set_request(Request* req, int& ind)
 
 bool agentppCfgLogLevel::value_ok(const Vbx& vb)
 {
-	long v;
+	long v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
 	    return FALSE;
 	if (!(((v >= 0) && (v <= 15))))

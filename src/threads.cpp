@@ -186,7 +186,7 @@ Synchronized::Synchronized()
 Synchronized::~Synchronized()
 {
 #ifdef POSIX_THREADS
-	int result;
+	int result = 0;
 
 	result = pthread_cond_destroy(&cond);
 	if (result) {
@@ -241,7 +241,7 @@ void Synchronized::wait() {
 #ifdef POSIX_THREADS
 int Synchronized::cond_timed_wait(const struct timespec *ts) 
 {
-        int result;
+        int result = 0;
         isLocked = FALSE;
         if (ts) 
               result = pthread_cond_timedwait(&cond, &monitor, ts);
@@ -276,7 +276,7 @@ bool Synchronized::wait(unsigned long timeout)
     ts.tv_nsec = (millis % 1000) * 1000000;
 #endif        
 
-	int err;
+	int err = 0;
 	isLocked = FALSE;
 	if ((err = cond_timed_wait(&ts)) > 0) {
 		switch(err) {
@@ -331,7 +331,7 @@ bool Synchronized::wait(unsigned long timeout)
 
 void Synchronized::notify() {
 #ifdef POSIX_THREADS
-	int result;
+	int result = 0;
 	result = pthread_cond_signal(&cond);
 	if (result) {
 		LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
@@ -354,7 +354,7 @@ void Synchronized::notify() {
 
 void Synchronized::notify_all() {
 #ifdef POSIX_THREADS
-	int result;
+	int result = 0;
 	result = pthread_cond_broadcast(&cond);
 	if (result) {
 		LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
@@ -478,7 +478,7 @@ bool Synchronized::lock(unsigned long timeout) {
     ts.tv_nsec = (millis % 1000) * 1000000;
 #endif        
 
-    int error;
+    int error = 0;
 #ifdef HAVE_PTHREAD_MUTEX_TIMEDLOCK
     if ((error = pthread_mutex_timedlock(&monitor, &ts)) == 0) {
 #else
@@ -564,7 +564,7 @@ bool Synchronized::unlock() {
         bool wasLocked = isLocked;
 	isLocked = FALSE;
 #ifdef POSIX_THREADS
-    int err;
+    int err = 0;
 	if ((err = pthread_mutex_unlock(&monitor)) != 0) {            
 		LOG_BEGIN(loggerModuleName, WARNING_LOG | 1);
 		LOG("Synchronized: unlock failed (id)(error)(wasLocked)");
@@ -801,7 +801,7 @@ void Thread::join()
 {
 #ifdef POSIX_THREADS
 	if (status) {
-		void* retstat;
+		void* retstat = nullptr;
 		int err = pthread_join(tid, &retstat);
 		if (err) {
 			LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
@@ -1312,7 +1312,7 @@ void LockQueue::run()
 			LockRequest* r = pendingLock.removeFirst();
                         // Only if target is not locked at all - also not by
                         // this lock queue - then inform requester:
-                        Synchronized::TryLockResult tryLockResult;
+                        Synchronized::TryLockResult tryLockResult = Synchronized::BUSY;
 			if ((tryLockResult = r->target->trylock()) == LOCKED) {
                                 LOG_BEGIN(loggerModuleName, DEBUG_LOG | 8);
                                 LOG("LockQueue: lock (ptr)(pending)");

@@ -1,4 +1,4 @@
-.PHONY: all build install clean distclean
+.PHONY: all build install check clean distclean
 all: build
 	ninja -C $< $@
 
@@ -7,7 +7,12 @@ install: all
 
 build:
 	mkdir -p $@
-	cmake -B $@ -S . -G Ninja -D CMAKE_EXPORT_COMPILE_COMMANDS=1 -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+	cmake -B $@ -S . -G Ninja -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+
+check: build/compile_commands.json
+	# run-clang-tidy.py -p build -checks='-*,cppcoreguidelines-init-variables' -j1 -fix src
+	# run-clang-tidy.py -p build -checks='-*,cppcoreguidelines-explicit-virtual-functions' -j1 -fix src
+	run-clang-tidy.py -p build src/*.cpp
 
 clean: build
 	rm -f include/agent_pp/agent++.h

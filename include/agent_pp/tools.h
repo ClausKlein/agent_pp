@@ -23,8 +23,8 @@
 #define tools_h_
 
 #include <sys/types.h>
-#include <time.h>
-#include <stdio.h>
+#include <ctime>
+#include <string>
 
 #include <snmp_pp/octet.h>
 
@@ -61,7 +61,7 @@ class AGENTPP_DECL AgentTools {
          *    TRUE if the directory path is now present, FALSE otherwise.
          * @since 4.3.0
          */
-        static bool             make_path(std::string);
+        static bool             make_path(const std::string&);
 };
 
 ///////////////////////////////////////////////////////////////////////////////

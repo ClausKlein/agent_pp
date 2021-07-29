@@ -68,7 +68,7 @@ V3SnmpEngineBoots::V3SnmpEngineBoots(const USM *u)
 
 void V3SnmpEngineBoots::get_request(Request* req, int index)
 {
-  long time, boots;
+  long time = 0, boots = 0;
   usm->get_local_time(&boots, &time);
   *((SnmpInt32*)value) = boots;
   MibLeaf::get_request(req, index);
@@ -84,7 +84,7 @@ V3SnmpEngineTime::V3SnmpEngineTime(const USM *u)
 
 void V3SnmpEngineTime::get_request(Request* req, int index)
 {
-  long time, boots;
+  long time = 0, boots = 0;
   usm->get_local_time(&boots, &time);
   *((SnmpInt32*)value) = time;
   MibLeaf::get_request(req, index);
@@ -152,7 +152,7 @@ UsmUserTableStatus::~UsmUserTableStatus()
 int UsmUserTableStatus::set(const Vbx& vb)
 {
   undo = value->clone();
-  long rs;
+  long rs = 0;
   if (vb.get_value(rs) != SNMP_CLASS_SUCCESS)
       return SNMP_ERROR_WRONG_TYPE;
 
@@ -190,7 +190,7 @@ int UsmUserTableStatus::unset()
 {
   if (undo)
   {
-    long rs;
+    long rs = 0;
     rs = *(SnmpInt32*)undo;
 
     switch (rs) {
@@ -251,7 +251,7 @@ void UsmUserTableStatus::addUsmUser()
 {
   OctetStr engineID, userName, authKey, privKey;
   Oidx authOid, privOid;
-  int authProt, privProt;
+  int authProt = 0, privProt = 0;
   my_row->get_nth(0)->get_value().get_value(engineID);
   my_row->get_nth(1)->get_value().get_value(userName);
   my_row->get_nth(4)->get_value().get_value(authOid);
@@ -369,7 +369,7 @@ UsmUserTable::UsmUserTable(v3MP *v3mp): StorageTable(oidUsmUserEntry, iUsmUserTa
   add_col(new UsmUserTableStatus("13", tmpoid.len(), usm));
 
   //initialize UsmKeyChange- and UsmOwnKeyChange-objects
-  const struct UsmUserTableEntry *user;
+  const struct UsmUserTableEntry *user = nullptr;
 
   usm->lock_user_table(); // lock table
 
@@ -574,7 +574,7 @@ void UsmUserTable::row_init(MibTableRow* new_row, const Oidx& ind, MibTable*)
 	// add user to USM
 	OctetStr engineID, userName, secName, authKey, privKey;
 	Oidx authProtocol, privProtocol;
-        int rowStatus;
+        int rowStatus = 0;
 
 	new_row->get_nth(0)->get_value(engineID);
 	new_row->get_nth(1)->get_value(userName);
@@ -600,7 +600,7 @@ void UsmUserTable::row_added(MibTableRow* new_row, const Oidx& ind, MibTable*)
   LOG_END;
 
   Oidx o = Oidx(ind);
-  MibLeaf* ml;
+  MibLeaf* ml = nullptr;
 
   // set usmUserEngineID
   o = o.cut_right(o[o[0]+1]+1);
@@ -892,7 +892,7 @@ void UsmUserTable::deleteRows(const OctetStr& userName)
 }
 
  
-UsmCloneFrom::UsmCloneFrom(Oidx o, USM *u)
+UsmCloneFrom::UsmCloneFrom(const Oidx& o, USM *u)
   : MibLeaf(o, READCREATE, new Oidx("0.0"), VMODE_DEFAULT)
 {
   if (!u)
@@ -941,7 +941,7 @@ int UsmCloneFrom::prepare_set_request(Request* req, int& ind)
 
 	if (cloneRow) // check if row is active
 	  if (cloneRow->get_nth(12)) {
-	    int val;
+	    int val = 0;
 	    cloneRow->get_nth(12)->get_value(val);
 	    if (val==rowActive)
 	      return SNMP_ERROR_SUCCESS;
@@ -1136,7 +1136,7 @@ MibEntryPtr UsmCloneFrom::clone()
 
 
 
-UsmKeyChange::UsmKeyChange(Oidx o, int keylen, int hashfunction, int typeOfKey,
+UsmKeyChange::UsmKeyChange(const Oidx& o, int keylen, int hashfunction, int typeOfKey,
 			   UsmKeyChange* ukc, USM *u)
   : MibLeaf( o, READCREATE, new OctetStr(""), VMODE_DEFAULT),
     type_of_key          (typeOfKey),
@@ -1147,7 +1147,7 @@ UsmKeyChange::UsmKeyChange(Oidx o, int keylen, int hashfunction, int typeOfKey,
 {
 }
 
-UsmKeyChange::UsmKeyChange(Oidx o, USM *u)
+UsmKeyChange::UsmKeyChange(const Oidx& o, USM *u)
   : MibLeaf( o, READCREATE, new OctetStr(""), VMODE_DEFAULT),
     type_of_key          (NOKEY),
     key_len              (-1),
@@ -1247,7 +1247,7 @@ int UsmKeyChange::set(const Vbx& vb)
 	LOG("UsmKeyChange: set new key to ");
 	LOG(value->get_printable());
 	LOG_END;
-        int stat;
+        int stat = 0;
         my_row->get_nth(12)->get_value().get_value(stat);
         if (stat == rowActive) {
           LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
@@ -1292,7 +1292,7 @@ int UsmKeyChange::unset()
     else {
 	// unset Key in other KeyChange Object
 	otherKeyChangeObject->replace_value(undo->clone());
-	int stat;
+	int stat = 0;
 	my_row->get_nth(12)->get_value().get_value(stat);
 	if (stat  == rowActive) {
 	    LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
@@ -1602,10 +1602,10 @@ UsmStats::UsmStats(v3MP* v3mp): MibGroup(oidUsmStats)
     LOG_BEGIN(loggerModuleName, ERROR_LOG | 0);
     LOG("MPDGroup: v3MP must be initialized before this MibGroup");
     LOG_END;
-#ifdef _NO_LOGGING
-    // You will now get a segmentation fault!
-#endif
+    // FIXME: You will now get a segmentation fault!
+    return;
   }
+
   USM *usm = v3mp->get_usm();
 
   add(new UsmStatsUnsupportedSecLevels(usm));

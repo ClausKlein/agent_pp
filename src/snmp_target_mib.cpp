@@ -79,7 +79,7 @@ bool snmpTargetAddrTDomain::value_ok(const Vbx& vb)
 
 	// check for "old" TDomain values
 	if (val.len() == 7) {
-	    if ((val[6] >= 1l) && (val[6] <= 5)) {
+	    if ((val[6] >= 1L) && (val[6] <= 5)) {
 		return TRUE;
 	    }
 	}
@@ -470,7 +470,7 @@ UTarget* snmpTargetAddrEntry::get_target(const OctetStr& entry,
 List<MibTableRow>*
 snmpTargetAddrEntry::get_rows_cloned_for_tag(const OctetStr& tag)
 {
-	OctetStr myTag(tag);
+	const OctetStr& myTag(tag);
 	OidListCursor<MibTableRow> cur;
 	List<MibTableRow>* list = new List<MibTableRow>();
 	start_synch();
@@ -532,7 +532,7 @@ snmpTargetParamsEntry::~snmpTargetParamsEntry()
 
 bool snmpTargetParamsEntry::contains(const OctetStr& name)
 {
-	OctetStr cname(name);
+	const OctetStr& cname(name);
 	OidListCursor<MibTableRow> cur;
 	for (cur.init(&content); cur.get(); cur.next()) {
 		Oidx index = cur.get()->get_index();
@@ -599,7 +599,7 @@ bool snmpTargetParamsEntry::get_target_params(const OctetStr& param,
 		return FALSE;
 	}
 
-	int secModel, mpModel;
+	int secModel = 0, mpModel = 0;
 	OctetStr secName;
 
 	paramsRow->get_nth(0)->get_value(mpModel);

@@ -122,7 +122,7 @@ int Vbx::to_asn1(Vbx* vbs, int sz, unsigned char*& buf, int& length)
 	unsigned char packet[MAX_SNMP_PACKET];
 	unsigned char* cp = packet;
 	snmp_pdu* pdu = snmp_pdu_create(0);
-	struct variable_list *vp;
+	struct variable_list *vp = nullptr;
 	int len = MAX_SNMP_PACKET;
 
 	for (int i=0; i<sz; i++) {
@@ -180,7 +180,7 @@ unsigned char * Vbx::asn_build_long_len_sequence( unsigned char *data,
 						  int length,
 						  int lengthOfLength)
 {
-	unsigned char * data_with_length;
+	unsigned char * data_with_length = nullptr;
 
 	if (*datalength < 2 ) /* need at least two octets for a sequence */
 	{
@@ -267,10 +267,10 @@ unsigned char* Vbx::asn_build_long_length( unsigned char *data,
 
 int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
 {
-	oid objid[ASN_MAX_NAME_LEN], *op;
-	unsigned char *var_val;
+	oid objid[ASN_MAX_NAME_LEN], *op = nullptr;
+	unsigned char *var_val = nullptr;
 	// get the vb list
-	unsigned char type;
+	unsigned char type = 0;
 	struct variable_list *vp = 0;
 	int seqLength = length;
 	data = asn_parse_header(data, &seqLength, &type);
@@ -631,11 +631,11 @@ int Snmpx::receive(struct timeval *tvptr, Pdux& pdu, UTarget& target)
   SocketAddrType from_addr;
   SocketLengthType fromlen = sizeof(from_addr);
   UdpAddress fromaddr;
-  snmp_version version;
+  snmp_version version = version1;
   OctetStr community;
 
   unsigned char receive_buffer[MAX_SNMP_PACKET];
-  long receive_buffer_len; // len of received data
+  long receive_buffer_len = 0; // len of received data
 
   SnmpMessage snmpmsg;
 
@@ -760,7 +760,7 @@ int Snmpx::receive(struct timeval *tvptr, Pdux& pdu, UTarget& target)
 
 	OctetStr engine_id;
 	OctetStr security_name;
-	long int security_model;
+	long int security_model = 0;
 
 	// copy fromaddress and remote port
 	char* addr = inet_ntoa (((sockaddr_in&)from_addr).sin_addr);
@@ -837,7 +837,7 @@ int Snmpx::receive(struct timeval *tvptr, Pdux& pdu, UTarget& target)
 
 	OctetStr engine_id;
 	OctetStr security_name;
-	long int security_model;
+	long int security_model = 0;
 	char addr[INET6_ADDRSTRLEN+1];
 
 	// copy fromaddress and remote port
@@ -1096,14 +1096,14 @@ int Snmpx::send (Pdux const &pdu, SnmpTarget* target)
   static ThreadManager smutex;
 #endif
   SnmpMessage snmpmsg;
-  int status;
+  int status = 0;
 
   GenAddress gen_address;
-  snmp_version version;
+  snmp_version version = version1;
   OctetStr community;
   OctetStr engine_id;
   OctetStr security_name;
-  int security_model;
+  int security_model = 0;
   CTarget* ctarget = NULL;
   UTarget* utarget = NULL;
 

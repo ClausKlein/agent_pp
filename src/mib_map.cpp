@@ -49,7 +49,7 @@ static const char *loggerModuleName = "agent++.mib_map";
 
 Pix OidxPtrMibEntryPtrMap::seek(OidxPtr  item)
 {
-  Pix i;
+  Pix i = nullptr;
   for (i = first(); i != 0 && !(OidxPtrEQ(key(i), item)); next(i));
   return i;
 }

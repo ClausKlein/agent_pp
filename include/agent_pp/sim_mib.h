@@ -131,7 +131,7 @@ class AGENTPP_DECL SimMibLeaf: public MibLeaf
    * 
    * @return A pointer to the clone.
    */
-  virtual MibEntryPtr	clone();
+  MibEntryPtr	clone() override;
 
   /**
    * Return the maximum access rights for the managed object
@@ -140,7 +140,7 @@ class AGENTPP_DECL SimMibLeaf: public MibLeaf
    * @return The maximum access (one of the following values:
    *         NOACCESS, READONLY, READWRITE, or READCREATE)
    */
-  virtual mib_access    get_access();
+  mib_access    get_access() override;
 
   /**
    * Set config mode. All SimMibLeaf objects acting as a leaf object
@@ -175,7 +175,7 @@ class AGENTPP_DECL SimMibTable: public MibTable {
 		    unsigned int n): MibTable(o, i, n) { }
 	virtual ~SimMibTable() { }
 	
-	virtual int check_creation(Request*, int&); 
+	int check_creation(Request*, int&) override; 
 };
 
 class AGENTPP_DECL SimRowStatus: public snmpRowStatus {
@@ -183,7 +183,7 @@ class AGENTPP_DECL SimRowStatus: public snmpRowStatus {
 	SimRowStatus(const Oidx& o, mib_access a): snmpRowStatus(o, a) { }
 	virtual ~SimRowStatus() { }
 
-	virtual bool	       	transition_ok(const Vbx&);
+	bool	       	transition_ok(const Vbx&) override;
 
 	/**
 	  * Return the maximum access rights for the managed object
@@ -192,14 +192,14 @@ class AGENTPP_DECL SimRowStatus: public snmpRowStatus {
 	  * @return The maximum access (one of the following values:
 	  *         NOACCESS, READONLY, READWRITE, or READCREATE)
 	  */
-	virtual mib_access    get_access();
+	mib_access    get_access() override;
 
 	/**
 	  * Clone the receiver object.
 	  * 
 	  * @return A pointer to the clone.
 	  */
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 
 };
 
@@ -214,7 +214,7 @@ class AGENTPP_DECL simSysUpTime: public SimMibLeaf {
 public:
 	simSysUpTime();
 
-	void		get_request(Request*, int);
+	void		get_request(Request*, int) override;
 
 	static time_t	get();
 	static time_t	get_currentTime();	

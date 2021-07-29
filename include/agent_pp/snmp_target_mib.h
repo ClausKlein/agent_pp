@@ -47,8 +47,8 @@ class AGENTPP_DECL snmpTargetAddrTDomain: public MibLeaf {
 	snmpTargetAddrTDomain(const Oidx&);
 	virtual ~snmpTargetAddrTDomain();
 
-	virtual MibEntryPtr	clone();
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	bool    	value_ok(const Vbx&) override;
 	virtual int		get_state();
 };
 
@@ -68,8 +68,8 @@ class AGENTPP_DECL snmpTargetAddrTAddress: public MibLeaf {
 	snmpTargetAddrTAddress(const Oidx&, mib_access, NS_SNMP OctetStr*, int);
 	virtual ~snmpTargetAddrTAddress();
 
-	virtual MibEntryPtr	clone();
-	virtual int	   	prepare_set_request(Request*, int&);
+	MibEntryPtr	clone() override;
+	int	   	prepare_set_request(Request*, int&) override;
 
 	/**
 	 * @note The caller has to delete the returned pointer.
@@ -132,9 +132,9 @@ class AGENTPP_DECL snmpTargetAddrParams: public MibLeaf {
 	snmpTargetAddrParams(const Oidx&);
 	virtual ~snmpTargetAddrParams();
 
-	virtual MibEntryPtr	clone();
-	virtual int		prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int		prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -444,7 +444,7 @@ class AGENTPP_DECL snmpTargetAddrEntry: public StorageTable {
 	/**
 	 * Check if row can be set active.
 	 */
-	bool			ready_for_service(Vbx*, int);
+	bool			ready_for_service(Vbx*, int) override;
 };
 
 

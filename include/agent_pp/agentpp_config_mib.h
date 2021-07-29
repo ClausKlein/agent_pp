@@ -96,7 +96,7 @@ class AGENTPP_DECL OperationTask: public Thread
 	initiator = source;
     }
     virtual ~OperationTask() { }
-    virtual void run();
+    void run() override;
 
  private:
     int		operation;
@@ -149,11 +149,11 @@ public:
 
 	static agentppCfgSecSrcAddrValidation* instance;
 	
-	virtual void       	get_request(Request*, int);
+	void       	get_request(Request*, int) override;
 	virtual long       	get_state();
 	virtual void       	set_state(long);
-	virtual int        	set(const Vbx&);
-	virtual bool    	value_ok(const Vbx&);
+	int        	set(const Vbx&) override;
+	bool    	value_ok(const Vbx&) override;
 	enum labels {
 		      e_enabled = 1,
 		      e_disabled = 2,
@@ -207,10 +207,10 @@ public:
 	
 	virtual long       	get_state();
 	virtual void       	set_state(long);
-	virtual void		get_request(Request*, int);
-	virtual bool    	value_ok(const Vbx&);
-	virtual int        	commit_set_request(Request*, int);
-	virtual int        	undo_set_request(Request*, int&);
+	void		get_request(Request*, int) override;
+	bool    	value_ok(const Vbx&) override;
+	int        	commit_set_request(Request*, int) override;
+	int        	undo_set_request(Request*, int&) override;
 	
  protected:
 	int	logClass;
@@ -236,14 +236,14 @@ public:
 	agentppCfgStoragePath(const Oidx&);
 	virtual ~agentppCfgStoragePath();
 
-	virtual MibEntryPtr	clone();
-	virtual void       	get_request(Request*, int);
+	MibEntryPtr	clone() override;
+	void       	get_request(Request*, int) override;
 	virtual NS_SNMP OctetStr get_state();
 	virtual void       	set_state(const NS_SNMP OctetStr&);
-	virtual int        	prepare_set_request(Request*, int&);
+	int        	prepare_set_request(Request*, int&) override;
 
 //--AgentGen BEGIN=agentppCfgStoragePath
-	virtual int        	commit_set_request(Request*, int);
+	int        	commit_set_request(Request*, int) override;
 //--AgentGen END
 };
 
@@ -266,12 +266,12 @@ public:
 	agentppCfgStorageFormat(const Oidx&);
 	virtual ~agentppCfgStorageFormat();
 
-	virtual MibEntryPtr	clone();
-	virtual void       	get_request(Request*, int);
+	MibEntryPtr	clone() override;
+	void       	get_request(Request*, int) override;
 	virtual long       	get_state();
 	virtual void       	set_state(long);
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 	enum labels {
 		      e_agentppBER = 1	};
 
@@ -309,13 +309,13 @@ public:
 	agentppCfgStorageOperation(const Oidx&);
 	virtual ~agentppCfgStorageOperation();
 
-	virtual MibEntryPtr	clone();
-	virtual void       	get_request(Request*, int);
+	MibEntryPtr	clone() override;
+	void       	get_request(Request*, int) override;
 	virtual long       	get_state();
 	virtual void       	set_state(long);
-	virtual int        	set(const Vbx&);
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	int        	set(const Vbx&) override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 	enum labels {
 		      e_idle = 1,
 		      e_inProgress = 2,
@@ -323,7 +323,7 @@ public:
 		      e_restore = 4	};
 
 //--AgentGen BEGIN=agentppCfgStorageOperation
-	virtual bool		is_volatile() { return TRUE; }
+	bool		is_volatile() override { return TRUE; }
 #ifndef _NO_THREADS
  private:
 	OperationTask*	operationTask; 
@@ -348,12 +348,12 @@ public:
 	agentppCfgStorageStorageType(const Oidx&);
 	virtual ~agentppCfgStorageStorageType();
 
-	virtual MibEntryPtr	clone();
-	virtual void       	get_request(Request*, int);
-	virtual long       	get_state();
-	virtual void       	set_state(long);
-	virtual int        	set(const Vbx&);
-	virtual int        	prepare_set_request(Request*, int&);
+	MibEntryPtr	clone() override;
+	void       	get_request(Request*, int) override;
+	long       	get_state() override;
+	void       	set_state(long) override;
+	int        	set(const Vbx&) override;
+	int        	prepare_set_request(Request*, int&) override;
 	enum labels {
 		      e_other = 1,
 		      e_volatile = 2,
@@ -382,11 +382,11 @@ public:
 	agentppCfgStorageStatus(const Oidx&);
 	virtual ~agentppCfgStorageStatus();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 	virtual long       	get_state();
 	virtual void       	set_state(long);
-	virtual int        	set(const Vbx&);
-	virtual int        	prepare_set_request(Request*, int&);
+	int        	set(const Vbx&) override;
+	int        	prepare_set_request(Request*, int&) override;
 	enum labels {
 		      e_active = 1,
 		      e_notInService = 2,
@@ -419,11 +419,11 @@ public:
 
 	static agentppCfgStorageEntry* instance;
 	
-	virtual void        	get_request(Request*, int);
-	virtual int         	prepare_set_request(Request*, int&);
-	virtual int         	is_transition_ok(MibTable*, 
+	void        	get_request(Request*, int) override;
+	int         	prepare_set_request(Request*, int&) override;
+	int         	is_transition_ok(MibTable*, 
 						 MibTableRow*, 
-						 const Oidx&, int, int);
+						 const Oidx&, int, int) override;
 	virtual void		set_row(MibTableRow* r,
 					const NS_SNMP OctetStr& p1,
 					long p2,
@@ -440,7 +440,7 @@ public:
 	 * Do not remove any rows when resetted, because a restore operation
 	 * may need a row. 
 	 */
-	virtual void		reset() { }
+	void		reset() override { }
 
 	/**
 	 * If set to TRUE, absolute and relative paths containing dots

@@ -96,7 +96,7 @@ int agentppSimMode::set(const Vbx& vb)
 
 bool agentppSimMode::value_ok(const Vbx& vb)
 {
-	long v;
+	long v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
 	    return FALSE;
 	if ((v != 1) && (v != 2)) return FALSE;
@@ -154,7 +154,7 @@ int agentppSimDeleteRow::commit_set_request(Request* req, int ind)
 
 int agentppSimDeleteRow::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	Oidx toid;
@@ -232,7 +232,7 @@ int agentppSimDeleteTableContents::commit_set_request(Request* req, int ind)
 
 int agentppSimDeleteTableContents::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 

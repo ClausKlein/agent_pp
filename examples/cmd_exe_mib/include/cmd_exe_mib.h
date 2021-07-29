@@ -40,8 +40,8 @@ class cmdExecutionCmdConfigName: public MibLeaf {
 	cmdExecutionCmdConfigName(const Oidx&);
 	virtual ~cmdExecutionCmdConfigName();
 
-	virtual MibEntryPtr	clone();
-	virtual void       	get_request(Request*, int);
+	MibEntryPtr	clone() override;
+	void       	get_request(Request*, int) override;
 };
 
 
@@ -58,10 +58,10 @@ class cmdExecutionCmdConfigLine: public MibLeaf {
 	cmdExecutionCmdConfigLine(const Oidx&);
 	virtual ~cmdExecutionCmdConfigLine();
 
-	virtual MibEntryPtr	clone();
-	virtual void       	get_request(Request*, int);
-	virtual int        	set(const Vbx&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	void       	get_request(Request*, int) override;
+	int        	set(const Vbx&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -84,7 +84,7 @@ class cmdExecutionCmdNextIndex: public MibLeaf {
 
 	static cmdExecutionCmdNextIndex* instance;
 
-	virtual void       	get_request(Request*, int);
+	void       	get_request(Request*, int) override;
 	virtual long       	get_state();
 	virtual void       	set_state(long);
 };
@@ -103,8 +103,8 @@ class cmdExecutionCmdIndex: public MibLeaf {
 	cmdExecutionCmdIndex(const Oidx&);
 	virtual ~cmdExecutionCmdIndex();
 
-	virtual MibEntryPtr	clone();
-	virtual void       	get_request(Request*, int);
+	MibEntryPtr	clone() override;
+	void       	get_request(Request*, int) override;
 	virtual long       	get_state();
 	virtual void       	set_state(long);
 };
@@ -124,10 +124,10 @@ class cmdExecutionCmdName: public MibLeaf {
 	cmdExecutionCmdName(const Oidx&);
 	virtual ~cmdExecutionCmdName();
 
-	virtual MibEntryPtr	clone();
-	virtual void       	get_request(Request*, int);
-	virtual int        	set(const Vbx&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	void       	get_request(Request*, int) override;
+	int        	set(const Vbx&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -144,8 +144,8 @@ class cmdExecutionCmdStatus: public MibLeaf {
 	cmdExecutionCmdStatus(const Oidx&);
 	virtual ~cmdExecutionCmdStatus();
 
-	virtual MibEntryPtr	clone();
-	virtual void       	get_request(Request*, int);
+	MibEntryPtr	clone() override;
+	void       	get_request(Request*, int) override;
 	virtual long       	get_state();
 	virtual void       	set_state(long);
 	
@@ -165,8 +165,8 @@ class cmdExecutionCmdRunTime: public MibLeaf {
 	cmdExecutionCmdRunTime(const Oidx&);
 	virtual ~cmdExecutionCmdRunTime();
 
-	virtual MibEntryPtr	clone();
-	virtual void       	get_request(Request*, int);
+	MibEntryPtr	clone() override;
+	void       	get_request(Request*, int) override;
 
 	virtual long		get_state();
 	virtual void		set_state(long);
@@ -193,11 +193,11 @@ class cmdExecutionCmdRowStatus: public snmpRowStatus {
 	cmdExecutionCmdRowStatus(const Oidx&);
 	virtual ~cmdExecutionCmdRowStatus();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 	virtual long       	get_state();
 	virtual void       	set_state(long);
-	virtual int        	set(const Vbx&);
-	virtual int		prepare_set_request(Request*, int&); 
+	int        	set(const Vbx&) override;
+	int		prepare_set_request(Request*, int&) override; 
 };
 
 
@@ -214,8 +214,8 @@ class cmdExecutionOutputLineNumber: public MibLeaf {
 	cmdExecutionOutputLineNumber(const Oidx&);
 	virtual ~cmdExecutionOutputLineNumber();
 
-	virtual MibEntryPtr	clone();
-	virtual void       	get_request(Request*, int);
+	MibEntryPtr	clone() override;
+	void       	get_request(Request*, int) override;
 	virtual long       	get_state();
 	virtual void       	set_state(long);
 };
@@ -234,8 +234,8 @@ class cmdExecutionOutputLine: public MibLeaf {
 	cmdExecutionOutputLine(const Oidx&);
 	virtual ~cmdExecutionOutputLine();
 
-	virtual MibEntryPtr	clone();
-	virtual void       	get_request(Request*, int);
+	MibEntryPtr	clone() override;
+	void       	get_request(Request*, int) override;
 };
 
 
@@ -254,11 +254,11 @@ class cmdExecutionCmdConfigEntry: public StorageTable {
 
 	static cmdExecutionCmdConfigEntry* instance;
 
-	virtual bool		deserialize(char*, int&);
-	virtual void        	row_added(MibTableRow*, const Oidx&, MibTable* t=0);
-	virtual void        	row_delete(MibTableRow*, const Oidx&, MibTable* t=0);
+	bool		deserialize(char*, int&) override;
+	void        	row_added(MibTableRow*, const Oidx&, MibTable* t=0) override;
+	void        	row_delete(MibTableRow*, const Oidx&, MibTable* t=0) override;
 	virtual void       	set_row(int index, const char* p0, int p1, int p2);
-	virtual bool		contains(Oidx);
+	virtual bool		contains(const Oidx&);
 	virtual NS_SNMP OctetStr	get_command_line(const NS_SNMP OctetStr&);
 };
 
@@ -283,8 +283,8 @@ friend class cmdExecutionCmdRowStatus;
 
 	static cmdExecutionCmdEntry* instance;
 
-	virtual void        	row_added(MibTableRow*, const Oidx&, MibTable* t=0);
-	virtual void        	row_delete(MibTableRow*, const Oidx&, MibTable* t=0);
+	void        	row_added(MibTableRow*, const Oidx&, MibTable* t=0) override;
+	void        	row_delete(MibTableRow*, const Oidx&, MibTable* t=0) override;
  protected:
 	ThreadPool*		threadPool;
 };
@@ -305,8 +305,8 @@ class cmdExecutionOutputEntry: public MibTable {
 
 	static cmdExecutionOutputEntry* instance;
 
-	virtual void        	row_added(MibTableRow*, const Oidx&, MibTable* t=0);
-	virtual void        	row_delete(MibTableRow*, const Oidx&, MibTable* t=0);
+	void        	row_added(MibTableRow*, const Oidx&, MibTable* t=0) override;
+	void        	row_delete(MibTableRow*, const Oidx&, MibTable* t=0) override;
 	virtual void       	set_row(int index, char* p0);
 	virtual void		remove_all(const Oidx&);
 };
@@ -323,7 +323,7 @@ class CmdThread: public Runnable {
  public:
 	CmdThread(MibTableRow* r) { row_ptr = r; }
 	virtual ~CmdThread() { }
-	virtual void run();
+	void run() override;
  protected:
 	MibTableRow* row_ptr;
 };

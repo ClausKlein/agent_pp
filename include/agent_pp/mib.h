@@ -191,14 +191,14 @@ public:
    *
    * @return LEAF
    */
-  virtual mib_type     	type() const;
+  mib_type     	type() const override;
 
   /**
    * Clone the receiver object.
    * 
    * @return A pointer to the clone.
    */
-  virtual MibEntryPtr	clone();
+  MibEntryPtr	clone() override;
 
 
   /**
@@ -208,7 +208,7 @@ public:
    * @param sz - The size of the buffer returned.
    * @return TRUE if serialization was successful, FALSE otherwise.
    */
-  virtual bool	serialize(char*&, int&);
+  bool	serialize(char*&, int&) override;
 
   /**
    * Read the value of the receiver from a byte stream.
@@ -221,7 +221,7 @@ public:
    * @return 
    *    TRUE if deserialization was successful, FALSE otherwise.
    */
-  virtual bool	deserialize(char*, int&);
+  bool	deserialize(char*, int&) override;
   
 
   /**
@@ -324,7 +324,7 @@ public:
    *    a pointer to the non including upper bound of the receiver's 
    *    scope
    */
-  virtual OidxPtr	max_key()	{ return key(); }
+  OidxPtr	max_key() override	{ return key(); }
 
 
   /**
@@ -337,7 +337,7 @@ public:
    * @param req - A pointer to the whole SNMP GET request.
    * @param ind - The index of the subrequest to be processed.
    */
-  virtual void		get_request(Request*, int); 
+  void		get_request(Request*, int) override; 
 
   /**
    * Let the receiver process a SNMP GETNEXT subrequest
@@ -345,7 +345,7 @@ public:
    * @param req - A pointer to the whole SNMP GETNEXT request.
    * @param ind - The index of the subrequest to be processed.
    */
-  virtual void		get_next_request(Request*, int);
+  void		get_next_request(Request*, int) override;
 
   /**
    * Let the receiver commit a SNMP SET subrequest
@@ -354,7 +354,7 @@ public:
    * @param ind - The index of the subrequest to be processed.
    * @return SNMP_ERROR_SUCCESS on success and SNMP_ERROR_COMITFAIL on failure.
    */
-  virtual int		commit_set_request(Request*, int);
+  int		commit_set_request(Request*, int) override;
 
   /**
    * Let the receiver prepare a SNMP SET subrequest
@@ -364,7 +364,7 @@ public:
    * @return SNMP_ERROR_SUCCESS on success and SNMP_ERROR_WRONG_VALUE,
    *         SNMP_ERROR_WRONG_TYPE, or SNMP_ERROR_NOT_WRITEABLE on failure.
    */
-  virtual int		prepare_set_request(Request*, int&);
+  int		prepare_set_request(Request*, int&) override;
 
   /**
    * Let the receiver undo a SNMP SET subrequest
@@ -373,7 +373,7 @@ public:
    * @param ind - The index of the subrequest to be processed.
    * @return SNMP_ERROR_SUCCESS on success and SNMP_ERROR_UNDO_FAIL on failure.
    */
-  virtual int		undo_set_request(Request*, int&);
+  int		undo_set_request(Request*, int&) override;
 
   /**
    * Clean up resources used for performing (or undoing) set requests. 
@@ -381,7 +381,7 @@ public:
    * @param req - A pointer to the whole SNMP SET request.
    * @param ind - The index of the subrequest to be processed.
    */
-  virtual void		cleanup_set_request(Request*, int&);
+  void		cleanup_set_request(Request*, int&) override;
 
 
   /**
@@ -641,7 +641,7 @@ public:
                                   const Oidx& columnOid, const Oidx& rowIndex);
 
     virtual void increment();
-    virtual bool is_volatile() { return TRUE; }
+    bool is_volatile() override { return TRUE; }
     
 };
 
@@ -707,7 +707,7 @@ public:
 	 * @return 
 	 *    TRUE if the new value is valid, otherwise FALSE.
 	 */
-	virtual bool	       	value_ok(const Vbx&);
+	bool	       	value_ok(const Vbx&) override;
 
 	/**
 	 * Check whether the a transition to a given new value is
@@ -727,7 +727,7 @@ public:
 	 *
 	 * @return A pointer to the clone.
 	 */
-	virtual MibEntryPtr    	clone();
+	MibEntryPtr    	clone() override;
 
 	/**
 	 * Check whether the state of the receiver's row may be changed.
@@ -750,7 +750,7 @@ public:
 	 * @return SNMP_ERROR_SUCCESS if the new value has been set,
 	 *         SNMP_ERROR_WRONG_TYPE or SNMP_ERROR_BAD_VALUE otherwise.
 	 */
-	virtual int		set(const Vbx&);
+	int		set(const Vbx&) override;
 
 	/** 
 	 * Undo a previous set.
@@ -758,7 +758,7 @@ public:
 	 * @return SNMP_ERROR_SUCCESS on success and 
 	 *         SNMP_ERROR_UNDO_FAIL on failure.
 	 */
-	virtual int		unset();
+	int		unset() override;
 
 	/**
 	 * Get the receiver's value.
@@ -778,7 +778,7 @@ public:
 	  *         SNMP_ERROR_WRONG_TYPE, or 
 	  *         SNMP_ERROR_NOT_WRITEABLE on failure.
 	  */
-	virtual int		prepare_set_request(Request*, int&);
+	int		prepare_set_request(Request*, int&) override;
 };
 
 
@@ -1349,14 +1349,14 @@ public:
 	  *
 	  * @return AGENTPP_TABLE
 	  */
-	mib_type       	type() const		{ return AGENTPP_TABLE; }
+	mib_type       	type() const override		{ return AGENTPP_TABLE; }
 
 	/**
 	 * Clone the receiver object.
 	 * 
 	 * @return A pointer to the clone.
 	 */
-	virtual MibEntryPtr    	clone()	{ return new MibTable(*this); }	
+	MibEntryPtr    	clone() override	{ return new MibTable(*this); }	
 
 	
 	/**
@@ -1393,7 +1393,7 @@ public:
 	 * @param sz - The size of the buffer returned.
 	 * @return TRUE if serialization was successful, FALSE otherwise.
 	 */
-	virtual bool		serialize(char*&, int&);
+	bool		serialize(char*&, int&) override;
 
 	/**
 	 * Read the value of the receiver from a byte stream.
@@ -1406,7 +1406,7 @@ public:
 	 * @return 
 	 *    TRUE if deserialization was successful, FALSE otherwise.
 	 */
-	virtual bool		deserialize(char*, int&);
+	bool		deserialize(char*, int&) override;
 
 	/**
 	 * Return the immediate successor of the greatest object identifier 
@@ -1416,7 +1416,7 @@ public:
 	 *    a pointer to the non including upper bound of the receiver's 
 	 *    scope
 	 */
-	virtual OidxPtr max_key();
+	OidxPtr max_key() override;
 
 	/**
 	 * This method is called by a Mib instance whenever it needs to know
@@ -1440,7 +1440,7 @@ public:
 	 *
 	 * @return TRUE if the table is empty, FALSE otherwise.
 	 */
-	virtual bool is_empty() { return content.empty(); }
+	bool is_empty() override { return content.empty(); }
 
 	 /**
 	  * Set a value of column in a row of the receiver table.
@@ -1460,7 +1460,7 @@ public:
 	 * @param req - A pointer to the whole SNMP GET request.
 	 * @param ind - The index of the subrequest to be processed.
 	 */
-	virtual void   	get_request(Request*, int); 
+	void   	get_request(Request*, int) override; 
 	
 	/**
 	 * Let the receiver process a SNMP GETNEXT subrequest
@@ -1468,7 +1468,7 @@ public:
 	 * @param req - A pointer to the whole SNMP GETNEXT request.
 	 * @param ind - The index of the subrequest to be processed.
 	 */
-	virtual void   	get_next_request(Request*, int);
+	void   	get_next_request(Request*, int) override;
 	
 	/**
 	 * Let the receiver commit a SNMP SET subrequest
@@ -1478,7 +1478,7 @@ public:
 	 * @return SNMP_ERROR_SUCCESS on success and 
 	 *         SNMP_ERROR_COMMITFAIL on failure.
 	 */
-	virtual int    	commit_set_request(Request*, int);
+	int    	commit_set_request(Request*, int) override;
 	
 	/**
 	 * Let the receiver prepare a SNMP SET subrequest
@@ -1489,7 +1489,7 @@ public:
 	 *         SNMP_ERROR_WRONG_TYPE, or 
 	 *         SNMP_ERROR_NOT_WRITEABLE on failure.
 	 */
-	virtual int    	prepare_set_request(Request*, int&);
+	int    	prepare_set_request(Request*, int&) override;
   
 	/**
 	 * Let the receiver undo a SNMP SET subrequest
@@ -1499,7 +1499,7 @@ public:
 	 * @return SNMP_ERROR_SUCCESS on success and 
 	 *         SNMP_ERROR_UNDO_FAIL on failure.
 	 */
-	virtual int    	undo_set_request(Request*, int&);
+	int    	undo_set_request(Request*, int&) override;
 
 	/**
 	 * Free any resources allocated for a SET request (i.e., undo
@@ -1512,7 +1512,7 @@ public:
 	 * @return SNMP_ERROR_SUCCESS if the new value has been set,
 	 *         SNMP_ERROR_WRONG_TYPE or SNMP_ERROR_BAD_VALUE otherwise.
 	 */
-	virtual void   	cleanup_set_request(Request*, int&);
+	void   	cleanup_set_request(Request*, int&) override;
 
 	/**
 	 * Check whether the specified row is ready to set in service.
@@ -1868,7 +1868,7 @@ public:
 	 * construction. By default this method calls MibTable::clear()
 	 * to remove all rows.
 	 */
-	virtual void		reset() { clear(); }
+	void		reset() override { clear(); }
 	
 	/**
 	 * Gets the columns (a.k.a. generator row) definitions for
@@ -1971,7 +1971,7 @@ protected:
 	 *    otherwise (if no successor exists or is out of scope) 
 	 *    a zero length oid is returned
 	 */
-	virtual Oidx   	find_succ(const Oidx&, Request* req = 0);
+	Oidx   	find_succ(const Oidx&, Request* req = 0) override;
 
 	/**
 	 * Return a pointer to the generator object of a given column.
@@ -2294,7 +2294,7 @@ class AGENTPP_DECL MibConfigBER: public MibConfigFormat {
      * @return
      *    TRUE if the contents could be saved successfully, FALSE otherwise.
      */
-    virtual bool	save(MibContext*, const NS_SNMP OctetStr&);
+    bool	save(MibContext*, const NS_SNMP OctetStr&) override;
 
     /**
      * Loads the persistent data in the supplied MibContext from disk.
@@ -2305,9 +2305,9 @@ class AGENTPP_DECL MibConfigBER: public MibConfigFormat {
      * @return
      *    TRUE if the contents could be saved successfully, FALSE otherwise.
      */
-    virtual bool	load(MibContext*, const NS_SNMP OctetStr&);
+    bool	load(MibContext*, const NS_SNMP OctetStr&) override;
 
-    virtual MibConfigFormat*	clone() { return new MibConfigBER(); } 
+    MibConfigFormat*	clone() override { return new MibConfigBER(); } 
 
 };
 

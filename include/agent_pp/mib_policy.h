@@ -82,8 +82,8 @@ class AGENTPP_DECL MibTableSizePolicy: public MibTableVoter {
 
         virtual ~MibTableSizePolicy() { }
 
-	virtual int is_transition_ok(MibTable*, MibTableRow*, const Oidx&,
-				     int, int);
+	int is_transition_ok(MibTable*, MibTableRow*, const Oidx&,
+				     int, int) override;
 
 	/**
 	 * Set a MibTable size policy.

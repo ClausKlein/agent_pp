@@ -423,7 +423,7 @@ int TestAndIncr::prepare_set_request(Request* req, int& reqind)
 
 bool TestAndIncr::value_ok(const Vbx& vb)
 {
-	long v;
+	long v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
 	    return FALSE;
 	if ((v < 0) || (v > 2147483647)) return FALSE;
@@ -447,7 +447,7 @@ MibEntryPtr StorageType::clone()
 
 bool StorageType::value_ok(const Vbx& vb)
 {
-	long v;
+	long v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
 	    return FALSE;
 	if ((v < 1) || (v > 5)) return FALSE;
@@ -600,7 +600,7 @@ void StorageTable::reset()
 
 int StorageTable::prepare_set_request(Request* req, int& ind)
 {
-	MibLeaf* o;
+	MibLeaf* o = nullptr;
 	if ((o = MibTable::find(req->get_oid(ind))) != 0) {
 	    int storageType = get_storage_type(o->get_reference_to_row());
             if (storageType == storageType_readOnly) {

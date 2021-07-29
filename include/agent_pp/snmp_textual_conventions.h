@@ -100,9 +100,9 @@ class AGENTPP_DECL SnmpDisplayString: public MibLeaf {
 			  int, int);
 	virtual ~SnmpDisplayString();
 
-	virtual MibEntryPtr	clone();
-	virtual bool    	value_ok(const Vbx&);
-	virtual int		prepare_set_request(Request*, int&);
+	MibEntryPtr	clone() override;
+	bool    	value_ok(const Vbx&) override;
+	int		prepare_set_request(Request*, int&) override;
  protected:
 	unsigned int max_size;
 	unsigned int min_size;
@@ -259,8 +259,8 @@ class AGENTPP_DECL SnmpEngineID: public MibLeaf {
 	 */
 	virtual ~SnmpEngineID();
 
-	virtual MibEntryPtr	clone();
-	virtual int		prepare_set_request(Request*, int&);
+	MibEntryPtr	clone() override;
+	int		prepare_set_request(Request*, int&) override;
 
 	/**
 	 * Create a default SnmpEngineID of the form
@@ -328,9 +328,9 @@ class AGENTPP_DECL SnmpTagValue: public MibLeaf {
 	SnmpTagValue(const Oidx&);
 	virtual ~SnmpTagValue();
 
-	virtual MibEntryPtr	clone();
-	virtual bool    	value_ok(const Vbx&);
-	virtual int		prepare_set_request(Request*, int&);
+	MibEntryPtr	clone() override;
+	bool    	value_ok(const Vbx&) override;
+	int		prepare_set_request(Request*, int&) override;
 	static bool		is_delimiter(char); 
 };
 
@@ -376,8 +376,8 @@ class AGENTPP_DECL SnmpTagList: public MibLeaf {
 	SnmpTagList(const Oidx&);
 	virtual ~SnmpTagList();
 
-	virtual MibEntryPtr	clone();
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	bool    	value_ok(const Vbx&) override;
 	virtual bool		contains(const char*); 
 };
 
@@ -442,11 +442,11 @@ class AGENTPP_DECL TestAndIncr: public MibLeaf {
 
 	virtual long       	get_state();
 	virtual void       	set_state(long);
-	virtual int        	set(const Vbx&);
-	virtual bool    	value_ok(const Vbx&);
-	virtual int		prepare_set_request(Request*, int&);
+	int        	set(const Vbx&) override;
+	bool    	value_ok(const Vbx&) override;
+	int		prepare_set_request(Request*, int&) override;
 
-	virtual bool		is_volatile() { return TRUE; }
+	bool		is_volatile() override { return TRUE; }
 };
 
 
@@ -508,8 +508,8 @@ public:
 	 */
 	virtual void set_state(long); 
 
-	virtual MibEntryPtr	clone();
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 /*---------------------- class StorageTypePolicy ---------------------*/
@@ -533,8 +533,8 @@ class AGENTPP_DECL StorageTypeVoter: public MibTableVoter {
 
         virtual ~StorageTypeVoter() { }
 
-	virtual int is_transition_ok(MibTable*, MibTableRow*, const Oidx&,
-				     int, int);
+	int is_transition_ok(MibTable*, MibTableRow*, const Oidx&,
+				     int, int) override;
 };
 
 /*--------------------------- class StorageTable ------------------------*/
@@ -644,7 +644,7 @@ public:
 	/**
 	 * Removes all rows that are not permanent and not read-only.
 	 */
-	virtual void	reset();
+	void	reset() override;
         
         /**
          * Gets the value of the storage type column of the provided row 
@@ -653,7 +653,7 @@ public:
          */
         virtual int     get_storage_type(MibTableRow*);
         
-        virtual int     prepare_set_request(Request*, int&);
+        int     prepare_set_request(Request*, int&) override;
 
  protected:
 	/**
@@ -665,7 +665,7 @@ public:
 	 * @return
 	 *    TRUE if the row should be stored persistently, FALSE otherwise
 	 */
-	virtual bool		is_persistent(MibTableRow*);
+	bool		is_persistent(MibTableRow*) override;
 
 private:
         void                register_row_status_voting(); 
@@ -728,8 +728,8 @@ class AGENTPP_DECL SnmpInt32MinMax : public MibLeaf
 	 */
 	SnmpInt32MinMax(const Oidx&, mib_access,                 int, int);
 	
-	virtual bool value_ok(const Vbx&);
-	MibEntryPtr     clone();
+	bool value_ok(const Vbx&) override;
+	MibEntryPtr     clone() override;
 
 	int		get_state();
 	void		set_state(int);
@@ -792,8 +792,8 @@ class AGENTPP_DECL OctetStrMinMax : public MibLeaf
 	 */
 	OctetStrMinMax(const Oidx&, mib_access, unsigned int, unsigned int);
 	
-	virtual int		prepare_set_request(Request*, int&);
-	MibEntryPtr     clone();
+	int		prepare_set_request(Request*, int&) override;
+	MibEntryPtr     clone() override;
 
 	/**
 	 * Return the integer value of the receiver.
@@ -888,7 +888,7 @@ class AGENTPP_DECL SnmpSecurityModel: public SnmpInt32MinMax {
 	SnmpSecurityModel(const Oidx&, mib_access, int, int);
 	virtual ~SnmpSecurityModel();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -923,7 +923,7 @@ class AGENTPP_DECL SnmpSecurityLevel: public SnmpInt32MinMax {
 	SnmpSecurityLevel(const Oidx&, mib_access, int, int);
 	virtual ~SnmpSecurityLevel();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1008,7 +1008,7 @@ class AGENTPP_DECL SnmpMessageProcessingModel: public SnmpInt32MinMax {
 	SnmpMessageProcessingModel(const Oidx&, mib_access, int, int);
 	virtual ~SnmpMessageProcessingModel();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 /*---------------------- class SnmpAdminString ---------------------*/
@@ -1139,7 +1139,7 @@ class AGENTPP_DECL SnmpAdminString: public OctetStrMinMax {
 	SnmpAdminString(const Oidx&, mib_access, NS_SNMP OctetStr*, int, int, int);
 	virtual ~SnmpAdminString();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 	
 	/**
 	 * Return the AdminString
@@ -1186,9 +1186,9 @@ class AGENTPP_DECL TimeStamp: public MibLeaf
 	TimeStamp(const Oidx&, mib_access, int);
 	virtual ~TimeStamp();
 
-	virtual bool		is_volatile() { return TRUE; }
+	bool		is_volatile() override { return TRUE; }
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 
 	void			update();	
 };
@@ -1229,10 +1229,10 @@ class AGENTPP_DECL TimeStampTable: public MibTable
 
 	virtual ~TimeStampTable();
 
-	virtual void        	row_added(MibTableRow*, 
-					  const Oidx&, MibTable*);
-	virtual void        	row_delete(MibTableRow*, 
-					   const Oidx&, MibTable*);
+	void        	row_added(MibTableRow*, 
+					  const Oidx&, MibTable*) override;
+	void        	row_delete(MibTableRow*, 
+					   const Oidx&, MibTable*) override;
 	/**
 	 * This method should be called whenever the reciever is changed,
 	 * except when a row is added or deleted (row_added and row_deleted
@@ -1308,11 +1308,11 @@ class AGENTPP_DECL DateAndTime: public MibLeaf
 	 */
 	virtual ~DateAndTime();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 	virtual NS_SNMP OctetStr       	get_state();
 	virtual void       	set_state(const NS_SNMP OctetStr&);
 
-	virtual bool	is_volatile() { return TRUE; }
+	bool	is_volatile() override { return TRUE; }
 
 	/**
 	 * Update current value with the system's date and time.

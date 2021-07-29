@@ -160,7 +160,7 @@ bool nlmConfigGlobalEntryLimit::value_ok(const Vbx& vb)
 
 int nlmConfigGlobalEntryLimit::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -241,7 +241,7 @@ bool nlmConfigGlobalAgeOut::value_ok(const Vbx& vb)
 
 int nlmConfigGlobalAgeOut::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -331,7 +331,7 @@ bool nlmConfigLogFilterName::value_ok(const Vbx& vb)
 
 int nlmConfigLogFilterName::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	Vb vb(req->get_value(ind));
@@ -424,7 +424,7 @@ bool nlmConfigLogEntryLimit::value_ok(const Vbx& vb)
 
 int nlmConfigLogEntryLimit::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -503,7 +503,7 @@ int nlmConfigLogAdminStatus::set(const Vbx& vb)
 
 bool nlmConfigLogAdminStatus::value_ok(const Vbx& vb)
 {
-	long v;
+	long v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
 	    return FALSE;
 	if ((v != 1)
@@ -516,7 +516,7 @@ bool nlmConfigLogAdminStatus::value_ok(const Vbx& vb)
 
 int nlmConfigLogAdminStatus::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -595,7 +595,7 @@ int nlmConfigLogStorageType::set(const Vbx& vb)
 
 bool nlmConfigLogStorageType::value_ok(const Vbx& vb)
 {
-	long v;
+	long v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
 	    return FALSE;
 	if ((v < 1) || (v > 5)
@@ -608,7 +608,7 @@ bool nlmConfigLogStorageType::value_ok(const Vbx& vb)
 
 int nlmConfigLogStorageType::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = StorageType::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -680,7 +680,7 @@ int nlmConfigLogEntryStatus::set(const Vbx& vb)
 
 int nlmConfigLogEntryStatus::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = snmpRowStatus::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -713,7 +713,7 @@ int nlmConfigLogEntryStatus::prepare_set_request(Request* req, int& ind)
 
 int nlmConfigLogEntryStatus::commit_set_request(Request* req, int ind)
 {
-	int status;
+	int status = 0;
 	if ((status = snmpRowStatus::commit_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 

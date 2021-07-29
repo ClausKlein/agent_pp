@@ -175,13 +175,13 @@ public:
 	snmpTargetAddrTMask(const Oidx&);
 	virtual ~snmpTargetAddrTMask();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
 
 	/**
 	 * @note The caller has to delete the returned pointer.
 	 */
-	virtual NS_SNMP UdpAddress*	getUdpAddress();
+	NS_SNMP UdpAddress*	getUdpAddress() override;
 };
 
 
@@ -305,13 +305,13 @@ public:
          */
         static snmpTargetAddrExtEntry* get_instance(Mib* mib); 
 
-	virtual void        	row_added(MibTableRow*, const Oidx&,
-					  MibTable* s = 0);
-	virtual void        	row_delete(MibTableRow*, const Oidx&,
-					   MibTable* s = 0);
+	void        	row_added(MibTableRow*, const Oidx&,
+					  MibTable* s = 0) override;
+	void        	row_delete(MibTableRow*, const Oidx&,
+					   MibTable* s = 0) override;
 	virtual void       	set_row(MibTableRow* r, const NS_SNMP OctetStr& p0,
 					int p1);
-	virtual int        	prepare_set_request(Request*, int&);
+	int        	prepare_set_request(Request*, int&) override;
 #ifdef _SNMPv3
 	virtual bool		passes_filter(const NS_SNMP OctetStr&, const NS_SNMP UTarget&);
 #endif

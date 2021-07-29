@@ -102,7 +102,7 @@ void agentppTestTimeout::set_state(unsigned long l)
 int agentppTestTimeout::set(const Vbx& vb)
 {
 	//--AgentGen BEGIN=agentppTestTimeout::set
-	unsigned long timeout;
+	unsigned long timeout = 0;
 	vb.get_value(timeout);
 	struct timeval tvptr;
 	tvptr.tv_sec  = timeout/1000;    // wait up to sec seconds
@@ -115,7 +115,7 @@ int agentppTestTimeout::set(const Vbx& vb)
 
 bool agentppTestTimeout::value_ok(const Vbx& vb)
 {
-	unsigned long v;
+	unsigned long v = 0;
 	vb.get_value(v);
 	if (!((v <= 1000000ul)))
 		 return FALSE;
@@ -126,7 +126,7 @@ bool agentppTestTimeout::value_ok(const Vbx& vb)
 
 int agentppTestTimeout::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -415,7 +415,7 @@ bool agentppTestSparseCol1::value_ok(const Vbx& vb)
 
 int agentppTestSparseCol1::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -505,7 +505,7 @@ bool agentppTestSparseCol2::value_ok(const Vbx& vb)
 
 int agentppTestSparseCol2::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -593,7 +593,7 @@ bool agentppTestSparseCol3::value_ok(const Vbx& vb)
 
 int agentppTestSparseCol3::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -669,7 +669,7 @@ int agentppTestSparseRowStatus::set(const Vbx& vb)
 
 int agentppTestSparseRowStatus::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = snmpRowStatus::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 

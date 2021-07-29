@@ -55,7 +55,7 @@ char* AgentTools::make_concatenation(const char* prefix, const char* suffix)
  */
 long AgentTools::file_size(FILE *stream)
 {
-	long oldpos, length;
+	long oldpos = 0, length = 0;
   
 	oldpos = ftell(stream);
 	fseek(stream, 0, SEEK_END);
@@ -64,7 +64,7 @@ long AgentTools::file_size(FILE *stream)
 	return length;
 }
 
-bool AgentTools::make_path(std::string path)
+bool AgentTools::make_path(const std::string& path)
 {
     bool result = TRUE;
     int rc = mkdir(path.c_str(), 0775);
@@ -93,7 +93,7 @@ bool AgentTools::make_path(std::string path)
 
 bool Timer::in_time()
 {
-	time_t now;
+	time_t now = 0;
 	time(&now);
 	
 	if (lifetime>0)
@@ -103,7 +103,7 @@ bool Timer::in_time()
 
 int Timer::due_time()
 {
-	time_t now;
+	time_t now = 0;
 	time(&now);
 	
 	if (now <= timestamp + lifetime)
@@ -113,7 +113,7 @@ int Timer::due_time()
 
 bool Timer::in_time(int frac)
 {
-	time_t now;
+	time_t now = 0;
 	time(&now);
 	
 	if (lifetime>0)

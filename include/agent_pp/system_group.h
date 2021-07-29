@@ -72,12 +72,12 @@ class AGENTPP_DECL sysUpTime: public MibLeaf {
 public:
 	sysUpTime();
 
-	void		get_request(Request*, int);
+	void		get_request(Request*, int) override;
 
 	static unsigned int	get();
 	static time_t	get_currentTime();
 
-	virtual bool is_volatile() { return TRUE; }
+	bool is_volatile() override { return TRUE; }
 #ifdef HAVE_CLOCK_GETTIME
         static struct timespec start;
 #else        
@@ -138,7 +138,7 @@ public:
 
 	static sysORLastChange* instance;
 
-	virtual bool is_volatile() { return TRUE; }
+	bool is_volatile() override { return TRUE; }
 	void       	update();
 };
 
@@ -170,7 +170,7 @@ public:
 	 */
 	virtual MibTableRow*    find(const Oidx&);
 
-	virtual bool is_volatile() { return TRUE; }
+	bool is_volatile() override { return TRUE; }
 };
 
 

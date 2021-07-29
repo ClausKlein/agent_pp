@@ -88,7 +88,7 @@ int agentppNotifyTest::set(const Vbx& vb)
 {
 
 	//--AgentGen BEGIN=agentppNotifyTest::set
-	long v;
+	long v = 0;
 	vb.get_value(v);
 	switch (v) {
 	case e_agentppNotifyTestAllTypes:
@@ -101,7 +101,7 @@ int agentppNotifyTest::set(const Vbx& vb)
 
 bool agentppNotifyTest::value_ok(const Vbx& vb)
 {
-	long v;
+	long v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	    ) return FALSE;
@@ -113,7 +113,7 @@ bool agentppNotifyTest::value_ok(const Vbx& vb)
 
 int agentppNotifyTest::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 

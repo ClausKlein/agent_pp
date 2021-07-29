@@ -107,7 +107,7 @@ public:
 	  *
 	  * @return GROUP
 	  */
-	mib_type		type() const;
+	mib_type		type() const override;
 
 	/**
 	 * Add a MibEntry object to the receiver group.
@@ -152,14 +152,14 @@ public:
 	 *
 	 * @param fname - A file name.
 	 */ 
-	virtual void		load_from_file(const char*);
+	void		load_from_file(const char*) override;
 
 	/**
 	 * Save the value(s) of the receiver node to a file.
 	 *
 	 * @param fname - A file name.
 	 */
-	virtual void		save_to_file(const char*);
+	void		save_to_file(const char*) override;
 
 	/**
 	 * Return whether objects in this group are persistent or not.

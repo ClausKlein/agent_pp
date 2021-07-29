@@ -311,7 +311,7 @@ public:
         
         
 	long			get_state();
-	virtual bool    	value_ok(const Vbx&);
+	bool    	value_ok(const Vbx&) override;
 };
 
 
