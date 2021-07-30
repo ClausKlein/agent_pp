@@ -102,7 +102,7 @@ void agentppTestTimeout::set_state(unsigned long l)
 int agentppTestTimeout::set(const Vbx& vb)
 {
 	//--AgentGen BEGIN=agentppTestTimeout::set
-	unsigned long timeout = 0;
+	uint32_t timeout = 0;
 	vb.get_value(timeout);
 	struct timeval tvptr;
 	tvptr.tv_sec  = timeout/1000;    // wait up to sec seconds
@@ -115,7 +115,7 @@ int agentppTestTimeout::set(const Vbx& vb)
 
 bool agentppTestTimeout::value_ok(const Vbx& vb)
 {
-	unsigned long v = 0;
+	uint32_t v = 0;
 	vb.get_value(v);
 	if (!((v <= 1000000ul)))
 		 return FALSE;

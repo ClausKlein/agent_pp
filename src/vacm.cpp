@@ -586,7 +586,7 @@ VacmViewTreeFamilyTableStatus::VacmViewTreeFamilyTableStatus(const Oidx& o,
 int VacmViewTreeFamilyTableStatus::set(const Vbx& vb)
 {
 	undo = value->clone();
-	long rs = 0;
+	int32_t rs = 0;
 	if (vb.get_value(rs) != SNMP_CLASS_SUCCESS)
 	    return SNMP_ERROR_WRONG_TYPE;
 

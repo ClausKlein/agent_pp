@@ -388,12 +388,12 @@ TestAndIncr::~TestAndIncr()
 {
 }
 
-long TestAndIncr::get_state()
+int32_t TestAndIncr::get_state()
 {
-	return (long)*((SnmpInt32*)value);
+	return (int32_t)*((SnmpInt32*)value);
 }
 
-void TestAndIncr::set_state(long l)
+void TestAndIncr::set_state(int32_t l)
 {
 	*((SnmpInt32*)value) = l;
 }
@@ -414,7 +414,7 @@ int TestAndIncr::set(const Vbx& vb)
 
 int TestAndIncr::prepare_set_request(Request* req, int& reqind) 
 {
-	long v = 0;
+	int32_t v = 0;
 	if (req->get_value(reqind).get_value(v) != SNMP_CLASS_SUCCESS)
 	    return SNMP_ERROR_WRONG_TYPE;
 	if (v != get_state()) return SNMP_ERROR_INCONSIST_VAL;
@@ -423,7 +423,7 @@ int TestAndIncr::prepare_set_request(Request* req, int& reqind)
 
 bool TestAndIncr::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
 	    return FALSE;
 	if ((v < 0) || (v > 2147483647)) return FALSE;
@@ -447,7 +447,7 @@ MibEntryPtr StorageType::clone()
 
 bool StorageType::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
 	    return FALSE;
 	if ((v < 1) || (v > 5)) return FALSE;
@@ -462,16 +462,16 @@ bool StorageType::row_is_volatile()
 	return (get_state() <= 2);
 }
 
-void StorageType::set_state(long state) 
+void StorageType::set_state(int32_t state) 
 {
 	if ((state >= 1) && (state <= 5)) {
 		*((SnmpInt32*)value) = state;
 	}
 }
 
-long StorageType::get_state() 
+int32_t StorageType::get_state() 
 {
-	return (long)*((SnmpInt32*)value);
+	return (int32_t)*((SnmpInt32*)value);
 }
 
 

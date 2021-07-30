@@ -387,7 +387,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
 	for(vp = pdu->variables; vp; vp = vp->next_variable, i++) {
 
 	  // extract the oid portion
-	  tempoid.set_data((unsigned long *)vp->name,
+	  tempoid.set_data((SmiLPUINT32)vp->name,
 			   (unsigned int) vp->name_length);
 	  vbs[i].set_oid(tempoid);
 	  // extract the value portion
@@ -412,7 +412,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
 	    // object id
 	  case sNMP_SYNTAX_OID:
 	    {
-	      Oid oid( (unsigned long*) vp->val.objid,
+	      Oid oid( (SmiLPUINT32) vp->val.objid,
 		       (int) vp->val_len);
 	      vbs[i].set_value( oid);
 	    }

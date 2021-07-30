@@ -293,8 +293,8 @@ public:
 
 	MibEntryPtr	clone() override;
 	void       	get_request(Request*, int) override;
-	virtual long       	get_state();
-	virtual void       	set_state(long);
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
 	int        	set(const Vbx&) override;
 	int        	prepare_set_request(Request*, int&) override;
 	bool    	value_ok(const Vbx&) override;
@@ -380,8 +380,8 @@ public:
 	virtual ~agentppTestSparseRowStatus();
 
 	MibEntryPtr	clone() override;
-	virtual long       	get_state();
-	virtual void       	set_state(long);
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
 	int        	set(const Vbx&) override;
 	int        	prepare_set_request(Request*, int&) override;
 	enum labels {

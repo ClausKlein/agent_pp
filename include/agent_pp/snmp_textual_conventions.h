@@ -440,8 +440,8 @@ class AGENTPP_DECL TestAndIncr: public MibLeaf {
 	TestAndIncr(const Oidx&);
 	virtual ~TestAndIncr();
 
-	virtual long       	get_state();
-	virtual void       	set_state(long);
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
 	int        	set(const Vbx&) override;
 	bool    	value_ok(const Vbx&) override;
 	int		prepare_set_request(Request*, int&) override;
@@ -498,7 +498,7 @@ public:
 	 *
 	 * @return A integer value between 1 and 5.
 	 */
-	virtual long get_state();
+	virtual int32_t get_state();
 
 	/**
 	 * Sets the type of this storage type. Allowed values are 
@@ -506,7 +506,7 @@ public:
 	 * @param storageType
 	 *    a long integer value between 1 and 5.
 	 */
-	virtual void set_state(long); 
+	virtual void set_state(int32_t); 
 
 	MibEntryPtr	clone() override;
 	bool    	value_ok(const Vbx&) override;
@@ -731,8 +731,8 @@ class AGENTPP_DECL SnmpInt32MinMax : public MibLeaf
 	bool value_ok(const Vbx&) override;
 	MibEntryPtr     clone() override;
 
-	int		get_state();
-	void		set_state(int);
+	int32_t		get_state();
+	void		set_state(int32_t);
  private:
 	int min, max;
 };

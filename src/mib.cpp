@@ -442,47 +442,47 @@ Counter32MibLeaf* Counter32MibLeaf::get_instance(Mib* mib,
     return entry;    
 }
 
-unsigned long Counter32MibLeaf::incrementScalar(Mib* mib, 
+uint32_t Counter32MibLeaf::incrementScalar(Mib* mib, 
                                                 const Oidx& counterInstanceOid) 
 {
     Counter32MibLeaf* counter = get_instance(mib, counterInstanceOid);
     if (counter) {
         counter->increment();
-        unsigned long v = 0;
+        uint32_t v = 0;
         counter->get_value(v);
         return v;
     }
     return 0;
 }
 
-unsigned long Counter32MibLeaf::incrementColumnar(Mib* mib, 
+uint32_t Counter32MibLeaf::incrementColumnar(Mib* mib, 
                                  const Oidx& columnOid, const Oidx& indexRow) 
 {
     Counter32MibLeaf* counter = get_instance(mib, columnOid, indexRow);
     if (counter) {
         counter->increment();
-        unsigned long v = 0;
+        uint32_t v = 0;
         counter->get_value(v);
         return v;
     }
     return 0;
 }
 
-unsigned long Counter32MibLeaf::incrementScalar(Mib* mib, 
+uint32_t Counter32MibLeaf::incrementScalar(Mib* mib, 
                                                 const OctetStr& context,
                                                 const Oidx& counterInstanceOid) 
 {
     Counter32MibLeaf* counter = get_instance(mib, counterInstanceOid);
     if (counter) {
         counter->increment();
-        unsigned long v = 0;
+        uint32_t v = 0;
         counter->get_value(v);
         return v;
     }
     return 0;
 }
 
-unsigned long Counter32MibLeaf::incrementColumnar(Mib* mib, 
+uint32_t Counter32MibLeaf::incrementColumnar(Mib* mib, 
                                                   const OctetStr& context,
                                                   const Oidx& columnOid, 
                                                   const Oidx& indexRow) 
@@ -490,7 +490,7 @@ unsigned long Counter32MibLeaf::incrementColumnar(Mib* mib,
     Counter32MibLeaf* counter = get_instance(mib, columnOid, indexRow);
     if (counter) {
         counter->increment();
-        unsigned long v = 0;
+        uint32_t v = 0;
         counter->get_value(v);
         return v;
     }
@@ -3193,7 +3193,7 @@ int Mib::find_next(MibContext* context, const Oidx& oid, MibEntryPtr& entry,
  * @return VACM_accessAllowed if access is granted and any other
  *         VACM error code if access is denied.
  */
-int Mib::next_access_control(Request* req, const MibEntryPtr entry, Oidx& oid,
+int Mib::next_access_control(Request* req, MibEntry* entry, Oidx& oid,
                              const Oidx& nextOid)
 {
 	int vacmErrorCode = VACM_otherError;

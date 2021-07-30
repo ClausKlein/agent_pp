@@ -150,8 +150,8 @@ public:
 	static agentppCfgSecSrcAddrValidation* instance;
 	
 	void       	get_request(Request*, int) override;
-	virtual long       	get_state();
-	virtual void       	set_state(long);
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
 	int        	set(const Vbx&) override;
 	bool    	value_ok(const Vbx&) override;
 	enum labels {
@@ -205,8 +205,8 @@ public:
 	agentppCfgLogLevel(int, const Oidx&);
 	virtual ~agentppCfgLogLevel();
 	
-	virtual long       	get_state();
-	virtual void       	set_state(long);
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
 	void		get_request(Request*, int) override;
 	bool    	value_ok(const Vbx&) override;
 	int        	commit_set_request(Request*, int) override;
@@ -268,8 +268,8 @@ public:
 
 	MibEntryPtr	clone() override;
 	void       	get_request(Request*, int) override;
-	virtual long       	get_state();
-	virtual void       	set_state(long);
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
 	int        	prepare_set_request(Request*, int&) override;
 	bool    	value_ok(const Vbx&) override;
 	enum labels {
@@ -311,8 +311,8 @@ public:
 
 	MibEntryPtr	clone() override;
 	void       	get_request(Request*, int) override;
-	virtual long       	get_state();
-	virtual void       	set_state(long);
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
 	int        	set(const Vbx&) override;
 	int        	prepare_set_request(Request*, int&) override;
 	bool    	value_ok(const Vbx&) override;
@@ -350,8 +350,8 @@ public:
 
 	MibEntryPtr	clone() override;
 	void       	get_request(Request*, int) override;
-	long       	get_state() override;
-	void       	set_state(long) override;
+	int32_t       	get_state() override;
+	void       	set_state(int32_t) override;
 	int        	set(const Vbx&) override;
 	int        	prepare_set_request(Request*, int&) override;
 	enum labels {
@@ -383,8 +383,8 @@ public:
 	virtual ~agentppCfgStorageStatus();
 
 	MibEntryPtr	clone() override;
-	virtual long       	get_state();
-	virtual void       	set_state(long);
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
 	int        	set(const Vbx&) override;
 	int        	prepare_set_request(Request*, int&) override;
 	enum labels {

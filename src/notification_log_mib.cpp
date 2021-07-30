@@ -129,12 +129,12 @@ void nlmConfigGlobalEntryLimit::get_request(Request* req, int ind)
 	MibLeaf::get_request(req, ind);
 }
 
-unsigned long nlmConfigGlobalEntryLimit::get_state()
+uint32_t nlmConfigGlobalEntryLimit::get_state()
 {
-	return (unsigned long)*((Gauge32*)value);
+	return (uint32_t)*((Gauge32*)value);
 }
 
-void nlmConfigGlobalEntryLimit::set_state(unsigned long l)
+void nlmConfigGlobalEntryLimit::set_state(uint32_t l)
 {
 
 	//--AgentGen BEGIN=nlmConfigGlobalEntryLimit::set_state
@@ -210,12 +210,12 @@ void nlmConfigGlobalAgeOut::get_request(Request* req, int ind)
 	MibLeaf::get_request(req, ind);
 }
 
-unsigned long nlmConfigGlobalAgeOut::get_state()
+uint32_t nlmConfigGlobalAgeOut::get_state()
 {
-	return (unsigned long)*((Gauge32*)value);
+	return (uint32_t)*((Gauge32*)value);
 }
 
-void nlmConfigGlobalAgeOut::set_state(unsigned long l)
+void nlmConfigGlobalAgeOut::set_state(uint32_t l)
 {
 
 	//--AgentGen BEGIN=nlmConfigGlobalAgeOut::set_state
@@ -393,12 +393,12 @@ void nlmConfigLogEntryLimit::get_request(Request* req, int ind)
 	MibLeaf::get_request(req, ind);
 }
 
-unsigned long nlmConfigLogEntryLimit::get_state()
+uint32_t nlmConfigLogEntryLimit::get_state()
 {
-	return (unsigned long)*((Gauge32*)value);
+	return (uint32_t)*((Gauge32*)value);
 }
 
-void nlmConfigLogEntryLimit::set_state(unsigned long l)
+void nlmConfigLogEntryLimit::set_state(uint32_t l)
 {
 
 	//--AgentGen BEGIN=nlmConfigLogEntryLimit::set_state
@@ -480,12 +480,12 @@ void nlmConfigLogAdminStatus::get_request(Request* req, int ind)
 	MibLeaf::get_request(req, ind);
 }
 
-long nlmConfigLogAdminStatus::get_state()
+int32_t nlmConfigLogAdminStatus::get_state()
 {
-	return (long)*((SnmpInt32*)value);
+	return (int32_t)*((SnmpInt32*)value);
 }
 
-void nlmConfigLogAdminStatus::set_state(long l)
+void nlmConfigLogAdminStatus::set_state(int32_t l)
 {
 
 	//--AgentGen BEGIN=nlmConfigLogAdminStatus::set_state
@@ -503,7 +503,7 @@ int nlmConfigLogAdminStatus::set(const Vbx& vb)
 
 bool nlmConfigLogAdminStatus::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
 	    return FALSE;
 	if ((v != 1)
@@ -572,12 +572,12 @@ void nlmConfigLogStorageType::get_request(Request* req, int ind)
 	MibLeaf::get_request(req, ind);
 }
 
-long nlmConfigLogStorageType::get_state()
+int32_t nlmConfigLogStorageType::get_state()
 {
-	return (long)*((SnmpInt32*)value);
+	return (int32_t)*((SnmpInt32*)value);
 }
 
-void nlmConfigLogStorageType::set_state(long l)
+void nlmConfigLogStorageType::set_state(int32_t l)
 {
 
 	//--AgentGen BEGIN=nlmConfigLogStorageType::set_state
@@ -595,7 +595,7 @@ int nlmConfigLogStorageType::set(const Vbx& vb)
 
 bool nlmConfigLogStorageType::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
 	    return FALSE;
 	if ((v < 1) || (v > 5)
@@ -657,12 +657,12 @@ MibEntryPtr nlmConfigLogEntryStatus::clone()
 	return other;
 }
 
-long nlmConfigLogEntryStatus::get_state()
+int32_t nlmConfigLogEntryStatus::get_state()
 {
-	return (long)*((SnmpInt32*)value);
+	return (int32_t)*((SnmpInt32*)value);
 }
 
-void nlmConfigLogEntryStatus::set_state(long l)
+void nlmConfigLogEntryStatus::set_state(int32_t l)
 {
 
 	//--AgentGen BEGIN=nlmConfigLogEntryStatus::set_state
@@ -686,7 +686,7 @@ int nlmConfigLogEntryStatus::prepare_set_request(Request* req, int& ind)
 
 	//--AgentGen BEGIN=nlmConfigLogEntryStatus::prepare_set_request
 	Vbx vb(req->get_value(ind));
-	int l = 0;
+	int32_t l = 0;
 	if (vb.get_value(l) != SNMP_CLASS_SUCCESS)
 	    return SNMP_ERROR_WRONG_TYPE;
 	if ((l == rowCreateAndGo) || (l == rowCreateAndWait)) {
@@ -719,7 +719,7 @@ int nlmConfigLogEntryStatus::commit_set_request(Request* req, int ind)
 
 	// save security info for further reference
 	Vbx vb(req->get_value(ind));
-	unsigned long l = 0;
+	int32_t l = 0;
 	vb.get_value(l);
 	if ((l == rowCreateAndGo) || (l == rowCreateAndWait)) {
 		// initialize viewName;
@@ -845,12 +845,12 @@ void nlmStatsGlobalNotificationsBumped::get_request(Request* req, int ind)
 	MibLeaf::get_request(req, ind);
 }
 
-unsigned long nlmStatsGlobalNotificationsBumped::get_state()
+uint32_t nlmStatsGlobalNotificationsBumped::get_state()
 {
-	return (unsigned long)*((Counter32*)value);
+	return (uint32_t)*((Counter32*)value);
 }
 
-void nlmStatsGlobalNotificationsBumped::set_state(unsigned long l)
+void nlmStatsGlobalNotificationsBumped::set_state(uint32_t l)
 {
 
 	//--AgentGen BEGIN=nlmStatsGlobalNotificationsBumped::set_state
@@ -858,12 +858,12 @@ void nlmStatsGlobalNotificationsBumped::set_state(unsigned long l)
 	*((Counter32*)value) = l;
 }
 
-unsigned long nlmStatsGlobalNotificationsBumped::inc()
+uint32_t nlmStatsGlobalNotificationsBumped::inc()
 {
 
 	//--AgentGen BEGIN=nlmStatsGlobalNotificationsBumped::inc
 	//--AgentGen END
-	unsigned long l = get_state();
+	uint32_t l = get_state();
 	set_state(++l);
 	return l;
 }
@@ -1269,7 +1269,7 @@ void nlmLogEntry::add_notification(const SnmpTarget* target,
 			continue;
                 }
 		// OK, now log the notification
-		unsigned long l = 0;
+		uint32_t l = 0;
 		Vbx* vb = logIndexes.find(cur.get()->key());
 		if (!vb)
 			continue;
@@ -1312,7 +1312,7 @@ void nlmLogEntry::add_notification(const SnmpTarget* target,
 
 void nlmLogEntry::check_limits(List<MibTableRow>* logs)
 {
-	unsigned long global_limit = configGlobalEntryLimit->get_state();
+	uint32_t global_limit = configGlobalEntryLimit->get_state();
 	if (global_limit > 0) {
 		long v = size() - global_limit;
 		if (v > 0) {
@@ -1328,14 +1328,14 @@ void nlmLogEntry::check_limits(List<MibTableRow>* logs)
 			}
 		}
 	}
-	unsigned long age_out = configGlobalAgeOut->get_state();
+	uint32_t age_out = configGlobalAgeOut->get_state();
 	if (age_out > 0) {
 		ListCursor<MibTableRow> cur;
 		unsigned long uptime = sysUpTime::get();
 		for (cur.init(&entries); cur.get();) {
 			MibTableRow* victim = cur.get();
 			cur.next();
-			unsigned long logtime = 0;
+			uint32_t logtime = 0;
 			victim->get_nth(nNlmLogTime)->get_value(logtime);
 			// age_out counts minutes -> 60 * 100 1/100 seconds
 			if (uptime - logtime > age_out * 6000) {
@@ -1344,7 +1344,7 @@ void nlmLogEntry::check_limits(List<MibTableRow>* logs)
 				MibTableRow* s =
 				  configLogEntry->find_index(profile);
 				if (s) {
-				  unsigned long ll = 0;
+				  uint32_t ll = 0;
 				  s->get_nth(nNlmStatsLogNotificationsBumped)->
 				    get_value(ll);
 				  ll++;
@@ -1359,13 +1359,13 @@ void nlmLogEntry::check_limits(List<MibTableRow>* logs)
 	}
 	ListCursor<MibTableRow> cur;
 	for (cur.init(logs); cur.get(); cur.next()) {
-		unsigned long entry_limit = 0;
+		uint32_t entry_limit = 0;
 		cur.get()->get_nth(nNlmConfigLogEntryLimit)->
 		  get_value(entry_limit);
 		if (entry_limit == 0)
 			continue;
 		OidListCursor<MibTableRow> c(&content);
-		unsigned long n = 0;
+		uint32_t n = 0;
 		for (c.lookup(cur.get()->key()); c.get(); c.next()) {
 			Oidx ind(c.get()->get_index().cut_right(1));
 			if (ind > cur.get()->get_index()) {

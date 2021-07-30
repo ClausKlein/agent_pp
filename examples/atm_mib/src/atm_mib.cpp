@@ -62,7 +62,7 @@ MibEntryPtr atmInterfaceMaxVpcs::clone()
 
 bool atmInterfaceMaxVpcs::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 4096))))
 		 return FALSE;
@@ -106,7 +106,7 @@ MibEntryPtr atmInterfaceMaxVccs::clone()
 
 bool atmInterfaceMaxVccs::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 65536))))
 		 return FALSE;
@@ -200,7 +200,7 @@ MibEntryPtr atmInterfaceMaxActiveVpiBits::clone()
 
 bool atmInterfaceMaxActiveVpiBits::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 12))))
 		 return FALSE;
@@ -244,7 +244,7 @@ MibEntryPtr atmInterfaceMaxActiveVciBits::clone()
 
 bool atmInterfaceMaxActiveVciBits::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 16))))
 		 return FALSE;
@@ -288,7 +288,7 @@ MibEntryPtr atmInterfaceIlmiVpi::clone()
 
 bool atmInterfaceIlmiVpi::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 4095))))
 		 return FALSE;
@@ -332,7 +332,7 @@ MibEntryPtr atmInterfaceIlmiVci::clone()
 
 bool atmInterfaceIlmiVci::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(v <= 65535))
 		 return FALSE;
@@ -969,7 +969,7 @@ MibEntryPtr atmTrafficQoSClass::clone()
 
 bool atmTrafficQoSClass::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 255))))
 		 return FALSE;
@@ -1038,7 +1038,7 @@ MibEntryPtr atmServiceCategory::clone()
 
 bool atmServiceCategory::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
@@ -1084,7 +1084,7 @@ MibEntryPtr atmTrafficFrameDiscard::clone()
 
 bool atmTrafficFrameDiscard::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2)) return FALSE;
@@ -1128,7 +1128,7 @@ MibEntryPtr atmVplAdminStatus::clone()
 
 bool atmVplAdminStatus::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2)) return FALSE;
@@ -1222,7 +1222,7 @@ MibEntryPtr atmVplReceiveTrafficDescrIndex::clone()
 
 bool atmVplReceiveTrafficDescrIndex::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 2147483647))))
 		 return FALSE;
@@ -1266,7 +1266,7 @@ MibEntryPtr atmVplTransmitTrafficDescrIndex::clone()
 
 bool atmVplTransmitTrafficDescrIndex::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 2147483647))))
 		 return FALSE;
@@ -1360,7 +1360,7 @@ MibEntryPtr atmVplCastType::clone()
 
 bool atmVplCastType::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
@@ -1405,7 +1405,7 @@ MibEntryPtr atmVplConnKind::clone()
 
 bool atmVplConnKind::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
@@ -1451,7 +1451,7 @@ MibEntryPtr atmVclAdminStatus::clone()
 
 bool atmVclAdminStatus::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2)) return FALSE;
@@ -1545,7 +1545,7 @@ MibEntryPtr atmVclReceiveTrafficDescrIndex::clone()
 
 bool atmVclReceiveTrafficDescrIndex::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 2147483647))))
 		 return FALSE;
@@ -1589,7 +1589,7 @@ MibEntryPtr atmVclTransmitTrafficDescrIndex::clone()
 
 bool atmVclTransmitTrafficDescrIndex::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 2147483647))))
 		 return FALSE;
@@ -1633,7 +1633,7 @@ MibEntryPtr atmVccAalType::clone()
 
 bool atmVccAalType::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
@@ -1679,7 +1679,7 @@ MibEntryPtr atmVccAal5CpcsTransmitSduSize::clone()
 
 bool atmVccAal5CpcsTransmitSduSize::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 1) && (v <= 65535))))
 		 return FALSE;
@@ -1723,7 +1723,7 @@ MibEntryPtr atmVccAal5CpcsReceiveSduSize::clone()
 
 bool atmVccAal5CpcsReceiveSduSize::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 1) && (v <= 65535))))
 		 return FALSE;
@@ -1767,7 +1767,7 @@ MibEntryPtr atmVccAal5EncapsType::clone()
 
 bool atmVccAal5EncapsType::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
@@ -1865,7 +1865,7 @@ MibEntryPtr atmVclCastType::clone()
 
 bool atmVclCastType::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
@@ -1910,7 +1910,7 @@ MibEntryPtr atmVclConnKind::clone()
 
 bool atmVclConnKind::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
@@ -1978,7 +1978,7 @@ MibEntryPtr atmVpCrossConnectAdminStatus::clone()
 
 bool atmVpCrossConnectAdminStatus::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2)) return FALSE;
@@ -2169,7 +2169,7 @@ MibEntryPtr atmVcCrossConnectAdminStatus::clone()
 
 bool atmVcCrossConnectAdminStatus::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2)) return FALSE;

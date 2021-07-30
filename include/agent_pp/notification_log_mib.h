@@ -218,8 +218,8 @@ public:
 	static nlmConfigGlobalEntryLimit* instance;
 
 	void       	get_request(Request*, int) override;
-	virtual unsigned long       	get_state();
-	virtual void       	set_state(unsigned long);
+	virtual uint32_t       	get_state();
+	virtual void       	set_state(uint32_t);
 	int        	set(const Vbx&) override;
 	int        	prepare_set_request(Request*, int&) override;
 	bool    	value_ok(const Vbx&) override;
@@ -256,8 +256,8 @@ public:
 	static nlmConfigGlobalAgeOut* instance;
 
 	void       	get_request(Request*, int) override;
-	virtual unsigned long       	get_state();
-	virtual void       	set_state(unsigned long);
+	virtual uint32_t       	get_state();
+	virtual void       	set_state(uint32_t);
 	int        	set(const Vbx&) override;
 	int        	prepare_set_request(Request*, int&) override;
 	bool    	value_ok(const Vbx&) override;
@@ -326,8 +326,8 @@ public:
 
 	MibEntryPtr	clone() override;
 	void       	get_request(Request*, int) override;
-	virtual unsigned long       	get_state();
-	virtual void       	set_state(unsigned long);
+	virtual uint32_t       	get_state();
+	virtual void       	set_state(uint32_t);
 	int        	set(const Vbx&) override;
 	int        	prepare_set_request(Request*, int&) override;
 	bool    	value_ok(const Vbx&) override;
@@ -357,8 +357,8 @@ public:
 
 	MibEntryPtr	clone() override;
 	void       	get_request(Request*, int) override;
-	virtual long       	get_state();
-	virtual void       	set_state(long);
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
 	int        	set(const Vbx&) override;
 	int        	prepare_set_request(Request*, int&) override;
 	bool    	value_ok(const Vbx&) override;
@@ -386,8 +386,8 @@ public:
 
 	MibEntryPtr	clone() override;
 	void       	get_request(Request*, int) override;
-	long       	get_state() override;
-	void       	set_state(long) override;
+	int32_t       	get_state() override;
+	void       	set_state(int32_t) override;
 	int        	set(const Vbx&) override;
 	int        	prepare_set_request(Request*, int&) override;
 	bool    	value_ok(const Vbx&) override;
@@ -424,8 +424,8 @@ public:
 	virtual ~nlmConfigLogEntryStatus();
 
 	MibEntryPtr	clone() override;
-	virtual long       	get_state();
-	virtual void       	set_state(long);
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
 	int        	set(const Vbx&) override;
 	int        	prepare_set_request(Request*, int&) override;
 	enum labels {
@@ -488,9 +488,9 @@ public:
 	static nlmStatsGlobalNotificationsBumped* instance;
 
 	void       	get_request(Request*, int) override;
-	virtual unsigned long       	get_state();
-	virtual void       	set_state(unsigned long);
-	virtual unsigned long 	inc();
+	virtual uint32_t       	get_state();
+	virtual void       	set_state(uint32_t);
+	virtual uint32_t 	inc();
 
 //--AgentGen BEGIN=nlmStatsGlobalNotificationsBumped
 //--AgentGen END

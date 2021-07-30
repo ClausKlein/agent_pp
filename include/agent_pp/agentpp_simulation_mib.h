@@ -54,8 +54,8 @@ class AGENTPP_DECL agentppSimMode: public MibLeaf {
 
 	static agentppSimMode* instance;
 
-	virtual long       	get_state();
-	virtual void       	set_state(long);
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
 	int        	set(const Vbx&) override;
 	bool    	value_ok(const Vbx&) override;
 	void        	init(NS_SNMP SnmpSyntax*, int) override;

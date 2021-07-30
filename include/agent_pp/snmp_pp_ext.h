@@ -80,7 +80,7 @@ public:
 	 * @param data - An array of long values.
 	 * @param length - The length of the array.
 	 */
-	Oidx(const unsigned long *data, int length) : Oid(data, length) { }
+	Oidx(const SmiUINT32* data, int length) : Oid(data, length) { }
 
 	/**
 	 * Copy constructor.
@@ -206,7 +206,7 @@ public:
 			smival.value.oid.ptr = NULL;
 		}
 		smival.value.oid.len = 1;
-		smival.value.oid.ptr = (SmiLPUINT32)new unsigned long[1];
+		smival.value.oid.ptr = (SmiLPUINT32)new SmiUINT32[1];
 		smival.value.oid.ptr[0] = l;
 		return *this;
 	}
@@ -347,7 +347,7 @@ public:
 				o[MAX_OID_LEN-1]++;
 		}
 		else
-			o += 0ul;
+			o += 0u;
 		return o;
 	}
 

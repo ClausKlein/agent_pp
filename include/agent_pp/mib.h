@@ -254,7 +254,7 @@ public:
    * @param i - A reference to an int the receiver's value will be copied in.  
    * @return SNMP_ERROR_SUCCESS on success.
    */
-  virtual int		get_value(int& i) const   
+  virtual int		get_value(int32_t& i) const   
 					 { return get_value().get_value(i); }
   /**
    * Get the value of the receiver.
@@ -262,7 +262,7 @@ public:
    * @param i - A reference to a long the receiver's value will be copied in.  
    * @return SNMP_ERROR_SUCCESS on success.
    */
-  virtual int		get_value(long& i) const 
+  virtual int		get_value(uint32_t& i) const 
 					 { return get_value().get_value(i); }
   /**
    * Get the value of the receiver.
@@ -271,7 +271,7 @@ public:
    *            will be copied in.  
    * @return SNMP_ERROR_SUCCESS on success.
    */
-  virtual int		get_value(unsigned long& i) const 
+  virtual int		get_value(uint64_t & i) const 
 				         { return get_value().get_value(i); }
   /**
    * Get the value of the receiver.
@@ -582,7 +582,7 @@ public:
      *    not exists.
     * @since 4.3.0
      */
-    static unsigned long incrementScalar(Mib* mib, const Oidx& counterInstanceOid);
+    static uint32_t incrementScalar(Mib* mib, const Oidx& counterInstanceOid);
 
     /**
      * Increment a columnar counter with the given column OID and row index
@@ -599,7 +599,7 @@ public:
      *    not exists.
      * @since 4.3.0
      */
-    static unsigned long incrementColumnar(Mib* mib, 
+    static uint32_t incrementColumnar(Mib* mib, 
                                   const Oidx& columnOid, const Oidx& rowIndex);
 
         /**
@@ -617,7 +617,7 @@ public:
      *    not exists.
      * @since 4.3.0
      */
-    static unsigned long incrementScalar(Mib* mib, const OctetStr& context, 
+    static uint32_t incrementScalar(Mib* mib, const OctetStr& context, 
                                 const Oidx& counterInstanceOid);
 
     /**
@@ -637,7 +637,7 @@ public:
      *    not exists.
      * @since 4.3.0
      */
-    static unsigned long incrementColumnar(Mib* mib, const OctetStr& context, 
+    static uint32_t incrementColumnar(Mib* mib, const OctetStr& context, 
                                   const Oidx& columnOid, const Oidx& rowIndex);
 
     virtual void increment();
@@ -3152,11 +3152,9 @@ protected:
 	 * @return VACM_accessAllowed if access is granted and any other
 	 *         VACM error code if access is denied.
 	 */
-	virtual int	next_access_control(Request*, 
-					    const MibEntryPtr, Oidx&, 
-                                            const Oidx&); 
+    virtual int next_access_control(Request*, MibEntry*, Oidx&, const Oidx&);
 
-#ifdef _PROXY_FORWARDER
+#    ifdef _PROXY_FORWARDER
 	virtual void	proxy_request(Request*);
 #endif
 #endif

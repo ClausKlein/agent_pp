@@ -97,7 +97,7 @@ mib_type MibEntry::type() const
  *
  * @return A pointer to an object identifier.
  */
-OidxPtr MibEntry::key() 
+OidxPtr MibEntry::key()
 { 
 	return &oid; 
 }

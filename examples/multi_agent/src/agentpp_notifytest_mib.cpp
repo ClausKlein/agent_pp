@@ -89,7 +89,7 @@ int agentppNotifyTest::set(const Vbx& vb)
 {
 
 	//--AgentGen BEGIN=agentppNotifyTest::set
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	switch (v) {
 	case e_agentppNotifyTestAllTypes:
@@ -102,7 +102,7 @@ int agentppNotifyTest::set(const Vbx& vb)
 
 bool agentppNotifyTest::value_ok(const Vbx& vb)
 {
-	long v = 0;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	    ) return FALSE;
