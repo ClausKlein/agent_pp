@@ -37,7 +37,8 @@ message(STATUS "agent++ Version ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR
 
 check_include_files(sys/types.h CNF_HAVE_SYS_TYPES_H)
 check_include_files(sys/stat.h CNF_HAVE_SYS_STAT_H)
-check_include_files("cctype;cerrno;climits;csignal;cstddef;cstdio;cstdlib;cstring;ctime" CNF_STDCXX_98_HEADERS)
+set(CNF_STDCXX_98_HEADERS YES)
+# check_include_files("cctype;cerrno;cinttypes;climits;csignal;cstddef;cstdint;cstdio;cstdlib;cstring;ctime;string;memory" CNF_STDCXX_98_HEADERS)
 
 if(NOT CNF_STDCXX_98_HEADERS)
   check_include_files("stdlib.h;stddef.h" CNF_STDC_HEADERS)
@@ -88,7 +89,7 @@ check_function_exists("gethostbyname" HAVE_GETHOSTBYNAME)
 check_function_exists("gethostbyname2" HAVE_GETHOSTBYNAME2)
 check_function_exists("gethostbyname_r" HAVE_GETHOSTBYNAME_R)
 check_function_exists("gethostname" HAVE_GETHOSTNAME)
-check_function_exists("getpid" HAVE_GETPID)
+check_function_exists("getpid" HAVE_GETPID) # again?
 check_function_exists("gettimeofday" HAVE_GETTIMEOFDAY)
 check_function_exists("htonl" HAVE_HTONL)
 check_function_exists("inet_aton" HAVE_INET_ATON)
@@ -103,10 +104,10 @@ check_function_exists("poll" HAVE_POLL)
 check_function_exists("realloc" HAVE_REALLOC)
 check_function_exists("select" HAVE_SELECT)
 check_function_exists("socket" HAVE_SOCKET)
-check_function_exists("strcasecmp" HAVE_STRCASECMP)
+check_function_exists("strcasecmp" HAVE_STRCASECMP) # again
 check_function_exists("strchr" HAVE_STRCHR)
 check_function_exists("strerror" HAVE_STRERROR)
-check_function_exists("stricmp" HAVE_STRICMP)
+check_function_exists("stricmp" HAVE_STRICMP) # again?
 check_function_exists("strstr" HAVE_STRSTR)
 check_include_files(inttypes.h HAVE_INTTYPES_H) # again?
 check_include_files(io.h HAVE_IO_H) # again?
@@ -241,7 +242,7 @@ set(SNMP_PP_VERSION 3.4.7)
 CPMAddPackage(
   NAME snmp_pp
   #TODO GIT_TAG v${SNMP_PP_VERSION}.8
-  GIT_TAG 0def9a9dd55aea741442a8c6444672e9d88f4586
+  GIT_TAG d90b4564d5743255531f7e2b849e232f5fe1ccfa
   GITHUB_REPOSITORY ClausKlein/snmp_pp
 )
 
