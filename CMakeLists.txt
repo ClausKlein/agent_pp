@@ -241,7 +241,7 @@ set(SNMP_PP_VERSION 3.4.7)
 CPMAddPackage(
   NAME snmp_pp
   #TODO GIT_TAG v${SNMP_PP_VERSION}.8
-  GIT_TAG fb37284302b26684e6ea06b8c2fc8c1dbd8d442f
+  GIT_TAG ff1e061b26fabed2202d301d32eb63d6ec41f4ca
   GITHUB_REPOSITORY ClausKlein/snmp_pp
 )
 

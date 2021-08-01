@@ -4,6 +4,9 @@ set -e
 set -x
 
 mkdir -p config
+rm -f snmpv3_boot_counter
+
+killall agent || echo OK
 
 examples/static_table/src/agent &
 sleep 1
@@ -32,7 +35,10 @@ snmpwalk -v3 -l AuthNoPriv -u MD5 -n "" localhost:4700 || echo OK
 
 snmpwalk -v3 -l noAuthNoPriv -u MD5DES -n "" localhost:4700 SNMPv2-MIB::snmpOutTraps.0
 
+_deps/snmp_pp-build/test_app
+
 kill -s TERM %1
+wait
 
 ls -lrta config
 
@@ -47,4 +53,7 @@ snmpwalk -v3 -l noAuthNoPriv -u MD5DES -n "" localhost:4711 system
 snmpwalk -v3 -l noAuthNoPriv -u MD5DES -n "" localhost:4711 snmpEngine
 
 kill -s TERM %1
+wait
+
+echo done
 

@@ -3,14 +3,14 @@ all: build
 	ninja -C $< $@
 
 test: all
-	cd build && ctest --output-on-failure
+	cd build && ctest --verbose --timeout 25 # --output-on-failure
 
 install: test
 	ninja -C build $@
 
 build:
 	mkdir -p $@
-	cmake -B $@ -S . -G Ninja -D SNMP_PP_OPENSSL=NO -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+	cmake -B $@ -S . -G Ninja -D SNMP_PP_OPENSSL=YES -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
 
 check: build/compile_commands.json
 	# run-clang-tidy.py -p build -checks='-*,cppcoreguidelines-init-variables' -j1 -fix src
