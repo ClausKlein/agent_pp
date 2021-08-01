@@ -37,7 +37,7 @@ jobs:
         shell: bash
         run: |
           sudo apt-get install \
-            llvm-10 clang-10 libclang-10-dev clang-tidy-10 ||
+            llvm-10 clang-10 libclang-10-dev clang-tidy-10 snmp snmp-mibs-downloader ||
               echo IGNORED
 
       - name: Configure
@@ -46,9 +46,10 @@ jobs:
       - name: Build
         run: cmake --build build --config Release -j 4
 
-        #       - name: Test
-        #         working-directory: build
-        #         run: ctest -C Release --output-on-failure
+      - name: Test
+        if: startsWith(matrix.os, 'macos') || startsWith(matrix.os, 'ubuntu')
+        working-directory: build
+        run: ctest -C Release --output-on-failure
 
       - name: Install
         run: cmake --install build --config Release --prefix stage

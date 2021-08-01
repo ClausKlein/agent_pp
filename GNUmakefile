@@ -1,13 +1,16 @@
-.PHONY: all build install check clean distclean
+.PHONY: all build test install check clean distclean
 all: build
 	ninja -C $< $@
 
-install: all
+test: all
+	cd build && ctest --output-on-failure
+
+install: test
 	ninja -C build $@
 
 build:
 	mkdir -p $@
-	cmake -B $@ -S . -G Ninja -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+	cmake -B $@ -S . -G Ninja -D SNMP_PP_OPENSSL=NO -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
 
 check: build/compile_commands.json
 	# run-clang-tidy.py -p build -checks='-*,cppcoreguidelines-init-variables' -j1 -fix src

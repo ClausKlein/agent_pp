@@ -445,6 +445,15 @@ foreach(EXE_BASE_DIR ${EXE_BASE_DIRS})
   endforeach()
 endforeach()
 
+if(AGENT_PP_EXAMPLES AND NOT MSVC)
+  enable_testing()
+  add_test(
+    NAME simple-snmp-test
+    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/simple-snmp-test.sh
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  )
+endif()
+
 install(FILES ${MY_HEADER_LIB_FILES} DESTINATION include)
 
 CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.8.0")

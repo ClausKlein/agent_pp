@@ -42,12 +42,13 @@ namespace Agentpp {
  */ 
 char* AgentTools::make_concatenation(const char* prefix, const char* suffix)
 {
-	char* retval = new char[strlen(prefix)+strlen(suffix)+1];
-	strcpy(retval, prefix);
-	strcat(retval, suffix);
-	return retval;
+    size_t len = strlen(prefix) + strlen(suffix) + 1;
+    char* retval = new char[len];
+    strlcpy(retval, prefix, len);
+    strncat(retval, suffix, len);
+    return retval;
 }
-	
+
 /**
  * Return the file size of a given file.
  *
