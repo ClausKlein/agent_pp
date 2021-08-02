@@ -21,8 +21,8 @@ set(CMAKE_CXX_STANDARD 17)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
 option(AGENT_PP_NAMESPACE "Use Namespaces (needed!)" ON)
-option(AGENT_PP_PROXY "Enable Proxy" ON)
-option(AGENT_PP_PROXY_FORWARDER "Enable Proxy Forwarder" ON)
+option(AGENT_PP_PROXY "Enable Proxy" OFF)
+option(AGENT_PP_PROXY_FORWARDER "Enable Proxy Forwarder" OFF)
 option(AGENT_PP_AGENPRO "build with AgenPro templates (usually disabled)" OFF)
 option(AGENT_PP_AGENPRO_SIMAGENT "build with AgenPro simagent instead regular templates (usually disabled)" OFF)
 option(AGENT_PP_EXAMPLES "build examples" ON)
@@ -242,8 +242,9 @@ set(SNMP_PP_VERSION 3.4.7)
 CPMAddPackage(
   NAME snmp_pp
   #TODO GIT_TAG v${SNMP_PP_VERSION}.8
-  GIT_TAG d90b4564d5743255531f7e2b849e232f5fe1ccfa
+  GIT_TAG 062169ab20a155f799ed996fcd64cd50ee8041ba
   GITHUB_REPOSITORY ClausKlein/snmp_pp
+  OPTIONS "SNMP_PP_LOGGING NO"
 )
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake_config.h.in config.h)

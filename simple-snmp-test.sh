@@ -1,12 +1,15 @@
-#!/bin/sh
+#!/bin/bash
 set -u
 set -e
 set -x
 
+#TBD rm -rf config
+#TBD rm -f snmpv3_boot_counter
+
 mkdir -p config
-rm -f snmpv3_boot_counter
 
 killall agent || echo OK
+pkill agent || echo OK
 
 examples/static_table/src/agent &
 sleep 1
@@ -37,7 +40,8 @@ snmpwalk -v3 -l noAuthNoPriv -u MD5DES -n "" localhost:4700 SNMPv2-MIB::snmpOutT
 
 _deps/snmp_pp-build/test_app
 
-kill -s TERM %1
+# pkill agent
+kill -s TERM %%
 wait
 
 ls -lrta config
@@ -52,7 +56,8 @@ snmpset -v3 -l noAuthNoPriv -u MD5DES -n "" localhost:4711 sysContact.0 = clausk
 snmpwalk -v3 -l noAuthNoPriv -u MD5DES -n "" localhost:4711 system
 snmpwalk -v3 -l noAuthNoPriv -u MD5DES -n "" localhost:4711 snmpEngine
 
-kill -s TERM %1
+# pkill agent
+kill -s TERM %%
 wait
 
 echo done
