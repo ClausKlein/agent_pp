@@ -323,8 +323,8 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
 		int len = MAX_SNMP_PACKET;
 		switch((short)vp->type){
 		case ASN_INTEGER:
-		  vp->val.integer = (long *)malloc(sizeof(long));
-		  vp->val_len = sizeof(long);
+		  vp->val.integer = (SmiINT32 *)malloc(sizeof(SmiINT32));
+		  vp->val_len = sizeof(SmiINT32);
 		  asn_parse_int(var_val, &len, &vp->type, vp->val.integer);
 		  break;
 
@@ -332,8 +332,8 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
 		case SMI_GAUGE:
 		case SMI_TIMETICKS:
 		case SMI_UINTEGER:
-		  vp->val.integer = (long *)malloc(sizeof(long));
-		  vp->val_len = sizeof(long);
+		  vp->val.integer = (SmiINT32 *)malloc(sizeof(SmiINT32));
+		  vp->val_len = sizeof(SmiINT32);
 		  asn_parse_unsigned_int(var_val, &len, &vp->type, vp->val.integer);
 		  break;
 
@@ -760,7 +760,7 @@ int Snmpx::receive(struct timeval *tvptr, Pdux& pdu, UTarget& target)
 
 	OctetStr engine_id;
 	OctetStr security_name;
-	long int security_model = 0;
+	SmiINT32 security_model = 0;
 
 	// copy fromaddress and remote port
 	char* addr = inet_ntoa (((sockaddr_in&)from_addr).sin_addr);
@@ -837,7 +837,7 @@ int Snmpx::receive(struct timeval *tvptr, Pdux& pdu, UTarget& target)
 
 	OctetStr engine_id;
 	OctetStr security_name;
-	long int security_model = 0;
+	SmiINT32 security_model = 0;
 	char addr[INET6_ADDRSTRLEN+1];
 
 	// copy fromaddress and remote port

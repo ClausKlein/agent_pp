@@ -347,7 +347,7 @@ public:
 				o[MAX_OID_LEN-1]++;
 		}
 		else
-			o += 0u;
+			o += 0U;
 		return o;
 	}
 

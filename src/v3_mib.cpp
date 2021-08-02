@@ -68,7 +68,7 @@ V3SnmpEngineBoots::V3SnmpEngineBoots(const USM *u)
 
 void V3SnmpEngineBoots::get_request(Request* req, int index)
 {
-  long time = 0, boots = 0;
+  SmiINT32 time = 0, boots = 0;
   usm->get_local_time(&boots, &time);
   *((SnmpInt32*)value) = boots;
   MibLeaf::get_request(req, index);
@@ -84,7 +84,7 @@ V3SnmpEngineTime::V3SnmpEngineTime(const USM *u)
 
 void V3SnmpEngineTime::get_request(Request* req, int index)
 {
-  long time = 0, boots = 0;
+  SmiINT32 time = 0, boots = 0;
   usm->get_local_time(&boots, &time);
   *((SnmpInt32*)value) = time;
   MibLeaf::get_request(req, index);
@@ -190,7 +190,7 @@ int UsmUserTableStatus::unset()
 {
   if (undo)
   {
-    long rs = 0;
+    SmiINT32 rs = 0;
     rs = *(SnmpInt32*)undo;
 
     switch (rs) {

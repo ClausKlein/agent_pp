@@ -881,7 +881,7 @@ void DateAndTime::update()
 		val += '+';
 	else
 		val += '-';
-	unsigned int tz = (unsigned int)abs(timezone);
+	unsigned int tz = std::abs(timezone);
 #endif
 	val += (unsigned char)((tz / 3600) + 
 			       ((dt->tm_isdst > 0)? ((timezone>0)?-1:1) : 0));
