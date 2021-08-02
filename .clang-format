@@ -1,0 +1,76 @@
+---
+# This configuration requires clang-format 7 or higher.
+BasedOnStyle:  WebKit
+ColumnLimit: 79
+#< ColumnLimit: 123
+IndentWidth: 4
+UseTab: Never
+# ---
+### see BinPack... too
+AlignAfterOpenBracket: DontAlign
+#XXX AlignArrayOfStructures: Right
+AlignConsecutiveAssignments: Consecutive
+AlignConsecutiveDeclarations: Consecutive
+AlignConsecutiveMacros: Consecutive
+AlignEscapedNewlines: Left
+AlignTrailingComments: true
+AllowAllArgumentsOnNextLine: true
+AllowAllConstructorInitializersOnNextLine: true
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortBlocksOnASingleLine: Always
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: All
+AllowShortEnumsOnASingleLine: true
+AllowShortLoopsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AlwaysBreakTemplateDeclarations: Yes
+### BinPack... args will all be on the same line
+BinPackArguments: true
+BinPackParameters: true
+# ---
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterCaseLabel:  false
+  AfterClass:      false
+  AfterControlStatement: true
+  AfterEnum:       false
+  AfterFunction:   true
+  AfterNamespace:  true
+  AfterStruct:     false
+  AfterUnion:      false
+  BeforeCatch:     false
+  BeforeElse:      true
+  IndentBraces:    false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: true
+# ---
+BreakBeforeBinaryOperators: NonAssignment
+BreakConstructorInitializers: BeforeColon
+BreakInheritanceList: BeforeColon
+ContinuationIndentWidth: 4
+DerivePointerAlignment: false
+FixNamespaceComments: true
+IndentPPDirectives: AfterHash
+MaxEmptyLinesToKeep: 1
+PenaltyReturnTypeOnItsOwnLine: 60
+PointerAlignment: Left
+SpaceAfterTemplateKeyword: true
+Standard: Cpp11
+# ---
+SortIncludes:    true
+SortUsingDeclarations: true
+IncludeBlocks:   Regroup
+IncludeCategories:
+  - Regex:           '^"(llvm|llvm-c|clang|clang-c)/'
+    Priority:        2
+  - Regex:           '^<(Poco|asio|doctest|zmqpp|boost|fmt|json|spdlog|openssl)/'
+    Priority:        3
+  - Regex:           '<[_[:alnum:]./]+>'
+    Priority:        4
+# all other headers first!
+  - Regex:           '.*'
+    Priority:        1
+IncludeIsMainRegex: '(_test)?$'
+#
+---
