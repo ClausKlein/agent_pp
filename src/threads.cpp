@@ -559,36 +559,38 @@ bool Synchronized::lock(unsigned long timeout) {
 #endif
 }
 
-
-bool Synchronized::unlock() {
-        bool wasLocked = isLocked;
-	isLocked = FALSE;
-#ifdef POSIX_THREADS
-    int err = 0;
-	if ((err = pthread_mutex_unlock(&monitor)) != 0) {            
-		LOG_BEGIN(loggerModuleName, WARNING_LOG | 1);
-		LOG("Synchronized: unlock failed (id)(error)(wasLocked)");
+bool Synchronized::unlock()
+{
+    bool wasLocked = isLocked;
+    isLocked       = FALSE;
+#    ifdef POSIX_THREADS
+    int err = pthread_mutex_unlock(&monitor);
+    if (err != 0)
+    {
+        LOG_BEGIN(loggerModuleName, WARNING_LOG | 1);
+        LOG("Synchronized: unlock failed (id)(error)(wasLocked)");
         LOG(id);
         LOG(err);
         LOG(wasLocked);
-	LOG_END;
+        LOG_END;
         isLocked = wasLocked;
         return FALSE;
     }
-#else
-#ifdef WIN32
-	if (!ReleaseMutex(semMutex)) {
-		LOG_BEGIN(loggerModuleName, WARNING_LOG | 1);
-		LOG("Synchronized: unlock failed (id)(isLocked)(wasLocked)");
+#    else
+#        ifdef WIN32
+    if (!ReleaseMutex(semMutex))
+    {
+        LOG_BEGIN(loggerModuleName, WARNING_LOG | 1);
+        LOG("Synchronized: unlock failed (id)(isLocked)(wasLocked)");
         LOG(id);
         LOG(isLocked);
         LOG(wasLocked);
-		LOG_END;
+        LOG_END;
         isLocked = wasLocked;
-		return FALSE;
-	}
-#endif
-#endif
+        return FALSE;
+    }
+#        endif
+#    endif
     return TRUE;
 }
 

@@ -1223,7 +1223,10 @@ void RequestList::answer(Request* req)
 					     req->target.get_version(), 
 					     req->target.get_readcommunity());
 #endif
-                        Counter32MibLeaf::incrementScalar(mib, oidSnmpOutTooBigs);
+#ifndef _NO_LOGGING
+            (void) status;
+#endif
+            Counter32MibLeaf::incrementScalar(mib, oidSnmpOutTooBigs);
 		}
 	}
         Counter32MibLeaf::incrementScalar(mib, oidSnmpOutGetResponses);

@@ -813,7 +813,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             int status = snmpmsg.load(receive_buffer, receive_buffer_len);
             if (status != SNMP_CLASS_SUCCESS) return status;
 
-            status = SNMP_CLASS_SUCCESS;
+            // prevent warning DeadStores: status = SNMP_CLASS_SUCCESS;
             if (snmpmsg.is_v3_message() == TRUE)
             {
                 status = snmpmsg.unloadv3(pdu, version, engine_id,
