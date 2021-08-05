@@ -5,7 +5,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # NOTE: We need LANGUAGE C too for libdes. It may be required to build at Windows! CK
 project(
   agent_pp
-  VERSION 4.5.1.7
+  VERSION 4.5.1.8
   LANGUAGES CXX C
 )
 
@@ -17,6 +17,8 @@ include(CheckStructHasMember)
 include(CheckTypeSize)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CNF_STDCXX_98_HEADERS YES)
+set(HAVE_INTTYPES_H YES)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
@@ -37,8 +39,7 @@ message(STATUS "agent++ Version ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR
 
 check_include_files(sys/types.h CNF_HAVE_SYS_TYPES_H)
 check_include_files(sys/stat.h CNF_HAVE_SYS_STAT_H)
-set(CNF_STDCXX_98_HEADERS YES)
-# check_include_files("cctype;cerrno;cinttypes;climits;csignal;cstddef;cstdint;cstdio;cstdlib;cstring;ctime;string;memory" CNF_STDCXX_98_HEADERS)
+#NO! CK check_include_files("cctype;cerrno;cinttypes;climits;csignal;cstddef;cstdint;cstdio;cstdlib;cstring;ctime;string;memory" CNF_STDCXX_98_HEADERS)
 
 if(NOT CNF_STDCXX_98_HEADERS)
   check_include_files("stdlib.h;stddef.h" CNF_STDC_HEADERS)
@@ -48,7 +49,6 @@ if(NOT CNF_STDCXX_98_HEADERS)
   check_include_files(strings.h CNF_HAVE_STRINGS_H)
   check_include_files(inttypes.h CNF_HAVE_INTTYPES_H)
   check_include_files(ctype.h CNF_HAVE_CTYPE_H)
-  #check_include_files(ctype.h HAVE_CTYPE_H) # again?
   check_include_files(signal.h CNF_HAVE_SIGNAL_H)
   check_include_files(errno.h CNF_HAVE_ERRNO_H)
   check_include_files(time.h CNF_HAVE_TIME_H)
@@ -77,9 +77,12 @@ check_include_files(sys/select.h CNF_HAVE_SYS_SELECT_H)
 check_include_files(io.h CNF_HAVE_IO_H)
 check_include_files(process.h CNF_HAVE_PROCESS_H)
 check_include_files(pthread.h CNF_HAVE_PTHREAD_H)
+set(HAVE_PTHREAD ${CNF_HAVE_PTHREAD_H})
+
 check_function_exists("strcasecmp" CNF_HAVE_STRCASECMP)
 check_function_exists("stricmp" CNF_HAVE_STRICMP)
 check_function_exists("getpid" CNF_HAVE_GETPID)
+set(HAVE_GETPID ${CNF_HAVE_GETPID})
 
 check_function_exists("clock_gettime" HAVE_CLOCK_GETTIME)
 check_function_exists("getaddrinfo" HAVE_GETADDRINFO)
@@ -89,7 +92,6 @@ check_function_exists("gethostbyname" HAVE_GETHOSTBYNAME)
 check_function_exists("gethostbyname2" HAVE_GETHOSTBYNAME2)
 check_function_exists("gethostbyname_r" HAVE_GETHOSTBYNAME_R)
 check_function_exists("gethostname" HAVE_GETHOSTNAME)
-#check_function_exists("getpid" HAVE_GETPID) # again?
 check_function_exists("gettimeofday" HAVE_GETTIMEOFDAY)
 check_function_exists("htonl" HAVE_HTONL)
 check_function_exists("inet_aton" HAVE_INET_ATON)
@@ -118,7 +120,6 @@ check_function_exists("strstr" HAVE_STRSTR)
 #check_include_files(netinet/in.h HAVE_NETINET_IN_H) # again?
 #check_include_files(poll.h HAVE_POLL_H) # again?
 #check_include_files(process.h HAVE_PROCESS_H) # again?
-#check_include_files(pthread.h HAVE_PTHREAD) # again?
 #check_include_files(signal.h HAVE_SIGNAL_H) # again?
 #check_include_files(stdint.h HAVE_STDINT_H) # again?
 #check_include_files(stdio.h HAVE_STDIO_H)
@@ -242,8 +243,7 @@ set(SNMP_PP_VERSION 3.4.7)
 # see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.8
 CPMAddPackage(
   NAME snmp_pp
-  #TODO GIT_TAG v${SNMP_PP_VERSION}.8
-  GIT_TAG 487fbf40edcac3879ce0c536191024cd73f4d166
+  GIT_TAG v${SNMP_PP_VERSION}.9
   GITHUB_REPOSITORY ClausKlein/snmp_pp
   OPTIONS "SNMP_PP_LOGGING NO"
 )
@@ -337,7 +337,7 @@ if(MSVC)
   # warning level 4 (all warnings as errors: /WX)
   # FIXME target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX)
 else()
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wno-unused-parameter)
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -Wno-unused-parameter)
   # TODO: lots of warnings (more: -Wpedantic)
 endif()
 
