@@ -50,13 +50,17 @@
 #ifdef CNF_STDCXX_98_HEADERS
 # include <cctype>
 # include <cerrno>
+# include <cinttypes>
 # include <climits>
 # include <csignal>
 # include <cstddef>
+# include <cstdint>
 # include <cstdio>
 # include <cstdlib>
 # include <cstring>
 # include <ctime>
+# include <memory>
+# include <string> // std::stoi() used
 #else
 # ifdef HAVE_STDIO_H
 #   include <stdio.h>
@@ -198,7 +202,7 @@
 # define INT32_MIN              (-2147483647-1)
 #endif
 /* Maximum of signed integral types.  */
-#ifndef INT_MAX
+#ifndef INT8_MAX
 # define INT8_MAX               (127)
 #endif
 #ifndef INT16_MAX

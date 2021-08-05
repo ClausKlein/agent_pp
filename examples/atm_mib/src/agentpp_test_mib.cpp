@@ -102,7 +102,7 @@ void agentppTestTimeout::set_state(unsigned long l)
 int agentppTestTimeout::set(const Vbx& vb)
 {
 	//--AgentGen BEGIN=agentppTestTimeout::set
-	unsigned long timeout;
+	uint32_t timeout = 0;
 	vb.get_value(timeout);
 	struct timeval tvptr;
 	tvptr.tv_sec  = timeout/1000;    // wait up to sec seconds
@@ -115,7 +115,7 @@ int agentppTestTimeout::set(const Vbx& vb)
 
 bool agentppTestTimeout::value_ok(const Vbx& vb)
 {
-	unsigned long v;
+	uint32_t v = 0;
 	vb.get_value(v);
 	if (!((v <= 1000000ul)))
 		 return FALSE;
@@ -126,7 +126,7 @@ bool agentppTestTimeout::value_ok(const Vbx& vb)
 
 int agentppTestTimeout::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -380,14 +380,14 @@ void agentppTestSparseCol1::get_request(Request* req, int ind)
 	MibLeaf::get_request(req, ind);
 }
 
-long agentppTestSparseCol1::get_state()
+int32_t agentppTestSparseCol1::get_state()
 {
 	//--AgentGen BEGIN=agentppTestSparseCol1::get_state
 	//--AgentGen END
-	return (long)*((SnmpInt32*)value);
+	return (int32_t)*((SnmpInt32*)value);
 }
 	
-void agentppTestSparseCol1::set_state(long l)
+void agentppTestSparseCol1::set_state(int32_t l)
 {
 	//--AgentGen BEGIN=agentppTestSparseCol1::set_state
 	//--AgentGen END
@@ -415,7 +415,7 @@ bool agentppTestSparseCol1::value_ok(const Vbx& vb)
 
 int agentppTestSparseCol1::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -505,7 +505,7 @@ bool agentppTestSparseCol2::value_ok(const Vbx& vb)
 
 int agentppTestSparseCol2::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -593,7 +593,7 @@ bool agentppTestSparseCol3::value_ok(const Vbx& vb)
 
 int agentppTestSparseCol3::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 
@@ -645,14 +645,14 @@ MibEntryPtr agentppTestSparseRowStatus::clone()
 	return other;
 }
 
-long agentppTestSparseRowStatus::get_state()
+int32_t agentppTestSparseRowStatus::get_state()
 {
 	//--AgentGen BEGIN=agentppTestSparseRowStatus::get_state
 	//--AgentGen END
-	return (long)*((SnmpInt32*)value);
+	return (int32_t)*((SnmpInt32*)value);
 }
 	
-void agentppTestSparseRowStatus::set_state(long l)
+void agentppTestSparseRowStatus::set_state(int32_t l)
 {
 	//--AgentGen BEGIN=agentppTestSparseRowStatus::set_state
 	//--AgentGen END
@@ -669,7 +669,7 @@ int agentppTestSparseRowStatus::set(const Vbx& vb)
 
 int agentppTestSparseRowStatus::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = snmpRowStatus::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 

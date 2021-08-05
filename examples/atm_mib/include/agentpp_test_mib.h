@@ -139,11 +139,11 @@ public:
 
 	static agentppTestTimeout* instance;
 	
-	virtual void       	get_request(Request*, int);
+	void       	get_request(Request*, int) override;
 	virtual void       	set_state(unsigned long);
-	virtual int        	set(const Vbx&);
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	int        	set(const Vbx&) override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 
 //--AgentGen BEGIN=agentppTestTimeout
 //--AgentGen END
@@ -167,7 +167,7 @@ public:
 	agentppTestSharedTableCreationTime(const Oidx&);
 	virtual ~agentppTestSharedTableCreationTime();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 
 //--AgentGen BEGIN=agentppTestSharedTableCreationTime
 //--AgentGen END
@@ -190,7 +190,7 @@ public:
 	agentppTestSharedTableDelay(const Oidx&);
 	virtual ~agentppTestSharedTableDelay();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 
 //--AgentGen BEGIN=agentppTestSharedTableDelay
 //--AgentGen END
@@ -213,7 +213,7 @@ public:
 	agentppTestSharedTableSession(const Oidx&);
 	virtual ~agentppTestSharedTableSession();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 
 //--AgentGen BEGIN=agentppTestSharedTableSession
 //--AgentGen END
@@ -235,7 +235,7 @@ public:
 	agentppTestSharedTableRowStatus(const Oidx&);
 	virtual ~agentppTestSharedTableRowStatus();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 	enum labels {
 		      e_active = 1,
 		      e_notInService = 2,
@@ -267,7 +267,7 @@ public:
 	agentppTestRowCreation(const Oidx&);
 	virtual ~agentppTestRowCreation();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 
 //--AgentGen BEGIN=agentppTestRowCreation
 //--AgentGen END
@@ -291,13 +291,13 @@ public:
 	agentppTestSparseCol1(const Oidx&);
 	virtual ~agentppTestSparseCol1();
 
-	virtual MibEntryPtr	clone();
-	virtual void       	get_request(Request*, int);
-	virtual long       	get_state();
-	virtual void       	set_state(long);
-	virtual int        	set(const Vbx&);
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	void       	get_request(Request*, int) override;
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
+	int        	set(const Vbx&) override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 
 //--AgentGen BEGIN=agentppTestSparseCol1
 //--AgentGen END
@@ -321,13 +321,13 @@ public:
 	agentppTestSparseCol2(const Oidx&);
 	virtual ~agentppTestSparseCol2();
 
-	virtual MibEntryPtr	clone();
-	virtual void       	get_request(Request*, int);
+	MibEntryPtr	clone() override;
+	void       	get_request(Request*, int) override;
 	virtual unsigned long   get_state();
 	virtual void       	set_state(unsigned long);
-	virtual int        	set(const Vbx&);
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	int        	set(const Vbx&) override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 
 //--AgentGen BEGIN=agentppTestSparseCol2
 //--AgentGen END
@@ -351,13 +351,13 @@ public:
 	agentppTestSparseCol3(const Oidx&);
 	virtual ~agentppTestSparseCol3();
 
-	virtual MibEntryPtr	clone();
-	virtual void       	get_request(Request*, int);
+	MibEntryPtr	clone() override;
+	void       	get_request(Request*, int) override;
 	virtual NS_SNMP OctetStr       	get_state();
 	virtual void       	set_state(const NS_SNMP OctetStr&);
-	virtual int        	set(const Vbx&);
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	int        	set(const Vbx&) override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 
 //--AgentGen BEGIN=agentppTestSparseCol3
 //--AgentGen END
@@ -379,11 +379,11 @@ public:
 	agentppTestSparseRowStatus(const Oidx&);
 	virtual ~agentppTestSparseRowStatus();
 
-	virtual MibEntryPtr	clone();
-	virtual long       	get_state();
-	virtual void       	set_state(long);
-	virtual int        	set(const Vbx&);
-	virtual int        	prepare_set_request(Request*, int&);
+	MibEntryPtr	clone() override;
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
+	int        	set(const Vbx&) override;
+	int        	prepare_set_request(Request*, int&) override;
 	enum labels {
 		      e_active = 1,
 		      e_notInService = 2,
@@ -458,8 +458,8 @@ public:
 
 	static agentppTestSparseEntry* instance;
 	
-	virtual void        	get_request(Request*, int);
-	virtual int         	prepare_set_request(Request*, int&);
+	void        	get_request(Request*, int) override;
+	int         	prepare_set_request(Request*, int&) override;
 //--AgentGen BEGIN=agentppTestSparseEntry
 //--AgentGen END
 };

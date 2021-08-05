@@ -67,9 +67,9 @@ public:
 
 	virtual long       	get_state();
 	virtual void       	set_state(long);
-	virtual int        	set(const Vbx&);
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	int        	set(const Vbx&) override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 	enum labels {
 		e_agentppNotifyTestAllTypes = 1 };
 

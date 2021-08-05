@@ -131,8 +131,8 @@ class AGENTPP_DECL NotificationOriginator: public NotificationSender {
 	 *    successfully, otherwise an appropriate SNMP error is
 	 *    returned.
 	 */
-	virtual int		notify(const NS_SNMP OctetStr&, const Oidx&,
-				       Vbx*, int, unsigned int=0); 
+	int		notify(const NS_SNMP OctetStr&, const Oidx&,
+				       Vbx*, int, unsigned int=0) override; 
 	
 	/**
 	 * Make all necessary entries in snmpTargetAddressTable,

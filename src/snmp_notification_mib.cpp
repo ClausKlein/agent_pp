@@ -233,7 +233,7 @@ bool snmpNotifyFilterEntry::passes_filter(const Oidx& target,
 		subtree = subtree.cut_left(subtree[0]+1);
 
 		OctetStr filterMask;
-		long     filterType;
+		SnmpInt32     filterType = 0;
 		
 		cur.get()->first()->get_value(filterMask);
 		cur.get()->get_nth(1)->get_value(filterType);
@@ -285,7 +285,7 @@ bool snmpNotifyFilterEntry::passes_filter(const Oidx& target,
 		delete[] oidmatches;
 		return FALSE;
 	}
-	long pass = 0;
+	SnmpInt32 pass = 0;
 	matches.last()->get_value(pass);
 	if (pass == 1) {
 		for (unsigned int i=0; i<vb_count; i++) {

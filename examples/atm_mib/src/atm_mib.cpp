@@ -62,7 +62,7 @@ MibEntryPtr atmInterfaceMaxVpcs::clone()
 
 bool atmInterfaceMaxVpcs::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 4096))))
 		 return FALSE;
@@ -72,7 +72,7 @@ bool atmInterfaceMaxVpcs::value_ok(const Vbx& vb)
 
 int atmInterfaceMaxVpcs::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -106,7 +106,7 @@ MibEntryPtr atmInterfaceMaxVccs::clone()
 
 bool atmInterfaceMaxVccs::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 65536))))
 		 return FALSE;
@@ -116,7 +116,7 @@ bool atmInterfaceMaxVccs::value_ok(const Vbx& vb)
 
 int atmInterfaceMaxVccs::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -200,7 +200,7 @@ MibEntryPtr atmInterfaceMaxActiveVpiBits::clone()
 
 bool atmInterfaceMaxActiveVpiBits::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 12))))
 		 return FALSE;
@@ -210,7 +210,7 @@ bool atmInterfaceMaxActiveVpiBits::value_ok(const Vbx& vb)
 
 int atmInterfaceMaxActiveVpiBits::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -244,7 +244,7 @@ MibEntryPtr atmInterfaceMaxActiveVciBits::clone()
 
 bool atmInterfaceMaxActiveVciBits::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 16))))
 		 return FALSE;
@@ -254,7 +254,7 @@ bool atmInterfaceMaxActiveVciBits::value_ok(const Vbx& vb)
 
 int atmInterfaceMaxActiveVciBits::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -288,7 +288,7 @@ MibEntryPtr atmInterfaceIlmiVpi::clone()
 
 bool atmInterfaceIlmiVpi::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 4095))))
 		 return FALSE;
@@ -298,7 +298,7 @@ bool atmInterfaceIlmiVpi::value_ok(const Vbx& vb)
 
 int atmInterfaceIlmiVpi::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -332,7 +332,7 @@ MibEntryPtr atmInterfaceIlmiVci::clone()
 
 bool atmInterfaceIlmiVci::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(v <= 65535))
 		 return FALSE;
@@ -342,7 +342,7 @@ bool atmInterfaceIlmiVci::value_ok(const Vbx& vb)
 
 int atmInterfaceIlmiVci::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -432,7 +432,7 @@ bool atmInterfaceMyNeighborIpAddress::value_ok(const Vbx& vb)
 
 int atmInterfaceMyNeighborIpAddress::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -472,7 +472,7 @@ bool atmInterfaceMyNeighborIfName::value_ok(const Vbx& vb)
 
 int atmInterfaceMyNeighborIfName::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	Vb vb(req->get_value(ind));
@@ -566,7 +566,7 @@ bool atmInterfaceSubscrAddress::value_ok(const Vbx& vb)
 
 int atmInterfaceSubscrAddress::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	Vb vb(req->get_value(ind));
@@ -735,7 +735,7 @@ bool atmTrafficDescrType::value_ok(const Vbx& vb)
 
 int atmTrafficDescrType::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -775,7 +775,7 @@ bool atmTrafficDescrParam1::value_ok(const Vbx& vb)
 
 int atmTrafficDescrParam1::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -815,7 +815,7 @@ bool atmTrafficDescrParam2::value_ok(const Vbx& vb)
 
 int atmTrafficDescrParam2::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -855,7 +855,7 @@ bool atmTrafficDescrParam3::value_ok(const Vbx& vb)
 
 int atmTrafficDescrParam3::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -895,7 +895,7 @@ bool atmTrafficDescrParam4::value_ok(const Vbx& vb)
 
 int atmTrafficDescrParam4::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -935,7 +935,7 @@ bool atmTrafficDescrParam5::value_ok(const Vbx& vb)
 
 int atmTrafficDescrParam5::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -969,7 +969,7 @@ MibEntryPtr atmTrafficQoSClass::clone()
 
 bool atmTrafficQoSClass::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 255))))
 		 return FALSE;
@@ -979,7 +979,7 @@ bool atmTrafficQoSClass::value_ok(const Vbx& vb)
 
 int atmTrafficQoSClass::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -1038,7 +1038,7 @@ MibEntryPtr atmServiceCategory::clone()
 
 bool atmServiceCategory::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
@@ -1050,7 +1050,7 @@ bool atmServiceCategory::value_ok(const Vbx& vb)
 
 int atmServiceCategory::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -1084,7 +1084,7 @@ MibEntryPtr atmTrafficFrameDiscard::clone()
 
 bool atmTrafficFrameDiscard::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2)) return FALSE;
@@ -1094,7 +1094,7 @@ bool atmTrafficFrameDiscard::value_ok(const Vbx& vb)
 
 int atmTrafficFrameDiscard::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -1128,7 +1128,7 @@ MibEntryPtr atmVplAdminStatus::clone()
 
 bool atmVplAdminStatus::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2)) return FALSE;
@@ -1138,7 +1138,7 @@ bool atmVplAdminStatus::value_ok(const Vbx& vb)
 
 int atmVplAdminStatus::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -1222,7 +1222,7 @@ MibEntryPtr atmVplReceiveTrafficDescrIndex::clone()
 
 bool atmVplReceiveTrafficDescrIndex::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 2147483647))))
 		 return FALSE;
@@ -1232,7 +1232,7 @@ bool atmVplReceiveTrafficDescrIndex::value_ok(const Vbx& vb)
 
 int atmVplReceiveTrafficDescrIndex::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -1266,7 +1266,7 @@ MibEntryPtr atmVplTransmitTrafficDescrIndex::clone()
 
 bool atmVplTransmitTrafficDescrIndex::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 2147483647))))
 		 return FALSE;
@@ -1276,7 +1276,7 @@ bool atmVplTransmitTrafficDescrIndex::value_ok(const Vbx& vb)
 
 int atmVplTransmitTrafficDescrIndex::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -1360,7 +1360,7 @@ MibEntryPtr atmVplCastType::clone()
 
 bool atmVplCastType::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
@@ -1371,7 +1371,7 @@ bool atmVplCastType::value_ok(const Vbx& vb)
 
 int atmVplCastType::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -1405,7 +1405,7 @@ MibEntryPtr atmVplConnKind::clone()
 
 bool atmVplConnKind::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
@@ -1417,7 +1417,7 @@ bool atmVplConnKind::value_ok(const Vbx& vb)
 
 int atmVplConnKind::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -1451,7 +1451,7 @@ MibEntryPtr atmVclAdminStatus::clone()
 
 bool atmVclAdminStatus::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2)) return FALSE;
@@ -1461,7 +1461,7 @@ bool atmVclAdminStatus::value_ok(const Vbx& vb)
 
 int atmVclAdminStatus::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -1545,7 +1545,7 @@ MibEntryPtr atmVclReceiveTrafficDescrIndex::clone()
 
 bool atmVclReceiveTrafficDescrIndex::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 2147483647))))
 		 return FALSE;
@@ -1555,7 +1555,7 @@ bool atmVclReceiveTrafficDescrIndex::value_ok(const Vbx& vb)
 
 int atmVclReceiveTrafficDescrIndex::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -1589,7 +1589,7 @@ MibEntryPtr atmVclTransmitTrafficDescrIndex::clone()
 
 bool atmVclTransmitTrafficDescrIndex::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 2147483647))))
 		 return FALSE;
@@ -1599,7 +1599,7 @@ bool atmVclTransmitTrafficDescrIndex::value_ok(const Vbx& vb)
 
 int atmVclTransmitTrafficDescrIndex::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -1633,7 +1633,7 @@ MibEntryPtr atmVccAalType::clone()
 
 bool atmVccAalType::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
@@ -1645,7 +1645,7 @@ bool atmVccAalType::value_ok(const Vbx& vb)
 
 int atmVccAalType::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -1679,7 +1679,7 @@ MibEntryPtr atmVccAal5CpcsTransmitSduSize::clone()
 
 bool atmVccAal5CpcsTransmitSduSize::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 1) && (v <= 65535))))
 		 return FALSE;
@@ -1689,7 +1689,7 @@ bool atmVccAal5CpcsTransmitSduSize::value_ok(const Vbx& vb)
 
 int atmVccAal5CpcsTransmitSduSize::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -1723,7 +1723,7 @@ MibEntryPtr atmVccAal5CpcsReceiveSduSize::clone()
 
 bool atmVccAal5CpcsReceiveSduSize::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 1) && (v <= 65535))))
 		 return FALSE;
@@ -1733,7 +1733,7 @@ bool atmVccAal5CpcsReceiveSduSize::value_ok(const Vbx& vb)
 
 int atmVccAal5CpcsReceiveSduSize::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -1767,7 +1767,7 @@ MibEntryPtr atmVccAal5EncapsType::clone()
 
 bool atmVccAal5EncapsType::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
@@ -1781,7 +1781,7 @@ bool atmVccAal5EncapsType::value_ok(const Vbx& vb)
 
 int atmVccAal5EncapsType::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -1865,7 +1865,7 @@ MibEntryPtr atmVclCastType::clone()
 
 bool atmVclCastType::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
@@ -1876,7 +1876,7 @@ bool atmVclCastType::value_ok(const Vbx& vb)
 
 int atmVclCastType::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -1910,7 +1910,7 @@ MibEntryPtr atmVclConnKind::clone()
 
 bool atmVclConnKind::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
@@ -1922,7 +1922,7 @@ bool atmVclConnKind::value_ok(const Vbx& vb)
 
 int atmVclConnKind::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -1978,7 +1978,7 @@ MibEntryPtr atmVpCrossConnectAdminStatus::clone()
 
 bool atmVpCrossConnectAdminStatus::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2)) return FALSE;
@@ -1988,7 +1988,7 @@ bool atmVpCrossConnectAdminStatus::value_ok(const Vbx& vb)
 
 int atmVpCrossConnectAdminStatus::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here
@@ -2169,7 +2169,7 @@ MibEntryPtr atmVcCrossConnectAdminStatus::clone()
 
 bool atmVcCrossConnectAdminStatus::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2)) return FALSE;
@@ -2179,7 +2179,7 @@ bool atmVcCrossConnectAdminStatus::value_ok(const Vbx& vb)
 
 int atmVcCrossConnectAdminStatus::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = SimMibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	// place additional code to check validity of new values here

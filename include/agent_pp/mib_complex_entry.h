@@ -78,7 +78,7 @@ public:
 	 *    AGENTPP_PROXY, AGENTPP_LEAF, 
 	 *    AGENTPP_TABLE, AGENTPP_GROUP, or AGENTPP_COMPLEX.
 	 */
-	virtual mib_type	type() const { return AGENTPP_COMPLEX; }
+	mib_type	type() const override { return AGENTPP_COMPLEX; }
 
 	/**
 	 * Return a clone of the receiver.
@@ -86,7 +86,7 @@ public:
 	 * @return
 	 *    a pointer to a clone of the MibComplexEntry object.  
 	 */
-	virtual MibEntry*	clone() = 0;
+	MibEntry*	clone() override = 0;
 
 	/**
 	 * Return the successor of a given object identifier within the 
@@ -101,7 +101,7 @@ public:
 	 *    otherwise (if no successor exists or is out of scope) 
 	 *    a zero length oid is returned
 	 */
-	virtual Oidx		find_succ(const Oidx&, Request* req = 0) = 0;
+	Oidx		find_succ(const Oidx&, Request* req = 0) override = 0;
 
  	// interfaces dispatch table <-> management instrumentation
 	
@@ -111,7 +111,7 @@ public:
 	 * @param req - A pointer to the whole SNMP GET request.
 	 * @param ind - The index of the subrequest to be processed.
 	 */
-	virtual void		get_request(Request*, int) = 0;
+	void		get_request(Request*, int) override = 0;
 
 	/**
 	 * Let the receiver process a SNMP GETNEXT subrequest
@@ -119,7 +119,7 @@ public:
 	 * @param req - A pointer to the whole SNMP GETNEXT request.
 	 * @param ind - The index of the subrequest to be processed.
 	 */
-	virtual void		get_next_request(Request*, int) = 0;
+	void		get_next_request(Request*, int) override = 0;
 	
 	/**
 	 * Let the receiver commit a SNMP SET subrequest
@@ -129,7 +129,7 @@ public:
 	 * @return SNMP_ERROR_SUCCESS on success and 
 	 *         SNMP_ERROR_COMITFAIL on failure.
 	 */
-	virtual int		commit_set_request(Request*, int) 
+	int		commit_set_request(Request*, int) override 
 				  { return SNMP_ERROR_COMMITFAIL; }
 
 	/**
@@ -141,7 +141,7 @@ public:
 	 *         SNMP_ERROR_WRONG_TYPE, or 
 	 *         SNMP_ERROR_NOT_WRITEABLE on failure.
 	 */
-	virtual int		prepare_set_request(Request*, int&) 
+	int		prepare_set_request(Request*, int&) override 
 				  { return SNMP_ERROR_NOT_WRITEABLE; }
 
 	/**
@@ -152,7 +152,7 @@ public:
 	 * @return SNMP_ERROR_SUCCESS on success and 
 	 *         SNMP_ERROR_UNDO_FAIL on failure.
 	 */
-	virtual int	        undo_set_request(Request*, int&) 
+	int	        undo_set_request(Request*, int&) override 
 				  { return SNMP_ERROR_SUCCESS; }
 
 	/**
@@ -161,7 +161,7 @@ public:
 	 * @param req - A pointer to the whole SNMP SET request.
 	 * @param ind - The index of the subrequest to be processed.
 	 */
-	virtual void	        cleanup_set_request(Request*, int&) { }
+	void	        cleanup_set_request(Request*, int&) override { }
 
 	/**
 	 * Serialize the value of the receiver.
@@ -170,7 +170,7 @@ public:
 	 * @param sz - The size of the buffer returned.
 	 * @return TRUE if serialization was successful, FALSE otherwise.
 	 */
-	virtual bool      	serialize(char*&, int&) { return FALSE; }
+	bool      	serialize(char*&, int&) override { return FALSE; }
 
 	/**
 	 * Read the value of the receiver from a byte stream.
@@ -183,7 +183,7 @@ public:
 	 * @return 
 	 *    TRUE if deserialization was successful, FALSE otherwise.
 	 */
-	virtual bool      	deserialize(char*, int&) { return FALSE; }
+	bool      	deserialize(char*, int&) override { return FALSE; }
 
 	/**
 	 * Check whether the receiver node contains any instance of a
@@ -191,7 +191,7 @@ public:
 	 *
 	 * @return TRUE if the node currently manages an instance.
 	 */  
-	virtual bool		is_empty() { return FALSE; }
+	bool		is_empty() override { return FALSE; }
 
 
 	// communication between mib objects
@@ -204,7 +204,7 @@ public:
 	 *    a pointer to the non including upper bound of the receiver's 
 	 *    scope.
 	 */
-	virtual OidxPtr      	max_key() { return &upperBound; }
+	OidxPtr      	max_key() override { return &upperBound; }
 
 protected:
 	Oidx			upperBound;
@@ -293,7 +293,7 @@ class AGENTPP_DECL MibStaticTable: public MibComplexEntry {
 	 * @return
 	 *    a pointer to a clone of the MibStaticTable object.  
 	 */
-	virtual MibEntry*	clone() { return new MibStaticTable(*this); }
+	MibEntry*	clone() override { return new MibStaticTable(*this); }
 
 	/**
 	 * Add an instance to the table. If such an instance already
@@ -343,7 +343,7 @@ class AGENTPP_DECL MibStaticTable: public MibComplexEntry {
 	 *    otherwise (if no successor exists or is out of scope) 
 	 *    a zero length oid is returned
 	 */
-	virtual Oidx		find_succ(const Oidx&, Request* req = 0);
+	Oidx		find_succ(const Oidx&, Request* req = 0) override;
 
 	/**
 	 * Let the receiver process a SNMP GET subrequest
@@ -351,7 +351,7 @@ class AGENTPP_DECL MibStaticTable: public MibComplexEntry {
 	 * @param req - A pointer to the whole SNMP GET request.
 	 * @param ind - The index of the subrequest to be processed.
 	 */
-	virtual void		get_request(Request*, int);
+	void		get_request(Request*, int) override;
 
 	/**
 	 * Let the receiver process a SNMP GETNEXT subrequest
@@ -359,7 +359,7 @@ class AGENTPP_DECL MibStaticTable: public MibComplexEntry {
 	 * @param req - A pointer to the whole SNMP GETNEXT request.
 	 * @param ind - The index of the subrequest to be processed.
 	 */
-	virtual void		get_next_request(Request*, int);
+	void		get_next_request(Request*, int) override;
 	
  protected:
 	

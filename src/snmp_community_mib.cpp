@@ -331,7 +331,7 @@ int snmpTargetAddrExtEntry::prepare_set_request(Request* req, int& ind)
 		Vbx* status = req->search_value(rs);
 		if (!status)
 			return SNMP_ERROR_INCONSIS_NAME;
-		long value = 0;
+		SnmpInt32 value = 0;
 		if (status->get_value(value) != SNMP_CLASS_SUCCESS)
 		{
 		    delete status;

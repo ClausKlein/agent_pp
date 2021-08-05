@@ -52,7 +52,7 @@ class AGENTPP_DECL V3SnmpEngineID: public MibLeaf {
 
 public:
        V3SnmpEngineID(const NS_SNMP v3MP *mp);
-       void get_request(Request*, int);
+       void get_request(Request*, int) override;
 private:
        const NS_SNMP v3MP *v3mp;
 };
@@ -61,7 +61,7 @@ class AGENTPP_DECL V3SnmpEngineBoots: public MibLeaf {
 
 public:
        V3SnmpEngineBoots(const NS_SNMP USM *u);
-       void get_request(Request*, int);
+       void get_request(Request*, int) override;
 private:
        const NS_SNMP USM *usm;
 };
@@ -70,7 +70,7 @@ class AGENTPP_DECL V3SnmpEngineTime: public MibLeaf {
 
 public:
        V3SnmpEngineTime(const NS_SNMP USM *u);
-       void get_request(Request*, int);
+       void get_request(Request*, int) override;
 private:
        const NS_SNMP USM *usm;
 };
@@ -88,9 +88,9 @@ class AGENTPP_DECL UsmUserTableStatus: public snmpRowStatus
   UsmUserTableStatus(const Oidx&, int _base_len, NS_SNMP USM *usm);
   virtual ~UsmUserTableStatus();
 
-  virtual MibEntryPtr clone();
-  virtual int set(const Vbx& vb);
-  virtual int unset();
+  MibEntryPtr clone() override;
+  int set(const Vbx& vb) override;
+  int unset() override;
 
   void deleteUsmUser();
   void addUsmUser();
@@ -130,10 +130,10 @@ class AGENTPP_DECL UsmUserTable: public StorageTable
   UsmUserTable(v3MP*);
   virtual ~UsmUserTable();
 
-  virtual bool ready(Vbx*, int, MibTableRow*);
-  virtual void row_added(MibTableRow* new_row, const Oidx& ind, MibTable*);
-  virtual void row_init(MibTableRow* new_row, const Oidx& ind, MibTable*);
-  virtual void row_deactivated(MibTableRow*, const Oidx&, MibTable*); 
+  bool ready(Vbx*, int, MibTableRow*) override;
+  void row_added(MibTableRow* new_row, const Oidx& ind, MibTable*) override;
+  void row_init(MibTableRow* new_row, const Oidx& ind, MibTable*) override;
+  void row_deactivated(MibTableRow*, const Oidx&, MibTable*) override; 
 
   /**
    * Add a user to the table.
@@ -271,7 +271,7 @@ class AGENTPP_DECL UsmUserTable: public StorageTable
    */
   void removeAllUsers();
 
-  MibTableRow* get_row(Oidx o) {  return find_index(o); };
+  MibTableRow* get_row(const Oidx& o) {  return find_index(o); };
 
   static const Oidx auth_base;
   static const Oidx priv_base;
@@ -287,13 +287,13 @@ class AGENTPP_DECL UsmUserTable: public StorageTable
 class AGENTPP_DECL UsmCloneFrom: public MibLeaf
 {
  public:
-  UsmCloneFrom(Oidx o, NS_SNMP USM *u);
+  UsmCloneFrom(const Oidx& o, NS_SNMP USM *u);
   virtual ~UsmCloneFrom() {};
-  virtual int prepare_set_request(Request* req, int& ind);
-  virtual void get_request(Request* req, int ind);
-  virtual int set(const Vbx& vb);
-  virtual bool value_ok(const Vbx& vb);
-  virtual MibEntryPtr clone();
+  int prepare_set_request(Request* req, int& ind) override;
+  void get_request(Request* req, int ind) override;
+  int set(const Vbx& vb) override;
+  bool value_ok(const Vbx& vb) override;
+  MibEntryPtr clone() override;
  private:
   NS_SNMP USM *usm;
 };
@@ -301,18 +301,18 @@ class AGENTPP_DECL UsmCloneFrom: public MibLeaf
 class AGENTPP_DECL UsmKeyChange: public MibLeaf
 {
  public:
-  UsmKeyChange(Oidx o, int keylen, int hashfunction, int typeOfKey,
+  UsmKeyChange(const Oidx& o, int keylen, int hashfunction, int typeOfKey,
 	       UsmKeyChange* ukc, NS_SNMP USM *u);
-  UsmKeyChange(Oidx o, NS_SNMP USM *u);
+  UsmKeyChange(const Oidx& o, NS_SNMP USM *u);
   virtual ~UsmKeyChange();
   
-  virtual int unset();
+  int unset() override;
   void initialize(int keylen, int hashfunction, int typeOfKey, UsmKeyChange* ukc);
-  virtual void get_request(Request* req, int ind);
-  virtual int prepare_set_request(Request* req, int& ind);
-  virtual int set(const Vbx& vb);
-  virtual bool value_ok(const Vbx& vb);
-  virtual MibEntryPtr clone();
+  void get_request(Request* req, int ind) override;
+  int prepare_set_request(Request* req, int& ind) override;
+  int set(const Vbx& vb) override;
+  bool value_ok(const Vbx& vb) override;
+  MibEntryPtr clone() override;
 
  protected:
   bool process_key_change(NS_SNMP OctetStr& os);
@@ -327,14 +327,14 @@ class AGENTPP_DECL UsmKeyChange: public MibLeaf
 class AGENTPP_DECL UsmOwnKeyChange: public UsmKeyChange
 {
  public:
-  UsmOwnKeyChange(Oidx o, NS_SNMP USM *u) : UsmKeyChange(o, u) {};
-  UsmOwnKeyChange(Oidx o, int keylen, int hashfunction, int typeOfKey,
+  UsmOwnKeyChange(const Oidx& o, NS_SNMP USM *u) : UsmKeyChange(o, u) {};
+  UsmOwnKeyChange(const Oidx& o, int keylen, int hashfunction, int typeOfKey,
 		  UsmKeyChange* ukc, NS_SNMP USM *u)
     : UsmKeyChange(o, keylen, hashfunction, typeOfKey, ukc, u){};
   virtual ~UsmOwnKeyChange();
   
-  virtual int prepare_set_request(Request* req, int& ind);
-  virtual MibEntryPtr clone();
+  int prepare_set_request(Request* req, int& ind) override;
+  MibEntryPtr clone() override;
 
  private:
 
@@ -351,7 +351,7 @@ class AGENTPP_DECL UsmStatsUnsupportedSecLevels: public MibLeaf {
 
 public:
 	UsmStatsUnsupportedSecLevels(const NS_SNMP USM *u);
-        void get_request(Request*, int);
+        void get_request(Request*, int) override;
 private:
 	const NS_SNMP USM *usm;
 };
@@ -366,7 +366,7 @@ class AGENTPP_DECL UsmStatsNotInTimeWindows: public MibLeaf {
 
 public:
 	UsmStatsNotInTimeWindows(const NS_SNMP USM *u);
-        void get_request(Request*, int);
+        void get_request(Request*, int) override;
 private:
 	const NS_SNMP USM *usm;
 };
@@ -381,7 +381,7 @@ class AGENTPP_DECL UsmStatsUnknownUserNames: public MibLeaf {
 
 public:
 	UsmStatsUnknownUserNames(const NS_SNMP USM *u);
-        void get_request(Request*, int);
+        void get_request(Request*, int) override;
 private:
 	const NS_SNMP USM *usm;
 };
@@ -396,7 +396,7 @@ class AGENTPP_DECL UsmStatsUnknownEngineIDs: public MibLeaf {
 
 public:
 	UsmStatsUnknownEngineIDs(const NS_SNMP USM *u);
-        void get_request(Request*, int);
+        void get_request(Request*, int) override;
 private:
 	const NS_SNMP USM *usm;
 };
@@ -411,7 +411,7 @@ class AGENTPP_DECL UsmStatsWrongDigests: public MibLeaf {
 
 public:
 	UsmStatsWrongDigests(const NS_SNMP USM *u);
-        void get_request(Request*, int);
+        void get_request(Request*, int) override;
 private:
 	const NS_SNMP USM *usm;
 };
@@ -426,7 +426,7 @@ class AGENTPP_DECL UsmStatsDecryptionErrors: public MibLeaf {
 
 public:
 	UsmStatsDecryptionErrors(const NS_SNMP USM *u);
-        void get_request(Request*, int);
+        void get_request(Request*, int) override;
 private:
 	const NS_SNMP USM *usm;
 };
@@ -466,7 +466,7 @@ class AGENTPP_DECL MPDGroupSnmpUnknownSecurityModels: public MibLeaf {
 
 public:
 	MPDGroupSnmpUnknownSecurityModels(const NS_SNMP v3MP *mp);
-        void get_request(Request*, int);
+        void get_request(Request*, int) override;
 private:
 	const NS_SNMP v3MP *v3mp;
 };
@@ -475,7 +475,7 @@ class AGENTPP_DECL MPDGroupSnmpInvalidMsgs: public MibLeaf {
 
 public:
 	MPDGroupSnmpInvalidMsgs(const NS_SNMP v3MP *mp);
-        void get_request(Request*, int);
+        void get_request(Request*, int) override;
 private:
 	const NS_SNMP v3MP *v3mp;
 };
@@ -484,7 +484,7 @@ class AGENTPP_DECL MPDGroupSnmpUnknownPDUHandlers: public MibLeaf {
 
 public:
 	MPDGroupSnmpUnknownPDUHandlers(const NS_SNMP v3MP *mp);
-        void get_request(Request*, int);
+        void get_request(Request*, int) override;
 private:
 	const NS_SNMP v3MP *v3mp;
 };
@@ -494,8 +494,8 @@ class AGENTPP_DECL usmUserAuthProtocol: public MibLeaf {
 
  public:
 	usmUserAuthProtocol(const Oidx&, NS_SNMP USM *u);
-	virtual bool value_ok(const Vbx&);
-	virtual MibEntryPtr clone();
+	bool value_ok(const Vbx&) override;
+	MibEntryPtr clone() override;
  private:
 	NS_SNMP USM *usm;
 };
@@ -504,9 +504,9 @@ class AGENTPP_DECL usmUserPrivProtocol: public MibLeaf {
 
  public:
 	usmUserPrivProtocol(const Oidx&, NS_SNMP USM *u);
-	virtual bool value_ok(const Vbx&);
-	virtual int prepare_set_request(Request*, int&);
-	virtual MibEntryPtr clone();
+	bool value_ok(const Vbx&) override;
+	int prepare_set_request(Request*, int&) override;
+	MibEntryPtr clone() override;
  private:
 	NS_SNMP USM *usm;
 };

@@ -1,0 +1,33 @@
+---
+Checks: "-*,\
+boost-*,\
+cert-*,\
+-cert-err58-cpp,\
+clang-analyzer-*,\
+cppcoreguidelines-*,\
+-cppcoreguidelines-pro-*,\
+-cppcoreguidelines-avoid-*,\
+-cppcoreguidelines-special-*,\
+-cppcoreguidelines-macro-usage,\
+-cppcoreguidelines-owning-memory,\
+-cppcoreguidelines-narrowing-conversions,\
+-hicpp-*,\
+misc-*,\
+-misc-non-private-member-variables-in-classes,\
+-misc-no-recursion,\
+-misc-unused-parameters,\
+-modernize-*,\
+-modernize-use-trailing-return-type,\
+performance-*,\
+portability-*,\
+-readability-*,\
+-*magic-numbers,\
+-*avoid-c-arrays,\
+"
+WarningsAsErrors: ''
+HeaderFilterRegex: '.*'
+AnalyzeTemporaryDtors: false
+FormatStyle:     none
+User:            clausklein
+...
+

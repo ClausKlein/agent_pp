@@ -85,25 +85,25 @@ public:
                 OidxPtrMibEntryPtrAVLMap(OidxPtrMibEntryPtrAVLMap& a);
   inline		~OidxPtrMibEntryPtrAVLMap();
 
-  MibEntryPtr&          operator [] (OidxPtr key);
+  MibEntryPtr&          operator [] (OidxPtr key) override;
 
-  void			del(OidxPtr  key);
+  void			del(OidxPtr  key) override;
 
-  inline Pix            first();
-  inline void           next(Pix& i);
-  inline OidxPtr&       key(Pix i);
-  inline MibEntryPtr&   contents(Pix i);
+  inline Pix            first() override;
+  inline void           next(Pix& i) override;
+  inline OidxPtr&       key(Pix i) override;
+  inline MibEntryPtr&   contents(Pix i) override;
 
-  Pix			seek(OidxPtr key);
+  Pix			seek(OidxPtr key) override;
   Pix			seek_inexact(OidxPtr key);
-  inline int		contains(OidxPtr key_);
+  inline int		contains(OidxPtr key_) override;
 
-  inline void		clear(); 
+  inline void		clear() override; 
 
   Pix			last();
   void			prev(Pix& i);
 
-  int			OK();
+  int			OK() override;
 };
 
 inline OidxPtrMibEntryPtrAVLMap::~OidxPtrMibEntryPtrAVLMap()
