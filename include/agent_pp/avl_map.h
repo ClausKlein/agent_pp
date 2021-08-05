@@ -94,25 +94,25 @@ public:
                 OidxPtrEntryPtrAVLMap(OidxPtrEntryPtrAVLMap& a);
   inline		~OidxPtrEntryPtrAVLMap();
 
-  EntryPtr&          operator [] (OidxPtr  key);
+  EntryPtr&          operator [] (OidxPtr  key) override;
 
-  void			del(OidxPtr  key);
+  void			del(OidxPtr  key) override;
 
-  inline Pix            first() const;
-  inline void           next(Pix& i) const;
-  inline OidxPtr&       key(Pix i) const;
-  inline EntryPtr&   contents(Pix i);
+  inline Pix            first() const override;
+  inline void           next(Pix& i) const override;
+  inline OidxPtr&       key(Pix i) const override;
+  inline EntryPtr&   contents(Pix i) override;
 
-  Pix			seek(OidxPtr key) const;
+  Pix			seek(OidxPtr key) const override;
   Pix			seek_inexact(OidxPtr key) const;
-  inline int		contains(OidxPtr key_) const;
+  inline int		contains(OidxPtr key_) const override;
 
-  inline void		clear(); 
+  inline void		clear() override; 
 
   Pix			last() const;
   void			prev(Pix& i) const;
 
-  int			OK();
+  int			OK() override;
 };
 
 inline OidxPtrEntryPtrAVLMap::~OidxPtrEntryPtrAVLMap()

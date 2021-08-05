@@ -367,7 +367,7 @@ public:
     /**
      * Resets the table to the state as if it was just created.
      */
-    virtual void clear() { MibTable::clear(); add_row("0"); }
+    void clear() override { MibTable::clear(); add_row("0"); }
 };
 
 /*********************************************************************
@@ -382,9 +382,9 @@ public:
     VacmSecurityToGroupTable();
     virtual ~VacmSecurityToGroupTable();
 
-    virtual bool ready_for_service(Vbx*, int);
-    virtual bool could_ever_be_managed(const Oidx&, int&);
-    virtual void row_added(MibTableRow*, const Oidx&, MibTable*);
+    bool ready_for_service(Vbx*, int) override;
+    bool could_ever_be_managed(const Oidx&, int&) override;
+    void row_added(MibTableRow*, const Oidx&, MibTable*) override;
     bool getGroupName(const int& securiyModel,
                          const NS_SNMP OctetStr& securityName,
                          NS_SNMP OctetStr& groupName);
@@ -408,9 +408,9 @@ public:
     VacmAccessTable(VacmSecurityToGroupTable*);
     virtual ~VacmAccessTable();
 
-    virtual bool ready_for_service(Vbx*, int);
-    virtual bool could_ever_be_managed(const Oidx&, int&);
-    virtual void row_added(MibTableRow*, const Oidx&, MibTable*);
+    bool ready_for_service(Vbx*, int) override;
+    bool could_ever_be_managed(const Oidx&, int&) override;
+    void row_added(MibTableRow*, const Oidx&, MibTable*) override;
     bool getViewName(const NS_SNMP OctetStr& group,
                         const NS_SNMP OctetStr& context,
                         const int securityModel,
@@ -437,7 +437,7 @@ public:
     VacmAccessTableStatus(const Oidx&, int);
     virtual ~VacmAccessTableStatus() {};
 
-    virtual MibEntryPtr clone();
+    MibEntryPtr clone() override;
 
 protected:
     int base_len;
@@ -476,20 +476,20 @@ public:
     VacmViewTreeFamilyTable();
     virtual ~VacmViewTreeFamilyTable();
 
-    virtual bool ready_for_service(Vbx*, int);
-    virtual bool could_ever_be_managed(const Oidx&, int&);
-    virtual void row_added(MibTableRow*, const Oidx&, MibTable*);
-    virtual void row_activated(MibTableRow*, const Oidx&, MibTable*);
-    virtual void row_deactivated(MibTableRow*, const Oidx&, MibTable*);
-    virtual void row_delete(MibTableRow*, const Oidx&, MibTable*);
-    virtual void row_init(MibTableRow*, const Oidx&, MibTable* t=0);
+    bool ready_for_service(Vbx*, int) override;
+    bool could_ever_be_managed(const Oidx&, int&) override;
+    void row_added(MibTableRow*, const Oidx&, MibTable*) override;
+    void row_activated(MibTableRow*, const Oidx&, MibTable*) override;
+    void row_deactivated(MibTableRow*, const Oidx&, MibTable*) override;
+    void row_delete(MibTableRow*, const Oidx&, MibTable*) override;
+    void row_init(MibTableRow*, const Oidx&, MibTable* t=0) override;
     int isInMibView(const NS_SNMP OctetStr&, const Oidx&);
     bool addNewRow(const NS_SNMP OctetStr& viewName, const Oidx& subtree,
                       const NS_SNMP OctetStr& mask, const int type,
                       const int storageType);
     void deleteRow(const NS_SNMP OctetStr& viewName, const Oidx& subtree);
-    virtual void clear()    {   StorageTable::clear(); buildViewNameIndex();}
-    virtual void reset()    {   StorageTable::reset(); buildViewNameIndex();}
+    void clear() override    {   StorageTable::clear(); buildViewNameIndex();}
+    void reset() override    {   StorageTable::reset(); buildViewNameIndex();}
 
 protected:
     bool bit(unsigned int, NS_SNMP OctetStr&);
@@ -504,8 +504,8 @@ class AGENTPP_DECL VacmViewTreeFamilyTableStatus: public snmpRowStatus
 public:
     VacmViewTreeFamilyTableStatus(const Oidx&, int);
     virtual ~VacmViewTreeFamilyTableStatus() {}
-    virtual int set(const Vbx&);
-    virtual MibEntryPtr clone();
+    int set(const Vbx&) override;
+    MibEntryPtr clone() override;
 
 protected:
     int base_len;

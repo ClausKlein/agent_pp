@@ -212,7 +212,7 @@ int main (int argc, char* argv[])
 	DefaultLog::log()->set_filter(INFO_LOG, 5);
 	DefaultLog::log()->set_filter(DEBUG_LOG, 1);
 #endif
-	int status;
+	int status = 0;
 	Snmp::socket_startup();  // Initialize socket subsystem
 #ifdef SNMP_PP_WITH_UDPADDR
 	// bind localhost only -> agent will not be reachable from
@@ -268,7 +268,7 @@ int main (int argc, char* argv[])
 		exit(1);
 	}
 
-	int stat;
+	int stat = 0;
         v3MP *v3mp = new v3MP(engineId, snmpEngineBoots, stat);
 #endif
 	reqList = new RequestList(mib);
@@ -476,7 +476,7 @@ int main (int argc, char* argv[])
 	NotificationOriginator notification_originator;
 	notification_originator.generate(vbs, 0, coldOid, "", "");
 	
-	Request* req;
+	Request* req = nullptr;
 	while (run) {
 	  
 		req = reqList->receive(2);

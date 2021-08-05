@@ -205,7 +205,7 @@ Request::~Request()
 	// acquired locks through the lock queue. So we notify
 	// the queue here to be sure that the other thread 
 	// may proceed.
-        Synchronized::TryLockResult lockState;
+        Synchronized::TryLockResult lockState = Synchronized::BUSY;
         if ((lockState = lockQueue->trylock()) != Synchronized::BUSY) {
             lockQueue->notify();
             if (lockState == Synchronized::LOCKED) {
@@ -568,7 +568,7 @@ bool Request::add_rep_row()
 	done  = new bool[size];
 	ready = new bool[size];
 	
-	int j;
+	int j = 0;
 	for (j=0; j<size-repeater; j++) { 
 		done[j]  = old_done[j]; 
 		ready[j] = old_ready[j];
@@ -1223,7 +1223,10 @@ void RequestList::answer(Request* req)
 					     req->target.get_version(), 
 					     req->target.get_readcommunity());
 #endif
-                        Counter32MibLeaf::incrementScalar(mib, oidSnmpOutTooBigs);
+#ifndef _NO_LOGGING
+            (void) status;
+#endif
+            Counter32MibLeaf::incrementScalar(mib, oidSnmpOutTooBigs);
 		}
 	}
         Counter32MibLeaf::incrementScalar(mib, oidSnmpOutGetResponses);
@@ -1288,12 +1291,12 @@ Request* RequestList::receive(int sec)
 	if ((status == SNMP_CLASS_SUCCESS) ||
 	    (status == SNMP_ERROR_TOO_BIG)) {
                 GenAddress tmp_addr;
-		snmp_version version;
+		snmp_version version = version1;
 		// security_name replaces community!
 		OctetStr        security_name;
 #ifdef _SNMPv3
-		int             security_model;
-		int             security_level;
+		int             security_model = 0;
+		int             security_level = 0;
 		OctetStr        context_engine_id;
 		OctetStr        context_name;
 #endif		
@@ -1455,7 +1458,7 @@ Request* RequestList::receive(int sec)
 			return add_request(req);
 		}
 #endif	// _PROXY_FORWARDER	    
-		int		  viewType;
+		int		  viewType = 0;
 		OctetStr	  viewName;
 		
 		// set access mode 

@@ -54,11 +54,11 @@ class AGENTPP_DECL agentppSimMode: public MibLeaf {
 
 	static agentppSimMode* instance;
 
-	virtual long       	get_state();
-	virtual void       	set_state(long);
-	virtual int        	set(const Vbx&);
-	virtual bool    	value_ok(const Vbx&);
-	virtual void        	init(NS_SNMP SnmpSyntax*, int);
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
+	int        	set(const Vbx&) override;
+	bool    	value_ok(const Vbx&) override;
+	void        	init(NS_SNMP SnmpSyntax*, int) override;
 };
 
 /**
@@ -85,8 +85,8 @@ public:
 
         static agentppSimDeleteRow* instance;
 
-        virtual int             commit_set_request(Request*, int);
-        virtual int             prepare_set_request(Request*, int&);
+        int             commit_set_request(Request*, int) override;
+        int             prepare_set_request(Request*, int&) override;
  protected:
 	Mib*	mib;
 };
@@ -111,8 +111,8 @@ public:
 
         static agentppSimDeleteTableContents* instance;
 
-        virtual int             commit_set_request(Request*, int);
-        virtual int             prepare_set_request(Request*, int&);
+        int             commit_set_request(Request*, int) override;
+        int             prepare_set_request(Request*, int&) override;
  protected:
 	Mib*	mib;
 };

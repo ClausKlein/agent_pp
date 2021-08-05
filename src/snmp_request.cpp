@@ -49,7 +49,7 @@ static void *inform_caller(void* ptr)
 	LOG_BEGIN(loggerModuleName, EVENT_LOG | 2);
 	LOG("SnmpRequest: inform thread started");
 	LOG_END;
-	int status;
+	int status = 0;
 	status = SnmpRequest::process_trap(callInfo->target, callInfo->vbs,
 					   callInfo->sz, callInfo->oid, "", TRUE);
 #ifdef _NO_LOGGING
@@ -100,7 +100,7 @@ int SnmpRequest::process(int rtype, const UdpAddress& address,
 	int retries = DEFAULT_RETRIES;
 	int timeout = DEFAULT_TIMEOUT;
 
-	snmp_version version;
+	snmp_version version = version1;
 	if (rtype == sNMP_PDU_GETBULK) {
 	  version = version2c;
 	  timeout *= 2;
@@ -108,7 +108,7 @@ int SnmpRequest::process(int rtype, const UdpAddress& address,
 	else
 	  version = version1;
 
-	int status;
+	int status = 0;
 
 	Snmpx* snmp = get_new_snmp(
                 Mib::instance->get_request_list()->get_snmp(), status);
@@ -182,7 +182,7 @@ int SnmpRequest::process_trap(SnmpTarget& target,
 			      const Oidx& oid,
 			      const Oidx& enterprise, bool ack)
 {
-	int status;
+	int status = 0;
 
 	Snmpx* snmp = get_new_snmp(
                 Mib::instance->get_request_list()->get_snmp(), status);
@@ -298,7 +298,7 @@ void SnmpRequest::inform(CTarget& target, Vbx* vbs, int sz, const Oidx& oid)
 #else
     static pthread_attr_t* attr = 0;
 
-	pthread_t thread;
+	pthread_t thread{};
 	if (!attr) {
 	  attr = new pthread_attr_t;
 	  pthread_attr_init(attr);
@@ -325,7 +325,7 @@ int SnmpRequest::gettable(const UdpAddress& address, Vbx* vbs, int sz,
 
 	int bufptr = 0;
 	int osz = 0;
-	int errind;
+	int errind = 0;
 	int err = 0;
 
 	while (err == SNMP_ERROR_SUCCESS) {
@@ -361,7 +361,7 @@ int SnmpRequest::gettable(const UdpAddress& address, Vbx* vbs, int sz,
 
 Snmpx *SnmpRequest::get_new_snmp(Snmpx* snmp, int &status)
 {
-    Snmpx *snmpx;
+    Snmpx *snmpx = nullptr;
 
     status = SNMP_CLASS_ERROR;
 
@@ -394,7 +394,7 @@ SnmpRequestV3::SnmpRequestV3(): SnmpRequestV3(Mib::instance) {
 
 SnmpRequestV3::SnmpRequestV3(Mib* mib): mib(mib)
 {
-	int status;
+	int status = 0;
 	snmp = SnmpRequest::get_new_snmp(mib->get_request_list()->get_snmp(), status);
 	if (status != 0) {
 		LOG_BEGIN(loggerModuleName, ERROR_LOG | 0);
@@ -416,7 +416,7 @@ int SnmpRequestV3::send(UTarget& target, Pdux& pdu)
 }
 int SnmpRequestV3::send(Mib* mib, UTarget& target, Pdux& pdu)
 {
-	int status;
+	int status = 0;
 
 	Snmpx* snmp = SnmpRequest::get_new_snmp(
                 mib->get_request_list()->get_snmp(), status);

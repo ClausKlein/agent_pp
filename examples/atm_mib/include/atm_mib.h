@@ -246,9 +246,9 @@ public:
 	atmInterfaceMaxVpcs(const Oidx&);
 	virtual ~atmInterfaceMaxVpcs();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -266,9 +266,9 @@ public:
 	atmInterfaceMaxVccs(const Oidx&);
 	virtual ~atmInterfaceMaxVccs();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -294,7 +294,7 @@ public:
 	atmInterfaceConfVpcs(const Oidx&);
 	virtual ~atmInterfaceConfVpcs();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -316,7 +316,7 @@ public:
 	atmInterfaceConfVccs(const Oidx&);
 	virtual ~atmInterfaceConfVccs();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -337,9 +337,9 @@ public:
 	atmInterfaceMaxActiveVpiBits(const Oidx&);
 	virtual ~atmInterfaceMaxActiveVpiBits();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -357,9 +357,9 @@ public:
 	atmInterfaceMaxActiveVciBits(const Oidx&);
 	virtual ~atmInterfaceMaxActiveVciBits();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -380,9 +380,9 @@ public:
 	atmInterfaceIlmiVpi(const Oidx&);
 	virtual ~atmInterfaceIlmiVpi();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -403,9 +403,9 @@ public:
 	atmInterfaceIlmiVci(const Oidx&);
 	virtual ~atmInterfaceIlmiVci();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -423,7 +423,7 @@ public:
 	atmInterfaceAddressType(const Oidx&);
 	virtual ~atmInterfaceAddressType();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -449,7 +449,7 @@ public:
 	atmInterfaceAdminAddress(const Oidx&);
 	virtual ~atmInterfaceAdminAddress();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -474,9 +474,9 @@ public:
 	atmInterfaceMyNeighborIpAddress(const Oidx&);
 	virtual ~atmInterfaceMyNeighborIpAddress();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -505,9 +505,9 @@ public:
 	atmInterfaceMyNeighborIfName(const Oidx&);
 	virtual ~atmInterfaceMyNeighborIfName();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -535,7 +535,7 @@ public:
 	atmInterfaceCurrentMaxVpiBits(const Oidx&);
 	virtual ~atmInterfaceCurrentMaxVpiBits();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -563,7 +563,7 @@ public:
 	atmInterfaceCurrentMaxVciBits(const Oidx&);
 	virtual ~atmInterfaceCurrentMaxVciBits();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -584,9 +584,9 @@ public:
 	atmInterfaceSubscrAddress(const Oidx&);
 	virtual ~atmInterfaceSubscrAddress();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -606,7 +606,7 @@ public:
 	atmInterfaceDs3PlcpSEFSs(const Oidx&);
 	virtual ~atmInterfaceDs3PlcpSEFSs();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -633,7 +633,7 @@ public:
 	atmInterfaceDs3PlcpAlarmState(const Oidx&);
 	virtual ~atmInterfaceDs3PlcpAlarmState();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -651,7 +651,7 @@ public:
 	atmInterfaceDs3PlcpUASs(const Oidx&);
 	virtual ~atmInterfaceDs3PlcpUASs();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -673,7 +673,7 @@ public:
 	atmInterfaceOCDEvents(const Oidx&);
 	virtual ~atmInterfaceOCDEvents();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -697,7 +697,7 @@ public:
 	atmInterfaceTCAlarmState(const Oidx&);
 	virtual ~atmInterfaceTCAlarmState();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -725,9 +725,9 @@ public:
 	atmTrafficDescrType(const Oidx&);
 	virtual ~atmTrafficDescrType();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -746,9 +746,9 @@ public:
 	atmTrafficDescrParam1(const Oidx&);
 	virtual ~atmTrafficDescrParam1();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -767,9 +767,9 @@ public:
 	atmTrafficDescrParam2(const Oidx&);
 	virtual ~atmTrafficDescrParam2();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -788,9 +788,9 @@ public:
 	atmTrafficDescrParam3(const Oidx&);
 	virtual ~atmTrafficDescrParam3();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -809,9 +809,9 @@ public:
 	atmTrafficDescrParam4(const Oidx&);
 	virtual ~atmTrafficDescrParam4();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -830,9 +830,9 @@ public:
 	atmTrafficDescrParam5(const Oidx&);
 	virtual ~atmTrafficDescrParam5();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -861,9 +861,9 @@ public:
 	atmTrafficQoSClass(const Oidx&);
 	virtual ~atmTrafficQoSClass();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -882,7 +882,7 @@ public:
 	atmTrafficDescrRowStatus(const Oidx&);
 	virtual ~atmTrafficDescrRowStatus();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -899,9 +899,9 @@ public:
 	atmServiceCategory(const Oidx&);
 	virtual ~atmServiceCategory();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -924,9 +924,9 @@ public:
 	atmTrafficFrameDiscard(const Oidx&);
 	virtual ~atmTrafficFrameDiscard();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -947,9 +947,9 @@ public:
 	atmVplAdminStatus(const Oidx&);
 	virtual ~atmVplAdminStatus();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -966,7 +966,7 @@ public:
 	atmVplOperStatus(const Oidx&);
 	virtual ~atmVplOperStatus();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -984,7 +984,7 @@ public:
 	atmVplLastChange(const Oidx&);
 	virtual ~atmVplLastChange();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1003,9 +1003,9 @@ public:
 	atmVplReceiveTrafficDescrIndex(const Oidx&);
 	virtual ~atmVplReceiveTrafficDescrIndex();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -1024,9 +1024,9 @@ public:
 	atmVplTransmitTrafficDescrIndex(const Oidx&);
 	virtual ~atmVplTransmitTrafficDescrIndex();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -1059,7 +1059,7 @@ public:
 	atmVplCrossConnectIdentifier(const Oidx&);
 	virtual ~atmVplCrossConnectIdentifier();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1087,7 +1087,7 @@ public:
 	atmVplRowStatus(const Oidx&);
 	virtual ~atmVplRowStatus();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1104,9 +1104,9 @@ public:
 	atmVplCastType(const Oidx&);
 	virtual ~atmVplCastType();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -1123,9 +1123,9 @@ public:
 	atmVplConnKind(const Oidx&);
 	virtual ~atmVplConnKind();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -1146,9 +1146,9 @@ public:
 	atmVclAdminStatus(const Oidx&);
 	virtual ~atmVclAdminStatus();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -1165,7 +1165,7 @@ public:
 	atmVclOperStatus(const Oidx&);
 	virtual ~atmVclOperStatus();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1183,7 +1183,7 @@ public:
 	atmVclLastChange(const Oidx&);
 	virtual ~atmVclLastChange();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1202,9 +1202,9 @@ public:
 	atmVclReceiveTrafficDescrIndex(const Oidx&);
 	virtual ~atmVclReceiveTrafficDescrIndex();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -1223,9 +1223,9 @@ public:
 	atmVclTransmitTrafficDescrIndex(const Oidx&);
 	virtual ~atmVclTransmitTrafficDescrIndex();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -1249,9 +1249,9 @@ public:
 	atmVccAalType(const Oidx&);
 	virtual ~atmVccAalType();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -1272,9 +1272,9 @@ public:
 	atmVccAal5CpcsTransmitSduSize(const Oidx&);
 	virtual ~atmVccAal5CpcsTransmitSduSize();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -1295,9 +1295,9 @@ public:
 	atmVccAal5CpcsReceiveSduSize(const Oidx&);
 	virtual ~atmVccAal5CpcsReceiveSduSize();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -1321,9 +1321,9 @@ public:
 	atmVccAal5EncapsType(const Oidx&);
 	virtual ~atmVccAal5EncapsType();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -1357,7 +1357,7 @@ public:
 	atmVclCrossConnectIdentifier(const Oidx&);
 	virtual ~atmVclCrossConnectIdentifier();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1393,7 +1393,7 @@ public:
 	atmVclRowStatus(const Oidx&);
 	virtual ~atmVclRowStatus();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1410,9 +1410,9 @@ public:
 	atmVclCastType(const Oidx&);
 	virtual ~atmVclCastType();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -1429,9 +1429,9 @@ public:
 	atmVclConnKind(const Oidx&);
 	virtual ~atmVclConnKind();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -1479,9 +1479,9 @@ public:
 	atmVpCrossConnectAdminStatus(const Oidx&);
 	virtual ~atmVpCrossConnectAdminStatus();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -1500,7 +1500,7 @@ public:
 	atmVpCrossConnectL2HOperStatus(const Oidx&);
 	virtual ~atmVpCrossConnectL2HOperStatus();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1519,7 +1519,7 @@ public:
 	atmVpCrossConnectH2LOperStatus(const Oidx&);
 	virtual ~atmVpCrossConnectH2LOperStatus();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1538,7 +1538,7 @@ public:
 	atmVpCrossConnectL2HLastChange(const Oidx&);
 	virtual ~atmVpCrossConnectL2HLastChange();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1557,7 +1557,7 @@ public:
 	atmVpCrossConnectH2LLastChange(const Oidx&);
 	virtual ~atmVpCrossConnectH2LLastChange();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1583,7 +1583,7 @@ public:
 	atmVpCrossConnectRowStatus(const Oidx&);
 	virtual ~atmVpCrossConnectRowStatus();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1631,9 +1631,9 @@ public:
 	atmVcCrossConnectAdminStatus(const Oidx&);
 	virtual ~atmVcCrossConnectAdminStatus();
 
-	virtual MibEntryPtr	clone();
-	virtual int        	prepare_set_request(Request*, int&);
-	virtual bool    	value_ok(const Vbx&);
+	MibEntryPtr	clone() override;
+	int        	prepare_set_request(Request*, int&) override;
+	bool    	value_ok(const Vbx&) override;
 };
 
 
@@ -1652,7 +1652,7 @@ public:
 	atmVcCrossConnectL2HOperStatus(const Oidx&);
 	virtual ~atmVcCrossConnectL2HOperStatus();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1671,7 +1671,7 @@ public:
 	atmVcCrossConnectH2LOperStatus(const Oidx&);
 	virtual ~atmVcCrossConnectH2LOperStatus();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1690,7 +1690,7 @@ public:
 	atmVcCrossConnectL2HLastChange(const Oidx&);
 	virtual ~atmVcCrossConnectL2HLastChange();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1709,7 +1709,7 @@ public:
 	atmVcCrossConnectH2LLastChange(const Oidx&);
 	virtual ~atmVcCrossConnectH2LLastChange();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1735,7 +1735,7 @@ public:
 	atmVcCrossConnectRowStatus(const Oidx&);
 	virtual ~atmVcCrossConnectRowStatus();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1754,7 +1754,7 @@ public:
 	aal5VccCrcErrors(const Oidx&);
 	virtual ~aal5VccCrcErrors();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1778,7 +1778,7 @@ public:
 	aal5VccSarTimeOuts(const Oidx&);
 	virtual ~aal5VccSarTimeOuts();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 
@@ -1798,7 +1798,7 @@ public:
 	aal5VccOverSizedSDUs(const Oidx&);
 	virtual ~aal5VccOverSizedSDUs();
 
-	virtual MibEntryPtr	clone();
+	MibEntryPtr	clone() override;
 };
 
 

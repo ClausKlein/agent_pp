@@ -164,7 +164,7 @@ bool ProxyForwarder::match_target_params(Request* req,
 		return FALSE;
 	}
 
-	int secModel, secLevel, mpModel;
+	int secModel = 0, secLevel = 0, mpModel = 0;
 	OctetStr secName;
 
 	paramsRow->get_nth(0)->get_value(mpModel);

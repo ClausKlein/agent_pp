@@ -65,7 +65,7 @@ public:
     add_col(new MibLeaf("1", READWRITE, new SnmpInt32(0), VMODE_NONE));
   }
 
-virtual void update(Request* req) {
+void update(Request* req) override {
 
   LOG_BEGIN(loggerModuleName, INFO_LOG | 1);
   LOG("DynamicTable: updating table");
@@ -242,7 +242,7 @@ int main (int argc, char* argv[])
 	DefaultLog::log()->set_filter(INFO_LOG, 5);
 	DefaultLog::log()->set_filter(DEBUG_LOG, 6);
 #endif
-	int status;
+	int status = 0;
 	Snmp::socket_startup();  // Initialize socket subsystem
 	Snmpx snmp(status, port);
 
@@ -285,7 +285,7 @@ int main (int argc, char* argv[])
 		exit(1);
 	}
 
-	int stat;
+	int stat = 0;
         v3MP *v3mp = new v3MP(engineId, snmpEngineBoots, stat);
         snmp.set_mpv3(v3mp);
 #endif
@@ -477,7 +477,7 @@ int main (int argc, char* argv[])
 	no.add_v1_trap_destination(dest, "defaultV1Trap", "v1trap", "public");
 	no.generate(vbs, 0, coldOid, "", "");
 
-	Request* req;
+	Request* req = nullptr;
 	while (run) {
 	  
 		req = reqList->receive(2);

@@ -151,7 +151,7 @@ simSysUpTime::simSysUpTime(): SimMibLeaf(oidSysUpTime, READONLY,
 
 time_t simSysUpTime::get_currentTime()
 {
-	time_t now;
+	time_t now = 0;
 	time(&now);
 	return now;
 }

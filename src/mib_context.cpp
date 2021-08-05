@@ -128,9 +128,9 @@ void MibGroup::clearAll()
 
 void MibGroup::load_from_file(const char* fname)
 {
-	FILE *f;
-	char *buf;
-	long size, bytes;
+	FILE *f = nullptr;
+	char *buf = nullptr;
+	long size = 0, bytes = 0;
 	char header[16];
 
 	if ((f = fopen(fname, "rb")) == 0)
@@ -213,7 +213,7 @@ void MibGroup::load_from_file(const char* fname)
 
 void MibGroup::save_to_file(const char* fname)
 {
-	FILE *f;
+	FILE *f = nullptr;
 	char *buf = 0;
 	int bytes = 0;
 
@@ -480,7 +480,7 @@ TS_SYNCHRONIZED(
 
 MibGroup* MibContext::find_group_of(const Oidx& oid)
 {
-	Oidx tmpoid(oid);
+	// const Oidx& tmpoid(oid);
 	OidListCursor<MibGroup> cur;
 	for (cur.init(&groups); cur.get(); cur.next()) {
 		if (oid.in_subtree_of(*cur.get()->key())) {

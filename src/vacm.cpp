@@ -185,7 +185,7 @@ void VacmSecurityToGroupTable::row_added(MibTableRow* new_row,
   if (o.len() == 0) {
     return;
   }
-  MibLeaf* ml;
+  MibLeaf* ml = nullptr;
   ml = new_row->get_nth(0);
   ml->set_value(o[0]);
 
@@ -199,7 +199,7 @@ bool VacmSecurityToGroupTable::could_ever_be_managed(const Oidx& o,
 
 {
   if (!MibTable::could_ever_be_managed(o, result)) return FALSE;
-  Oidx tmpoid(o);
+  // Oidx tmpoid(o);
 
   // check oid through value_ok() of the INDEX-objects
   Vbx v;
@@ -232,7 +232,7 @@ bool VacmSecurityToGroupTable::getGroupName(const int& securityModel, const Octe
   LOG(o.get_printable());
   LOG_END;
 
-  MibLeaf* leaf;
+  MibLeaf* leaf = nullptr;
   if ((leaf = find(o)) == 0)
     return FALSE;
   leaf->get_value().get_value(groupName);
@@ -358,7 +358,7 @@ void VacmAccessTable::row_added(MibTableRow* new_row,
   if (o.len() == 0) {
     return;
   }
-  MibLeaf* ml;
+  MibLeaf* ml = nullptr;
 
   ml = new_row->get_nth(0);
 
@@ -377,7 +377,7 @@ void VacmAccessTable::row_added(MibTableRow* new_row,
 bool VacmAccessTable::could_ever_be_managed(const Oidx& o, int& result)
 {
   if (!MibTable::could_ever_be_managed(o, result)) return FALSE;
-  Oidx tmpoid(o);
+  // Oidx tmpoid(o);
 
   // check oid through value_ok() of the INDEX-objects
   if (!(securityToGroupTable->isGroupNameOK(o.cut_right(3+o[oid.len()+2+o[oid.len()+1]]).cut_left(oid.len()+2).as_string())))
@@ -456,7 +456,7 @@ bool VacmAccessTable::getViewName(const OctetStr& group,
              ) &&
             ((int)ind[ind.len() - 1] <= securityLevel)) {
           OctetStr pref=OctetStr(ind.cut_left(ind[0]+2).cut_right(2).as_string());
-          int exactMatch;
+          int exactMatch = 0;
           cur.get()->get_nth(3)->get_value(exactMatch);
 
 	  LOG_BEGIN(loggerModuleName, DEBUG_LOG | 8);
@@ -586,7 +586,7 @@ VacmViewTreeFamilyTableStatus::VacmViewTreeFamilyTableStatus(const Oidx& o,
 int VacmViewTreeFamilyTableStatus::set(const Vbx& vb)
 {
 	undo = value->clone();
-	long rs;
+	int32_t rs = 0;
 	if (vb.get_value(rs) != SNMP_CLASS_SUCCESS)
 	    return SNMP_ERROR_WRONG_TYPE;
 
@@ -689,7 +689,7 @@ void VacmViewTreeFamilyTable::row_added(MibTableRow* new_row,
   if (o.len() == 0) {
     return;
   }    
-  MibLeaf* ml;
+  MibLeaf* ml = nullptr;
   ml = new_row->get_nth(0);
   ml->set_value(o.cut_right(o[o[0]+1]+1).cut_left(1).as_string());
 
@@ -729,7 +729,7 @@ bool VacmViewTreeFamilyTable::could_ever_be_managed(const Oidx& o,
 
 {
   if (!MibTable::could_ever_be_managed(o, result)) return FALSE;
-  Oidx tmpoid(o);
+  // Oidx tmpoid(o);
 
   // check oid through value_ok() of the INDEX-objects
   Vbx v;
@@ -796,7 +796,7 @@ int VacmViewTreeFamilyTable::isInMibView(const OctetStr& viewName, const Oidx& s
     }
   }
   if (found) {
-    int tmpval;
+    int tmpval = 0;
     foundRow->get_nth(3)->get_value(tmpval);
     if (tmpval==1) { //included
 
@@ -892,7 +892,7 @@ void VacmViewTreeFamilyTable::deleteRow(const OctetStr& viewName, const Oidx& su
 
 ViewNameIndex* VacmViewTreeFamilyTable::viewsOf(const OctetStr& viewName)
 {
-  OctetStr vName(viewName);
+  const OctetStr& vName(viewName);
   ListCursor<ViewNameIndex> cur;
   for (cur.init(&viewNameIndex); cur.get(); cur.next()) {
 

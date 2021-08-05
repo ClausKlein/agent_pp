@@ -60,12 +60,12 @@ void agentppSimMode::init(SnmpSyntax* v, int m)
 }
 
 
-long agentppSimMode::get_state()
+int32_t agentppSimMode::get_state()
 {
-	return (long)*((SnmpInt32*)value);
+	return (int32_t)*((SnmpInt32*)value);
 }
 
-void agentppSimMode::set_state(long l)
+void agentppSimMode::set_state(int32_t l)
 {
 	*((SnmpInt32*)value) = l;
 	switch (l) {
@@ -80,7 +80,7 @@ void agentppSimMode::set_state(long l)
 
 int agentppSimMode::set(const Vbx& vb)
 {
-	long l = 0;
+	int32_t l = 0;
 	if (vb.get_value(l) != SNMP_CLASS_SUCCESS)
 	    return SNMP_ERROR_WRONG_TYPE;
 	switch (l) {
@@ -96,7 +96,7 @@ int agentppSimMode::set(const Vbx& vb)
 
 bool agentppSimMode::value_ok(const Vbx& vb)
 {
-	long v;
+	int32_t v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
 	    return FALSE;
 	if ((v != 1) && (v != 2)) return FALSE;
@@ -154,7 +154,7 @@ int agentppSimDeleteRow::commit_set_request(Request* req, int ind)
 
 int agentppSimDeleteRow::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 	Oidx toid;
@@ -232,7 +232,7 @@ int agentppSimDeleteTableContents::commit_set_request(Request* req, int ind)
 
 int agentppSimDeleteTableContents::prepare_set_request(Request* req, int& ind)
 {
-	int status;
+	int status = 0;
 	if ((status = MibLeaf::prepare_set_request(req, ind)) !=
 	    SNMP_ERROR_SUCCESS) return status;
 

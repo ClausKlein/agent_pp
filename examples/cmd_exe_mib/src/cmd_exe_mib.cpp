@@ -82,9 +82,9 @@ void CmdThread::run()
 	
 	cmdExecutionOutputEntry::instance->start_synch();
 
-	FILE *f;
-	char *buf;
-	long size, bytes;
+	FILE *f = nullptr;
+	char *buf = nullptr;
+	long size = 0, bytes = 0;
 
 	OctetStr fname;
 	fname += Mib::instance->get_persistent_objects_path();
@@ -406,7 +406,7 @@ void cmdExecutionCmdRowStatus::set_state(long l)
 int cmdExecutionCmdRowStatus::prepare_set_request(Request* req, int& ind) 
 {
 	Vbx vb = req->get_value(ind);
-	unsigned int l;
+	unsigned int l = 0;
 	if (vb.get_value(l) != SNMP_CLASS_SUCCESS)
 		return SNMP_ERROR_WRONG_TYPE;
 	
@@ -429,7 +429,7 @@ int cmdExecutionCmdRowStatus::prepare_set_request(Request* req, int& ind)
 
 int cmdExecutionCmdRowStatus::set(const Vbx& vb)
 {
-	unsigned int l;
+	unsigned int l = 0;
 	if (vb.get_value(l) != SNMP_CLASS_SUCCESS)
 		return SNMP_ERROR_WRONG_TYPE;
 	
@@ -544,7 +544,7 @@ void cmdExecutionCmdConfigEntry::set_row(int index, const char* p0, int p1, int 
 	get(2, index)->replace_value(new SnmpInt32(p2));
 }
 
-bool cmdExecutionCmdConfigEntry::contains(Oidx index) 
+bool cmdExecutionCmdConfigEntry::contains(const Oidx& index) 
 {
 	OidListCursor<MibTableRow> cur;
 	for (cur.init(&content); cur.get(); cur.next()) {

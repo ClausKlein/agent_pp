@@ -97,7 +97,7 @@ mib_type MibEntry::type() const
  *
  * @return A pointer to an object identifier.
  */
-OidxPtr MibEntry::key() 
+OidxPtr MibEntry::key()
 { 
 	return &oid; 
 }
@@ -208,9 +208,9 @@ void MibEntry::notify_change(const Oidx& o, mib_change change)
 
 void MibEntry::load_from_file(const char* fname)
 {
-	FILE *f;
-	char *buf;
-	int size, bytes;
+	FILE *f = nullptr;
+	char *buf = nullptr;
+	int size = 0, bytes = 0;
 
 	if ((f = fopen(fname, "rb")) == 0)
 		return;
@@ -232,9 +232,9 @@ void MibEntry::load_from_file(const char* fname)
 	
 void MibEntry::save_to_file(const char* fname)
 {
-	FILE *f;
+	FILE *f = nullptr;
 	char *buf = 0;
-	int bytes;
+	int bytes = 0;
 
 	if (serialize(buf, bytes)) {
 		if ((f = fopen(fname, "wb")) == 0) {

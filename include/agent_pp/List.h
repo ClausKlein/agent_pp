@@ -127,8 +127,8 @@ public:
 			return addFirst(item);
 		}
 		else {
-			ListItem<T>* tmp;
-			ListItem<T>* h;
+			ListItem<T>* tmp = nullptr;
+			ListItem<T>* h = nullptr;
 			tmp = head;
 			while ((tmp->next) && (elem != tmp->next->item))
 			      tmp = tmp->next;
@@ -160,8 +160,8 @@ public:
 			return addLast(item);
 		}
 		else {
-			ListItem<T>* tmp;
-			ListItem<T>* h;
+			ListItem<T>* tmp = nullptr;
+			ListItem<T>* h = nullptr;
 			tmp = tail;
 			while ((tmp->prev) && (elem != tmp->prev->item))
 			      tmp = tmp->prev;
@@ -225,7 +225,7 @@ public:
 	 */
 	void clearAll() {
 		ListItem<T>* tmp = head;
-		ListItem<T>* del;
+		ListItem<T>* del = nullptr;
 		while (tmp) {
 			delete tmp->item;
 			del = tmp;
@@ -242,7 +242,7 @@ public:
 	 */
 	void clear() {
 		ListItem<T>* tmp = head;
-		ListItem<T>* del;
+		ListItem<T>* del = nullptr;
 		while (tmp) {
 			del = tmp;
 			tmp = tmp->next;
@@ -263,7 +263,7 @@ public:
 	 */
 	T* remove(T* i) {
 
-		ListItem<T> *tmp;
+		ListItem<T> *tmp = nullptr;
 
 		if (!head) 
 			return 0;

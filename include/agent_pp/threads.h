@@ -370,7 +370,7 @@ public:
 	 *
 	 * Subclasses of Thread should override this method. 
 	 */
-	virtual void      run();
+	void      run() override;
 
 	/**
 	 * Get the Runnable object used for thread execution.
@@ -652,7 +652,7 @@ public:
 	 * Execute a task. The task will be deleted after call of
 	 * its run() method.
 	 */
-	void	execute(Runnable*);
+	void	execute(Runnable*) override;
 
 	/**
 	 * Gets the current number of queued tasks.
@@ -667,7 +667,7 @@ public:
 	/**
 	 * Runs the queue processing loop.
 	 */
-	void	run();
+	void	run() override;
 
 	/**
 	 * Stop queue processing.
@@ -677,7 +677,7 @@ public:
 	/** 
 	 * Notifies the thread pool about an idle thread.
 	 */
-	virtual void	idle_notification();
+	void	idle_notification() override;
         
 	/**
 	 * Check whether the ThreadPool is idle or not.
@@ -686,7 +686,7 @@ public:
 	 *    TRUE if non of the threads in the pool is currently 
 	 *    executing any task.
 	 */
-	virtual bool is_idle() { return ThreadPool::is_idle(); }
+	bool is_idle() override { return ThreadPool::is_idle(); }
 
 	/**
 	 * Check whether the ThreadPool is busy i.e., if there are any threads
@@ -696,7 +696,7 @@ public:
 	 *    TRUE if there exists at least one thread in the pool that is currently
 	 *    busy (executing any task).
 	 */
-	virtual bool is_busy() { return ThreadPool::is_busy(); }
+	bool is_busy() override { return ThreadPool::is_busy(); }
         
 
  private:
@@ -789,7 +789,7 @@ public:
 	Thread		thread;
 	ThreadPool*	threadPool;
 	Runnable*      	task;
-	void		run();
+	void		run() override;
 	bool		go;
  };
 
@@ -807,7 +807,7 @@ public:
 	MibTask(MibMethodCall* call) { task = call; }
 	virtual ~MibTask() { delete task; }
 	
-	virtual void run();
+	void run() override;
  protected:
 	MibMethodCall* task;
  };
@@ -868,7 +868,7 @@ public:
  public:
 	LockQueue();
 	virtual ~LockQueue();
-	virtual void run();
+	void run() override;
 
 	/**
 	 * Lock a Synchronized instance.
