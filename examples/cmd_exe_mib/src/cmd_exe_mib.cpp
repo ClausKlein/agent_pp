@@ -116,7 +116,7 @@ void CmdThread::run()
 			  else {
 				char* l = new char[nl-ptr+1];
 				strncpy(l, ptr, nl-ptr);
-				l[nl-ptr] = 0;
+                l[nl-ptr] = 0;  // OK, CK
 				*line = l;
 				ptr = nl+1;
 			  }

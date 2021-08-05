@@ -814,13 +814,13 @@ void Thread::join()
 		status = IDLE;
 		LOG_BEGIN(loggerModuleName, DEBUG_LOG | 4);
 		LOG("Thread: joined thread successfully (tid)");
-		LOG((AGENTPP_OPAQUE_PTHREAD_T)tid);
+		LOG((AGENTPP_OPAQUE_PTHREAD_T)tid); // FIXME: OSX error: cast from pointer to smaller type 'int' loses information
 		LOG_END;
 	}
 	else {
 		LOG_BEGIN(loggerModuleName, WARNING_LOG | 1);
 		LOG("Thread: thread not running (tid)");
-		LOG((AGENTPP_OPAQUE_PTHREAD_T)tid);
+		LOG((AGENTPP_OPAQUE_PTHREAD_T)tid); // FIXME: OSX error: cast from pointer to smaller type 'int' loses information
 		LOG_END;
 	}
 #else

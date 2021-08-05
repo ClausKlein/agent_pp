@@ -306,7 +306,7 @@ bool SnmpTagList::contains(const char* tag)
     int   len = ((OctetStr*)value)->len();
     char* l   = new char[len + 1];
     strncpy(l, (char*)((OctetStr*)value)->data(), len);
-    l[len] = 0;
+    l[len] = 0; // OK, CK
 
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 10);
     LOG("SnmpTagList: contains: (taglist)(tag)");
@@ -741,9 +741,18 @@ void DateAndTime::set_state(const OctetStr& s) { *((OctetStr*)value) = s; }
 
 void DateAndTime::update()
 {
-    time_t     c  = sysUpTime::get_currentTime();
-    struct tm* dt = localtime(&c);
-    if (!dt) return; // TODO: possibly log an error; Use localtime_r!
+    time_t     c = sysUpTime::get_currentTime();
+    struct tm  stm { };
+    struct tm* dt = nullptr;
+
+#ifdef HAVE_LOCALTIME_R
+    dt = localtime_r(&c, &stm); // TODO: check if gmtime_r() would be better? CK
+#else
+    dt = localtime(&c);
+#endif
+
+    if (!dt) return; // TODO: possibly log an error;
+
     OctetStr val;
     val += (unsigned char)((dt->tm_year + 1900) >> 8) & 0xFF;
     val += (unsigned char)(dt->tm_year + 1900) & 0xFF;
@@ -753,6 +762,7 @@ void DateAndTime::update()
     val += (unsigned char)dt->tm_min;
     val += (unsigned char)dt->tm_sec;
     val += (unsigned char)0;
+
 #if defined __FreeBSD__ || defined __APPLE__
     if (dt->tm_gmtoff >= 0)
         val += '+';
@@ -772,6 +782,7 @@ void DateAndTime::update()
         val += '-';
     unsigned int tz = std::abs(timezone);
 #endif
+
     val += (unsigned char)((tz / 3600)
         + ((dt->tm_isdst > 0) ? ((timezone > 0) ? -1 : 1) : 0));
     val += (unsigned char)((tz % 3600) / 60);

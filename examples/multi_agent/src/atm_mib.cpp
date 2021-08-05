@@ -2445,7 +2445,7 @@ atmInterfaceConfEntry::atmInterfaceConfEntry():
 	/* for testing
 	char buf[16];
 	for (int i=0; i<5000; i++) {
-		sprintf(buf, "%d", i);
+        svprintf(buf, sizeof(buf), "%d", i);
 		add_row(buf);
 	}
 	*/

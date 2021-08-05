@@ -1,12 +1,15 @@
 #!/bin/bash
 
-dir_name=`basename "$0"`
+dir_name=`dirname "$0"`
 export MIBDIRS=+${dir_name}/mibs
 export MIBS=ALL
 
 set -u
 set -e
 set -x
+
+agent="$1"
+test_app="$2"
 
 # cleanup config files
 rm -f snmpv3_boot_counter
@@ -17,8 +20,8 @@ mkdir -p config
 killall agent || echo OK
 pkill agent || echo OK
 
-# start as bg job
-examples/static_table/src/agent 4700 &
+# start agent as bg job
+${agent} 4700 &
 sleep 1
 cat snmpv3_boot_counter
 
@@ -57,7 +60,7 @@ test ${snmpOutTraps} -ne 1 || exit 1
 echo "OK, authentication failure trap sent"
 
 # start snmp_pp test_app too
-_deps/snmp_pp-build/test_app 127.0.0.1 get
+${test_app} 127.0.0.1 get
 
 # pkill agent
 kill -s TERM %%
@@ -65,8 +68,8 @@ wait
 
 ls -lrta config
 
-# start as bg job
-examples/static_table/src/agent 4700 &
+# start agent as bg job
+${agent} 4700 &
 sleep 1
 cat snmpv3_boot_counter
 

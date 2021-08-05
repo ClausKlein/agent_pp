@@ -5,7 +5,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # NOTE: We need LANGUAGE C too for libdes. It may be required to build at Windows! CK
 project(
   agent_pp
-  VERSION 4.5.1.8
+  VERSION 4.5.1.9
   LANGUAGES CXX C
 )
 
@@ -137,12 +137,12 @@ check_function_exists("strstr" HAVE_STRSTR)
 #check_include_files(time.h HAVE_TIME_H) # again?
 #check_include_files(unistd.h HAVE_UNISTD_H) # again?
 
-if(MSVC)
-  check_include_files(winsock2.h HAVE_WINSOCK2_H) # again?
-  check_include_files(ws2tcpip.h HAVE_WS2TCPIP_H) # again?
-  check_include_files(wspiapi.h HAVE_WSPIAPI_H) # again?
-  check_function_exists("_getpid" HAVE__GETPID) # again?
-endif()
+#if(MSVC)
+#  check_include_files(winsock2.h HAVE_WINSOCK2_H) # again?
+#  check_include_files(ws2tcpip.h HAVE_WS2TCPIP_H) # again?
+#  check_include_files(wspiapi.h HAVE_WSPIAPI_H) # again?
+#  check_function_exists("_getpid" HAVE__GETPID) # again?
+#endif()
 
 check_type_size("pthread_t" SIZEOF_PTHREAD_T LANGUAGE CXX)
 check_type_size("long" SIZEOF_LONG LANGUAGE CXX)
@@ -224,13 +224,27 @@ else()
   set(STDCXX_98_HEADERS 0)
 endif()
 
-check_include_files(malloc.h HAVE_MALLOC_H)
-check_include_files("sys/param.h;sys/mount.h" HAVE_SYS_MOUNT_H)
+check_include_files("sys/mount.h" HAVE_SYS_MOUNT_H)
 check_function_exists("strcasecmp" HAVE_STRCASECMP)
 
 if(CNF_HAVE_PTHREAD_H)
   set(CMAKE_REQUIRED_LINK_AGENT_PPS "-lpthread")
   check_function_exists(pthread_mutex_timedlock HAVE_PTHREAD_MUTEX_TIMEDLOCK)
+endif()
+
+option(USE_OUTPUT_PATH "build all libaries and runtime files at lib and bin directory" YES)
+if(USE_OUTPUT_PATH)
+  # -----------------------------------------------------------------------
+  # Where to put all the LIBRARY targets when built. This variable is used to initialize the
+  # LIBRARY_OUTPUT_DIRECTORY property on all the targets.
+  # -----------------------------------------------------------------------
+  set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
+
+  # -----------------------------------------------------------------------
+  # Where to put all the RUNTIME targets when built. This variable is used to initialize the
+  # RUNTIME_OUTPUT_DIRECTORY property on all the targets.
+  # -----------------------------------------------------------------------
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 endif()
 
 # ---- Add dependencies via CPM ----
@@ -246,6 +260,7 @@ CPMAddPackage(
   GIT_TAG v${SNMP_PP_VERSION}.9
   GITHUB_REPOSITORY ClausKlein/snmp_pp
   OPTIONS "SNMP_PP_LOGGING NO"
+          "SNMP_PP_EXAMPLES YES"
 )
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake_config.h.in config.h)
@@ -432,6 +447,7 @@ foreach(EXE_BASE_DIR ${EXE_BASE_DIRS})
          "${CMAKE_CURRENT_SOURCE_DIR}/${EXE_BASE_DIR}/${EXE_SUB_DIR}/src/*.cpp"
     )
 
+    # NOTE: all examples are named agent! CK
     add_executable(${EXE_SUB_DIR} ${EXE_SRC})
     target_link_libraries(${EXE_SUB_DIR} ${PROJECT_NAME} snmp_pp::snmp_pp)
     target_include_directories(${EXE_SUB_DIR} SYSTEM BEFORE PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
@@ -448,12 +464,22 @@ foreach(EXE_BASE_DIR ${EXE_BASE_DIRS})
   endforeach()
 endforeach()
 
-if(AGENT_PP_EXAMPLES AND NOT MSVC)
+if(AGENT_PP_EXAMPLES)
   enable_testing()
+
+  if(${BUILD_SHARED_LIBS} AND $<TARGET_RUNTIME_DLLS:test_app>)
+    add_custom_command(
+      TARGET test_app
+      POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:test_app> $<TARGET_FILE_DIR:test_app>
+      COMMAND_EXPAND_LISTS
+    )
+  endif()
+
   add_test(
     NAME simple-snmp-test
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/simple-snmp-test.sh
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/simple-snmp-test.sh $<TARGET_FILE:static_table> $<TARGET_FILE:test_app>
+    WORKING_DIRECTORY $<TARGET_FILE_DIR:test_app>
   )
 endif()
 

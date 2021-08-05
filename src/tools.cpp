@@ -44,8 +44,8 @@ char* AgentTools::make_concatenation(const char* prefix, const char* suffix)
 {
     size_t len    = strlen(prefix) + strlen(suffix) + 1;
     char*  retval = new char[len];
-    strncpy(retval, prefix, len);
-    strncat(retval, suffix, len);
+    strlcpy(retval, prefix, len);
+    strlcat(retval, suffix, len);
     return retval;
 }
 

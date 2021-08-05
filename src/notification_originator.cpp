@@ -144,7 +144,7 @@ int NotificationOriginator::generate(Vbx* vbs, int size, const Oidx& id,
 		typeCur.get()->first()->get_value(tag);
 		char* tagstr = new char[tag.len()+1];
 		strncpy(tagstr, (char*)tag.data(), tag.len());
-		tagstr[tag.len()] = 0;
+        tagstr[tag.len()] = 0;  // OK, CK
 
 		if (((SnmpTagList*)cur.get()->get_nth(4))->
 		    contains(tagstr)) {

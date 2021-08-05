@@ -144,7 +144,7 @@ void agentppNotifyTest::send_agentppNotifyTestAllTypes() {
 	vbs[n++].set_value(s);
 	vbs[n  ].set_oid("1.3.6.1.2.1.92.1.3.2.1.9.0.1");
 	char ipaddr[30];
-	sprintf(ipaddr, "%d.%d.%d.%d", 
+    snprintf(ipaddr, sizeof(ipaddr), "%d.%d.%d.%d",
 		rand()/(RAND_MAX/256), 
 		rand()/(RAND_MAX/256),
 		rand()/(RAND_MAX/256),
