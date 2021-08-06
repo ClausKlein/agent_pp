@@ -62,16 +62,16 @@ nlmConfigLogOperStatus::~nlmConfigLogOperStatus()
 
 void nlmConfigLogOperStatus::get_request(Request* req, int ind)
 {
-	unsigned long l = 1;
+	uint32_t l = 1;
 	if (((nlmConfigLogAdminStatus*)my_row->get_nth(2))->get_state() == 1) {
 		OctetStr f(((nlmConfigLogFilterName*)my_row->get_nth(0))->get_state());
-		Oidx index(Oidx::from_string(f, TRUE));
+		Oidx index(Oidx::from_string(f, true));
                 snmpNotifyFilterEntry* snmpNotifyFilterEntry =
                         snmpNotifyFilterEntry::get_instance(
                         ((nlmLogEntry*)my_table)->mib);
                 if (snmpNotifyFilterEntry) {
                     List<MibTableRow>* r =
-                      snmpNotifyFilterEntry->get_rows_cloned(&index, TRUE);
+                      snmpNotifyFilterEntry->get_rows_cloned(&index, true);
                     if (r->size() > 0) {
                             l = 2;
                     }
@@ -155,7 +155,7 @@ bool nlmConfigGlobalEntryLimit::value_ok(const Vbx& vb)
 
 	//--AgentGen BEGIN=nlmConfigGlobalEntryLimit::value_ok
 	//--AgentGen END
-	return TRUE;
+	return true;
 }
 
 int nlmConfigGlobalEntryLimit::prepare_set_request(Request* req, int& ind)
@@ -236,7 +236,7 @@ bool nlmConfigGlobalAgeOut::value_ok(const Vbx& vb)
 
 	//--AgentGen BEGIN=nlmConfigGlobalAgeOut::value_ok
 	//--AgentGen END
-	return TRUE;
+	return true;
 }
 
 int nlmConfigGlobalAgeOut::prepare_set_request(Request* req, int& ind)
@@ -322,11 +322,11 @@ bool nlmConfigLogFilterName::value_ok(const Vbx& vb)
 {
 	OctetStr v;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
-	    return FALSE;
+	    return false;
 
 	//--AgentGen BEGIN=nlmConfigLogFilterName::value_ok
 	//--AgentGen END
-	return TRUE;
+	return true;
 }
 
 int nlmConfigLogFilterName::prepare_set_request(Request* req, int& ind)
@@ -419,7 +419,7 @@ bool nlmConfigLogEntryLimit::value_ok(const Vbx& vb)
 
 	//--AgentGen BEGIN=nlmConfigLogEntryLimit::value_ok
 	//--AgentGen END
-	return TRUE;
+	return true;
 }
 
 int nlmConfigLogEntryLimit::prepare_set_request(Request* req, int& ind)
@@ -505,13 +505,13 @@ bool nlmConfigLogAdminStatus::value_ok(const Vbx& vb)
 {
 	int32_t v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
-	    return FALSE;
+	    return false;
 	if ((v != 1)
-	     && (v != 2)) return FALSE;
+	     && (v != 2)) return false;
 
 	//--AgentGen BEGIN=nlmConfigLogAdminStatus::value_ok
 	//--AgentGen END
-	return TRUE;
+	return true;
 }
 
 int nlmConfigLogAdminStatus::prepare_set_request(Request* req, int& ind)
@@ -597,13 +597,13 @@ bool nlmConfigLogStorageType::value_ok(const Vbx& vb)
 {
 	int32_t v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
-	    return FALSE;
+	    return false;
 	if ((v < 1) || (v > 5)
-	    ) return FALSE;
+	    ) return false;
 
 	//--AgentGen BEGIN=nlmConfigLogStorageType::value_ok
 	//--AgentGen END
-	return TRUE;
+	return true;
 }
 
 int nlmConfigLogStorageType::prepare_set_request(Request* req, int& ind)
@@ -781,12 +781,12 @@ void nlmStatsGlobalNotificationsLogged::get_request(Request* req, int ind)
 	MibLeaf::get_request(req, ind);
 }
 
-unsigned long nlmStatsGlobalNotificationsLogged::get_state()
+uint32_t nlmStatsGlobalNotificationsLogged::get_state()
 {
-	return (unsigned long)*((Counter32*)value);
+	return (uint32_t)*((Counter32*)value);
 }
 
-void nlmStatsGlobalNotificationsLogged::set_state(unsigned long l)
+void nlmStatsGlobalNotificationsLogged::set_state(uint32_t l)
 {
 
 	//--AgentGen BEGIN=nlmStatsGlobalNotificationsLogged::set_state
@@ -794,12 +794,12 @@ void nlmStatsGlobalNotificationsLogged::set_state(unsigned long l)
 	*((Counter32*)value) = l;
 }
 
-unsigned long nlmStatsGlobalNotificationsLogged::inc()
+uint32_t nlmStatsGlobalNotificationsLogged::inc()
 {
 
 	//--AgentGen BEGIN=nlmStatsGlobalNotificationsLogged::inc
 	//--AgentGen END
-	unsigned long l = get_state();
+	uint32_t l = get_state();
 	set_state(++l);
 	return l;
 }
@@ -883,7 +883,7 @@ uint32_t nlmStatsGlobalNotificationsBumped::inc()
 nlmConfigLogEntry* nlmConfigLogEntry::instance = 0;
 
 const index_info indNlmConfigLogEntry[1] = {
-	{ sNMP_SYNTAX_OCTETS, FALSE, 0, 255 } };
+	{ sNMP_SYNTAX_OCTETS, false, 0, 255 } };
 
 nlmConfigLogEntry::nlmConfigLogEntry(Mib* mib):
    StorageTable(oidNlmConfigLogEntry, indNlmConfigLogEntry, 1), mib(mib)
@@ -938,7 +938,7 @@ void nlmConfigLogEntry::row_init(MibTableRow* row, const Oidx& index, MibTable* 
 
 
 
-void nlmConfigLogEntry::set_row(MibTableRow* r, const OctetStr& p0, unsigned long p1, long p2, long p3, long p4, long p5)
+void nlmConfigLogEntry::set_row(MibTableRow* r, const OctetStr& p0, uint32_t p1, int32_t p2, int32_t p3, int32_t p4, int32_t p5)
 {
 	r->get_nth(0)->replace_value(new OctetStr(p0));
 	r->get_nth(1)->replace_value(new Gauge32(p1));
@@ -963,7 +963,7 @@ void nlmConfigLogEntry::set_row(MibTableRow* r, const OctetStr& p0, unsigned lon
 nlmStatsLogEntry* nlmStatsLogEntry::instance = 0;
 
 const index_info indNlmStatsLogEntry[1] = {
-	{ sNMP_SYNTAX_OCTETS, FALSE, 0, 255 } };
+	{ sNMP_SYNTAX_OCTETS, false, 0, 255 } };
 
 nlmStatsLogEntry::nlmStatsLogEntry(nlmConfigLogEntry* configLogEntry):
    MibTable(oidNlmStatsLogEntry, indNlmStatsLogEntry, 1), 
@@ -1025,7 +1025,7 @@ void nlmStatsLogEntry::row_init(MibTableRow* row, const Oidx& index, MibTable* s
 
 
 
-void nlmStatsLogEntry::set_row(MibTableRow* r, unsigned long p0, unsigned long p1)
+void nlmStatsLogEntry::set_row(MibTableRow* r, uint32_t p0, uint32_t p1)
 {
 	r->get_nth(0)->replace_value(new Counter32(p0));
 	r->get_nth(1)->replace_value(new Counter32(p1));
@@ -1046,8 +1046,8 @@ void nlmStatsLogEntry::set_row(MibTableRow* r, unsigned long p0, unsigned long p
 nlmLogEntry* nlmLogEntry::instance = 0;
 
 const index_info indNlmLogEntry[2] = {
-	{ sNMP_SYNTAX_OCTETS, FALSE, 0, 255 },
-	 { sNMP_SYNTAX_INT, FALSE, 1, 1 } };
+	{ sNMP_SYNTAX_OCTETS, false, 0, 255 },
+	 { sNMP_SYNTAX_INT, false, 1, 1 } };
 
 nlmLogEntry::nlmLogEntry(Mib* mib, 
         nlmConfigLogEntry* configLogEntry,
@@ -1149,7 +1149,7 @@ void nlmLogEntry::row_init(MibTableRow* row, const Oidx& index, MibTable* src)
 
 
 
-void nlmLogEntry::set_row(MibTableRow* r, unsigned long p0, const OctetStr& p1, const OctetStr& p2, const OctetStr& p3, const char* p4, const OctetStr& p5, const OctetStr& p6, const char* p7)
+void nlmLogEntry::set_row(MibTableRow* r, uint32_t p0, const OctetStr& p1, const OctetStr& p2, const OctetStr& p3, const char* p4, const OctetStr& p5, const OctetStr& p6, const char* p7)
 {
 	r->get_nth(0)->replace_value(new TimeTicks(p0));
 	r->get_nth(1)->replace_value(new OctetStr(p1));
@@ -1175,16 +1175,16 @@ bool nlmLogEntry::check_access(const Vbx* vbs, const int size,
 	// an empty viewName denotes a system entry
 	// that automatically has access
 	if (viewName.len() == 0) {
-		return TRUE;
+		return true;
 	}
 
-	bool accessAllowed = TRUE;
+	bool accessAllowed = true;
 	for (int i=0; i<size; i++) {
 
 	    if (mib->get_request_list()->get_vacm()->
 		isAccessAllowed(viewName, vbs[i].get_oid()) !=
 		VACM_accessAllowed) {
-	      accessAllowed = FALSE;
+	      accessAllowed = false;
 	      break;
 	    }
 	  }
@@ -1262,7 +1262,7 @@ void nlmLogEntry::add_notification(const SnmpTarget* target,
                 snmpNotifyFilterEntry* snmpNotifyFilterEntry =
                         snmpNotifyFilterEntry::get_instance(mib);
 		if ((profileName.len()==0) || ((snmpNotifyFilterEntry) &&
-		    (!snmpNotifyFilterEntry->passes_filter(Oidx::from_string(profileName, TRUE),
+		    (!snmpNotifyFilterEntry->passes_filter(Oidx::from_string(profileName, true),
 				   nid,
 				   vbs,
 				   vbcount)))) {
@@ -1297,7 +1297,7 @@ void nlmLogEntry::add_notification(const SnmpTarget* target,
 		if (s) {
 			s->get_nth(nNlmStatsLogNotificationsLogged)->
 			  get_value(ll);
-			ll = (unsigned long)ll + 1ul;
+			ll = (uint32_t)ll + 1ul;
 			s->get_nth(nNlmStatsLogNotificationsLogged)->
 			  set_value(ll);
                         Counter32MibLeaf::incrementScalar(mib, 
@@ -1314,7 +1314,7 @@ void nlmLogEntry::check_limits(List<MibTableRow>* logs)
 {
 	uint32_t global_limit = configGlobalEntryLimit->get_state();
 	if (global_limit > 0) {
-		long v = size() - global_limit;
+		int32_t v = size() - global_limit;
 		if (v > 0) {
 			ListCursor<MibTableRow> cur;
 			int i=0;
@@ -1331,7 +1331,7 @@ void nlmLogEntry::check_limits(List<MibTableRow>* logs)
 	uint32_t age_out = configGlobalAgeOut->get_state();
 	if (age_out > 0) {
 		ListCursor<MibTableRow> cur;
-		unsigned long uptime = sysUpTime::get();
+		uint32_t uptime = sysUpTime::get();
 		for (cur.init(&entries); cur.get();) {
 			MibTableRow* victim = cur.get();
 			cur.next();
@@ -1396,7 +1396,7 @@ void nlmLogEntry::check_limits(List<MibTableRow>* logs)
 				  MibLeaf* l = r->
 				    get_nth(nNlmStatsLogNotificationsBumped);
 				  l->get_value(ll);
-				  ll = (unsigned long)ll + 1ul;
+				  ll = (uint32_t)ll + 1ul;
 				  l->set_value(ll);
 				}
 				MibTableRow* victim = c.get();
@@ -1420,9 +1420,9 @@ void nlmLogEntry::check_limits(List<MibTableRow>* logs)
 nlmLogVariableEntry* nlmLogVariableEntry::instance = 0;
 
 const index_info indNlmLogVariableEntry[3] = {
-	{ sNMP_SYNTAX_OCTETS, FALSE, 0, 255 },
-	 { sNMP_SYNTAX_INT, FALSE, 1, 1 },
-	 { sNMP_SYNTAX_INT, FALSE, 1, 1 } };
+	{ sNMP_SYNTAX_OCTETS, false, 0, 255 },
+	 { sNMP_SYNTAX_INT, false, 1, 1 },
+	 { sNMP_SYNTAX_INT, false, 1, 1 } };
 
 nlmLogVariableEntry::nlmLogVariableEntry():
    MibTable(oidNlmLogVariableEntry, indNlmLogVariableEntry, 3)
@@ -1491,7 +1491,7 @@ void nlmLogVariableEntry::row_init(MibTableRow* row, const Oidx& index, MibTable
 
 
 
-void nlmLogVariableEntry::set_row(MibTableRow* r, const char* p0, long p1, unsigned long p2, unsigned long p3, unsigned long p4, long p5, const OctetStr& p6, const char* p7, const char* p8, unsigned long p9hi, unsigned long p9lo
+void nlmLogVariableEntry::set_row(MibTableRow* r, const char* p0, int32_t p1, uint32_t p2, uint32_t p3, uint32_t p4, int32_t p5, const OctetStr& p6, const char* p7, const char* p8, uint32_t p9hi, uint32_t p9lo
 		, const OctetStr& p10)
 {
 	r->get_nth(0)->replace_value(new Oid(p0));
@@ -1514,7 +1514,7 @@ void nlmLogVariableEntry::add_variable(const Oidx& index,
 				       const Vbx& vb)
 {
 	Oidx newIndex(index);
-	newIndex += (unsigned long)i;
+	newIndex += (uint32_t)i;
 	MibTableRow* r = add_row(newIndex);
 	for (int j=nNlmLogVariableCounter32Val; j<r->size(); j++) {
 		r->get_nth(j)->set_access(NOACCESS);

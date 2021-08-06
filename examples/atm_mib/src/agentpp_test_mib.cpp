@@ -91,7 +91,7 @@ void agentppTestTimeout::get_request(Request* req, int ind)
 	MibLeaf::get_request(req, ind);
 }
 
-void agentppTestTimeout::set_state(unsigned long l)
+void agentppTestTimeout::set_state(uint32_t l)
 {
 	//--AgentGen BEGIN=agentppTestTimeout::set_state
 	//--AgentGen END
@@ -118,10 +118,10 @@ bool agentppTestTimeout::value_ok(const Vbx& vb)
 	uint32_t v = 0;
 	vb.get_value(v);
 	if (!((v <= 1000000ul)))
-		 return FALSE;
+		 return false;
 	//--AgentGen BEGIN=agentppTestTimeout::value_ok
 	//--AgentGen END
-	return TRUE;
+	return true;
 }
 
 int agentppTestTimeout::prepare_set_request(Request* req, int& ind)
@@ -410,7 +410,7 @@ bool agentppTestSparseCol1::value_ok(const Vbx& vb)
 {
 	//--AgentGen BEGIN=agentppTestSparseCol1::value_ok
 	//--AgentGen END
-	return TRUE;
+	return true;
 }
 
 int agentppTestSparseCol1::prepare_set_request(Request* req, int& ind)
@@ -470,14 +470,14 @@ void agentppTestSparseCol2::get_request(Request* req, int ind)
 	MibLeaf::get_request(req, ind);
 }
 
-unsigned long agentppTestSparseCol2::get_state()
+uint32_t agentppTestSparseCol2::get_state()
 {
 	//--AgentGen BEGIN=agentppTestSparseCol2::get_state
 	//--AgentGen END
-	return (unsigned long)*((Gauge32*)value);
+	return (uint32_t)*((Gauge32*)value);
 }
 
-void agentppTestSparseCol2::set_state(unsigned long l)
+void agentppTestSparseCol2::set_state(uint32_t l)
 {
 	//--AgentGen BEGIN=agentppTestSparseCol2::set_state
 	//--AgentGen END
@@ -500,7 +500,7 @@ bool agentppTestSparseCol2::value_ok(const Vbx& vb)
 {
 	//--AgentGen BEGIN=agentppTestSparseCol2::value_ok
 	//--AgentGen END
-	return TRUE;
+	return true;
 }
 
 int agentppTestSparseCol2::prepare_set_request(Request* req, int& ind)
@@ -588,7 +588,7 @@ bool agentppTestSparseCol3::value_ok(const Vbx& vb)
 {
 	//--AgentGen BEGIN=agentppTestSparseCol3::value_ok
 	//--AgentGen END
-	return TRUE;
+	return true;
 }
 
 int agentppTestSparseCol3::prepare_set_request(Request* req, int& ind)
@@ -696,7 +696,7 @@ int agentppTestSparseRowStatus::prepare_set_request(Request* req, int& ind)
 agentppTestSharedEntry* agentppTestSharedEntry::instance = 0;
 
 const index_info indAgentppTestSharedEntry[1] = {
-	{ sNMP_SYNTAX_INT, FALSE, 1, 1 }};
+	{ sNMP_SYNTAX_INT, false, 1, 1 }};
 
 agentppTestSharedEntry::agentppTestSharedEntry():
    MibTable(oidAgentppTestSharedEntry, indAgentppTestSharedEntry, 1)
@@ -735,7 +735,7 @@ agentppTestSharedEntry::~agentppTestSharedEntry()
 agentppTestSessionsEntry* agentppTestSessionsEntry::instance = 0;
 
 const index_info indAgentppTestSessionsEntry[1] = {
-	{ sNMP_SYNTAX_INT, FALSE, 1, 1 }};
+	{ sNMP_SYNTAX_INT, false, 1, 1 }};
 
 agentppTestSessionsEntry::agentppTestSessionsEntry():
    MibTable(oidAgentppTestSessionsEntry, indAgentppTestSessionsEntry, 1)
@@ -771,7 +771,7 @@ agentppTestSessionsEntry::~agentppTestSessionsEntry()
 agentppTestSparseEntry* agentppTestSparseEntry::instance = 0;
 
 const index_info indAgentppTestSparseEntry[1] = {
-	{ sNMP_SYNTAX_OCTETS, FALSE, 0, 255 }
+	{ sNMP_SYNTAX_OCTETS, false, 0, 255 }
 };
 
 agentppTestSparseEntry::agentppTestSparseEntry():

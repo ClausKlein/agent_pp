@@ -460,9 +460,9 @@ public:
 	static nlmStatsGlobalNotificationsLogged* instance;
 
 	void       	get_request(Request*, int) override;
-	virtual unsigned long   get_state();
-	virtual void       	set_state(unsigned long);
-	virtual unsigned long 	inc();
+	virtual uint32_t   get_state();
+	virtual void       	set_state(uint32_t);
+	virtual uint32_t 	inc();
 
 //--AgentGen BEGIN=nlmStatsGlobalNotificationsLogged
 //--AgentGen END
@@ -517,7 +517,7 @@ public:
 	void        	row_added(MibTableRow*, const Oidx&, MibTable*) override;
 	void        	row_delete(MibTableRow*, const Oidx&, MibTable*) override;
 	void        	row_init(MibTableRow*, const Oidx&, MibTable*) override;
-	virtual void       	set_row(MibTableRow* r, const NS_SNMP OctetStr& p0, unsigned long p1, long p2, long p3, long p4, long p5);
+	virtual void       	set_row(MibTableRow* r, const NS_SNMP OctetStr& p0, uint32_t p1, int32_t p2, int32_t p3, int32_t p4, int32_t p5);
 
 //--AgentGen BEGIN=nlmConfigLogEntry
  protected:
@@ -544,10 +544,10 @@ public:
 	void        	row_added(MibTableRow*, const Oidx&, MibTable*) override;
 	void        	row_delete(MibTableRow*, const Oidx&, MibTable*) override;
 	void        	row_init(MibTableRow*, const Oidx&, MibTable*) override;
-	virtual void       	set_row(MibTableRow* r, unsigned long p0, unsigned long p1);
+	virtual void       	set_row(MibTableRow* r, uint32_t p0, uint32_t p1);
 
 //--AgentGen BEGIN=nlmStatsLogEntry
-	bool		is_volatile() override { return TRUE; }
+	bool		is_volatile() override { return true; }
 protected:
         nlmConfigLogEntry*      configLogEntry;
 	
@@ -597,10 +597,10 @@ public:
 	void        	row_added(MibTableRow*, const Oidx&, MibTable*) override;
 	void        	row_delete(MibTableRow*, const Oidx&, MibTable*) override;
 	void        	row_init(MibTableRow*, const Oidx&, MibTable*) override;
-	virtual void       	set_row(MibTableRow* r, unsigned long p0, const NS_SNMP OctetStr& p1, const NS_SNMP OctetStr& p2, const NS_SNMP OctetStr& p3, const char* p4, const NS_SNMP OctetStr& p5, const NS_SNMP OctetStr& p6, const char* p7);
+	virtual void       	set_row(MibTableRow* r, uint32_t p0, const NS_SNMP OctetStr& p1, const NS_SNMP OctetStr& p2, const NS_SNMP OctetStr& p3, const char* p4, const NS_SNMP OctetStr& p5, const NS_SNMP OctetStr& p6, const char* p7);
 
 //--AgentGen BEGIN=nlmLogEntry
-	bool		is_volatile() override { return TRUE; }
+	bool		is_volatile() override { return true; }
 	
 	bool			check_access(const Vbx*, const int,
 					     const NS_SNMP Oid&,
@@ -649,11 +649,11 @@ public:
 	void        	row_added(MibTableRow*, const Oidx&, MibTable*) override;
 	void        	row_delete(MibTableRow*, const Oidx&, MibTable*) override;
 	void        	row_init(MibTableRow*, const Oidx&, MibTable*) override;
-	virtual void       	set_row(MibTableRow* r, const char* p0, long p1, unsigned long p2, unsigned long p3, unsigned long p4, long p5, const NS_SNMP OctetStr& p6, const char* p7, const char* p8, unsigned long p9hi, unsigned long p9lo
+	virtual void       	set_row(MibTableRow* r, const char* p0, int32_t p1, uint32_t p2, uint32_t p3, uint32_t p4, int32_t p5, const NS_SNMP OctetStr& p6, const char* p7, const char* p8, uint32_t p9hi, uint32_t p9lo
 		, const NS_SNMP OctetStr& p10);
 
 //--AgentGen BEGIN=nlmLogVariableEntry
-	bool		is_volatile() override { return TRUE; }
+	bool		is_volatile() override { return true; }
 	void			add_variable(const Oidx&, unsigned int, 
 					     const Vbx&);
 //--AgentGen END

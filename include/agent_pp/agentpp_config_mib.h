@@ -323,7 +323,7 @@ public:
 		      e_restore = 4	};
 
 //--AgentGen BEGIN=agentppCfgStorageOperation
-	bool		is_volatile() override { return TRUE; }
+	bool		is_volatile() override { return true; }
 #ifndef _NO_THREADS
  private:
 	OperationTask*	operationTask; 
@@ -426,12 +426,12 @@ public:
 						 const Oidx&, int, int) override;
 	virtual void		set_row(MibTableRow* r,
 					const NS_SNMP OctetStr& p1,
-					long p2,
-					unsigned long p3,
-					unsigned long p4,
-					long p5,
-					long p6,
-					long p7);
+					int32_t p2,
+					uint32_t p3,
+					uint32_t p4,
+					int32_t p5,
+					int32_t p6,
+					int32_t p7);
 //--AgentGen BEGIN=agentppCfgStorageEntry
 	void			set_mib(Mib* m);
 	Mib*			get_mib() { return mib; }
@@ -443,17 +443,17 @@ public:
 	void		reset() override { }
 
 	/**
-	 * If set to TRUE, absolute and relative paths containing dots
-	 * are not allowed. TRUE is the default value.
+	 * If set to true, absolute and relative paths containing dots
+	 * are not allowed. true is the default value.
 	 * @param securePaths
-	 *    if TRUE, only secure paths are allowed for persistent storage.
+	 *    if true, only secure paths are allowed for persistent storage.
 	 */
 	void			set_secure_paths(bool b) { securePaths = b;}
 
 	/**
-	 * Returns TRUE if only secure paths can be configured via SNMP.
+	 * Returns true if only secure paths can be configured via SNMP.
 	 * @return
-	 *    TRUE if only secure paths are allowed, FALSE if any path is
+	 *    true if only secure paths are allowed, false if any path is
 	 *    allowed.
 	 */
 	bool			is_secure_paths() { return securePaths; }

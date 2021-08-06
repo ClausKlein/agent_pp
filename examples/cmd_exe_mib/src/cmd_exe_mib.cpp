@@ -84,7 +84,7 @@ void CmdThread::run()
 
 	FILE *f = nullptr;
 	char *buf = nullptr;
-	long size = 0, bytes = 0;
+	int32_t size = 0, bytes = 0;
 
 	OctetStr fname;
 	fname += Mib::instance->get_persistent_objects_path();
@@ -104,7 +104,7 @@ void CmdThread::run()
 
 		if (bytes == size) {
 
-			long i = 1;
+			int32_t i = 1;
 			char* ptr = buf;
 			char* nl = buf;
 			while ((ptr<buf+size) && (nl)) {
@@ -181,7 +181,7 @@ int cmdExecutionCmdConfigLine::set(const Vbx& vb)
 bool cmdExecutionCmdConfigLine::value_ok(const Vbx& vb)
 {
 	// place code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 
@@ -214,12 +214,12 @@ void cmdExecutionCmdNextIndex::get_request(Request* req, int ind)
 	MibLeaf::get_request(req, ind);
 }
 
-long cmdExecutionCmdNextIndex::get_state()
+int32_t cmdExecutionCmdNextIndex::get_state()
 {
-	return (long)*((SnmpInt32*)value);
+	return (int32_t)*((SnmpInt32*)value);
 }
 
-void cmdExecutionCmdNextIndex::set_state(long l)
+void cmdExecutionCmdNextIndex::set_state(int32_t l)
 {
 	*((SnmpInt32*)value) = l;
 }
@@ -266,7 +266,7 @@ int cmdExecutionCmdName::set(const Vbx& vb)
 
 bool cmdExecutionCmdName::value_ok(const Vbx& vb)
 {
-	return TRUE;
+	return true;
 }
 
 
@@ -300,12 +300,12 @@ void cmdExecutionCmdStatus::get_request(Request* req, int ind)
 	MibLeaf::get_request(req, ind);
 }
 
-long cmdExecutionCmdStatus::get_state()
+int32_t cmdExecutionCmdStatus::get_state()
 {
-	return (long)*((SnmpInt32*)value);
+	return (int32_t)*((SnmpInt32*)value);
 }
 
-void cmdExecutionCmdStatus::set_state(long l)
+void cmdExecutionCmdStatus::set_state(int32_t l)
 {
 	*((SnmpInt32*)value) = l;
 }
@@ -347,12 +347,12 @@ void cmdExecutionCmdRunTime::get_request(Request* req, int ind)
 	MibLeaf::get_request(req, ind);
 }
 
-long cmdExecutionCmdRunTime::get_state()
+int32_t cmdExecutionCmdRunTime::get_state()
 {
-	return (long)*((TimeTicks*)value);
+	return (int32_t)*((TimeTicks*)value);
 }
 
-void cmdExecutionCmdRunTime::set_state(long l)
+void cmdExecutionCmdRunTime::set_state(int32_t l)
 {
 	*((TimeTicks*)value) = l;
 }
@@ -393,12 +393,12 @@ MibEntryPtr cmdExecutionCmdRowStatus::clone()
 	return other;
 }
 
-long cmdExecutionCmdRowStatus::get_state()
+int32_t cmdExecutionCmdRowStatus::get_state()
 {
-	return (long)*((SnmpInt32*)value);
+	return (int32_t)*((SnmpInt32*)value);
 }
 
-void cmdExecutionCmdRowStatus::set_state(long l)
+void cmdExecutionCmdRowStatus::set_state(int32_t l)
 {
 	*((SnmpInt32*)value) = l;
 }
@@ -550,10 +550,10 @@ bool cmdExecutionCmdConfigEntry::contains(const Oidx& index)
 	for (cur.init(&content); cur.get(); cur.next()) {
 		if (strcmp(cur.get()->get_index().get_printable(),
 			   index.get_printable()) == 0) {
-			return TRUE;
+			return true;
 		}
 	}
-	return FALSE;
+	return false;
 }
 
 OctetStr cmdExecutionCmdConfigEntry::get_command_line(const OctetStr& command) 
@@ -586,7 +586,7 @@ OctetStr cmdExecutionCmdConfigEntry::get_command_line(const OctetStr& command)
 cmdExecutionCmdEntry* cmdExecutionCmdEntry::instance = 0;
 
 cmdExecutionCmdEntry::cmdExecutionCmdEntry():
-   MibTable("1.3.6.1.4.1.4976.6.1.2.2.2.1", 1, FALSE)
+   MibTable("1.3.6.1.4.1.4976.6.1.2.2.2.1", 1, false)
 {
 	// This table object is a singleton. In order to access it use
 	// the static pointer cmdExecutionCmdEntry::instance.

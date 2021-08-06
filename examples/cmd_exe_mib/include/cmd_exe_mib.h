@@ -85,8 +85,8 @@ class cmdExecutionCmdNextIndex: public MibLeaf {
 	static cmdExecutionCmdNextIndex* instance;
 
 	void       	get_request(Request*, int) override;
-	virtual long       	get_state();
-	virtual void       	set_state(long);
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
 };
 
 
@@ -105,8 +105,8 @@ class cmdExecutionCmdIndex: public MibLeaf {
 
 	MibEntryPtr	clone() override;
 	void       	get_request(Request*, int) override;
-	virtual long       	get_state();
-	virtual void       	set_state(long);
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
 };
 
 
@@ -146,8 +146,8 @@ class cmdExecutionCmdStatus: public MibLeaf {
 
 	MibEntryPtr	clone() override;
 	void       	get_request(Request*, int) override;
-	virtual long       	get_state();
-	virtual void       	set_state(long);
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
 	
 };
 
@@ -168,8 +168,8 @@ class cmdExecutionCmdRunTime: public MibLeaf {
 	MibEntryPtr	clone() override;
 	void       	get_request(Request*, int) override;
 
-	virtual long		get_state();
-	virtual void		set_state(long);
+	virtual int32_t		get_state();
+	virtual void		set_state(int32_t);
 	virtual void            start();
 	virtual void		end();
  private:
@@ -194,8 +194,8 @@ class cmdExecutionCmdRowStatus: public snmpRowStatus {
 	virtual ~cmdExecutionCmdRowStatus();
 
 	MibEntryPtr	clone() override;
-	virtual long       	get_state();
-	virtual void       	set_state(long);
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
 	int        	set(const Vbx&) override;
 	int		prepare_set_request(Request*, int&) override; 
 };
@@ -216,8 +216,8 @@ class cmdExecutionOutputLineNumber: public MibLeaf {
 
 	MibEntryPtr	clone() override;
 	void       	get_request(Request*, int) override;
-	virtual long       	get_state();
-	virtual void       	set_state(long);
+	virtual int32_t       	get_state();
+	virtual void       	set_state(int32_t);
 };
 
 

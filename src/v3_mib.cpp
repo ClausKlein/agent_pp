@@ -307,6 +307,8 @@ UsmUserTable::UsmUserTable(v3MP* v3mp)
         LOG("UsmUserTable: v3MP must be initialized before UsmUserTable is "
             "created");
         LOG_END;
+
+        return;
     }
 
     usm = v3mp->get_usm();

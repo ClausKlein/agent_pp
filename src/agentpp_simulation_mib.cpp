@@ -35,7 +35,7 @@ namespace Agentpp {
 agentppSimMode* agentppSimMode::instance = 0;
 
 agentppSimMode::agentppSimMode():
-   MibLeaf("1.3.6.1.4.1.4976.2.1.1.0", READWRITE, new SnmpInt32(1), TRUE)
+   MibLeaf("1.3.6.1.4.1.4976.2.1.1.0", READWRITE, new SnmpInt32(1), true)
 {
 	instance = this;
 }
@@ -98,9 +98,9 @@ bool agentppSimMode::value_ok(const Vbx& vb)
 {
 	int32_t v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
-	    return FALSE;
-	if ((v != 1) && (v != 2)) return FALSE;
-	return TRUE;
+	    return false;
+	if ((v != 1) && (v != 2)) return false;
+	return true;
 }
 
 /**

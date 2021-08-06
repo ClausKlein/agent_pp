@@ -84,12 +84,12 @@ mib_access SimMibLeaf::get_access()
 
 void SimMibLeaf::set_config_mode() 
 {
-	configMode = TRUE;
+	configMode = true;
 }
 
 void SimMibLeaf::unset_config_mode() 
 {
-	configMode = FALSE;
+	configMode = false;
 }
 
 bool SimMibLeaf::get_config_mode() 
@@ -97,7 +97,7 @@ bool SimMibLeaf::get_config_mode()
 	return configMode;
 }
 
-bool SimMibLeaf::configMode = FALSE;
+bool SimMibLeaf::configMode = false;
 
 
 int SimMibTable::check_creation(Request* req, int& ind) 
@@ -119,7 +119,7 @@ MibEntryPtr SimRowStatus::clone()
 bool SimRowStatus::transition_ok(const Vbx& vb)
 {
 	if (SimMibLeaf::get_config_mode()) {
-		return TRUE;
+		return true;
 	}
 	else return snmpRowStatus::transition_ok(vb);
 }
@@ -163,7 +163,7 @@ time_t simSysUpTime::get()
 
 void simSysUpTime::get_request(Request* req, int ind)
 {
-	*((TimeTicks*)value) = (unsigned long)get();
+	*((TimeTicks*)value) = (uint32_t)get();
 	MibLeaf::get_request(req, ind);
 }
 
@@ -171,17 +171,17 @@ simSysGroup::simSysGroup(): MibGroup("1.3.6.1.2.1.1", "simSysGroup")
 {
 	add(new simSysUpTime());
 	add(new SimMibLeaf("1.3.6.1.2.1.1.1.0", READONLY, 
-			   new OctetStr(""), FALSE));
+			   new OctetStr(""), false));
 	add(new SimMibLeaf("1.3.6.1.2.1.1.2.0", READONLY, 
-			   new Oid(""), FALSE));
+			   new Oid(""), false));
 	add(new SimMibLeaf("1.3.6.1.2.1.1.4.0", READWRITE, 
-			   new OctetStr(""), FALSE));
+			   new OctetStr(""), false));
 	add(new SimMibLeaf("1.3.6.1.2.1.1.5.0", READWRITE, 
-			   new OctetStr(""), FALSE));
+			   new OctetStr(""), false));
 	add(new SimMibLeaf("1.3.6.1.2.1.1.6.0", READWRITE, 
-			   new OctetStr(""), FALSE));
+			   new OctetStr(""), false));
 	add(new SimMibLeaf("1.3.6.1.2.1.1.7.0", READONLY,
-			   new SnmpInt32(0), FALSE));
+			   new SnmpInt32(0), false));
 }
 
 #ifdef AGENTPP_NAMESPACE

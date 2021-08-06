@@ -952,9 +952,9 @@ void Thread::nsleep(int secs, long nanos)
 	interval.tv_sec = s;
 	interval.tv_usec = n/1000;
 	fd_set writefds, readfds, exceptfds;
-	FD_ZERO(&writefds);
-	FD_ZERO(&readfds);
-	FD_ZERO(&exceptfds);
+    FD_ZERO(&writefds); // NOLINT(clang-analyzer-security.insecureAPI.bzero)
+    FD_ZERO(&readfds); // NOLINT(clang-analyzer-security.insecureAPI.bzero)
+    FD_ZERO(&exceptfds); // NOLINT(clang-analyzer-security.insecureAPI.bzero)
 	if (select(0, &writefds, &readfds, &exceptfds, &interval) == -1) {
 		if (errno == EINTR) {
 			LOG_BEGIN(loggerModuleName, EVENT_LOG | 3);

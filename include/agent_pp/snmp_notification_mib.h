@@ -286,8 +286,8 @@ class AGENTPP_DECL snmpNotifyFilterEntry: public StorageTable {
 	 * @param vb_count
 	 *    the number of the above variable bindings.
 	 * @return 
-	 *    TRUE if the object id passes the filter or if no appropriate
-	 *    filter exists, in any other case return FALSE.
+	 *    true if the object id passes the filter or if no appropriate
+	 *    filter exists, in any other case return false.
 	 */
 	bool passes_filter(const Oidx&, const Oidx&, const Vbx*, unsigned int);
 

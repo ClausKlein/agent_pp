@@ -63,6 +63,8 @@ void ProxyForwarder::check_references(Mib* mib)
  		LOG_BEGIN(loggerModuleName, ERROR_LOG | 0);
 		LOG("ProxyForwarder: Mib instance is null.");
 		LOG_END;
+
+        return;
         }
         _snmpProxyEntry = (snmpProxyEntry*)mib->get(oidSnmpProxyEntry);
         _snmpTargetAddrEntry = 

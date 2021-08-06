@@ -65,9 +65,9 @@ bool atmInterfaceMaxVpcs::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 4096))))
-		 return FALSE;
+		 return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmInterfaceMaxVpcs::prepare_set_request(Request* req, int& ind)
@@ -109,9 +109,9 @@ bool atmInterfaceMaxVccs::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 65536))))
-		 return FALSE;
+		 return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmInterfaceMaxVccs::prepare_set_request(Request* req, int& ind)
@@ -203,9 +203,9 @@ bool atmInterfaceMaxActiveVpiBits::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 12))))
-		 return FALSE;
+		 return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmInterfaceMaxActiveVpiBits::prepare_set_request(Request* req, int& ind)
@@ -247,9 +247,9 @@ bool atmInterfaceMaxActiveVciBits::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 16))))
-		 return FALSE;
+		 return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmInterfaceMaxActiveVciBits::prepare_set_request(Request* req, int& ind)
@@ -291,9 +291,9 @@ bool atmInterfaceIlmiVpi::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 4095))))
-		 return FALSE;
+		 return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmInterfaceIlmiVpi::prepare_set_request(Request* req, int& ind)
@@ -335,9 +335,9 @@ bool atmInterfaceIlmiVci::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if (!(v <= 65535))
-		 return FALSE;
+		 return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmInterfaceIlmiVci::prepare_set_request(Request* req, int& ind)
@@ -427,7 +427,7 @@ MibEntryPtr atmInterfaceMyNeighborIpAddress::clone()
 bool atmInterfaceMyNeighborIpAddress::value_ok(const Vbx& vb)
 {
 	// place code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmInterfaceMyNeighborIpAddress::prepare_set_request(Request* req, int& ind)
@@ -467,7 +467,7 @@ MibEntryPtr atmInterfaceMyNeighborIfName::clone()
 bool atmInterfaceMyNeighborIfName::value_ok(const Vbx& vb)
 {
 	// place code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmInterfaceMyNeighborIfName::prepare_set_request(Request* req, int& ind)
@@ -561,7 +561,7 @@ MibEntryPtr atmInterfaceSubscrAddress::clone()
 bool atmInterfaceSubscrAddress::value_ok(const Vbx& vb)
 {
 	// place code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmInterfaceSubscrAddress::prepare_set_request(Request* req, int& ind)
@@ -730,7 +730,7 @@ MibEntryPtr atmTrafficDescrType::clone()
 bool atmTrafficDescrType::value_ok(const Vbx& vb)
 {
 	// place code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmTrafficDescrType::prepare_set_request(Request* req, int& ind)
@@ -770,7 +770,7 @@ MibEntryPtr atmTrafficDescrParam1::clone()
 bool atmTrafficDescrParam1::value_ok(const Vbx& vb)
 {
 	// place code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmTrafficDescrParam1::prepare_set_request(Request* req, int& ind)
@@ -810,7 +810,7 @@ MibEntryPtr atmTrafficDescrParam2::clone()
 bool atmTrafficDescrParam2::value_ok(const Vbx& vb)
 {
 	// place code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmTrafficDescrParam2::prepare_set_request(Request* req, int& ind)
@@ -850,7 +850,7 @@ MibEntryPtr atmTrafficDescrParam3::clone()
 bool atmTrafficDescrParam3::value_ok(const Vbx& vb)
 {
 	// place code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmTrafficDescrParam3::prepare_set_request(Request* req, int& ind)
@@ -890,7 +890,7 @@ MibEntryPtr atmTrafficDescrParam4::clone()
 bool atmTrafficDescrParam4::value_ok(const Vbx& vb)
 {
 	// place code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmTrafficDescrParam4::prepare_set_request(Request* req, int& ind)
@@ -930,7 +930,7 @@ MibEntryPtr atmTrafficDescrParam5::clone()
 bool atmTrafficDescrParam5::value_ok(const Vbx& vb)
 {
 	// place code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmTrafficDescrParam5::prepare_set_request(Request* req, int& ind)
@@ -972,9 +972,9 @@ bool atmTrafficQoSClass::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 255))))
-		 return FALSE;
+		 return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmTrafficQoSClass::prepare_set_request(Request* req, int& ind)
@@ -1043,9 +1043,9 @@ bool atmServiceCategory::value_ok(const Vbx& vb)
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
 	     && (v != 4) && (v != 5)
-	     && (v != 6)) return FALSE;
+	     && (v != 6)) return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmServiceCategory::prepare_set_request(Request* req, int& ind)
@@ -1087,9 +1087,9 @@ bool atmTrafficFrameDiscard::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
-	     && (v != 2)) return FALSE;
+	     && (v != 2)) return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmTrafficFrameDiscard::prepare_set_request(Request* req, int& ind)
@@ -1131,9 +1131,9 @@ bool atmVplAdminStatus::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
-	     && (v != 2)) return FALSE;
+	     && (v != 2)) return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmVplAdminStatus::prepare_set_request(Request* req, int& ind)
@@ -1225,9 +1225,9 @@ bool atmVplReceiveTrafficDescrIndex::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 2147483647))))
-		 return FALSE;
+		 return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmVplReceiveTrafficDescrIndex::prepare_set_request(Request* req, int& ind)
@@ -1269,9 +1269,9 @@ bool atmVplTransmitTrafficDescrIndex::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 2147483647))))
-		 return FALSE;
+		 return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmVplTransmitTrafficDescrIndex::prepare_set_request(Request* req, int& ind)
@@ -1364,9 +1364,9 @@ bool atmVplCastType::value_ok(const Vbx& vb)
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
-	    ) return FALSE;
+	    ) return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmVplCastType::prepare_set_request(Request* req, int& ind)
@@ -1410,9 +1410,9 @@ bool atmVplConnKind::value_ok(const Vbx& vb)
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
 	     && (v != 4) && (v != 5)
-	    ) return FALSE;
+	    ) return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmVplConnKind::prepare_set_request(Request* req, int& ind)
@@ -1454,9 +1454,9 @@ bool atmVclAdminStatus::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
-	     && (v != 2)) return FALSE;
+	     && (v != 2)) return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmVclAdminStatus::prepare_set_request(Request* req, int& ind)
@@ -1548,9 +1548,9 @@ bool atmVclReceiveTrafficDescrIndex::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 2147483647))))
-		 return FALSE;
+		 return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmVclReceiveTrafficDescrIndex::prepare_set_request(Request* req, int& ind)
@@ -1592,9 +1592,9 @@ bool atmVclTransmitTrafficDescrIndex::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 0) && (v <= 2147483647))))
-		 return FALSE;
+		 return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmVclTransmitTrafficDescrIndex::prepare_set_request(Request* req, int& ind)
@@ -1638,9 +1638,9 @@ bool atmVccAalType::value_ok(const Vbx& vb)
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
 	     && (v != 4) && (v != 5)
-	     && (v != 6)) return FALSE;
+	     && (v != 6)) return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmVccAalType::prepare_set_request(Request* req, int& ind)
@@ -1682,9 +1682,9 @@ bool atmVccAal5CpcsTransmitSduSize::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 1) && (v <= 65535))))
-		 return FALSE;
+		 return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmVccAal5CpcsTransmitSduSize::prepare_set_request(Request* req, int& ind)
@@ -1726,9 +1726,9 @@ bool atmVccAal5CpcsReceiveSduSize::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if (!(((v >= 1) && (v <= 65535))))
-		 return FALSE;
+		 return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmVccAal5CpcsReceiveSduSize::prepare_set_request(Request* req, int& ind)
@@ -1774,9 +1774,9 @@ bool atmVccAal5EncapsType::value_ok(const Vbx& vb)
 	     && (v != 4) && (v != 5)
 	     && (v != 6) && (v != 7)
 	     && (v != 8) && (v != 9)
-	     && (v != 10)) return FALSE;
+	     && (v != 10)) return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmVccAal5EncapsType::prepare_set_request(Request* req, int& ind)
@@ -1869,9 +1869,9 @@ bool atmVclCastType::value_ok(const Vbx& vb)
 	vb.get_value(v);
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
-	    ) return FALSE;
+	    ) return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmVclCastType::prepare_set_request(Request* req, int& ind)
@@ -1915,9 +1915,9 @@ bool atmVclConnKind::value_ok(const Vbx& vb)
 	if ((v != 1)
 	     && (v != 2) && (v != 3)
 	     && (v != 4) && (v != 5)
-	    ) return FALSE;
+	    ) return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmVclConnKind::prepare_set_request(Request* req, int& ind)
@@ -1981,9 +1981,9 @@ bool atmVpCrossConnectAdminStatus::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
-	     && (v != 2)) return FALSE;
+	     && (v != 2)) return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmVpCrossConnectAdminStatus::prepare_set_request(Request* req, int& ind)
@@ -2172,9 +2172,9 @@ bool atmVcCrossConnectAdminStatus::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
-	     && (v != 2)) return FALSE;
+	     && (v != 2)) return false;
 	// place additional code to check validity of new values here
-	return TRUE;
+	return true;
 }
 
 int atmVcCrossConnectAdminStatus::prepare_set_request(Request* req, int& ind)
@@ -2418,7 +2418,7 @@ atmTrafficDescrParamIndexNext::~atmTrafficDescrParamIndexNext()
 atmInterfaceConfEntry* atmInterfaceConfEntry::instance = 0;
 
 const index_info indAtmInterfaceConfEntry[1] = {
-	{ sNMP_SYNTAX_INT, FALSE, 1, 1 } };
+	{ sNMP_SYNTAX_INT, false, 1, 1 } };
 
 atmInterfaceConfEntry::atmInterfaceConfEntry():
    MibTable(oidAtmInterfaceConfEntry, indAtmInterfaceConfEntry, 1)
@@ -2486,7 +2486,7 @@ void atmInterfaceConfEntry::set_row(MibTableRow* r, int p0, int p1, int p2, int 
 atmInterfaceDs3PlcpEntry* atmInterfaceDs3PlcpEntry::instance = 0;
 
 const index_info indAtmInterfaceDs3PlcpEntry[1] = {
-	{ sNMP_SYNTAX_INT, FALSE, 1, 1 } };
+	{ sNMP_SYNTAX_INT, false, 1, 1 } };
 
 atmInterfaceDs3PlcpEntry::atmInterfaceDs3PlcpEntry():
    MibTable(oidAtmInterfaceDs3PlcpEntry, indAtmInterfaceDs3PlcpEntry, 1)
@@ -2523,7 +2523,7 @@ void atmInterfaceDs3PlcpEntry::set_row(MibTableRow* r, int p0, int p1, int p2)
 atmInterfaceTCEntry* atmInterfaceTCEntry::instance = 0;
 
 const index_info indAtmInterfaceTCEntry[1] = {
-	{ sNMP_SYNTAX_INT, FALSE, 1, 1 } };
+	{ sNMP_SYNTAX_INT, false, 1, 1 } };
 
 atmInterfaceTCEntry::atmInterfaceTCEntry():
    MibTable(oidAtmInterfaceTCEntry, indAtmInterfaceTCEntry, 1)
@@ -2558,7 +2558,7 @@ void atmInterfaceTCEntry::set_row(MibTableRow* r, int p0, int p1)
 atmTrafficDescrParamEntry* atmTrafficDescrParamEntry::instance = 0;
 
 const index_info indAtmTrafficDescrParamEntry[1] = {
-	{ sNMP_SYNTAX_INT, FALSE, 1, 1 } };
+	{ sNMP_SYNTAX_INT, false, 1, 1 } };
 
 atmTrafficDescrParamEntry::atmTrafficDescrParamEntry():
    MibTable(oidAtmTrafficDescrParamEntry, indAtmTrafficDescrParamEntry, 1)
@@ -2609,8 +2609,8 @@ void atmTrafficDescrParamEntry::set_row(MibTableRow* r, char* p0, int p1, int p2
 atmVplEntry* atmVplEntry::instance = 0;
 
 const index_info indAtmVplEntry[2] = {
-	{ sNMP_SYNTAX_INT, FALSE, 1, 1 },
-	 { sNMP_SYNTAX_INT, FALSE, 1, 1 } };
+	{ sNMP_SYNTAX_INT, false, 1, 1 },
+	 { sNMP_SYNTAX_INT, false, 1, 1 } };
 
 atmVplEntry::atmVplEntry():
    MibTable(oidAtmVplEntry, indAtmVplEntry, 2)
@@ -2659,9 +2659,9 @@ void atmVplEntry::set_row(MibTableRow* r, int p0, int p1, int p2, int p3, int p4
 atmVclEntry* atmVclEntry::instance = 0;
 
 const index_info indAtmVclEntry[3] = {
-	{ sNMP_SYNTAX_INT, FALSE, 1, 1 },
-	 { sNMP_SYNTAX_INT, FALSE, 1, 1 },
-	 { sNMP_SYNTAX_INT, FALSE, 1, 1 } };
+	{ sNMP_SYNTAX_INT, false, 1, 1 },
+	 { sNMP_SYNTAX_INT, false, 1, 1 },
+	 { sNMP_SYNTAX_INT, false, 1, 1 } };
 
 atmVclEntry::atmVclEntry():
    MibTable(oidAtmVclEntry, indAtmVclEntry, 3)
@@ -2720,11 +2720,11 @@ void atmVclEntry::set_row(MibTableRow* r, int p0, int p1, int p2, int p3, int p4
 atmVpCrossConnectEntry* atmVpCrossConnectEntry::instance = 0;
 
 const index_info indAtmVpCrossConnectEntry[5] = {
-	{ sNMP_SYNTAX_INT, FALSE, 1, 1 },
-	 { sNMP_SYNTAX_INT, FALSE, 1, 1 },
-	 { sNMP_SYNTAX_INT, FALSE, 1, 1 },
-	 { sNMP_SYNTAX_INT, FALSE, 1, 1 },
-	 { sNMP_SYNTAX_INT, FALSE, 1, 1 } };
+	{ sNMP_SYNTAX_INT, false, 1, 1 },
+	 { sNMP_SYNTAX_INT, false, 1, 1 },
+	 { sNMP_SYNTAX_INT, false, 1, 1 },
+	 { sNMP_SYNTAX_INT, false, 1, 1 },
+	 { sNMP_SYNTAX_INT, false, 1, 1 } };
 
 atmVpCrossConnectEntry::atmVpCrossConnectEntry():
    MibTable(oidAtmVpCrossConnectEntry, indAtmVpCrossConnectEntry, 5)
@@ -2767,13 +2767,13 @@ void atmVpCrossConnectEntry::set_row(MibTableRow* r, int p0, int p1, int p2, int
 atmVcCrossConnectEntry* atmVcCrossConnectEntry::instance = 0;
 
 const index_info indAtmVcCrossConnectEntry[7] = {
-	{ sNMP_SYNTAX_INT, FALSE, 1, 1 },
-	 { sNMP_SYNTAX_INT, FALSE, 1, 1 },
-	 { sNMP_SYNTAX_INT, FALSE, 1, 1 },
-	 { sNMP_SYNTAX_INT, FALSE, 1, 1 },
-	 { sNMP_SYNTAX_INT, FALSE, 1, 1 },
-	 { sNMP_SYNTAX_INT, FALSE, 1, 1 },
-	 { sNMP_SYNTAX_INT, FALSE, 1, 1 } };
+	{ sNMP_SYNTAX_INT, false, 1, 1 },
+	 { sNMP_SYNTAX_INT, false, 1, 1 },
+	 { sNMP_SYNTAX_INT, false, 1, 1 },
+	 { sNMP_SYNTAX_INT, false, 1, 1 },
+	 { sNMP_SYNTAX_INT, false, 1, 1 },
+	 { sNMP_SYNTAX_INT, false, 1, 1 },
+	 { sNMP_SYNTAX_INT, false, 1, 1 } };
 
 atmVcCrossConnectEntry::atmVcCrossConnectEntry():
    MibTable(oidAtmVcCrossConnectEntry, indAtmVcCrossConnectEntry, 7)
@@ -2816,9 +2816,9 @@ void atmVcCrossConnectEntry::set_row(MibTableRow* r, int p0, int p1, int p2, int
 aal5VccEntry* aal5VccEntry::instance = 0;
 
 const index_info indAal5VccEntry[3] = {
-	{ sNMP_SYNTAX_INT, FALSE, 1, 1 },
-	 { sNMP_SYNTAX_INT, FALSE, 1, 1 },
-	 { sNMP_SYNTAX_INT, FALSE, 1, 1 } };
+	{ sNMP_SYNTAX_INT, false, 1, 1 },
+	 { sNMP_SYNTAX_INT, false, 1, 1 },
+	 { sNMP_SYNTAX_INT, false, 1, 1 } };
 
 aal5VccEntry::aal5VccEntry():
    MibTable(oidAal5VccEntry, indAal5VccEntry, 3)

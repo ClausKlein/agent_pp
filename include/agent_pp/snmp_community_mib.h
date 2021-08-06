@@ -244,8 +244,8 @@ public:
 	 *    in:  ignored.
 	 *    out: the transportTag associated with the given community.
 	 * @return
-	 *    TRUE if an entry for the given community could be found,
-	 *    FALSE otherwise.
+	 *    true if an entry for the given community could be found,
+	 *    false otherwise.
 	 */
 	virtual bool		get_v3_info(NS_SNMP OctetStr&, NS_SNMP OctetStr&,
 					    NS_SNMP OctetStr&, NS_SNMP OctetStr&);
@@ -261,8 +261,8 @@ public:
 	 * @param contextName
 	 *    a context name.
 	 * @return
-	 *    TRUE if an appropriate community could be found,
-	 *    FALSE otherwise.
+	 *    true if an appropriate community could be found,
+	 *    false otherwise.
 	 */
 	virtual bool		get_community(NS_SNMP OctetStr&,
 					      const NS_SNMP OctetStr&,

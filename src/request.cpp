@@ -1219,11 +1219,11 @@ void RequestList::answer(Request* req)
 #ifdef _SNMPv3
 			status = snmp->send (*pdu, &(req->target));
 #else
-			status = snmp->send (*pdu, req->from, 
-					     req->target.get_version(), 
+			status = snmp->send (*pdu, req->from,
+					     req->target.get_version(),
 					     req->target.get_readcommunity());
 #endif
-#ifndef _NO_LOGGING
+#ifdef _NO_LOGGING
             (void) status;
 #endif
             Counter32MibLeaf::incrementScalar(mib, oidSnmpOutTooBigs);

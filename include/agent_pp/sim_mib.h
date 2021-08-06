@@ -109,7 +109,7 @@ class AGENTPP_DECL SimMibLeaf: public MibLeaf
    * @param s - A pointer to the SnmpSyntax object to be used for storing
    *            the value of the managed object. NOTE: Do not delete this
    *            pointer from outside MibLeaf. It will be deleted by ~MibLeaf
-   * @param d - If TRUE the value of the object pointed by s will be used
+   * @param d - If true the value of the object pointed by s will be used
    *            as default value, otherwise the managed object has no default
    *            value.
    * @see Oidx, mib_access

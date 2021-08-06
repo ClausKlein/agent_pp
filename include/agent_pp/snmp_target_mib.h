@@ -282,7 +282,7 @@ class AGENTPP_DECL snmpTargetParamsEntry: public StorageTable {
 	 * @param secLevel
 	 *    returns the security level of the entry.
 	 * @return
-	 *    TRUE if the entry has been found, FALSE otherwise.
+	 *    true if the entry has been found, false otherwise.
 	 */
 	virtual bool		get_target_params(const NS_SNMP OctetStr&,
 						  NS_SNMP UTarget&, int&);

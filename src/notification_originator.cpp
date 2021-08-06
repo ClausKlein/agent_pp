@@ -117,6 +117,8 @@ int NotificationOriginator::generate(Vbx* vbs, int size, const Oidx& id,
 			LOG_BEGIN(loggerModuleName, ERROR_LOG | 0);
 			LOG("NotificationOriginator: v3MP has to be initialized before notifications can be sent");
 			LOG_END;
+
+            return SNMP_ERROR_RESOURCE_UNAVAIL;  // TODO: is this the right status value? CK
 		}
 		localEngineID = new OctetStr(mp->get_local_engine_id());
 	}

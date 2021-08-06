@@ -108,7 +108,7 @@ MibTableRow* snmpNotifyEntry::add_entry(const OctetStr& name,
 					const int type)
 {
 	start_synch();
-	Oidx index = Oidx::from_string(name, FALSE);
+	Oidx index = Oidx::from_string(name, false);
 	MibTableRow* r = find_index(index);
 	if (r) {
 		end_synch();
@@ -132,7 +132,7 @@ MibTableRow* snmpNotifyEntry::add_entry(const OctetStr& name,
 snmpNotifyFilterProfileEntry* snmpNotifyFilterProfileEntry::instance = 0;
 
 const index_info indSnmpNotifyFilterProfileEntry[1] = {
-  { sNMP_SYNTAX_OCTETS, TRUE, 1, 32 } };
+  { sNMP_SYNTAX_OCTETS, true, 1, 32 } };
 
 snmpNotifyFilterProfileEntry::snmpNotifyFilterProfileEntry():
    StorageTable("1.3.6.1.6.3.13.1.2.1", indSnmpNotifyFilterProfileEntry, 1)
@@ -161,7 +161,7 @@ snmpNotifyFilterProfileEntry::~snmpNotifyFilterProfileEntry()
 snmpNotifyFilterEntry* snmpNotifyFilterEntry::instance = 0;
 
 const index_info	iSnmpNotifyFilterEntry[2] = 
-{ { sNMP_SYNTAX_OCTETS, FALSE, 0, 32 }, { sNMP_SYNTAX_OID, TRUE, 1, 95 } };
+{ { sNMP_SYNTAX_OCTETS, false, 0, 32 }, { sNMP_SYNTAX_OID, true, 1, 95 } };
 
 snmpNotifyFilterEntry::snmpNotifyFilterEntry(): 
 snmpNotifyFilterEntry(snmpNotifyFilterProfileEntry::instance) {
@@ -199,7 +199,7 @@ bool snmpNotifyFilterEntry::passes_filter(const Oidx& target,
 	// no filter -> passes filter
 	if (!found) {
 		_snmpNotifyFilterProfileEntry->end_synch();
-		return TRUE;
+		return true;
 	} 
 	OctetStr profileName;
 	found->first()->get_value(profileName);
@@ -220,7 +220,7 @@ bool snmpNotifyFilterEntry::passes_filter(const Oidx& target,
 	// no filter -> passes filter
 	if (list->size() == 0) {
 		delete list;
-		return TRUE;
+		return true;
 	}
 
 	OidList<MibStaticEntry> matches; 
@@ -283,7 +283,7 @@ bool snmpNotifyFilterEntry::passes_filter(const Oidx& target,
 	delete list;
 	if (matches.size() == 0) {
 		delete[] oidmatches;
-		return FALSE;
+		return false;
 	}
 	SnmpInt32 pass = 0;
 	matches.last()->get_value(pass);
@@ -293,7 +293,7 @@ bool snmpNotifyFilterEntry::passes_filter(const Oidx& target,
 				oidmatches[i].last()->get_value(pass);
 				if (pass == 2) {
 					delete[] oidmatches;
-					return FALSE;
+					return false;
 				}
 			}
 		} 

@@ -368,9 +368,10 @@ MibEntryPtr& OidxPtrMibEntryPtrAVLMap::operator [] (OidxPtr  item)
   }
   else
   {
-    _target_item = &item;
+    _target_item = &item; // NOTE: This may be a dangling reference! CK
     _need_rebalancing = 0;
     _add(root);
+    // NOLINTNEXTLINE(clang-analyzer-core.StackAddressEscape)
     return _found_node->cont;
   }
 }
@@ -596,15 +597,15 @@ void OidxPtrMibEntryPtrAVLMap::_del(OidxPtrMibEntryPtrAVLNode* par, OidxPtrMibEn
   }
 }
 
-        
 
 void OidxPtrMibEntryPtrAVLMap::del(OidxPtr  item)
 {
   if (root == 0) return;
+
   _need_rebalancing = 0;
   _already_found = 0;
   _found_node = 0;
-  _target_item = &item;
+  _target_item = &item; // NOTE: This will be a dangling reference! CK
   _del(root, root);
   if (_found_node)
   {
@@ -612,6 +613,7 @@ void OidxPtrMibEntryPtrAVLMap::del(OidxPtr  item)
     if (--count == 0)
       root = 0;
   }
+  // NOLINTNEXTLINE(clang-analyzer-core.StackAddressEscape)
 }
 
 void OidxPtrMibEntryPtrAVLMap::_kill(OidxPtrMibEntryPtrAVLNode* t)

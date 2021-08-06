@@ -4,7 +4,7 @@ boost-*,\
 cert-*,\
 -cert-err58-cpp,\
 clang-analyzer-*,\
-cppcoreguidelines-*,\
+-cppcoreguidelines-*,\
 -cppcoreguidelines-pro-*,\
 -cppcoreguidelines-avoid-*,\
 -cppcoreguidelines-special-*,\

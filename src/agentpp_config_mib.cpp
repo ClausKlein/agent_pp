@@ -182,9 +182,9 @@ int agentppCfgSecSrcAddrValidation::set(const Vbx& vb)
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
 	    return SNMP_ERROR_WRONG_TYPE;
 	if (v == 1)
-	    mibReference->get_request_list()->set_address_validation(TRUE);
+	    mibReference->get_request_list()->set_address_validation(true);
 	else
-	    mibReference->get_request_list()->set_address_validation(FALSE);	    
+	    mibReference->get_request_list()->set_address_validation(false);	    
 	//--AgentGen END
 	return MibLeaf::set(vb);
 }
@@ -193,14 +193,14 @@ bool agentppCfgSecSrcAddrValidation::value_ok(const Vbx& vb)
 {
 	int32_t v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
-	    return FALSE;
+	    return false;
 	if ((get_state() == 3) && (v == 1)) {
-	    return FALSE;
+	    return false;
 	}
-	if ((v != 1) && (v != 2) && (v != 3)) return FALSE;
+	if ((v != 1) && (v != 2) && (v != 3)) return false;
 	//--AgentGen BEGIN=agentppCfgSecSrcAddrValidation::value_ok
 	//--AgentGen END
-	return TRUE;
+	return true;
 }
 
 //--AgentGen BEGIN=agentppCfgSecSrcAddrValidation
@@ -381,16 +381,16 @@ bool agentppCfgStorageFormat::value_ok(const Vbx& vb)
 {
 	int32_t v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
-	    return FALSE;
+	    return false;
 	if (v != 1)
-	    return FALSE;
+	    return false;
 	//--AgentGen BEGIN=agentppCfgStorageFormat::value_ok
 	if (!((agentppCfgStorageEntry*)my_table)
 	    ->get_mib()->get_config_format((unsigned int)v)) {
-	    return FALSE;
+	    return false;
 	}
 	//--AgentGen END
-	return TRUE;
+	return true;
 }
 
 int agentppCfgStorageFormat::prepare_set_request(Request* req, int& ind)
@@ -519,13 +519,13 @@ bool agentppCfgStorageOperation::value_ok(const Vbx& vb)
 {
 	int32_t v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
-	    return FALSE;
+	    return false;
 	if ((v != -1) && (v != 1) 
 	     && (v != 2) && (v != 3) 
-	     && (v != 4)) return FALSE;
+	     && (v != 4)) return false;
 	//--AgentGen BEGIN=agentppCfgStorageOperation::value_ok
 	//--AgentGen END
-	return TRUE;
+	return true;
 }
 
 int agentppCfgStorageOperation::prepare_set_request(Request* req, int& ind)
@@ -711,7 +711,7 @@ int agentppCfgStorageStatus::prepare_set_request(Request* req, int& ind)
 agentppCfgStorageEntry* agentppCfgStorageEntry::instance = 0;
 
 const index_info indAgentppCfgStorageEntry[1] = {
-	{ sNMP_SYNTAX_OCTETS, FALSE, 0, 255 }
+	{ sNMP_SYNTAX_OCTETS, false, 0, 255 }
 };
 
 agentppCfgStorageEntry::agentppCfgStorageEntry():
@@ -731,7 +731,7 @@ agentppCfgStorageEntry::agentppCfgStorageEntry():
 	add_storage_col(new agentppCfgStorageStorageType(colAgentppCfgStorageStorageType));
 	add_col(new agentppCfgStorageStatus(colAgentppCfgStorageStatus));
 	//--AgentGen BEGIN=agentppCfgStorageEntry::agentppCfgStorageEntry
-	securePaths = TRUE;
+	securePaths = true;
 	//--AgentGen END
 }
 
@@ -786,9 +786,9 @@ int agentppCfgStorageEntry::is_transition_ok(MibTable* table,
 
 void agentppCfgStorageEntry::set_row(MibTableRow* r, 
 				     const NS_SNMP OctetStr& p1, 
-				     long p2, unsigned long p3,
-				     unsigned long p4, long p5, long p6,
-				     long p7)
+				     int32_t p2, uint32_t p3,
+				     uint32_t p4, int32_t p5, int32_t p6,
+				     int32_t p7)
 {
 	r->get_nth(0)->replace_value(new NS_SNMP OctetStr(p1));
 	r->get_nth(1)->replace_value(new SnmpInt32(p2));
@@ -911,10 +911,10 @@ bool agentppCfgLogLevel::value_ok(const Vbx& vb)
 {
 	int32_t v = 0;
 	if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
-	    return FALSE;
+	    return false;
 	if (!(((v >= 0) && (v <= 15))))
-		 return FALSE;
-	return TRUE;
+		 return false;
+	return true;
 }
 //--AgentGen END
 

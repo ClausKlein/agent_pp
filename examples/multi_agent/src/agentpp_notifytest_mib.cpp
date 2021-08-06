@@ -72,12 +72,12 @@ agentppNotifyTest::~agentppNotifyTest()
 	//--AgentGen END
 }
 
-long agentppNotifyTest::get_state()
+int32_t agentppNotifyTest::get_state()
 {
-	return (long)*((SnmpInt32*)value);
+	return (int32_t)*((SnmpInt32*)value);
 }
 
-void agentppNotifyTest::set_state(long l)
+void agentppNotifyTest::set_state(int32_t l)
 {
 
 	//--AgentGen BEGIN=agentppNotifyTest::set_state
@@ -105,11 +105,11 @@ bool agentppNotifyTest::value_ok(const Vbx& vb)
 	int32_t v = 0;
 	vb.get_value(v);
 	if ((v != 1)
-	    ) return FALSE;
+	    ) return false;
 
 	//--AgentGen BEGIN=agentppNotifyTest::value_ok
 	//--AgentGen END
-	return TRUE;
+	return true;
 }
 
 int agentppNotifyTest::prepare_set_request(Request* req, int& ind)
@@ -154,8 +154,8 @@ void agentppNotifyTest::send_agentppNotifyTestAllTypes() {
 	vbs[n  ].set_oid("1.3.6.1.2.1.92.1.3.2.1.10.0.1");
 	vbs[n++].set_value(Oid("1.3.6.1.2.1.340775556.0"));
 	vbs[n  ].set_oid("1.3.6.1.2.1.92.1.3.2.1.11.0.1");
-	unsigned long low = rand();
-	unsigned long high = rand();
+	uint32_t low = rand();
+	uint32_t high = rand();
 	vbs[n++].set_value(Counter64(high, low));
 	vbs[n  ].set_oid("1.3.6.1.2.1.92.1.3.2.1.12.0.1");
 	OpaqueStr op(s);

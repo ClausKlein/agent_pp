@@ -140,7 +140,7 @@ public:
 	static agentppTestTimeout* instance;
 	
 	void       	get_request(Request*, int) override;
-	virtual void       	set_state(unsigned long);
+	virtual void       	set_state(uint32_t);
 	int        	set(const Vbx&) override;
 	int        	prepare_set_request(Request*, int&) override;
 	bool    	value_ok(const Vbx&) override;
@@ -323,8 +323,8 @@ public:
 
 	MibEntryPtr	clone() override;
 	void       	get_request(Request*, int) override;
-	virtual unsigned long   get_state();
-	virtual void       	set_state(unsigned long);
+	virtual uint32_t   get_state();
+	virtual void       	set_state(uint32_t);
 	int        	set(const Vbx&) override;
 	int        	prepare_set_request(Request*, int&) override;
 	bool    	value_ok(const Vbx&) override;

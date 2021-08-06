@@ -3491,9 +3491,10 @@ void Mib::proxy_request(Request* req)
         Vbx vb(oidSnmpProxyDrops);
         vb.set_value(proxyDrops);
         req->get_pdu()->set_vblist(&vb, 1);
-        requestList->report(req);
+        if (requestList != nullptr)
+            requestList->report(req);
     }
-    else
+    else if (requestList != nullptr)
     {
         requestList->answer(req);
     }
