@@ -1,234 +1,228 @@
 /*_############################################################################
-  _## 
-  _##  AGENT++ 4.5 - atm_mib.h  
-  _## 
+  _##
+  _##  AGENT++ 4.5 - atm_mib.h
+  _##
   _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##  
+  _##
   _##  Licensed under the Apache License, Version 2.0 (the "License");
   _##  you may not use this file except in compliance with the License.
   _##  You may obtain a copy of the License at
-  _##  
+  _##
   _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##  
+  _##
   _##  Unless required by applicable law or agreed to in writing, software
   _##  distributed under the License is distributed on an "AS IS" BASIS,
   _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   _##  See the License for the specific language governing permissions and
   _##  limitations under the License.
-  _##  
+  _##
   _##########################################################################*/
-
 
 #ifndef _atm_mib_h
 #define _atm_mib_h
 
-
 #include <agent_pp/mib.h>
-
-#include <agent_pp/snmp_textual_conventions.h>
 #include <agent_pp/notification_originator.h>
+#include <agent_pp/sim_mib.h>
+#include <agent_pp/snmp_textual_conventions.h>
 #include <snmp_pp/log.h>
 
-#include <agent_pp/sim_mib.h>
-
-
-#define oidAtmInterfaceConfTable         "1.3.6.1.2.1.37.1.2"
-#define oidAtmInterfaceConfEntry         "1.3.6.1.2.1.37.1.2.1"
-#define oidAtmInterfaceMaxVpcs           "1.3.6.1.2.1.37.1.2.1.1"
-#define colAtmInterfaceMaxVpcs           "1"
-#define oidAtmInterfaceMaxVccs           "1.3.6.1.2.1.37.1.2.1.2"
-#define colAtmInterfaceMaxVccs           "2"
-#define oidAtmInterfaceConfVpcs          "1.3.6.1.2.1.37.1.2.1.3"
-#define colAtmInterfaceConfVpcs          "3"
-#define oidAtmInterfaceConfVccs          "1.3.6.1.2.1.37.1.2.1.4"
-#define colAtmInterfaceConfVccs          "4"
-#define oidAtmInterfaceMaxActiveVpiBits  "1.3.6.1.2.1.37.1.2.1.5"
-#define colAtmInterfaceMaxActiveVpiBits  "5"
-#define oidAtmInterfaceMaxActiveVciBits  "1.3.6.1.2.1.37.1.2.1.6"
-#define colAtmInterfaceMaxActiveVciBits  "6"
-#define oidAtmInterfaceIlmiVpi           "1.3.6.1.2.1.37.1.2.1.7"
-#define colAtmInterfaceIlmiVpi           "7"
-#define oidAtmInterfaceIlmiVci           "1.3.6.1.2.1.37.1.2.1.8"
-#define colAtmInterfaceIlmiVci           "8"
-#define oidAtmInterfaceAddressType       "1.3.6.1.2.1.37.1.2.1.9"
-#define colAtmInterfaceAddressType       "9"
-#define oidAtmInterfaceAdminAddress      "1.3.6.1.2.1.37.1.2.1.10"
-#define colAtmInterfaceAdminAddress      "10"
+#define oidAtmInterfaceConfTable           "1.3.6.1.2.1.37.1.2"
+#define oidAtmInterfaceConfEntry           "1.3.6.1.2.1.37.1.2.1"
+#define oidAtmInterfaceMaxVpcs             "1.3.6.1.2.1.37.1.2.1.1"
+#define colAtmInterfaceMaxVpcs             "1"
+#define oidAtmInterfaceMaxVccs             "1.3.6.1.2.1.37.1.2.1.2"
+#define colAtmInterfaceMaxVccs             "2"
+#define oidAtmInterfaceConfVpcs            "1.3.6.1.2.1.37.1.2.1.3"
+#define colAtmInterfaceConfVpcs            "3"
+#define oidAtmInterfaceConfVccs            "1.3.6.1.2.1.37.1.2.1.4"
+#define colAtmInterfaceConfVccs            "4"
+#define oidAtmInterfaceMaxActiveVpiBits    "1.3.6.1.2.1.37.1.2.1.5"
+#define colAtmInterfaceMaxActiveVpiBits    "5"
+#define oidAtmInterfaceMaxActiveVciBits    "1.3.6.1.2.1.37.1.2.1.6"
+#define colAtmInterfaceMaxActiveVciBits    "6"
+#define oidAtmInterfaceIlmiVpi             "1.3.6.1.2.1.37.1.2.1.7"
+#define colAtmInterfaceIlmiVpi             "7"
+#define oidAtmInterfaceIlmiVci             "1.3.6.1.2.1.37.1.2.1.8"
+#define colAtmInterfaceIlmiVci             "8"
+#define oidAtmInterfaceAddressType         "1.3.6.1.2.1.37.1.2.1.9"
+#define colAtmInterfaceAddressType         "9"
+#define oidAtmInterfaceAdminAddress        "1.3.6.1.2.1.37.1.2.1.10"
+#define colAtmInterfaceAdminAddress        "10"
 #define oidAtmInterfaceMyNeighborIpAddress "1.3.6.1.2.1.37.1.2.1.11"
 #define colAtmInterfaceMyNeighborIpAddress "11"
-#define oidAtmInterfaceMyNeighborIfName  "1.3.6.1.2.1.37.1.2.1.12"
-#define colAtmInterfaceMyNeighborIfName  "12"
-#define oidAtmInterfaceCurrentMaxVpiBits "1.3.6.1.2.1.37.1.2.1.13"
-#define colAtmInterfaceCurrentMaxVpiBits "13"
-#define oidAtmInterfaceCurrentMaxVciBits "1.3.6.1.2.1.37.1.2.1.14"
-#define colAtmInterfaceCurrentMaxVciBits "14"
-#define oidAtmInterfaceSubscrAddress     "1.3.6.1.2.1.37.1.2.1.15"
-#define colAtmInterfaceSubscrAddress     "15"
-#define oidAtmInterfaceDs3PlcpTable      "1.3.6.1.2.1.37.1.3"
-#define oidAtmInterfaceDs3PlcpEntry      "1.3.6.1.2.1.37.1.3.1"
-#define oidAtmInterfaceDs3PlcpSEFSs      "1.3.6.1.2.1.37.1.3.1.1"
-#define colAtmInterfaceDs3PlcpSEFSs      "1"
-#define oidAtmInterfaceDs3PlcpAlarmState "1.3.6.1.2.1.37.1.3.1.2"
-#define colAtmInterfaceDs3PlcpAlarmState "2"
-#define oidAtmInterfaceDs3PlcpUASs       "1.3.6.1.2.1.37.1.3.1.3"
-#define colAtmInterfaceDs3PlcpUASs       "3"
-#define oidAtmInterfaceTCTable           "1.3.6.1.2.1.37.1.4"
-#define oidAtmInterfaceTCEntry           "1.3.6.1.2.1.37.1.4.1"
-#define oidAtmInterfaceOCDEvents         "1.3.6.1.2.1.37.1.4.1.1"
-#define colAtmInterfaceOCDEvents         "1"
-#define oidAtmInterfaceTCAlarmState      "1.3.6.1.2.1.37.1.4.1.2"
-#define colAtmInterfaceTCAlarmState      "2"
-#define oidAtmTrafficDescrParamTable     "1.3.6.1.2.1.37.1.5"
-#define oidAtmTrafficDescrParamEntry     "1.3.6.1.2.1.37.1.5.1"
-#define oidAtmTrafficDescrParamIndex     "1.3.6.1.2.1.37.1.5.1.1"
-#define colAtmTrafficDescrParamIndex     "1"
-#define oidAtmTrafficDescrType           "1.3.6.1.2.1.37.1.5.1.2"
-#define colAtmTrafficDescrType           "2"
-#define oidAtmTrafficDescrParam1         "1.3.6.1.2.1.37.1.5.1.3"
-#define colAtmTrafficDescrParam1         "3"
-#define oidAtmTrafficDescrParam2         "1.3.6.1.2.1.37.1.5.1.4"
-#define colAtmTrafficDescrParam2         "4"
-#define oidAtmTrafficDescrParam3         "1.3.6.1.2.1.37.1.5.1.5"
-#define colAtmTrafficDescrParam3         "5"
-#define oidAtmTrafficDescrParam4         "1.3.6.1.2.1.37.1.5.1.6"
-#define colAtmTrafficDescrParam4         "6"
-#define oidAtmTrafficDescrParam5         "1.3.6.1.2.1.37.1.5.1.7"
-#define colAtmTrafficDescrParam5         "7"
-#define oidAtmTrafficQoSClass            "1.3.6.1.2.1.37.1.5.1.8"
-#define colAtmTrafficQoSClass            "8"
-#define oidAtmTrafficDescrRowStatus      "1.3.6.1.2.1.37.1.5.1.9"
-#define colAtmTrafficDescrRowStatus      "9"
-#define oidAtmServiceCategory            "1.3.6.1.2.1.37.1.5.1.10"
-#define colAtmServiceCategory            "10"
-#define oidAtmTrafficFrameDiscard        "1.3.6.1.2.1.37.1.5.1.11"
-#define colAtmTrafficFrameDiscard        "11"
-#define oidAtmVplTable                   "1.3.6.1.2.1.37.1.6"
-#define oidAtmVplEntry                   "1.3.6.1.2.1.37.1.6.1"
-#define oidAtmVplVpi                     "1.3.6.1.2.1.37.1.6.1.1"
-#define colAtmVplVpi                     "1"
-#define oidAtmVplAdminStatus             "1.3.6.1.2.1.37.1.6.1.2"
-#define colAtmVplAdminStatus             "2"
-#define oidAtmVplOperStatus              "1.3.6.1.2.1.37.1.6.1.3"
-#define colAtmVplOperStatus              "3"
-#define oidAtmVplLastChange              "1.3.6.1.2.1.37.1.6.1.4"
-#define colAtmVplLastChange              "4"
-#define oidAtmVplReceiveTrafficDescrIndex "1.3.6.1.2.1.37.1.6.1.5"
-#define colAtmVplReceiveTrafficDescrIndex "5"
+#define oidAtmInterfaceMyNeighborIfName    "1.3.6.1.2.1.37.1.2.1.12"
+#define colAtmInterfaceMyNeighborIfName    "12"
+#define oidAtmInterfaceCurrentMaxVpiBits   "1.3.6.1.2.1.37.1.2.1.13"
+#define colAtmInterfaceCurrentMaxVpiBits   "13"
+#define oidAtmInterfaceCurrentMaxVciBits   "1.3.6.1.2.1.37.1.2.1.14"
+#define colAtmInterfaceCurrentMaxVciBits   "14"
+#define oidAtmInterfaceSubscrAddress       "1.3.6.1.2.1.37.1.2.1.15"
+#define colAtmInterfaceSubscrAddress       "15"
+#define oidAtmInterfaceDs3PlcpTable        "1.3.6.1.2.1.37.1.3"
+#define oidAtmInterfaceDs3PlcpEntry        "1.3.6.1.2.1.37.1.3.1"
+#define oidAtmInterfaceDs3PlcpSEFSs        "1.3.6.1.2.1.37.1.3.1.1"
+#define colAtmInterfaceDs3PlcpSEFSs        "1"
+#define oidAtmInterfaceDs3PlcpAlarmState   "1.3.6.1.2.1.37.1.3.1.2"
+#define colAtmInterfaceDs3PlcpAlarmState   "2"
+#define oidAtmInterfaceDs3PlcpUASs         "1.3.6.1.2.1.37.1.3.1.3"
+#define colAtmInterfaceDs3PlcpUASs         "3"
+#define oidAtmInterfaceTCTable             "1.3.6.1.2.1.37.1.4"
+#define oidAtmInterfaceTCEntry             "1.3.6.1.2.1.37.1.4.1"
+#define oidAtmInterfaceOCDEvents           "1.3.6.1.2.1.37.1.4.1.1"
+#define colAtmInterfaceOCDEvents           "1"
+#define oidAtmInterfaceTCAlarmState        "1.3.6.1.2.1.37.1.4.1.2"
+#define colAtmInterfaceTCAlarmState        "2"
+#define oidAtmTrafficDescrParamTable       "1.3.6.1.2.1.37.1.5"
+#define oidAtmTrafficDescrParamEntry       "1.3.6.1.2.1.37.1.5.1"
+#define oidAtmTrafficDescrParamIndex       "1.3.6.1.2.1.37.1.5.1.1"
+#define colAtmTrafficDescrParamIndex       "1"
+#define oidAtmTrafficDescrType             "1.3.6.1.2.1.37.1.5.1.2"
+#define colAtmTrafficDescrType             "2"
+#define oidAtmTrafficDescrParam1           "1.3.6.1.2.1.37.1.5.1.3"
+#define colAtmTrafficDescrParam1           "3"
+#define oidAtmTrafficDescrParam2           "1.3.6.1.2.1.37.1.5.1.4"
+#define colAtmTrafficDescrParam2           "4"
+#define oidAtmTrafficDescrParam3           "1.3.6.1.2.1.37.1.5.1.5"
+#define colAtmTrafficDescrParam3           "5"
+#define oidAtmTrafficDescrParam4           "1.3.6.1.2.1.37.1.5.1.6"
+#define colAtmTrafficDescrParam4           "6"
+#define oidAtmTrafficDescrParam5           "1.3.6.1.2.1.37.1.5.1.7"
+#define colAtmTrafficDescrParam5           "7"
+#define oidAtmTrafficQoSClass              "1.3.6.1.2.1.37.1.5.1.8"
+#define colAtmTrafficQoSClass              "8"
+#define oidAtmTrafficDescrRowStatus        "1.3.6.1.2.1.37.1.5.1.9"
+#define colAtmTrafficDescrRowStatus        "9"
+#define oidAtmServiceCategory              "1.3.6.1.2.1.37.1.5.1.10"
+#define colAtmServiceCategory              "10"
+#define oidAtmTrafficFrameDiscard          "1.3.6.1.2.1.37.1.5.1.11"
+#define colAtmTrafficFrameDiscard          "11"
+#define oidAtmVplTable                     "1.3.6.1.2.1.37.1.6"
+#define oidAtmVplEntry                     "1.3.6.1.2.1.37.1.6.1"
+#define oidAtmVplVpi                       "1.3.6.1.2.1.37.1.6.1.1"
+#define colAtmVplVpi                       "1"
+#define oidAtmVplAdminStatus               "1.3.6.1.2.1.37.1.6.1.2"
+#define colAtmVplAdminStatus               "2"
+#define oidAtmVplOperStatus                "1.3.6.1.2.1.37.1.6.1.3"
+#define colAtmVplOperStatus                "3"
+#define oidAtmVplLastChange                "1.3.6.1.2.1.37.1.6.1.4"
+#define colAtmVplLastChange                "4"
+#define oidAtmVplReceiveTrafficDescrIndex  "1.3.6.1.2.1.37.1.6.1.5"
+#define colAtmVplReceiveTrafficDescrIndex  "5"
 #define oidAtmVplTransmitTrafficDescrIndex "1.3.6.1.2.1.37.1.6.1.6"
 #define colAtmVplTransmitTrafficDescrIndex "6"
-#define oidAtmVplCrossConnectIdentifier  "1.3.6.1.2.1.37.1.6.1.7"
-#define colAtmVplCrossConnectIdentifier  "7"
-#define oidAtmVplRowStatus               "1.3.6.1.2.1.37.1.6.1.8"
-#define colAtmVplRowStatus               "8"
-#define oidAtmVplCastType                "1.3.6.1.2.1.37.1.6.1.9"
-#define colAtmVplCastType                "9"
-#define oidAtmVplConnKind                "1.3.6.1.2.1.37.1.6.1.10"
-#define colAtmVplConnKind                "10"
-#define oidAtmVclTable                   "1.3.6.1.2.1.37.1.7"
-#define oidAtmVclEntry                   "1.3.6.1.2.1.37.1.7.1"
-#define oidAtmVclVpi                     "1.3.6.1.2.1.37.1.7.1.1"
-#define colAtmVclVpi                     "1"
-#define oidAtmVclVci                     "1.3.6.1.2.1.37.1.7.1.2"
-#define colAtmVclVci                     "2"
-#define oidAtmVclAdminStatus             "1.3.6.1.2.1.37.1.7.1.3"
-#define colAtmVclAdminStatus             "3"
-#define oidAtmVclOperStatus              "1.3.6.1.2.1.37.1.7.1.4"
-#define colAtmVclOperStatus              "4"
-#define oidAtmVclLastChange              "1.3.6.1.2.1.37.1.7.1.5"
-#define colAtmVclLastChange              "5"
-#define oidAtmVclReceiveTrafficDescrIndex "1.3.6.1.2.1.37.1.7.1.6"
-#define colAtmVclReceiveTrafficDescrIndex "6"
+#define oidAtmVplCrossConnectIdentifier    "1.3.6.1.2.1.37.1.6.1.7"
+#define colAtmVplCrossConnectIdentifier    "7"
+#define oidAtmVplRowStatus                 "1.3.6.1.2.1.37.1.6.1.8"
+#define colAtmVplRowStatus                 "8"
+#define oidAtmVplCastType                  "1.3.6.1.2.1.37.1.6.1.9"
+#define colAtmVplCastType                  "9"
+#define oidAtmVplConnKind                  "1.3.6.1.2.1.37.1.6.1.10"
+#define colAtmVplConnKind                  "10"
+#define oidAtmVclTable                     "1.3.6.1.2.1.37.1.7"
+#define oidAtmVclEntry                     "1.3.6.1.2.1.37.1.7.1"
+#define oidAtmVclVpi                       "1.3.6.1.2.1.37.1.7.1.1"
+#define colAtmVclVpi                       "1"
+#define oidAtmVclVci                       "1.3.6.1.2.1.37.1.7.1.2"
+#define colAtmVclVci                       "2"
+#define oidAtmVclAdminStatus               "1.3.6.1.2.1.37.1.7.1.3"
+#define colAtmVclAdminStatus               "3"
+#define oidAtmVclOperStatus                "1.3.6.1.2.1.37.1.7.1.4"
+#define colAtmVclOperStatus                "4"
+#define oidAtmVclLastChange                "1.3.6.1.2.1.37.1.7.1.5"
+#define colAtmVclLastChange                "5"
+#define oidAtmVclReceiveTrafficDescrIndex  "1.3.6.1.2.1.37.1.7.1.6"
+#define colAtmVclReceiveTrafficDescrIndex  "6"
 #define oidAtmVclTransmitTrafficDescrIndex "1.3.6.1.2.1.37.1.7.1.7"
 #define colAtmVclTransmitTrafficDescrIndex "7"
-#define oidAtmVccAalType                 "1.3.6.1.2.1.37.1.7.1.8"
-#define colAtmVccAalType                 "8"
-#define oidAtmVccAal5CpcsTransmitSduSize "1.3.6.1.2.1.37.1.7.1.9"
-#define colAtmVccAal5CpcsTransmitSduSize "9"
-#define oidAtmVccAal5CpcsReceiveSduSize  "1.3.6.1.2.1.37.1.7.1.10"
-#define colAtmVccAal5CpcsReceiveSduSize  "10"
-#define oidAtmVccAal5EncapsType          "1.3.6.1.2.1.37.1.7.1.11"
-#define colAtmVccAal5EncapsType          "11"
-#define oidAtmVclCrossConnectIdentifier  "1.3.6.1.2.1.37.1.7.1.12"
-#define colAtmVclCrossConnectIdentifier  "12"
-#define oidAtmVclRowStatus               "1.3.6.1.2.1.37.1.7.1.13"
-#define colAtmVclRowStatus               "13"
-#define oidAtmVclCastType                "1.3.6.1.2.1.37.1.7.1.14"
-#define colAtmVclCastType                "14"
-#define oidAtmVclConnKind                "1.3.6.1.2.1.37.1.7.1.15"
-#define colAtmVclConnKind                "15"
-#define oidAtmVpCrossConnectIndexNext    "1.3.6.1.2.1.37.1.8.0"
-#define oidAtmVpCrossConnectTable        "1.3.6.1.2.1.37.1.9"
-#define oidAtmVpCrossConnectEntry        "1.3.6.1.2.1.37.1.9.1"
-#define oidAtmVpCrossConnectIndex        "1.3.6.1.2.1.37.1.9.1.1"
-#define colAtmVpCrossConnectIndex        "1"
-#define oidAtmVpCrossConnectLowIfIndex   "1.3.6.1.2.1.37.1.9.1.2"
-#define colAtmVpCrossConnectLowIfIndex   "2"
-#define oidAtmVpCrossConnectLowVpi       "1.3.6.1.2.1.37.1.9.1.3"
-#define colAtmVpCrossConnectLowVpi       "3"
-#define oidAtmVpCrossConnectHighIfIndex  "1.3.6.1.2.1.37.1.9.1.4"
-#define colAtmVpCrossConnectHighIfIndex  "4"
-#define oidAtmVpCrossConnectHighVpi      "1.3.6.1.2.1.37.1.9.1.5"
-#define colAtmVpCrossConnectHighVpi      "5"
-#define oidAtmVpCrossConnectAdminStatus  "1.3.6.1.2.1.37.1.9.1.6"
-#define colAtmVpCrossConnectAdminStatus  "6"
-#define oidAtmVpCrossConnectL2HOperStatus "1.3.6.1.2.1.37.1.9.1.7"
-#define colAtmVpCrossConnectL2HOperStatus "7"
-#define oidAtmVpCrossConnectH2LOperStatus "1.3.6.1.2.1.37.1.9.1.8"
-#define colAtmVpCrossConnectH2LOperStatus "8"
-#define oidAtmVpCrossConnectL2HLastChange "1.3.6.1.2.1.37.1.9.1.9"
-#define colAtmVpCrossConnectL2HLastChange "9"
-#define oidAtmVpCrossConnectH2LLastChange "1.3.6.1.2.1.37.1.9.1.10"
-#define colAtmVpCrossConnectH2LLastChange "10"
-#define oidAtmVpCrossConnectRowStatus    "1.3.6.1.2.1.37.1.9.1.11"
-#define colAtmVpCrossConnectRowStatus    "11"
-#define oidAtmVcCrossConnectIndexNext    "1.3.6.1.2.1.37.1.10.0"
-#define oidAtmVcCrossConnectTable        "1.3.6.1.2.1.37.1.11"
-#define oidAtmVcCrossConnectEntry        "1.3.6.1.2.1.37.1.11.1"
-#define oidAtmVcCrossConnectIndex        "1.3.6.1.2.1.37.1.11.1.1"
-#define colAtmVcCrossConnectIndex        "1"
-#define oidAtmVcCrossConnectLowIfIndex   "1.3.6.1.2.1.37.1.11.1.2"
-#define colAtmVcCrossConnectLowIfIndex   "2"
-#define oidAtmVcCrossConnectLowVpi       "1.3.6.1.2.1.37.1.11.1.3"
-#define colAtmVcCrossConnectLowVpi       "3"
-#define oidAtmVcCrossConnectLowVci       "1.3.6.1.2.1.37.1.11.1.4"
-#define colAtmVcCrossConnectLowVci       "4"
-#define oidAtmVcCrossConnectHighIfIndex  "1.3.6.1.2.1.37.1.11.1.5"
-#define colAtmVcCrossConnectHighIfIndex  "5"
-#define oidAtmVcCrossConnectHighVpi      "1.3.6.1.2.1.37.1.11.1.6"
-#define colAtmVcCrossConnectHighVpi      "6"
-#define oidAtmVcCrossConnectHighVci      "1.3.6.1.2.1.37.1.11.1.7"
-#define colAtmVcCrossConnectHighVci      "7"
-#define oidAtmVcCrossConnectAdminStatus  "1.3.6.1.2.1.37.1.11.1.8"
-#define colAtmVcCrossConnectAdminStatus  "8"
-#define oidAtmVcCrossConnectL2HOperStatus "1.3.6.1.2.1.37.1.11.1.9"
-#define colAtmVcCrossConnectL2HOperStatus "9"
-#define oidAtmVcCrossConnectH2LOperStatus "1.3.6.1.2.1.37.1.11.1.10"
-#define colAtmVcCrossConnectH2LOperStatus "10"
-#define oidAtmVcCrossConnectL2HLastChange "1.3.6.1.2.1.37.1.11.1.11"
-#define colAtmVcCrossConnectL2HLastChange "11"
-#define oidAtmVcCrossConnectH2LLastChange "1.3.6.1.2.1.37.1.11.1.12"
-#define colAtmVcCrossConnectH2LLastChange "12"
-#define oidAtmVcCrossConnectRowStatus    "1.3.6.1.2.1.37.1.11.1.13"
-#define colAtmVcCrossConnectRowStatus    "13"
-#define oidAal5VccTable                  "1.3.6.1.2.1.37.1.12"
-#define oidAal5VccEntry                  "1.3.6.1.2.1.37.1.12.1"
-#define oidAal5VccVpi                    "1.3.6.1.2.1.37.1.12.1.1"
-#define colAal5VccVpi                    "1"
-#define oidAal5VccVci                    "1.3.6.1.2.1.37.1.12.1.2"
-#define colAal5VccVci                    "2"
-#define oidAal5VccCrcErrors              "1.3.6.1.2.1.37.1.12.1.3"
-#define colAal5VccCrcErrors              "3"
-#define oidAal5VccSarTimeOuts            "1.3.6.1.2.1.37.1.12.1.4"
-#define colAal5VccSarTimeOuts            "4"
-#define oidAal5VccOverSizedSDUs          "1.3.6.1.2.1.37.1.12.1.5"
-#define colAal5VccOverSizedSDUs          "5"
-#define oidAtmTrafficDescrParamIndexNext "1.3.6.1.2.1.37.1.13.0"
-
+#define oidAtmVccAalType                   "1.3.6.1.2.1.37.1.7.1.8"
+#define colAtmVccAalType                   "8"
+#define oidAtmVccAal5CpcsTransmitSduSize   "1.3.6.1.2.1.37.1.7.1.9"
+#define colAtmVccAal5CpcsTransmitSduSize   "9"
+#define oidAtmVccAal5CpcsReceiveSduSize    "1.3.6.1.2.1.37.1.7.1.10"
+#define colAtmVccAal5CpcsReceiveSduSize    "10"
+#define oidAtmVccAal5EncapsType            "1.3.6.1.2.1.37.1.7.1.11"
+#define colAtmVccAal5EncapsType            "11"
+#define oidAtmVclCrossConnectIdentifier    "1.3.6.1.2.1.37.1.7.1.12"
+#define colAtmVclCrossConnectIdentifier    "12"
+#define oidAtmVclRowStatus                 "1.3.6.1.2.1.37.1.7.1.13"
+#define colAtmVclRowStatus                 "13"
+#define oidAtmVclCastType                  "1.3.6.1.2.1.37.1.7.1.14"
+#define colAtmVclCastType                  "14"
+#define oidAtmVclConnKind                  "1.3.6.1.2.1.37.1.7.1.15"
+#define colAtmVclConnKind                  "15"
+#define oidAtmVpCrossConnectIndexNext      "1.3.6.1.2.1.37.1.8.0"
+#define oidAtmVpCrossConnectTable          "1.3.6.1.2.1.37.1.9"
+#define oidAtmVpCrossConnectEntry          "1.3.6.1.2.1.37.1.9.1"
+#define oidAtmVpCrossConnectIndex          "1.3.6.1.2.1.37.1.9.1.1"
+#define colAtmVpCrossConnectIndex          "1"
+#define oidAtmVpCrossConnectLowIfIndex     "1.3.6.1.2.1.37.1.9.1.2"
+#define colAtmVpCrossConnectLowIfIndex     "2"
+#define oidAtmVpCrossConnectLowVpi         "1.3.6.1.2.1.37.1.9.1.3"
+#define colAtmVpCrossConnectLowVpi         "3"
+#define oidAtmVpCrossConnectHighIfIndex    "1.3.6.1.2.1.37.1.9.1.4"
+#define colAtmVpCrossConnectHighIfIndex    "4"
+#define oidAtmVpCrossConnectHighVpi        "1.3.6.1.2.1.37.1.9.1.5"
+#define colAtmVpCrossConnectHighVpi        "5"
+#define oidAtmVpCrossConnectAdminStatus    "1.3.6.1.2.1.37.1.9.1.6"
+#define colAtmVpCrossConnectAdminStatus    "6"
+#define oidAtmVpCrossConnectL2HOperStatus  "1.3.6.1.2.1.37.1.9.1.7"
+#define colAtmVpCrossConnectL2HOperStatus  "7"
+#define oidAtmVpCrossConnectH2LOperStatus  "1.3.6.1.2.1.37.1.9.1.8"
+#define colAtmVpCrossConnectH2LOperStatus  "8"
+#define oidAtmVpCrossConnectL2HLastChange  "1.3.6.1.2.1.37.1.9.1.9"
+#define colAtmVpCrossConnectL2HLastChange  "9"
+#define oidAtmVpCrossConnectH2LLastChange  "1.3.6.1.2.1.37.1.9.1.10"
+#define colAtmVpCrossConnectH2LLastChange  "10"
+#define oidAtmVpCrossConnectRowStatus      "1.3.6.1.2.1.37.1.9.1.11"
+#define colAtmVpCrossConnectRowStatus      "11"
+#define oidAtmVcCrossConnectIndexNext      "1.3.6.1.2.1.37.1.10.0"
+#define oidAtmVcCrossConnectTable          "1.3.6.1.2.1.37.1.11"
+#define oidAtmVcCrossConnectEntry          "1.3.6.1.2.1.37.1.11.1"
+#define oidAtmVcCrossConnectIndex          "1.3.6.1.2.1.37.1.11.1.1"
+#define colAtmVcCrossConnectIndex          "1"
+#define oidAtmVcCrossConnectLowIfIndex     "1.3.6.1.2.1.37.1.11.1.2"
+#define colAtmVcCrossConnectLowIfIndex     "2"
+#define oidAtmVcCrossConnectLowVpi         "1.3.6.1.2.1.37.1.11.1.3"
+#define colAtmVcCrossConnectLowVpi         "3"
+#define oidAtmVcCrossConnectLowVci         "1.3.6.1.2.1.37.1.11.1.4"
+#define colAtmVcCrossConnectLowVci         "4"
+#define oidAtmVcCrossConnectHighIfIndex    "1.3.6.1.2.1.37.1.11.1.5"
+#define colAtmVcCrossConnectHighIfIndex    "5"
+#define oidAtmVcCrossConnectHighVpi        "1.3.6.1.2.1.37.1.11.1.6"
+#define colAtmVcCrossConnectHighVpi        "6"
+#define oidAtmVcCrossConnectHighVci        "1.3.6.1.2.1.37.1.11.1.7"
+#define colAtmVcCrossConnectHighVci        "7"
+#define oidAtmVcCrossConnectAdminStatus    "1.3.6.1.2.1.37.1.11.1.8"
+#define colAtmVcCrossConnectAdminStatus    "8"
+#define oidAtmVcCrossConnectL2HOperStatus  "1.3.6.1.2.1.37.1.11.1.9"
+#define colAtmVcCrossConnectL2HOperStatus  "9"
+#define oidAtmVcCrossConnectH2LOperStatus  "1.3.6.1.2.1.37.1.11.1.10"
+#define colAtmVcCrossConnectH2LOperStatus  "10"
+#define oidAtmVcCrossConnectL2HLastChange  "1.3.6.1.2.1.37.1.11.1.11"
+#define colAtmVcCrossConnectL2HLastChange  "11"
+#define oidAtmVcCrossConnectH2LLastChange  "1.3.6.1.2.1.37.1.11.1.12"
+#define colAtmVcCrossConnectH2LLastChange  "12"
+#define oidAtmVcCrossConnectRowStatus      "1.3.6.1.2.1.37.1.11.1.13"
+#define colAtmVcCrossConnectRowStatus      "13"
+#define oidAal5VccTable                    "1.3.6.1.2.1.37.1.12"
+#define oidAal5VccEntry                    "1.3.6.1.2.1.37.1.12.1"
+#define oidAal5VccVpi                      "1.3.6.1.2.1.37.1.12.1.1"
+#define colAal5VccVpi                      "1"
+#define oidAal5VccVci                      "1.3.6.1.2.1.37.1.12.1.2"
+#define colAal5VccVci                      "2"
+#define oidAal5VccCrcErrors                "1.3.6.1.2.1.37.1.12.1.3"
+#define colAal5VccCrcErrors                "3"
+#define oidAal5VccSarTimeOuts              "1.3.6.1.2.1.37.1.12.1.4"
+#define colAal5VccSarTimeOuts              "4"
+#define oidAal5VccOverSizedSDUs            "1.3.6.1.2.1.37.1.12.1.5"
+#define colAal5VccOverSizedSDUs            "5"
+#define oidAtmTrafficDescrParamIndexNext   "1.3.6.1.2.1.37.1.13.0"
 
 #ifdef AGENTPP_NAMESPACE
-namespace Agentpp {
+namespace Agentpp
+{
 #endif
-
 
 /**
  *  atmInterfaceMaxVpcs
@@ -239,18 +233,16 @@ namespace Agentpp {
  ranges from 0 to 256 only."
  */
 
-
-class atmInterfaceMaxVpcs: public SimMibLeaf {
+class atmInterfaceMaxVpcs : public SimMibLeaf {
 
 public:
-	atmInterfaceMaxVpcs(const Oidx&);
-	virtual ~atmInterfaceMaxVpcs();
+    atmInterfaceMaxVpcs(const Oidx&);
+    virtual ~atmInterfaceMaxVpcs();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmInterfaceMaxVccs
@@ -259,18 +251,16 @@ public:
  supported at this ATM interface."
  */
 
-
-class atmInterfaceMaxVccs: public SimMibLeaf {
+class atmInterfaceMaxVccs : public SimMibLeaf {
 
 public:
-	atmInterfaceMaxVccs(const Oidx&);
-	virtual ~atmInterfaceMaxVccs();
+    atmInterfaceMaxVccs(const Oidx&);
+    virtual ~atmInterfaceMaxVccs();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmInterfaceConfVpcs
@@ -287,16 +277,14 @@ public:
  0 to 256 only."
  */
 
-
-class atmInterfaceConfVpcs: public SimMibLeaf {
+class atmInterfaceConfVpcs : public SimMibLeaf {
 
 public:
-	atmInterfaceConfVpcs(const Oidx&);
-	virtual ~atmInterfaceConfVpcs();
+    atmInterfaceConfVpcs(const Oidx&);
+    virtual ~atmInterfaceConfVpcs();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmInterfaceConfVccs
@@ -309,16 +297,14 @@ public:
  interface."
  */
 
-
-class atmInterfaceConfVccs: public SimMibLeaf {
+class atmInterfaceConfVccs : public SimMibLeaf {
 
 public:
-	atmInterfaceConfVccs(const Oidx&);
-	virtual ~atmInterfaceConfVccs();
+    atmInterfaceConfVccs(const Oidx&);
+    virtual ~atmInterfaceConfVccs();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmInterfaceMaxActiveVpiBits
@@ -330,18 +316,16 @@ public:
  0 to 8 only."
  */
 
-
-class atmInterfaceMaxActiveVpiBits: public SimMibLeaf {
+class atmInterfaceMaxActiveVpiBits : public SimMibLeaf {
 
 public:
-	atmInterfaceMaxActiveVpiBits(const Oidx&);
-	virtual ~atmInterfaceMaxActiveVpiBits();
+    atmInterfaceMaxActiveVpiBits(const Oidx&);
+    virtual ~atmInterfaceMaxActiveVpiBits();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmInterfaceMaxActiveVciBits
@@ -350,18 +334,16 @@ public:
  configured for use at this ATM interface."
  */
 
-
-class atmInterfaceMaxActiveVciBits: public SimMibLeaf {
+class atmInterfaceMaxActiveVciBits : public SimMibLeaf {
 
 public:
-	atmInterfaceMaxActiveVciBits(const Oidx&);
-	virtual ~atmInterfaceMaxActiveVciBits();
+    atmInterfaceMaxActiveVciBits(const Oidx&);
+    virtual ~atmInterfaceMaxActiveVciBits();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmInterfaceIlmiVpi
@@ -373,18 +355,16 @@ public:
  supported at this ATM interface."
  */
 
-
-class atmInterfaceIlmiVpi: public SimMibLeaf {
+class atmInterfaceIlmiVpi : public SimMibLeaf {
 
 public:
-	atmInterfaceIlmiVpi(const Oidx&);
-	virtual ~atmInterfaceIlmiVpi();
+    atmInterfaceIlmiVpi(const Oidx&);
+    virtual ~atmInterfaceIlmiVpi();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmInterfaceIlmiVci
@@ -396,18 +376,16 @@ public:
  supported at this ATM interface."
  */
 
-
-class atmInterfaceIlmiVci: public SimMibLeaf {
+class atmInterfaceIlmiVci : public SimMibLeaf {
 
 public:
-	atmInterfaceIlmiVci(const Oidx&);
-	virtual ~atmInterfaceIlmiVci();
+    atmInterfaceIlmiVci(const Oidx&);
+    virtual ~atmInterfaceIlmiVci();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmInterfaceAddressType
@@ -416,16 +394,14 @@ public:
  for use at this ATM interface."
  */
 
-
-class atmInterfaceAddressType: public SimMibLeaf {
+class atmInterfaceAddressType : public SimMibLeaf {
 
 public:
-	atmInterfaceAddressType(const Oidx&);
-	virtual ~atmInterfaceAddressType();
+    atmInterfaceAddressType(const Oidx&);
+    virtual ~atmInterfaceAddressType();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmInterfaceAdminAddress
@@ -442,16 +418,14 @@ public:
  zero length."
  */
 
-
-class atmInterfaceAdminAddress: public SimMibLeaf {
+class atmInterfaceAdminAddress : public SimMibLeaf {
 
 public:
-	atmInterfaceAdminAddress(const Oidx&);
-	virtual ~atmInterfaceAdminAddress();
+    atmInterfaceAdminAddress(const Oidx&);
+    virtual ~atmInterfaceAdminAddress();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmInterfaceMyNeighborIpAddress
@@ -467,18 +441,16 @@ public:
  interaction with the neighbor system."
  */
 
-
-class atmInterfaceMyNeighborIpAddress: public SimMibLeaf {
+class atmInterfaceMyNeighborIpAddress : public SimMibLeaf {
 
 public:
-	atmInterfaceMyNeighborIpAddress(const Oidx&);
-	virtual ~atmInterfaceMyNeighborIpAddress();
+    atmInterfaceMyNeighborIpAddress(const Oidx&);
+    virtual ~atmInterfaceMyNeighborIpAddress();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmInterfaceMyNeighborIfName
@@ -498,18 +470,16 @@ public:
  the neighbor system."
  */
 
-
-class atmInterfaceMyNeighborIfName: public SimMibLeaf {
+class atmInterfaceMyNeighborIfName : public SimMibLeaf {
 
 public:
-	atmInterfaceMyNeighborIfName(const Oidx&);
-	virtual ~atmInterfaceMyNeighborIfName();
+    atmInterfaceMyNeighborIfName(const Oidx&);
+    virtual ~atmInterfaceMyNeighborIfName();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmInterfaceCurrentMaxVpiBits
@@ -528,16 +498,14 @@ public:
  atmInterfaceMaxActiveVpiBits."
  */
 
-
-class atmInterfaceCurrentMaxVpiBits: public SimMibLeaf {
+class atmInterfaceCurrentMaxVpiBits : public SimMibLeaf {
 
 public:
-	atmInterfaceCurrentMaxVpiBits(const Oidx&);
-	virtual ~atmInterfaceCurrentMaxVpiBits();
+    atmInterfaceCurrentMaxVpiBits(const Oidx&);
+    virtual ~atmInterfaceCurrentMaxVpiBits();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmInterfaceCurrentMaxVciBits
@@ -556,16 +524,14 @@ public:
  atmInterfaceMaxActiveVciBits."
  */
 
-
-class atmInterfaceCurrentMaxVciBits: public SimMibLeaf {
+class atmInterfaceCurrentMaxVciBits : public SimMibLeaf {
 
 public:
-	atmInterfaceCurrentMaxVciBits(const Oidx&);
-	virtual ~atmInterfaceCurrentMaxVciBits();
+    atmInterfaceCurrentMaxVciBits(const Oidx&);
+    virtual ~atmInterfaceCurrentMaxVciBits();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmInterfaceSubscrAddress
@@ -577,18 +543,16 @@ public:
  of zero length."
  */
 
-
-class atmInterfaceSubscrAddress: public SimMibLeaf {
+class atmInterfaceSubscrAddress : public SimMibLeaf {
 
 public:
-	atmInterfaceSubscrAddress(const Oidx&);
-	virtual ~atmInterfaceSubscrAddress();
+    atmInterfaceSubscrAddress(const Oidx&);
+    virtual ~atmInterfaceSubscrAddress();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmInterfaceDs3PlcpSEFSs
@@ -599,16 +563,14 @@ public:
  one or more SEF events."
  */
 
-
-class atmInterfaceDs3PlcpSEFSs: public SimMibLeaf {
+class atmInterfaceDs3PlcpSEFSs : public SimMibLeaf {
 
 public:
-	atmInterfaceDs3PlcpSEFSs(const Oidx&);
-	virtual ~atmInterfaceDs3PlcpSEFSs();
+    atmInterfaceDs3PlcpSEFSs(const Oidx&);
+    virtual ~atmInterfaceDs3PlcpSEFSs();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmInterfaceDs3PlcpAlarmState
@@ -626,16 +588,14 @@ public:
  for more than 10 seconds."
  */
 
-
-class atmInterfaceDs3PlcpAlarmState: public SimMibLeaf {
+class atmInterfaceDs3PlcpAlarmState : public SimMibLeaf {
 
 public:
-	atmInterfaceDs3PlcpAlarmState(const Oidx&);
-	virtual ~atmInterfaceDs3PlcpAlarmState();
+    atmInterfaceDs3PlcpAlarmState(const Oidx&);
+    virtual ~atmInterfaceDs3PlcpAlarmState();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmInterfaceDs3PlcpUASs
@@ -644,16 +604,14 @@ public:
  Unavailable Seconds encountered by the PLCP."
  */
 
-
-class atmInterfaceDs3PlcpUASs: public SimMibLeaf {
+class atmInterfaceDs3PlcpUASs : public SimMibLeaf {
 
 public:
-	atmInterfaceDs3PlcpUASs(const Oidx&);
-	virtual ~atmInterfaceDs3PlcpUASs();
+    atmInterfaceDs3PlcpUASs(const Oidx&);
+    virtual ~atmInterfaceDs3PlcpUASs();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmInterfaceOCDEvents
@@ -666,16 +624,14 @@ public:
  problem with the TC Sublayer."
  */
 
-
-class atmInterfaceOCDEvents: public SimMibLeaf {
+class atmInterfaceOCDEvents : public SimMibLeaf {
 
 public:
-	atmInterfaceOCDEvents(const Oidx&);
-	virtual ~atmInterfaceOCDEvents();
+    atmInterfaceOCDEvents(const Oidx&);
+    virtual ~atmInterfaceOCDEvents();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmInterfaceTCAlarmState
@@ -690,16 +646,14 @@ public:
  maintenance state."
  */
 
-
-class atmInterfaceTCAlarmState: public SimMibLeaf {
+class atmInterfaceTCAlarmState : public SimMibLeaf {
 
 public:
-	atmInterfaceTCAlarmState(const Oidx&);
-	virtual ~atmInterfaceTCAlarmState();
+    atmInterfaceTCAlarmState(const Oidx&);
+    virtual ~atmInterfaceTCAlarmState();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmTrafficDescrType
@@ -718,18 +672,16 @@ public:
  atmTrafficDescrParam5."
  */
 
-
-class atmTrafficDescrType: public SimMibLeaf {
+class atmTrafficDescrType : public SimMibLeaf {
 
 public:
-	atmTrafficDescrType(const Oidx&);
-	virtual ~atmTrafficDescrType();
+    atmTrafficDescrType(const Oidx&);
+    virtual ~atmTrafficDescrType();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmTrafficDescrParam1
@@ -739,18 +691,16 @@ public:
  atmTrafficDescrType."
  */
 
-
-class atmTrafficDescrParam1: public SimMibLeaf {
+class atmTrafficDescrParam1 : public SimMibLeaf {
 
 public:
-	atmTrafficDescrParam1(const Oidx&);
-	virtual ~atmTrafficDescrParam1();
+    atmTrafficDescrParam1(const Oidx&);
+    virtual ~atmTrafficDescrParam1();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmTrafficDescrParam2
@@ -760,18 +710,16 @@ public:
  atmTrafficDescrType."
  */
 
-
-class atmTrafficDescrParam2: public SimMibLeaf {
+class atmTrafficDescrParam2 : public SimMibLeaf {
 
 public:
-	atmTrafficDescrParam2(const Oidx&);
-	virtual ~atmTrafficDescrParam2();
+    atmTrafficDescrParam2(const Oidx&);
+    virtual ~atmTrafficDescrParam2();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmTrafficDescrParam3
@@ -781,18 +729,16 @@ public:
  atmTrafficDescrType."
  */
 
-
-class atmTrafficDescrParam3: public SimMibLeaf {
+class atmTrafficDescrParam3 : public SimMibLeaf {
 
 public:
-	atmTrafficDescrParam3(const Oidx&);
-	virtual ~atmTrafficDescrParam3();
+    atmTrafficDescrParam3(const Oidx&);
+    virtual ~atmTrafficDescrParam3();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmTrafficDescrParam4
@@ -802,18 +748,16 @@ public:
  atmTrafficDescrType."
  */
 
-
-class atmTrafficDescrParam4: public SimMibLeaf {
+class atmTrafficDescrParam4 : public SimMibLeaf {
 
 public:
-	atmTrafficDescrParam4(const Oidx&);
-	virtual ~atmTrafficDescrParam4();
+    atmTrafficDescrParam4(const Oidx&);
+    virtual ~atmTrafficDescrParam4();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmTrafficDescrParam5
@@ -823,18 +767,16 @@ public:
  atmTrafficDescrType."
  */
 
-
-class atmTrafficDescrParam5: public SimMibLeaf {
+class atmTrafficDescrParam5 : public SimMibLeaf {
 
 public:
-	atmTrafficDescrParam5(const Oidx&);
-	virtual ~atmTrafficDescrParam5();
+    atmTrafficDescrParam5(const Oidx&);
+    virtual ~atmTrafficDescrParam5();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmTrafficQoSClass
@@ -854,18 +796,16 @@ public:
  for best effort traffic."
  */
 
-
-class atmTrafficQoSClass: public SimMibLeaf {
+class atmTrafficQoSClass : public SimMibLeaf {
 
 public:
-	atmTrafficQoSClass(const Oidx&);
-	virtual ~atmTrafficQoSClass();
+    atmTrafficQoSClass(const Oidx&);
+    virtual ~atmTrafficQoSClass();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmTrafficDescrRowStatus
@@ -875,16 +815,14 @@ public:
  existing row in this table."
  */
 
-
-class atmTrafficDescrRowStatus: public snmpRowStatus {
+class atmTrafficDescrRowStatus : public snmpRowStatus {
 
 public:
-	atmTrafficDescrRowStatus(const Oidx&);
-	virtual ~atmTrafficDescrRowStatus();
+    atmTrafficDescrRowStatus(const Oidx&);
+    virtual ~atmTrafficDescrRowStatus();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmServiceCategory
@@ -892,18 +830,16 @@ public:
 "The ATM service category."
  */
 
-
-class atmServiceCategory: public SimMibLeaf {
+class atmServiceCategory : public SimMibLeaf {
 
 public:
-	atmServiceCategory(const Oidx&);
-	virtual ~atmServiceCategory();
+    atmServiceCategory(const Oidx&);
+    virtual ~atmServiceCategory();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmTrafficFrameDiscard
@@ -917,18 +853,16 @@ public:
  congestion, rather than a few cells from many frames."
  */
 
-
-class atmTrafficFrameDiscard: public SimMibLeaf {
+class atmTrafficFrameDiscard : public SimMibLeaf {
 
 public:
-	atmTrafficFrameDiscard(const Oidx&);
-	virtual ~atmTrafficFrameDiscard();
+    atmTrafficFrameDiscard(const Oidx&);
+    virtual ~atmTrafficFrameDiscard();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmVplAdminStatus
@@ -940,18 +874,16 @@ public:
  administrative state of the VPL."
  */
 
-
-class atmVplAdminStatus: public SimMibLeaf {
+class atmVplAdminStatus : public SimMibLeaf {
 
 public:
-	atmVplAdminStatus(const Oidx&);
-	virtual ~atmVplAdminStatus();
+    atmVplAdminStatus(const Oidx&);
+    virtual ~atmVplAdminStatus();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmVplOperStatus
@@ -959,16 +891,14 @@ public:
 "The current operational status of the VPL."
  */
 
-
-class atmVplOperStatus: public SimMibLeaf {
+class atmVplOperStatus : public SimMibLeaf {
 
 public:
-	atmVplOperStatus(const Oidx&);
-	virtual ~atmVplOperStatus();
+    atmVplOperStatus(const Oidx&);
+    virtual ~atmVplOperStatus();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmVplLastChange
@@ -977,16 +907,14 @@ public:
  VPL entered its current operational state."
  */
 
-
-class atmVplLastChange: public SimMibLeaf {
+class atmVplLastChange : public SimMibLeaf {
 
 public:
-	atmVplLastChange(const Oidx&);
-	virtual ~atmVplLastChange();
+    atmVplLastChange(const Oidx&);
+    virtual ~atmVplLastChange();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmVplReceiveTrafficDescrIndex
@@ -996,18 +924,16 @@ public:
  applies to the receive direction of the VPL."
  */
 
-
-class atmVplReceiveTrafficDescrIndex: public SimMibLeaf {
+class atmVplReceiveTrafficDescrIndex : public SimMibLeaf {
 
 public:
-	atmVplReceiveTrafficDescrIndex(const Oidx&);
-	virtual ~atmVplReceiveTrafficDescrIndex();
+    atmVplReceiveTrafficDescrIndex(const Oidx&);
+    virtual ~atmVplReceiveTrafficDescrIndex();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmVplTransmitTrafficDescrIndex
@@ -1017,18 +943,16 @@ public:
  applies to the transmit direction of the VPL."
  */
 
-
-class atmVplTransmitTrafficDescrIndex: public SimMibLeaf {
+class atmVplTransmitTrafficDescrIndex : public SimMibLeaf {
 
 public:
-	atmVplTransmitTrafficDescrIndex(const Oidx&);
-	virtual ~atmVplTransmitTrafficDescrIndex();
+    atmVplTransmitTrafficDescrIndex(const Oidx&);
+    virtual ~atmVplTransmitTrafficDescrIndex();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmVplCrossConnectIdentifier
@@ -1052,16 +976,14 @@ public:
  atmVpCrossConnectTable have been created."
  */
 
-
-class atmVplCrossConnectIdentifier: public SimMibLeaf {
+class atmVplCrossConnectIdentifier : public SimMibLeaf {
 
 public:
-	atmVplCrossConnectIdentifier(const Oidx&);
-	virtual ~atmVplCrossConnectIdentifier();
+    atmVplCrossConnectIdentifier(const Oidx&);
+    virtual ~atmVplCrossConnectIdentifier();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmVplRowStatus
@@ -1080,16 +1002,14 @@ public:
  further guidance to row treatment in this table."
  */
 
-
-class atmVplRowStatus: public snmpRowStatus {
+class atmVplRowStatus : public snmpRowStatus {
 
 public:
-	atmVplRowStatus(const Oidx&);
-	virtual ~atmVplRowStatus();
+    atmVplRowStatus(const Oidx&);
+    virtual ~atmVplRowStatus();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmVplCastType
@@ -1097,18 +1017,16 @@ public:
 "The connection topology type."
  */
 
-
-class atmVplCastType: public SimMibLeaf {
+class atmVplCastType : public SimMibLeaf {
 
 public:
-	atmVplCastType(const Oidx&);
-	virtual ~atmVplCastType();
+    atmVplCastType(const Oidx&);
+    virtual ~atmVplCastType();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmVplConnKind
@@ -1116,18 +1034,16 @@ public:
 "The use of call control."
  */
 
-
-class atmVplConnKind: public SimMibLeaf {
+class atmVplConnKind : public SimMibLeaf {
 
 public:
-	atmVplConnKind(const Oidx&);
-	virtual ~atmVplConnKind();
+    atmVplConnKind(const Oidx&);
+    virtual ~atmVplConnKind();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmVclAdminStatus
@@ -1139,18 +1055,16 @@ public:
  the VCL."
  */
 
-
-class atmVclAdminStatus: public SimMibLeaf {
+class atmVclAdminStatus : public SimMibLeaf {
 
 public:
-	atmVclAdminStatus(const Oidx&);
-	virtual ~atmVclAdminStatus();
+    atmVclAdminStatus(const Oidx&);
+    virtual ~atmVclAdminStatus();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmVclOperStatus
@@ -1158,16 +1072,14 @@ public:
 "The current operational status of the VCL."
  */
 
-
-class atmVclOperStatus: public SimMibLeaf {
+class atmVclOperStatus : public SimMibLeaf {
 
 public:
-	atmVclOperStatus(const Oidx&);
-	virtual ~atmVclOperStatus();
+    atmVclOperStatus(const Oidx&);
+    virtual ~atmVclOperStatus();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmVclLastChange
@@ -1176,16 +1088,14 @@ public:
  entered its current operational state."
  */
 
-
-class atmVclLastChange: public SimMibLeaf {
+class atmVclLastChange : public SimMibLeaf {
 
 public:
-	atmVclLastChange(const Oidx&);
-	virtual ~atmVclLastChange();
+    atmVclLastChange(const Oidx&);
+    virtual ~atmVclLastChange();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmVclReceiveTrafficDescrIndex
@@ -1195,18 +1105,16 @@ public:
  applies to the receive direction of this VCL."
  */
 
-
-class atmVclReceiveTrafficDescrIndex: public SimMibLeaf {
+class atmVclReceiveTrafficDescrIndex : public SimMibLeaf {
 
 public:
-	atmVclReceiveTrafficDescrIndex(const Oidx&);
-	virtual ~atmVclReceiveTrafficDescrIndex();
+    atmVclReceiveTrafficDescrIndex(const Oidx&);
+    virtual ~atmVclReceiveTrafficDescrIndex();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmVclTransmitTrafficDescrIndex
@@ -1216,18 +1124,16 @@ public:
  to the transmit direction of this VCL."
  */
 
-
-class atmVclTransmitTrafficDescrIndex: public SimMibLeaf {
+class atmVclTransmitTrafficDescrIndex : public SimMibLeaf {
 
 public:
-	atmVclTransmitTrafficDescrIndex(const Oidx&);
-	virtual ~atmVclTransmitTrafficDescrIndex();
+    atmVclTransmitTrafficDescrIndex(const Oidx&);
+    virtual ~atmVclTransmitTrafficDescrIndex();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmVccAalType
@@ -1242,18 +1148,16 @@ public:
  the AAL type cannot be determined."
  */
 
-
-class atmVccAalType: public SimMibLeaf {
+class atmVccAalType : public SimMibLeaf {
 
 public:
-	atmVccAalType(const Oidx&);
-	virtual ~atmVccAalType();
+    atmVccAalType(const Oidx&);
+    virtual ~atmVccAalType();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmVccAal5CpcsTransmitSduSize
@@ -1265,18 +1169,16 @@ public:
  supported on the transmit direction of this VCC."
  */
 
-
-class atmVccAal5CpcsTransmitSduSize: public SimMibLeaf {
+class atmVccAal5CpcsTransmitSduSize : public SimMibLeaf {
 
 public:
-	atmVccAal5CpcsTransmitSduSize(const Oidx&);
-	virtual ~atmVccAal5CpcsTransmitSduSize();
+    atmVccAal5CpcsTransmitSduSize(const Oidx&);
+    virtual ~atmVccAal5CpcsTransmitSduSize();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmVccAal5CpcsReceiveSduSize
@@ -1288,18 +1190,16 @@ public:
  supported on the receive direction of this VCC."
  */
 
-
-class atmVccAal5CpcsReceiveSduSize: public SimMibLeaf {
+class atmVccAal5CpcsReceiveSduSize : public SimMibLeaf {
 
 public:
-	atmVccAal5CpcsReceiveSduSize(const Oidx&);
-	virtual ~atmVccAal5CpcsReceiveSduSize();
+    atmVccAal5CpcsReceiveSduSize(const Oidx&);
+    virtual ~atmVccAal5CpcsReceiveSduSize();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmVccAal5EncapsType
@@ -1314,18 +1214,16 @@ public:
  LAN Emulation specification."
  */
 
-
-class atmVccAal5EncapsType: public SimMibLeaf {
+class atmVccAal5EncapsType : public SimMibLeaf {
 
 public:
-	atmVccAal5EncapsType(const Oidx&);
-	virtual ~atmVccAal5EncapsType();
+    atmVccAal5EncapsType(const Oidx&);
+    virtual ~atmVccAal5EncapsType();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmVclCrossConnectIdentifier
@@ -1350,16 +1248,14 @@ public:
  atmVcCrossConnectTable have been created."
  */
 
-
-class atmVclCrossConnectIdentifier: public SimMibLeaf {
+class atmVclCrossConnectIdentifier : public SimMibLeaf {
 
 public:
-	atmVclCrossConnectIdentifier(const Oidx&);
-	virtual ~atmVclCrossConnectIdentifier();
+    atmVclCrossConnectIdentifier(const Oidx&);
+    virtual ~atmVclCrossConnectIdentifier();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmVclRowStatus
@@ -1386,16 +1282,14 @@ public:
  further guidance to row treatment in this table."
  */
 
-
-class atmVclRowStatus: public snmpRowStatus {
+class atmVclRowStatus : public snmpRowStatus {
 
 public:
-	atmVclRowStatus(const Oidx&);
-	virtual ~atmVclRowStatus();
+    atmVclRowStatus(const Oidx&);
+    virtual ~atmVclRowStatus();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmVclCastType
@@ -1403,18 +1297,16 @@ public:
 "The connection topology type."
  */
 
-
-class atmVclCastType: public SimMibLeaf {
+class atmVclCastType : public SimMibLeaf {
 
 public:
-	atmVclCastType(const Oidx&);
-	virtual ~atmVclCastType();
+    atmVclCastType(const Oidx&);
+    virtual ~atmVclCastType();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmVclConnKind
@@ -1422,18 +1314,16 @@ public:
 "The use of call control."
  */
 
-
-class atmVclConnKind: public SimMibLeaf {
+class atmVclConnKind : public SimMibLeaf {
 
 public:
-	atmVclConnKind(const Oidx&);
-	virtual ~atmVclConnKind();
+    atmVclConnKind(const Oidx&);
+    virtual ~atmVclConnKind();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmVpCrossConnectIndexNext
@@ -1453,17 +1343,14 @@ public:
  value will be made available for reuse."
  */
 
-
-class atmVpCrossConnectIndexNext: public SimMibLeaf {
+class atmVpCrossConnectIndexNext : public SimMibLeaf {
 
 public:
-	atmVpCrossConnectIndexNext();
-	virtual ~atmVpCrossConnectIndexNext();
+    atmVpCrossConnectIndexNext();
+    virtual ~atmVpCrossConnectIndexNext();
 
-	static atmVpCrossConnectIndexNext* instance;
-
+    static atmVpCrossConnectIndexNext* instance;
 };
-
 
 /**
  *  atmVpCrossConnectAdminStatus
@@ -1472,18 +1359,16 @@ public:
  bi-directional VP cross-connect."
  */
 
-
-class atmVpCrossConnectAdminStatus: public SimMibLeaf {
+class atmVpCrossConnectAdminStatus : public SimMibLeaf {
 
 public:
-	atmVpCrossConnectAdminStatus(const Oidx&);
-	virtual ~atmVpCrossConnectAdminStatus();
+    atmVpCrossConnectAdminStatus(const Oidx&);
+    virtual ~atmVpCrossConnectAdminStatus();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmVpCrossConnectL2HOperStatus
@@ -1493,16 +1378,14 @@ public:
  high direction)."
  */
 
-
-class atmVpCrossConnectL2HOperStatus: public SimMibLeaf {
+class atmVpCrossConnectL2HOperStatus : public SimMibLeaf {
 
 public:
-	atmVpCrossConnectL2HOperStatus(const Oidx&);
-	virtual ~atmVpCrossConnectL2HOperStatus();
+    atmVpCrossConnectL2HOperStatus(const Oidx&);
+    virtual ~atmVpCrossConnectL2HOperStatus();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmVpCrossConnectH2LOperStatus
@@ -1512,16 +1395,14 @@ public:
  low direction)."
  */
 
-
-class atmVpCrossConnectH2LOperStatus: public SimMibLeaf {
+class atmVpCrossConnectH2LOperStatus : public SimMibLeaf {
 
 public:
-	atmVpCrossConnectH2LOperStatus(const Oidx&);
-	virtual ~atmVpCrossConnectH2LOperStatus();
+    atmVpCrossConnectH2LOperStatus(const Oidx&);
+    virtual ~atmVpCrossConnectH2LOperStatus();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmVpCrossConnectL2HLastChange
@@ -1531,16 +1412,14 @@ public:
  state in the low to high direction."
  */
 
-
-class atmVpCrossConnectL2HLastChange: public SimMibLeaf {
+class atmVpCrossConnectL2HLastChange : public SimMibLeaf {
 
 public:
-	atmVpCrossConnectL2HLastChange(const Oidx&);
-	virtual ~atmVpCrossConnectL2HLastChange();
+    atmVpCrossConnectL2HLastChange(const Oidx&);
+    virtual ~atmVpCrossConnectL2HLastChange();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmVpCrossConnectH2LLastChange
@@ -1550,16 +1429,14 @@ public:
  in the high to low direction."
  */
 
-
-class atmVpCrossConnectH2LLastChange: public SimMibLeaf {
+class atmVpCrossConnectH2LLastChange : public SimMibLeaf {
 
 public:
-	atmVpCrossConnectH2LLastChange(const Oidx&);
-	virtual ~atmVpCrossConnectH2LLastChange();
+    atmVpCrossConnectH2LLastChange(const Oidx&);
+    virtual ~atmVpCrossConnectH2LLastChange();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmVpCrossConnectRowStatus
@@ -1576,16 +1453,14 @@ public:
  is set to `up'."
  */
 
-
-class atmVpCrossConnectRowStatus: public snmpRowStatus {
+class atmVpCrossConnectRowStatus : public snmpRowStatus {
 
 public:
-	atmVpCrossConnectRowStatus(const Oidx&);
-	virtual ~atmVpCrossConnectRowStatus();
+    atmVpCrossConnectRowStatus(const Oidx&);
+    virtual ~atmVpCrossConnectRowStatus();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmVcCrossConnectIndexNext
@@ -1605,17 +1480,14 @@ public:
  value will be made available for reuse."
  */
 
-
-class atmVcCrossConnectIndexNext: public SimMibLeaf {
+class atmVcCrossConnectIndexNext : public SimMibLeaf {
 
 public:
-	atmVcCrossConnectIndexNext();
-	virtual ~atmVcCrossConnectIndexNext();
+    atmVcCrossConnectIndexNext();
+    virtual ~atmVcCrossConnectIndexNext();
 
-	static atmVcCrossConnectIndexNext* instance;
-
+    static atmVcCrossConnectIndexNext* instance;
 };
-
 
 /**
  *  atmVcCrossConnectAdminStatus
@@ -1624,18 +1496,16 @@ public:
  bi-directional VC cross-connect."
  */
 
-
-class atmVcCrossConnectAdminStatus: public SimMibLeaf {
+class atmVcCrossConnectAdminStatus : public SimMibLeaf {
 
 public:
-	atmVcCrossConnectAdminStatus(const Oidx&);
-	virtual ~atmVcCrossConnectAdminStatus();
+    atmVcCrossConnectAdminStatus(const Oidx&);
+    virtual ~atmVcCrossConnectAdminStatus();
 
-	MibEntryPtr	clone() override;
-	int        	prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  atmVcCrossConnectL2HOperStatus
@@ -1645,16 +1515,14 @@ public:
  from the low to high direction)."
  */
 
-
-class atmVcCrossConnectL2HOperStatus: public SimMibLeaf {
+class atmVcCrossConnectL2HOperStatus : public SimMibLeaf {
 
 public:
-	atmVcCrossConnectL2HOperStatus(const Oidx&);
-	virtual ~atmVcCrossConnectL2HOperStatus();
+    atmVcCrossConnectL2HOperStatus(const Oidx&);
+    virtual ~atmVcCrossConnectL2HOperStatus();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmVcCrossConnectH2LOperStatus
@@ -1664,16 +1532,14 @@ public:
  from the high to low direction)."
  */
 
-
-class atmVcCrossConnectH2LOperStatus: public SimMibLeaf {
+class atmVcCrossConnectH2LOperStatus : public SimMibLeaf {
 
 public:
-	atmVcCrossConnectH2LOperStatus(const Oidx&);
-	virtual ~atmVcCrossConnectH2LOperStatus();
+    atmVcCrossConnectH2LOperStatus(const Oidx&);
+    virtual ~atmVcCrossConnectH2LOperStatus();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmVcCrossConnectL2HLastChange
@@ -1683,16 +1549,14 @@ public:
  operational state in low to high direction."
  */
 
-
-class atmVcCrossConnectL2HLastChange: public SimMibLeaf {
+class atmVcCrossConnectL2HLastChange : public SimMibLeaf {
 
 public:
-	atmVcCrossConnectL2HLastChange(const Oidx&);
-	virtual ~atmVcCrossConnectL2HLastChange();
+    atmVcCrossConnectL2HLastChange(const Oidx&);
+    virtual ~atmVcCrossConnectL2HLastChange();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmVcCrossConnectH2LLastChange
@@ -1702,16 +1566,14 @@ public:
  operational state in high to low direction."
  */
 
-
-class atmVcCrossConnectH2LLastChange: public SimMibLeaf {
+class atmVcCrossConnectH2LLastChange : public SimMibLeaf {
 
 public:
-	atmVcCrossConnectH2LLastChange(const Oidx&);
-	virtual ~atmVcCrossConnectH2LLastChange();
+    atmVcCrossConnectH2LLastChange(const Oidx&);
+    virtual ~atmVcCrossConnectH2LLastChange();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmVcCrossConnectRowStatus
@@ -1728,16 +1590,14 @@ public:
  is set to `up'."
  */
 
-
-class atmVcCrossConnectRowStatus: public snmpRowStatus {
+class atmVcCrossConnectRowStatus : public snmpRowStatus {
 
 public:
-	atmVcCrossConnectRowStatus(const Oidx&);
-	virtual ~atmVcCrossConnectRowStatus();
+    atmVcCrossConnectRowStatus(const Oidx&);
+    virtual ~atmVcCrossConnectRowStatus();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  aal5VccCrcErrors
@@ -1747,16 +1607,14 @@ public:
  interface associated with an AAL5 entity."
  */
 
-
-class aal5VccCrcErrors: public SimMibLeaf {
+class aal5VccCrcErrors : public SimMibLeaf {
 
 public:
-	aal5VccCrcErrors(const Oidx&);
-	virtual ~aal5VccCrcErrors();
+    aal5VccCrcErrors(const Oidx&);
+    virtual ~aal5VccCrcErrors();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  aal5VccSarTimeOuts
@@ -1771,16 +1629,14 @@ public:
  contains a zero value."
  */
 
-
-class aal5VccSarTimeOuts: public SimMibLeaf {
+class aal5VccSarTimeOuts : public SimMibLeaf {
 
 public:
-	aal5VccSarTimeOuts(const Oidx&);
-	virtual ~aal5VccSarTimeOuts();
+    aal5VccSarTimeOuts(const Oidx&);
+    virtual ~aal5VccSarTimeOuts();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  aal5VccOverSizedSDUs
@@ -1791,16 +1647,14 @@ public:
  AAL5 SDUs were too large."
  */
 
-
-class aal5VccOverSizedSDUs: public SimMibLeaf {
+class aal5VccOverSizedSDUs : public SimMibLeaf {
 
 public:
-	aal5VccOverSizedSDUs(const Oidx&);
-	virtual ~aal5VccOverSizedSDUs();
+    aal5VccOverSizedSDUs(const Oidx&);
+    virtual ~aal5VccOverSizedSDUs();
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /**
  *  atmTrafficDescrParamIndexNext
@@ -1822,17 +1676,14 @@ public:
  value will be made available for reuse."
  */
 
-
-class atmTrafficDescrParamIndexNext: public SimMibLeaf {
+class atmTrafficDescrParamIndexNext : public SimMibLeaf {
 
 public:
-	atmTrafficDescrParamIndexNext();
-	virtual ~atmTrafficDescrParamIndexNext();
+    atmTrafficDescrParamIndexNext();
+    virtual ~atmTrafficDescrParamIndexNext();
 
-	static atmTrafficDescrParamIndexNext* instance;
-
+    static atmTrafficDescrParamIndexNext* instance;
 };
-
 
 /**
  *  atmInterfaceConfEntry
@@ -1842,18 +1693,18 @@ public:
  by ifIndex values of ATM interfaces."
  */
 
-
-class atmInterfaceConfEntry: public MibTable {
+class atmInterfaceConfEntry : public MibTable {
 
 public:
-	atmInterfaceConfEntry();
-	virtual ~atmInterfaceConfEntry();
+    atmInterfaceConfEntry();
+    virtual ~atmInterfaceConfEntry();
 
-	static atmInterfaceConfEntry* instance;
+    static atmInterfaceConfEntry* instance;
 
-	virtual void       	set_row(MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8, char* p9, char* p10, char* p11, int p12, int p13, char* p14);
+    virtual void set_row(MibTableRow* r, int p0, int p1, int p2, int p3,
+        int p4, int p5, int p6, int p7, int p8, char* p9, char* p10, char* p11,
+        int p12, int p13, char* p14);
 };
-
 
 /**
  *  atmInterfaceDs3PlcpEntry
@@ -1863,18 +1714,16 @@ public:
  indexed by the ifIndex value of the ATM interface."
  */
 
-
-class atmInterfaceDs3PlcpEntry: public MibTable {
+class atmInterfaceDs3PlcpEntry : public MibTable {
 
 public:
-	atmInterfaceDs3PlcpEntry();
-	virtual ~atmInterfaceDs3PlcpEntry();
+    atmInterfaceDs3PlcpEntry();
+    virtual ~atmInterfaceDs3PlcpEntry();
 
-	static atmInterfaceDs3PlcpEntry* instance;
+    static atmInterfaceDs3PlcpEntry* instance;
 
-	virtual void       	set_row(MibTableRow* r, int p0, int p1, int p2);
+    virtual void set_row(MibTableRow* r, int p0, int p1, int p2);
 };
-
 
 /**
  *  atmInterfaceTCEntry
@@ -1884,18 +1733,16 @@ public:
  indexed by the ifIndex value of the ATM interface."
  */
 
-
-class atmInterfaceTCEntry: public MibTable {
+class atmInterfaceTCEntry : public MibTable {
 
 public:
-	atmInterfaceTCEntry();
-	virtual ~atmInterfaceTCEntry();
+    atmInterfaceTCEntry();
+    virtual ~atmInterfaceTCEntry();
 
-	static atmInterfaceTCEntry* instance;
+    static atmInterfaceTCEntry* instance;
 
-	virtual void       	set_row(MibTableRow* r, int p0, int p1);
+    virtual void set_row(MibTableRow* r, int p0, int p1);
 };
-
 
 /**
  *  atmTrafficDescrParamEntry
@@ -1904,18 +1751,17 @@ public:
  type and the associated parameters."
  */
 
-
-class atmTrafficDescrParamEntry: public MibTable {
+class atmTrafficDescrParamEntry : public MibTable {
 
 public:
-	atmTrafficDescrParamEntry();
-	virtual ~atmTrafficDescrParamEntry();
+    atmTrafficDescrParamEntry();
+    virtual ~atmTrafficDescrParamEntry();
 
-	static atmTrafficDescrParamEntry* instance;
+    static atmTrafficDescrParamEntry* instance;
 
-	virtual void       	set_row(MibTableRow* r, char* p0, int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8, int p9);
+    virtual void set_row(MibTableRow* r, char* p0, int p1, int p2, int p3,
+        int p4, int p5, int p6, int p7, int p8, int p9);
 };
-
 
 /**
  *  atmVplEntry
@@ -1997,18 +1843,17 @@ public:
  associated resources."
  */
 
-
-class atmVplEntry: public MibTable {
+class atmVplEntry : public MibTable {
 
 public:
-	atmVplEntry();
-	virtual ~atmVplEntry();
+    atmVplEntry();
+    virtual ~atmVplEntry();
 
-	static atmVplEntry* instance;
+    static atmVplEntry* instance;
 
-	virtual void       	set_row(MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8);
+    virtual void set_row(MibTableRow* r, int p0, int p1, int p2, int p3,
+        int p4, int p5, int p6, int p7, int p8);
 };
-
 
 /**
  *  atmVclEntry
@@ -2090,18 +1935,18 @@ public:
  associated resources."
  */
 
-
-class atmVclEntry: public MibTable {
+class atmVclEntry : public MibTable {
 
 public:
-	atmVclEntry();
-	virtual ~atmVclEntry();
+    atmVclEntry();
+    virtual ~atmVclEntry();
 
-	static atmVclEntry* instance;
+    static atmVclEntry* instance;
 
-	virtual void       	set_row(MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8, int p9, int p10, int p11, int p12);
+    virtual void set_row(MibTableRow* r, int p0, int p1, int p2, int p3,
+        int p4, int p5, int p6, int p7, int p8, int p9, int p10, int p11,
+        int p12);
 };
-
 
 /**
  *  atmVpCrossConnectEntry
@@ -2229,18 +2074,17 @@ public:
  for individual VPLs."
  */
 
-
-class atmVpCrossConnectEntry: public MibTable {
+class atmVpCrossConnectEntry : public MibTable {
 
 public:
-	atmVpCrossConnectEntry();
-	virtual ~atmVpCrossConnectEntry();
+    atmVpCrossConnectEntry();
+    virtual ~atmVpCrossConnectEntry();
 
-	static atmVpCrossConnectEntry* instance;
+    static atmVpCrossConnectEntry* instance;
 
-	virtual void       	set_row(MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5);
+    virtual void set_row(
+        MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5);
 };
-
 
 /**
  *  atmVcCrossConnectEntry
@@ -2368,18 +2212,17 @@ public:
  for individual VCLs."
  */
 
-
-class atmVcCrossConnectEntry: public MibTable {
+class atmVcCrossConnectEntry : public MibTable {
 
 public:
-	atmVcCrossConnectEntry();
-	virtual ~atmVcCrossConnectEntry();
+    atmVcCrossConnectEntry();
+    virtual ~atmVcCrossConnectEntry();
 
-	static atmVcCrossConnectEntry* instance;
+    static atmVcCrossConnectEntry* instance;
 
-	virtual void       	set_row(MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5);
+    virtual void set_row(
+        MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5);
 };
-
 
 /**
  *  aal5VccEntry
@@ -2390,38 +2233,30 @@ public:
  and the associated VPI/VCI values."
  */
 
-
-class aal5VccEntry: public MibTable {
+class aal5VccEntry : public MibTable {
 
 public:
-	aal5VccEntry();
-	virtual ~aal5VccEntry();
+    aal5VccEntry();
+    virtual ~aal5VccEntry();
 
-	static aal5VccEntry* instance;
+    static aal5VccEntry* instance;
 
-	virtual void       	set_row(MibTableRow* r, int p0, int p1, int p2);
+    virtual void set_row(MibTableRow* r, int p0, int p1, int p2);
 };
 
-
-class atm_mib: public MibGroup
-{
-  public:
-	atm_mib();
-	virtual ~atm_mib() { }
+class atm_mib : public MibGroup {
+public:
+    atm_mib();
+    virtual ~atm_mib() { }
 };
 
 #ifdef AGENTPP_NAMESPACE
 }
 #endif
 
-
-
 /**
- * atm_mib.h generated by AgentGen 1.3.5 for AGENT++v3.4 with simulation extensions 
- * Tue Apr 18 02:03:56 GMT+04:30 2000.
+ * atm_mib.h generated by AgentGen 1.3.5 for AGENT++v3.4 with simulation
+ * extensions Tue Apr 18 02:03:56 GMT+04:30 2000.
  */
 
-
 #endif
-
-

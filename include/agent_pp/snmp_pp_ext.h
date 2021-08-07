@@ -189,7 +189,7 @@ public:
      *
      * @return A subidentifier or 0 if it does not exist.
      */
-    unsigned long last() const
+    uint32_t last() const
     {
         // check for len == 0
         if ((!Oid::valid()) || (smival.value.oid.len < 1)) return 0;
@@ -198,7 +198,7 @@ public:
     }
 
     using NS_SNMP Oid::operator=;
-    virtual Oidx&      operator=(unsigned long l)
+    virtual Oidx&      operator=(uint32_t l)
     {
         // delete the old value
         if (smival.value.oid.ptr)
@@ -215,8 +215,7 @@ public:
     using NS_SNMP Oid::operator+=;
     Oidx&              operator+=(NS_SNMP IpAddress const& ip)
     {
-        for (int i = 0; i < ip.get_length(); i++)
-            *this += (unsigned long)ip[i];
+        for (int i = 0; i < ip.get_length(); i++) *this += (uint32_t)ip[i];
         return *this;
     }
 
@@ -810,8 +809,8 @@ public:
     SnmpSocket get_session_fds() { return iv_snmp_session; }
 
 protected:
-    unsigned long ProcessizedReqId(unsigned short);
-    unsigned long MyMakeReqId();
+    uint32_t ProcessizedReqId(unsigned short);
+    uint32_t MyMakeReqId();
 };
 
 #ifdef AGENTPP_NAMESPACE

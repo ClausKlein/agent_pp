@@ -512,7 +512,7 @@ void UsmUserTable::initialize_key_change(MibTableRow* row)
     }
     else
     {
-        unsigned long auth_prot = o.last();
+        uint32_t auth_prot = o.last();
 
         Auth* auth       = usm->get_auth_priv()->get_auth(auth_prot);
         int   hashlength = 0;
@@ -538,7 +538,7 @@ void UsmUserTable::initialize_key_change(MibTableRow* row)
         }
         else
         {
-            unsigned long priv_prot = op.last();
+            uint32_t priv_prot = op.last();
 
             Priv* priv       = usm->get_auth_priv()->get_priv(priv_prot);
             int   hashlength = 0;
@@ -997,7 +997,7 @@ int UsmCloneFrom::set(const Vbx& vb)
             }
             else
             {
-                unsigned long auth_prot = auth_oid.last();
+                uint32_t auth_prot = auth_oid.last();
 
                 Auth* auth       = usm->get_auth_priv()->get_auth(auth_prot);
                 int   hashlength = 0;
@@ -1024,7 +1024,7 @@ int UsmCloneFrom::set(const Vbx& vb)
                 }
                 else
                 {
-                    unsigned long priv_prot = priv_oid.last();
+                    uint32_t priv_prot = priv_oid.last();
 
                     Priv* priv    = usm->get_auth_priv()->get_priv(priv_prot);
                     int   hashlen = 0;

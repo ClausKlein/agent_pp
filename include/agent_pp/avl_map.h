@@ -1,24 +1,24 @@
 /*_############################################################################
-  _## 
-  _##  AGENT++ 4.5 - avl_map.h  
-  _## 
+  _##
+  _##  AGENT++ 4.5 - avl_map.h
+  _##
   _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##  
+  _##
   _##  Licensed under the Apache License, Version 2.0 (the "License");
   _##  you may not use this file except in compliance with the License.
   _##  You may obtain a copy of the License at
-  _##  
+  _##
   _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##  
+  _##
   _##  Unless required by applicable law or agreed to in writing, software
   _##  distributed under the License is distributed on an "AS IS" BASIS,
   _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   _##  See the License for the specific language governing permissions and
   _##  limitations under the License.
-  _##  
+  _##
   _##########################################################################*/
 // This may look like C code, but it is really -*- C++ -*-
-/* 
+/*
 Copyright (C) 1988 Free Software Foundation
     written by Doug Lea (dl@rocky.oswego.edu)
 
@@ -35,139 +35,125 @@ License along with this library; if not, write to the Free Software
 Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-
 #ifndef _OidxPtrEntryPtrAVLMap_h
 #define _OidxPtrEntryPtrAVLMap_h 1
 
 #include <agent_pp/map.h>
 
 #ifdef AGENTPP_NAMESPACE
-namespace Agentpp {
-    using namespace Snmp_pp;
+namespace Agentpp
+{
+using namespace Snmp_pp;
 #endif
 
-
-struct OidxPtrEntryPtrAVLNode
-{
-  OidxPtrEntryPtrAVLNode*      lt;
-  OidxPtrEntryPtrAVLNode*      rt;
-  OidxPtr             item;
-  EntryPtr            cont;
-  char                stat;
-                      OidxPtrEntryPtrAVLNode(OidxPtr  h, EntryPtr  c, 
-					     OidxPtrEntryPtrAVLNode* l=0,
-					     OidxPtrEntryPtrAVLNode* r=0);
-                      ~OidxPtrEntryPtrAVLNode() {};
+struct OidxPtrEntryPtrAVLNode {
+    OidxPtrEntryPtrAVLNode* lt;
+    OidxPtrEntryPtrAVLNode* rt;
+    OidxPtr                 item;
+    EntryPtr                cont;
+    char                    stat;
+    OidxPtrEntryPtrAVLNode(OidxPtr h, EntryPtr c,
+        OidxPtrEntryPtrAVLNode* l = 0, OidxPtrEntryPtrAVLNode* r = 0);
+    ~OidxPtrEntryPtrAVLNode() {};
 };
 
-inline OidxPtrEntryPtrAVLNode::OidxPtrEntryPtrAVLNode(OidxPtr  h, EntryPtr  c, 
-						     OidxPtrEntryPtrAVLNode* l,
-						     OidxPtrEntryPtrAVLNode* r)
-     :lt(l), rt(r), item(h), cont(c), stat(0) {}
+inline OidxPtrEntryPtrAVLNode::OidxPtrEntryPtrAVLNode(OidxPtr h, EntryPtr c,
+    OidxPtrEntryPtrAVLNode* l, OidxPtrEntryPtrAVLNode* r)
+    : lt(l), rt(r), item(h), cont(c), stat(0)
+{ }
 
 typedef OidxPtrEntryPtrAVLNode* OidxPtrEntryPtrAVLNodePtr;
 
-
-class AGENTPP_DECL OidxPtrEntryPtrAVLMap : public OidxPtrEntryPtrMap
-{
+class AGENTPP_DECL OidxPtrEntryPtrAVLMap : public OidxPtrEntryPtrMap {
 protected:
-  OidxPtrEntryPtrAVLNode*   root;
+    OidxPtrEntryPtrAVLNode* root;
 
-  OidxPtrEntryPtrAVLNode*   leftmost() const;
-  OidxPtrEntryPtrAVLNode*   rightmost() const;
-  OidxPtrEntryPtrAVLNode*   pred(OidxPtrEntryPtrAVLNode* t) const;
-  OidxPtrEntryPtrAVLNode*   succ(OidxPtrEntryPtrAVLNode* t) const;
-  void            _kill(OidxPtrEntryPtrAVLNode* t);
-  void            _add(OidxPtrEntryPtrAVLNode*& t);
-  void            _del(OidxPtrEntryPtrAVLNode* p, OidxPtrEntryPtrAVLNode*& t);
+    OidxPtrEntryPtrAVLNode* leftmost() const;
+    OidxPtrEntryPtrAVLNode* rightmost() const;
+    OidxPtrEntryPtrAVLNode* pred(OidxPtrEntryPtrAVLNode* t) const;
+    OidxPtrEntryPtrAVLNode* succ(OidxPtrEntryPtrAVLNode* t) const;
+    void                    _kill(OidxPtrEntryPtrAVLNode* t);
+    void                    _add(OidxPtrEntryPtrAVLNode*& t);
+    void _del(OidxPtrEntryPtrAVLNode* p, OidxPtrEntryPtrAVLNode*& t);
 
-  // state information stored per instance to
-  // allow independent use of separate instances in separate threads without 
-  // interference.
-  bool _need_rebalancing;   // to send back balance info from rec. calls 
-  OidxPtr*   _target_item;     // add/del_item target 
-  OidxPtrEntryPtrAVLNode* _found_node; // returned added/deleted node 
-  int    _already_found;   // for deletion subcases 
+    // state information stored per instance to
+    // allow independent use of separate instances in separate threads without
+    // interference.
+    bool     _need_rebalancing; // to send back balance info from rec. calls
+    OidxPtr* _target_item;      // add/del_item target
+    OidxPtrEntryPtrAVLNode* _found_node;    // returned added/deleted node
+    int                     _already_found; // for deletion subcases
 
 public:
-                OidxPtrEntryPtrAVLMap(EntryPtr deflt);
-                OidxPtrEntryPtrAVLMap(OidxPtrEntryPtrAVLMap& a);
-  inline		~OidxPtrEntryPtrAVLMap();
+    OidxPtrEntryPtrAVLMap(EntryPtr deflt);
+    OidxPtrEntryPtrAVLMap(OidxPtrEntryPtrAVLMap& a);
+    inline ~OidxPtrEntryPtrAVLMap();
 
-  EntryPtr&          operator [] (OidxPtr  key) override;
+    EntryPtr& operator[](OidxPtr key) override;
 
-  void			del(OidxPtr  key) override;
+    void del(OidxPtr key) override;
 
-  inline Pix            first() const override;
-  inline void           next(Pix& i) const override;
-  inline OidxPtr&       key(Pix i) const override;
-  inline EntryPtr&   contents(Pix i) override;
+    inline Pix       first() const override;
+    inline void      next(Pix& i) const override;
+    inline OidxPtr&  key(Pix i) const override;
+    inline EntryPtr& contents(Pix i) override;
 
-  Pix			seek(OidxPtr key) const override;
-  Pix			seek_inexact(OidxPtr key) const;
-  inline int		contains(OidxPtr key_) const override;
+    Pix        seek(OidxPtr key) const override;
+    Pix        seek_inexact(OidxPtr key) const;
+    inline int contains(OidxPtr key_) const override;
 
-  inline void		clear() override; 
+    inline void clear() override;
 
-  Pix			last() const;
-  void			prev(Pix& i) const;
+    Pix  last() const;
+    void prev(Pix& i) const;
 
-  int			OK() override;
+    int OK() override;
 };
 
-inline OidxPtrEntryPtrAVLMap::~OidxPtrEntryPtrAVLMap()
-{
-  _kill(root);
-}
+inline OidxPtrEntryPtrAVLMap::~OidxPtrEntryPtrAVLMap() { _kill(root); }
 
 inline OidxPtrEntryPtrAVLMap::OidxPtrEntryPtrAVLMap(EntryPtr deflt)
-  : OidxPtrEntryPtrMap(deflt)
+    : OidxPtrEntryPtrMap(deflt)
 {
-  root = 0;
+    root = 0;
 }
 
-inline Pix OidxPtrEntryPtrAVLMap::first() const
-{
-  return Pix(leftmost());
-}
+inline Pix OidxPtrEntryPtrAVLMap::first() const { return Pix(leftmost()); }
 
-inline Pix OidxPtrEntryPtrAVLMap::last() const
-{
-  return Pix(rightmost());
-}
+inline Pix OidxPtrEntryPtrAVLMap::last() const { return Pix(rightmost()); }
 
 inline void OidxPtrEntryPtrAVLMap::next(Pix& i) const
 {
-  if (i != 0) i = Pix(succ((OidxPtrEntryPtrAVLNode*)i));
+    if (i != 0) i = Pix(succ((OidxPtrEntryPtrAVLNode*)i));
 }
 
 inline void OidxPtrEntryPtrAVLMap::prev(Pix& i) const
 {
-  if (i != 0) i = Pix(pred((OidxPtrEntryPtrAVLNode*)i));
+    if (i != 0) i = Pix(pred((OidxPtrEntryPtrAVLNode*)i));
 }
 
 inline OidxPtr& OidxPtrEntryPtrAVLMap::key(Pix i) const
 {
-  if (i == 0) error("null Pix");
-  return ((OidxPtrEntryPtrAVLNode*)i)->item;
+    if (i == 0) error("null Pix");
+    return ((OidxPtrEntryPtrAVLNode*)i)->item;
 }
 
 inline EntryPtr& OidxPtrEntryPtrAVLMap::contents(Pix i)
 {
-  if (i == 0) error("null Pix");
-  return ((OidxPtrEntryPtrAVLNode*)i)->cont;
+    if (i == 0) error("null Pix");
+    return ((OidxPtrEntryPtrAVLNode*)i)->cont;
 }
 
 inline void OidxPtrEntryPtrAVLMap::clear()
 {
-  _kill(root);
-  count = 0;
-  root = 0;
+    _kill(root);
+    count = 0;
+    root  = 0;
 }
 
 inline int OidxPtrEntryPtrAVLMap::contains(OidxPtr key_) const
 {
-  return seek(key_) != 0;
+    return seek(key_) != 0;
 }
 #ifdef AGENTPP_NAMESPACE
 }

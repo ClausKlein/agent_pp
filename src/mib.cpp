@@ -204,7 +204,7 @@ void MibLeaf::replace_value(SnmpSyntax* v)
  *
  * @param l - The new integer value.
  */
-void MibLeaf::set_value(const unsigned long l)
+void MibLeaf::set_value(const uint32_t l)
 {
     set_syntax(sNMP_SYNTAX_INT32);
     *((SnmpInt32*)value) = l;
@@ -1846,9 +1846,9 @@ void MibTable::add_col(snmpRowStatus* rs)
 
 bool MibTable::is_index_valid(const Oidx& ind) const
 {
-    Oidx          o(ind);
-    unsigned long l = 0;
-    unsigned int  i = 0;
+    Oidx         o(ind);
+    uint32_t     l = 0;
+    unsigned int i = 0;
     for (i = 0; ((i < index_len) && (l < o.len())); i++)
     {
         if (index_struc[i].implied)
@@ -1892,9 +1892,9 @@ bool MibTable::is_index_valid(const Oidx& ind) const
     return ((o.len() == l) && (i >= index_len));
 }
 
-bool MibTable::check_index(Oidx& o, unsigned long b, unsigned long e) const
+bool MibTable::check_index(Oidx& o, uint32_t b, uint32_t e) const
 {
-    for (unsigned long j = b; ((j < o.len()) && (j < e)); j++)
+    for (uint32_t j = b; ((j < o.len()) && (j < e)); j++)
         if (o[j] > 255) return FALSE;
     return TRUE;
 }
@@ -3486,13 +3486,12 @@ void Mib::proxy_request(Request* req)
     }
     if ((!proxy) || ((proxy) && (!proxy->process_request(req))))
     {
-        unsigned long proxyDrops =
+        uint32_t proxyDrops =
             snmpProxyDrops::incrementScalar(this, oidSnmpProxyDrops);
         Vbx vb(oidSnmpProxyDrops);
         vb.set_value(proxyDrops);
         req->get_pdu()->set_vblist(&vb, 1);
-        if (requestList != nullptr)
-            requestList->report(req);
+        if (requestList != nullptr) requestList->report(req);
     }
     else if (requestList != nullptr)
     {

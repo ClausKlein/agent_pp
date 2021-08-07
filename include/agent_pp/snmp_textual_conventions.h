@@ -1,46 +1,44 @@
 /*_############################################################################
-  _## 
-  _##  AGENT++ 4.5 - snmp_textual_conventions.h  
-  _## 
+  _##
+  _##  AGENT++ 4.5 - snmp_textual_conventions.h
+  _##
   _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##  
+  _##
   _##  Licensed under the Apache License, Version 2.0 (the "License");
   _##  you may not use this file except in compliance with the License.
   _##  You may obtain a copy of the License at
-  _##  
+  _##
   _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##  
+  _##
   _##  Unless required by applicable law or agreed to in writing, software
   _##  distributed under the License is distributed on an "AS IS" BASIS,
   _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   _##  See the License for the specific language governing permissions and
   _##  limitations under the License.
-  _##  
+  _##
   _##########################################################################*/
-
 
 #ifndef _snmp_textual_convention_h_
 #define _snmp_textual_convention_h_
 
 #include <agent_pp/agent++.h>
+
 #include <agent_pp/mib.h>
 
 #define oidSnmpSetSerialNo "1.3.6.1.6.3.1.1.6.1.0"
 
 #ifdef AGENTPP_NAMESPACE
-namespace Agentpp {
-    using namespace Snmp_pp;
+namespace Agentpp
+{
+using namespace Snmp_pp;
 #endif
 
-
-const index_info iSnmpAdminString[1] = 
-{ { sNMP_SYNTAX_OCTETS, TRUE, 1, 32 } };
-
+const index_info iSnmpAdminString[1] = { { sNMP_SYNTAX_OCTETS, TRUE, 1, 32 } };
 
 /*---------------------- class snmpDisplayString ---------------------*/
 
 /**
- * The class snmpDisplayString implements the textual convention 
+ * The class snmpDisplayString implements the textual convention
  * DisplayString. It may also be used to implement the SnmpAdminString
  * textual convention.
  *
@@ -48,71 +46,71 @@ const index_info iSnmpAdminString[1] =
  * @version 3.2
  */
 
-class AGENTPP_DECL SnmpDisplayString: public MibLeaf {
+class AGENTPP_DECL SnmpDisplayString : public MibLeaf {
 
- public:
-	/**
-	 * Construct a DisplayString with initial value.
-	 * 
-	 * @param oid
-	 *    the oid of the leaf or the column of the columnar object.
-	 * @param access
-	 *    the max-access rights for the object.
-	 * @param octetstr
-	 *    a pointer to an OctetStr containing the initial value for
-	 *    the object.
-	 */
-	SnmpDisplayString(const Oidx&, mib_access, NS_SNMP OctetStr*);
-	/**
-	 * Construct a DisplayString with initial value.
-	 * 
-	 * @param oid
-	 *    the oid of the leaf or the column of the columnar object.
-	 * @param access
-	 *    the max-access rights for the object.
-	 * @param octetstr
-	 *    a pointer to an OctetStr containing the initial value for
-	 *    the object.
-	 * @param hasdefault
-	 *    if TRUE treat the inital value as default value (this 
-	 *    applies to columnar objects only)
-	 */
-	SnmpDisplayString(const Oidx&, mib_access, NS_SNMP OctetStr*, bool);
-	/**
-	 * Construct a DisplayString with initial value.
-	 * 
-	 * @param oid
-	 *    the oid of the leaf or the column of the columnar object.
-	 * @param access
-	 *    the max-access rights for the object.
-	 * @param octetstr
-	 *    a pointer to an OctetStr containing the initial value for
-	 *    the object.
-	 * @param hasdefault
-	 *    if TRUE treat the initial value as default value (this 
-	 *    applies to columnar objects only)
-	 * @param min_size
-	 *    the minimum size of the DisplayString.
-	 * @param max_size
-	 *    the maximum size of the DisplayString.
-	 */
-	SnmpDisplayString(const Oidx&, mib_access, NS_SNMP OctetStr*, bool, 
-			  int, int);
-	virtual ~SnmpDisplayString();
+public:
+    /**
+     * Construct a DisplayString with initial value.
+     *
+     * @param oid
+     *    the oid of the leaf or the column of the columnar object.
+     * @param access
+     *    the max-access rights for the object.
+     * @param octetstr
+     *    a pointer to an OctetStr containing the initial value for
+     *    the object.
+     */
+    SnmpDisplayString(const Oidx&, mib_access, NS_SNMP OctetStr*);
+    /**
+     * Construct a DisplayString with initial value.
+     *
+     * @param oid
+     *    the oid of the leaf or the column of the columnar object.
+     * @param access
+     *    the max-access rights for the object.
+     * @param octetstr
+     *    a pointer to an OctetStr containing the initial value for
+     *    the object.
+     * @param hasdefault
+     *    if TRUE treat the inital value as default value (this
+     *    applies to columnar objects only)
+     */
+    SnmpDisplayString(const Oidx&, mib_access, NS_SNMP OctetStr*, bool);
+    /**
+     * Construct a DisplayString with initial value.
+     *
+     * @param oid
+     *    the oid of the leaf or the column of the columnar object.
+     * @param access
+     *    the max-access rights for the object.
+     * @param octetstr
+     *    a pointer to an OctetStr containing the initial value for
+     *    the object.
+     * @param hasdefault
+     *    if TRUE treat the initial value as default value (this
+     *    applies to columnar objects only)
+     * @param min_size
+     *    the minimum size of the DisplayString.
+     * @param max_size
+     *    the maximum size of the DisplayString.
+     */
+    SnmpDisplayString(
+        const Oidx&, mib_access, NS_SNMP OctetStr*, bool, int, int);
+    virtual ~SnmpDisplayString();
 
-	MibEntryPtr	clone() override;
-	bool    	value_ok(const Vbx&) override;
-	int		prepare_set_request(Request*, int&) override;
- protected:
-	unsigned int max_size;
-	unsigned int min_size;
+    MibEntryPtr clone() override;
+    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request*, int&) override;
+
+protected:
+    unsigned int max_size;
+    unsigned int min_size;
 };
-
 
 /*---------------------- class snmpEngineID ---------------------*/
 
 /**
- * The class snmpEngineID implements the textual convention 
+ * The class snmpEngineID implements the textual convention
  * SnmpEngineID. Description from SNMP-FRAMEWORK-MIB:
  *
  * An SNMP engine's administratively-unique identifier.
@@ -215,79 +213,77 @@ class AGENTPP_DECL SnmpDisplayString: public MibLeaf {
  * @version 3.3
  */
 
-class AGENTPP_DECL SnmpEngineID: public MibLeaf {
+class AGENTPP_DECL SnmpEngineID : public MibLeaf {
 
- public:
-	/**
-	 * Construct a SnmpEngineID with initial value.
-	 * 
-	 * @param oid
-	 *    the oid of the leaf or the column of the columnar object.
-	 * @param access
-	 *    the max-access rights for the object.
-	 * @param octetstr
-	 *    a pointer to an OctetStr containing the initial value for
-	 *    the object.
-	 */
-	SnmpEngineID(const Oidx&, mib_access, NS_SNMP OctetStr*);
+public:
+    /**
+     * Construct a SnmpEngineID with initial value.
+     *
+     * @param oid
+     *    the oid of the leaf or the column of the columnar object.
+     * @param access
+     *    the max-access rights for the object.
+     * @param octetstr
+     *    a pointer to an OctetStr containing the initial value for
+     *    the object.
+     */
+    SnmpEngineID(const Oidx&, mib_access, NS_SNMP OctetStr*);
 
-	/**
-	 * Construct a SnmpEngineID with initial value.
-	 * 
-	 * @param oid
-	 *    the oid of the leaf or the column of the columnar object.
-	 * @param access
-	 *    the max-access rights for the object.
-	 * @param octetstr
-	 *    a pointer to an OctetStr containing the initial value for
-	 *    the object.
-	 * @param valueMode
-	 *    contains an ored value of one or more of the following modes:
-	 *    VMODE_DEFAULT: the value of the object pointed by value will 
-	 *                   be used as default value, otherwise the managed 
-	 *                   object has no default value.
-	 *    VMODE_LOCKED:  value is locked (cannot be modified) while
-	 *                   the row status of the receiver's row is active(1).
-	 *                   This mode has no effect, if the the leaf is a
-	 *                   scalar or otherwise if the receiver's row has no
-	 *                   snmpRowStatus.  
-	 */
-        SnmpEngineID(const Oidx&, mib_access, NS_SNMP OctetStr*, int);
+    /**
+     * Construct a SnmpEngineID with initial value.
+     *
+     * @param oid
+     *    the oid of the leaf or the column of the columnar object.
+     * @param access
+     *    the max-access rights for the object.
+     * @param octetstr
+     *    a pointer to an OctetStr containing the initial value for
+     *    the object.
+     * @param valueMode
+     *    contains an ored value of one or more of the following modes:
+     *    VMODE_DEFAULT: the value of the object pointed by value will
+     *                   be used as default value, otherwise the managed
+     *                   object has no default value.
+     *    VMODE_LOCKED:  value is locked (cannot be modified) while
+     *                   the row status of the receiver's row is active(1).
+     *                   This mode has no effect, if the the leaf is a
+     *                   scalar or otherwise if the receiver's row has no
+     *                   snmpRowStatus.
+     */
+    SnmpEngineID(const Oidx&, mib_access, NS_SNMP OctetStr*, int);
 
-	/**
-	 * Destructor
-	 */
-	virtual ~SnmpEngineID();
+    /**
+     * Destructor
+     */
+    virtual ~SnmpEngineID();
 
-	MibEntryPtr	clone() override;
-	int		prepare_set_request(Request*, int&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
 
-	/**
-	 * Create a default SnmpEngineID of the form
-	 * <AGENT++ enterpriseID>+<userText>
-	 *
-	 * @param userText
-	 *    an OcetStr
-	 *
-	 * @return 
-	 *    a SnmpEngineID OctetStr.
-	 */
-	static NS_SNMP OctetStr create_engine_id(const NS_SNMP OctetStr& userText);
+    /**
+     * Create a default SnmpEngineID of the form
+     * <AGENT++ enterpriseID>+<userText>
+     *
+     * @param userText
+     *    an OcetStr
+     *
+     * @return
+     *    a SnmpEngineID OctetStr.
+     */
+    static NS_SNMP OctetStr create_engine_id(const NS_SNMP OctetStr& userText);
 
-	/**
-	 * Create a default SnmpEngineID of the form
-	 * <AGENT++ enterpriseID>+<hostname>+<port>
-	 *
-	 * @param port
-	 *    the UDP port the SNMP engine listens on.
-	 *
-	 * @return 
-	 *    a SnmpEngineID OctetStr.
-	 */
-	static NS_SNMP OctetStr create_engine_id(unsigned short port);
-
+    /**
+     * Create a default SnmpEngineID of the form
+     * <AGENT++ enterpriseID>+<hostname>+<port>
+     *
+     * @param port
+     *    the UDP port the SNMP engine listens on.
+     *
+     * @return
+     *    a SnmpEngineID OctetStr.
+     */
+    static NS_SNMP OctetStr create_engine_id(unsigned short port);
 };
-
 
 /*------------------------ class SnmpTagValue -----------------------*/
 
@@ -298,42 +294,40 @@ class AGENTPP_DECL SnmpEngineID: public MibLeaf {
  * @version 3.3
  */
 
+class AGENTPP_DECL SnmpTagValue : public MibLeaf {
 
-class AGENTPP_DECL SnmpTagValue: public MibLeaf {
+public:
+    /**
+     * Construct a SnmpTagValue with initial value.
+     *
+     * @param oid
+     *    the oid of the leaf or the column of the columnar object.
+     * @param access
+     *    the max-access rights for the object.
+     * @param octetstr
+     *    a pointer to an OctetStr containing the initial value for
+     *    the object.
+     * @param valueMode
+     *    contains an ored value of one or more of the following modes:
+     *    VMODE_DEFAULT: the value of the object pointed by value will
+     *                   be used as default value, otherwise the managed
+     *                   object has no default value.
+     *    VMODE_LOCKED:  value is locked (cannot be modified) while
+     *                   the row status of the receiver's row is active(1).
+     *                   This mode has no effect, if the the leaf is a
+     *                   scalar or otherwise if the receiver's row has no
+     *                   snmpRowStatus.
+     */
+    SnmpTagValue(const Oidx&, mib_access, NS_SNMP OctetStr*, int);
 
- public:
-	/**
-	 * Construct a SnmpTagValue with initial value.
-	 * 
-	 * @param oid
-	 *    the oid of the leaf or the column of the columnar object.
-	 * @param access
-	 *    the max-access rights for the object.
-	 * @param octetstr
-	 *    a pointer to an OctetStr containing the initial value for
-	 *    the object.
-	 * @param valueMode
-	 *    contains an ored value of one or more of the following modes:
-	 *    VMODE_DEFAULT: the value of the object pointed by value will 
-	 *                   be used as default value, otherwise the managed 
-	 *                   object has no default value.
-	 *    VMODE_LOCKED:  value is locked (cannot be modified) while
-	 *                   the row status of the receiver's row is active(1).
-	 *                   This mode has no effect, if the the leaf is a
-	 *                   scalar or otherwise if the receiver's row has no
-	 *                   snmpRowStatus.  
-	 */
-	SnmpTagValue(const Oidx&, mib_access, NS_SNMP OctetStr*, int);
+    SnmpTagValue(const Oidx&);
+    virtual ~SnmpTagValue();
 
-	SnmpTagValue(const Oidx&);
-	virtual ~SnmpTagValue();
-
-	MibEntryPtr	clone() override;
-	bool    	value_ok(const Vbx&) override;
-	int		prepare_set_request(Request*, int&) override;
-	static bool		is_delimiter(char); 
+    MibEntryPtr clone() override;
+    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request*, int&) override;
+    static bool is_delimiter(char);
 };
-
 
 /*---------------------- class snmpTargetAddrTagList ---------------------*/
 
@@ -346,41 +340,39 @@ class AGENTPP_DECL SnmpTagValue: public MibLeaf {
  * @version 3.3
  */
 
+class AGENTPP_DECL SnmpTagList : public MibLeaf {
 
-class AGENTPP_DECL SnmpTagList: public MibLeaf {
+public:
+    /**
+     * Construct a SnmpTagList with initial value.
+     *
+     * @param oid
+     *    the oid of the leaf or the column of the columnar object.
+     * @param access
+     *    the max-access rights for the object.
+     * @param octetstr
+     *    a pointer to an OctetStr containing the initial value for
+     *    the object.
+     * @param valueMode
+     *    contains an ored value of one or more of the following modes:
+     *    VMODE_DEFAULT: the value of the object pointed by value will
+     *                   be used as default value, otherwise the managed
+     *                   object has no default value.
+     *    VMODE_LOCKED:  value is locked (cannot be modified) while
+     *                   the row status of the receiver's row is active(1).
+     *                   This mode has no effect, if the the leaf is a
+     *                   scalar or otherwise if the receiver's row has no
+     *                   snmpRowStatus.
+     */
+    SnmpTagList(const Oidx&, mib_access, NS_SNMP OctetStr*, int);
 
- public:
-	/**
-	 * Construct a SnmpTagList with initial value.
-	 * 
-	 * @param oid
-	 *    the oid of the leaf or the column of the columnar object.
-	 * @param access
-	 *    the max-access rights for the object.
-	 * @param octetstr
-	 *    a pointer to an OctetStr containing the initial value for
-	 *    the object.
-	 * @param valueMode
-	 *    contains an ored value of one or more of the following modes:
-	 *    VMODE_DEFAULT: the value of the object pointed by value will 
-	 *                   be used as default value, otherwise the managed 
-	 *                   object has no default value.
-	 *    VMODE_LOCKED:  value is locked (cannot be modified) while
-	 *                   the row status of the receiver's row is active(1).
-	 *                   This mode has no effect, if the the leaf is a
-	 *                   scalar or otherwise if the receiver's row has no
-	 *                   snmpRowStatus.  
-	 */
-	SnmpTagList(const Oidx&, mib_access, NS_SNMP OctetStr*, int);
+    SnmpTagList(const Oidx&);
+    virtual ~SnmpTagList();
 
-	SnmpTagList(const Oidx&);
-	virtual ~SnmpTagList();
-
-	MibEntryPtr	clone() override;
-	bool    	value_ok(const Vbx&) override;
-	virtual bool		contains(const char*); 
+    MibEntryPtr  clone() override;
+    bool         value_ok(const Vbx&) override;
+    virtual bool contains(const char*);
 };
-
 
 /*--------------------------- class TestAndIncr -------------------------*/
 
@@ -413,10 +405,10 @@ class AGENTPP_DECL SnmpTagList: public MibLeaf {
  * initialization is unknown) be set to a pseudo-randomly
  * generated value."
  *
- * This object for example 
- * is used to facilitate modification of table entries in 
- * the SNMP-TARGET-MIB module by multiple managers. In 
- * particular, it is useful when modifying the value of the 
+ * This object for example
+ * is used to facilitate modification of table entries in
+ * the SNMP-TARGET-MIB module by multiple managers. In
+ * particular, it is useful when modifying the value of the
  * snmpTargetAddrTagList object.
  *
  * The procedure for modifying the snmpTargetAddrTagList
@@ -434,28 +426,27 @@ class AGENTPP_DECL SnmpTagList: public MibLeaf {
  * object, go back to step 1."
  */
 
-class AGENTPP_DECL TestAndIncr: public MibLeaf {
+class AGENTPP_DECL TestAndIncr : public MibLeaf {
 
- public:
-	TestAndIncr(const Oidx&);
-	virtual ~TestAndIncr();
+public:
+    TestAndIncr(const Oidx&);
+    virtual ~TestAndIncr();
 
-	virtual int32_t       	get_state();
-	virtual void       	set_state(int32_t);
-	int        	set(const Vbx&) override;
-	bool    	value_ok(const Vbx&) override;
-	int		prepare_set_request(Request*, int&) override;
+    virtual int32_t get_state();
+    virtual void    set_state(int32_t);
+    int             set(const Vbx&) override;
+    bool            value_ok(const Vbx&) override;
+    int             prepare_set_request(Request*, int&) override;
 
-	bool		is_volatile() override { return TRUE; }
+    bool is_volatile() override { return TRUE; }
 };
-
 
 /*--------------------------- class StorageType -------------------------*/
 
 /**
- * The StorageType class describes the memory realization of a 
- * conceptual row.  A row which is volatile(2) is lost upon reboot.  
- * A row which is either nonVolatile(3), permanent(4) or readOnly(5), 
+ * The StorageType class describes the memory realization of a
+ * conceptual row.  A row which is volatile(2) is lost upon reboot.
+ * A row which is either nonVolatile(3), permanent(4) or readOnly(5),
  * is backed up by stable storage.  A row which is permanent(4)
  * can be changed but not deleted.  A row which is readOnly(5)
  * cannot be changed nor deleted.
@@ -465,7 +456,7 @@ class AGENTPP_DECL TestAndIncr: public MibLeaf {
  * Conversely, if the value is either other(1), volatile(2) or
  * nonVolatile(3), it cannot be modified to be permanent(4) or
  * readOnly(5).
- * 
+ *
  * Every usage of this textual convention is required to
  * specify the columnar objects which a permanent(4) row must
  * at a minimum allow to be writable.
@@ -473,43 +464,43 @@ class AGENTPP_DECL TestAndIncr: public MibLeaf {
  * @version 3.5.16
  */
 
-class AGENTPP_DECL StorageType: public MibLeaf {
+class AGENTPP_DECL StorageType : public MibLeaf {
 
 public:
-	/**
-	 * Construct a storageType instance.
-	 * 
-	 * @param o
-	 *   The storageType column subidentifier.
-	 * @param default
-	 *   A default storageType value, should be nonVolatile(3)
-	 */
-	StorageType(const Oidx&, int);
+    /**
+     * Construct a storageType instance.
+     *
+     * @param o
+     *   The storageType column subidentifier.
+     * @param default
+     *   A default storageType value, should be nonVolatile(3)
+     */
+    StorageType(const Oidx&, int);
 
-	/**
-	 * Return whether the row of the receiver is volatile or permanent.
-	 *
-	 * @return TRUE, if the row is volatile, FALSE otherwise.
-	 */
-	virtual bool	row_is_volatile();
+    /**
+     * Return whether the row of the receiver is volatile or permanent.
+     *
+     * @return TRUE, if the row is volatile, FALSE otherwise.
+     */
+    virtual bool row_is_volatile();
 
-	/**
-	 * Return the receiver's value.
-	 *
-	 * @return A integer value between 1 and 5.
-	 */
-	virtual int32_t get_state();
+    /**
+     * Return the receiver's value.
+     *
+     * @return A integer value between 1 and 5.
+     */
+    virtual int32_t get_state();
 
-	/**
-	 * Sets the type of this storage type. Allowed values are 
-	 * in range 1..5.
-	 * @param storageType
-	 *    a long integer value between 1 and 5.
-	 */
-	virtual void set_state(int32_t); 
+    /**
+     * Sets the type of this storage type. Allowed values are
+     * in range 1..5.
+     * @param storageType
+     *    a long integer value between 1 and 5.
+     */
+    virtual void set_state(int32_t);
 
-	MibEntryPtr	clone() override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    bool        value_ok(const Vbx&) override;
 };
 
 /*---------------------- class StorageTypePolicy ---------------------*/
@@ -517,24 +508,24 @@ public:
 /**
  * The StorageTypeVoter class implements a voter for StorageTable RowStatus
  * changes that prevents deleting of permanent(4) rows.
- * 
+ *
  * @author Frank Fock
  * @version 4.2.0
  */
 
-class AGENTPP_DECL StorageTypeVoter: public MibTableVoter {
+class AGENTPP_DECL StorageTypeVoter : public MibTableVoter {
 
- public:
-	/**
-	 * Create a default StorageType voter that enforces that permanent(4)
-         * rows must not be deleted.
-	 */
-	StorageTypeVoter() { }
+public:
+    /**
+     * Create a default StorageType voter that enforces that permanent(4)
+     * rows must not be deleted.
+     */
+    StorageTypeVoter() { }
 
-        virtual ~StorageTypeVoter() { }
+    virtual ~StorageTypeVoter() { }
 
-	int is_transition_ok(MibTable*, MibTableRow*, const Oidx&,
-				     int, int) override;
+    int is_transition_ok(
+        MibTable*, MibTableRow*, const Oidx&, int, int) override;
 };
 
 /*--------------------------- class StorageTable ------------------------*/
@@ -547,132 +538,131 @@ class AGENTPP_DECL StorageTypeVoter: public MibTableVoter {
  *
  * @author Frank Fock
  * @version 4.2.0
- */ 
+ */
 
-class AGENTPP_DECL StorageTable: public MibTable {
-  friend class Mib;		// needs access to find_next() and get()
-  friend class snmpRowStatus;	// needs access to _ready_for_service()
+class AGENTPP_DECL StorageTable : public MibTable {
+    friend class Mib;           // needs access to find_next() and get()
+    friend class snmpRowStatus; // needs access to _ready_for_service()
 public:
+    /**
+     * Copy constructor.
+     */
+    StorageTable(const StorageTable&);
 
-	/** 
-	 * Copy constructor.
-	 */
-	StorageTable(const StorageTable&);
+    /**
+     * Constructor with object identifier with single index object
+     * like string or oid with implied length.
+     *
+     * @param o
+     *    the object identifier of the table, which has to be
+     *    the oid of the the SMI table entry object (table.1).
+     */
+    StorageTable(const Oidx&);
 
-	/**
-	 * Constructor with object identifier with single index object
-	 * like string or oid with implied length.
-	 *
-	 * @param o 
-	 *    the object identifier of the table, which has to be
-	 *    the oid of the the SMI table entry object (table.1).
-	 */
-	StorageTable(const Oidx&);
+    /**
+     * Constructor with object identifier and single index object's
+     * index length (measured in subidentifiers).
+     *
+     * @param o
+     *    the object identifier of the table, which has to be
+     *    the oid of the the SMI table entry object (table.1).
+     * @param ilen
+     *    the length of the index measured in subidentifiers.
+     *    0 represents a variable length string or oid index object.
+     *    -1 represents a variable length string or oid index object
+     *    with implied length.
+     */
+    StorageTable(const Oidx&, unsigned int);
 
-	/**
-	 * Constructor with object identifier and single index object's
-	 * index length (measured in subidentifiers).
-	 *
-	 * @param o 
-	 *    the object identifier of the table, which has to be
-	 *    the oid of the the SMI table entry object (table.1).
-	 * @param ilen
-	 *    the length of the index measured in subidentifiers.
-	 *    0 represents a variable length string or oid index object.
-	 *    -1 represents a variable length string or oid index object
-	 *    with implied length. 
-	 */
-	StorageTable(const Oidx&, unsigned int);
+    /**
+     * Constructor with object identifier and given fixed index length.
+     * Additionally the automatic index object initialization can be
+     * activated.
+     *
+     * @param o - The object identifier of the table, which has to be
+     *            the oid of the the SMI table entry object (table.1).
+     * @param ilen - The length of the index measured in subidentifiers.
+     * @param a - If TRUE the automatic index object initialization is
+     *            activated.
+     */
+    StorageTable(const Oidx&, unsigned int, bool);
 
-	/**
-	 * Constructor with object identifier and given fixed index length.
-	 * Additionally the automatic index object initialization can be
-	 * activated.  
-	 *
-	 * @param o - The object identifier of the table, which has to be
-	 *            the oid of the the SMI table entry object (table.1).
-	 * @param ilen - The length of the index measured in subidentifiers.
-	 * @param a - If TRUE the automatic index object initialization is
-	 *            activated.
-	 */
-	StorageTable(const Oidx&, unsigned int, bool);
+    /**
+     * Constructor with object identifier and given index structure.
+     * In AGENT++ the structure of a table's index is given by an array
+     * of integer values. Each element represents an object of the index.
+     * A value of -1 represents a implied variable length string or oid.
+     * A value of 0 a variable length string or oid index object.
+     * A value greater than 0 determines the length of the index object
+     * measured in subidentifiers.
+     *
+     * @param o
+     *    the object identifier of the table, which has to be
+     *    the oid of the the SMI table entry object (table.1).
+     * @param index
+     *    an integer array. The length of the array corresponds to
+     *    the number of objects in the INDEX clause.
+     * @param indexLength
+     *    number of elements in the index array.
+     */
+    StorageTable(const Oidx&, const index_info*, unsigned int);
 
-	/**
-	 * Constructor with object identifier and given index structure.
-	 * In AGENT++ the structure of a table's index is given by an array
-	 * of integer values. Each element represents an object of the index.
-	 * A value of -1 represents a implied variable length string or oid.
-	 * A value of 0 a variable length string or oid index object.
-	 * A value greater than 0 determines the length of the index object 
-	 * measured in subidentifiers. 
-	 * 
-	 * @param o
-	 *    the object identifier of the table, which has to be
-	 *    the oid of the the SMI table entry object (table.1).
-	 * @param index
-	 *    an integer array. The length of the array corresponds to
-	 *    the number of objects in the INDEX clause.
-	 * @param indexLength
-	 *    number of elements in the index array.
-	 */
-	StorageTable(const Oidx&, const index_info*, unsigned int);
+    /**
+     * Destructor.
+     */
+    virtual ~StorageTable();
 
-	/**
-	 * Destructor.
-	 */
-	virtual		~StorageTable();
+    /**
+     * Add the StorageType column to the table.
+     *
+     * @param col - A pointer to a storageType object which should be
+     *              added to the columnar objects of the receiver.
+     * @note A table can only have one storageType columnar object.
+     */
+    virtual void add_storage_col(StorageType*);
 
-	/**
-	 * Add the StorageType column to the table.
-	 * 
-	 * @param col - A pointer to a storageType object which should be  
-	 *              added to the columnar objects of the receiver.
-	 * @note A table can only have one storageType columnar object.   
-	 */ 
-	virtual void	add_storage_col(StorageType*);
+    /**
+     * Set storage type of the specified row.
+     *
+     * @param row
+     *    a pointer to a MibTableRow instance of this table.
+     * @param storageType
+     *    a storage type value (1-5).
+     */
+    void set_storage_type(MibTableRow*, int);
 
-	/**
-	 * Set storage type of the specified row.
-	 * 
-	 * @param row
-	 *    a pointer to a MibTableRow instance of this table.
-	 * @param storageType
-	 *    a storage type value (1-5).
-	 */
-	void		set_storage_type(MibTableRow*, int); 
+    /**
+     * Removes all rows that are not permanent and not read-only.
+     */
+    void reset() override;
 
-	/**
-	 * Removes all rows that are not permanent and not read-only.
-	 */
-	void	reset() override;
-        
-        /**
-         * Gets the value of the storage type column of the provided row 
-         * which must be a row of this table. If such a storage type column does
-         * not exist, 0 is returned. 
-         */
-        virtual int     get_storage_type(MibTableRow*);
-        
-        int     prepare_set_request(Request*, int&) override;
+    /**
+     * Gets the value of the storage type column of the provided row
+     * which must be a row of this table. If such a storage type column does
+     * not exist, 0 is returned.
+     */
+    virtual int get_storage_type(MibTableRow*);
 
- protected:
-	/**
-	 * Check whether the given row should be serialized or not.
-	 * Return TRUE if the given row has a volatile class StorageType. 
-	 *
-	 * @param row
-	 *    a MibTableRow instance.
-	 * @return
-	 *    TRUE if the row should be stored persistently, FALSE otherwise
-	 */
-	bool		is_persistent(MibTableRow*) override;
+    int prepare_set_request(Request*, int&) override;
+
+protected:
+    /**
+     * Check whether the given row should be serialized or not.
+     * Return TRUE if the given row has a volatile class StorageType.
+     *
+     * @param row
+     *    a MibTableRow instance.
+     * @return
+     *    TRUE if the row should be stored persistently, FALSE otherwise
+     */
+    bool is_persistent(MibTableRow*) override;
 
 private:
-        void                register_row_status_voting(); 
-	int                 storage_type;
-        StorageTypeVoter*   storage_type_voter;
+    void              register_row_status_voting();
+    int               storage_type;
+    StorageTypeVoter* storage_type_voter;
 };
-	
+
 /*---------------------- class SnmpInt32MinMax ---------------------*/
 
 /**
@@ -685,56 +675,55 @@ private:
  * @version 3.3
  */
 
-class AGENTPP_DECL SnmpInt32MinMax : public MibLeaf
-{
- public:
+class AGENTPP_DECL SnmpInt32MinMax : public MibLeaf {
+public:
+    /**
+     * Construct a SnmpInt32MinMax with initial value.
+     *
+     * @param oid
+     *    the oid of the leaf or the column of the columnar object.
+     * @param access
+     *    the max-access rights for the object.
+     * @param intvalue
+     *    an integer value.
+     * @param valueMode
+     *    contains an ored value of one or more of the following modes:
+     *    VMODE_DEFAULT: the value of the object pointed by value will
+     *                   be used as default value, otherwise the managed
+     *                   object has no default value.
+     *    VMODE_LOCKED:  value is locked (cannot be modified) while
+     *                   the row status of the receiver's row is active(1).
+     *                   This mode has no effect, if the the leaf is a
+     *                   scalar or otherwise if the receiver's row has no
+     *                   snmpRowStatus.
+     * @param min
+     *    the minimum value the receiver may be set to.
+     * @param max
+     *    the maximum value the receiver may be set to.
+     */
+    SnmpInt32MinMax(const Oidx&, mib_access, const int, int, int, int);
+    /**
+     * Construct a SnmpIn32MinMax without initial value (will be 0).
+     *
+     * @param oid
+     *    the oid of the leaf or the column of the columnar object.
+     * @param access
+     *    the max-access rights for the object.
+     * @param min
+     *    the minimum value the receiver may be set to.
+     * @param max
+     *    the maximum value the receiver may be set to.
+     */
+    SnmpInt32MinMax(const Oidx&, mib_access, int, int);
 
-	/**
-	 * Construct a SnmpInt32MinMax with initial value.
-	 * 
-	 * @param oid
-	 *    the oid of the leaf or the column of the columnar object.
-	 * @param access
-	 *    the max-access rights for the object.
-	 * @param intvalue
-	 *    an integer value.
-	 * @param valueMode
-	 *    contains an ored value of one or more of the following modes:
-	 *    VMODE_DEFAULT: the value of the object pointed by value will 
-	 *                   be used as default value, otherwise the managed 
-	 *                   object has no default value.
-	 *    VMODE_LOCKED:  value is locked (cannot be modified) while
-	 *                   the row status of the receiver's row is active(1).
-	 *                   This mode has no effect, if the the leaf is a
-	 *                   scalar or otherwise if the receiver's row has no
-	 *                   snmpRowStatus.  
-	 * @param min
-	 *    the minimum value the receiver may be set to.
-	 * @param max
-	 *    the maximum value the receiver may be set to.
-	 */
-	SnmpInt32MinMax(const Oidx&, mib_access, const int, int, int, int);
-	/**
-	 * Construct a SnmpIn32MinMax without initial value (will be 0).
-	 * 
-	 * @param oid
-	 *    the oid of the leaf or the column of the columnar object.
-	 * @param access
-	 *    the max-access rights for the object.
-	 * @param min
-	 *    the minimum value the receiver may be set to.
-	 * @param max
-	 *    the maximum value the receiver may be set to.
-	 */
-	SnmpInt32MinMax(const Oidx&, mib_access,                 int, int);
-	
-	bool value_ok(const Vbx&) override;
-	MibEntryPtr     clone() override;
+    bool        value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
 
-	int32_t		get_state();
-	void		set_state(int32_t);
- private:
-	int min, max;
+    int32_t get_state();
+    void    set_state(int32_t);
+
+private:
+    int min, max;
 };
 
 /*---------------------- class OctetStrMinMax ---------------------*/
@@ -749,62 +738,61 @@ class AGENTPP_DECL SnmpInt32MinMax : public MibLeaf
  * @version 3.3
  */
 
-class AGENTPP_DECL OctetStrMinMax : public MibLeaf
-{
- public:
+class AGENTPP_DECL OctetStrMinMax : public MibLeaf {
+public:
+    /**
+     * Construct a OctetStrMinMax with initial value.
+     *
+     * @param oid
+     *    the oid of the leaf or the column of the columnar object.
+     * @param access
+     *    the max-access rights for the object.
+     * @param string
+     *    a pointer to an OctetStr instance.
+     * @param valueMode
+     *    contains an ored value of one or more of the following modes:
+     *    VMODE_DEFAULT: the value of the object pointed by value will
+     *                   be used as default value, otherwise the managed
+     *                   object has no default value.
+     *    VMODE_LOCKED:  value is locked (cannot be modified) while
+     *                   the row status of the receiver's row is active(1).
+     *                   This mode has no effect, if the the leaf is a
+     *                   scalar or otherwise if the receiver's row has no
+     *                   snmpRowStatus.
+     * @param min
+     *    the minimum length of the receiver's value.
+     * @param max
+     *    the maximum length of the receiver's value.
+     */
+    OctetStrMinMax(const Oidx&, mib_access, NS_SNMP OctetStr*, int,
+        unsigned int, unsigned int);
+    /**
+     * Construct a SnmpIn32MinMax without initial value (will be 0).
+     *
+     * @param oid
+     *    the oid of the leaf or the column of the columnar object.
+     * @param access
+     *    the max-access rights for the object.
+     * @param min
+     *    the minimum length of the receiver's value.
+     * @param max
+     *    the maximum length of the receiver's value.
+     */
+    OctetStrMinMax(const Oidx&, mib_access, unsigned int, unsigned int);
 
-	/**
-	 * Construct a OctetStrMinMax with initial value.
-	 * 
-	 * @param oid
-	 *    the oid of the leaf or the column of the columnar object.
-	 * @param access
-	 *    the max-access rights for the object.
-	 * @param string
-	 *    a pointer to an OctetStr instance.
-	 * @param valueMode
-	 *    contains an ored value of one or more of the following modes:
-	 *    VMODE_DEFAULT: the value of the object pointed by value will 
-	 *                   be used as default value, otherwise the managed 
-	 *                   object has no default value.
-	 *    VMODE_LOCKED:  value is locked (cannot be modified) while
-	 *                   the row status of the receiver's row is active(1).
-	 *                   This mode has no effect, if the the leaf is a
-	 *                   scalar or otherwise if the receiver's row has no
-	 *                   snmpRowStatus.  
-	 * @param min
-	 *    the minimum length of the receiver's value.
-	 * @param max
-	 *    the maximum length of the receiver's value.
-	 */
-	OctetStrMinMax(const Oidx&, mib_access, NS_SNMP OctetStr*, int, unsigned int, unsigned int);
-	/**
-	 * Construct a SnmpIn32MinMax without initial value (will be 0).
-	 * 
-	 * @param oid
-	 *    the oid of the leaf or the column of the columnar object.
-	 * @param access
-	 *    the max-access rights for the object.
-	 * @param min
-	 *    the minimum length of the receiver's value.
-	 * @param max
-	 *    the maximum length of the receiver's value.
-	 */
-	OctetStrMinMax(const Oidx&, mib_access, unsigned int, unsigned int);
-	
-	int		prepare_set_request(Request*, int&) override;
-	MibEntryPtr     clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    MibEntryPtr clone() override;
 
-	/**
-	 * Return the integer value of the receiver.
-	 *
-	 * @return 
-	 *    an int.
-	 */
-	int		get();
-	
- protected:
-	unsigned int min, max;
+    /**
+     * Return the integer value of the receiver.
+     *
+     * @return
+     *    an int.
+     */
+    int get();
+
+protected:
+    unsigned int min, max;
 };
 
 /*------------------------ class SnmpSecurityModel -----------------------*/
@@ -881,16 +869,14 @@ class AGENTPP_DECL OctetStrMinMax : public MibLeaf
  * @version 3.3
  */
 
+class AGENTPP_DECL SnmpSecurityModel : public SnmpInt32MinMax {
 
-class AGENTPP_DECL SnmpSecurityModel: public SnmpInt32MinMax {
+public:
+    SnmpSecurityModel(const Oidx&, mib_access, int, int);
+    virtual ~SnmpSecurityModel();
 
- public:
-	SnmpSecurityModel(const Oidx&, mib_access, int, int);
-	virtual ~SnmpSecurityModel();
-
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /*------------------------ class SnmpSecurityLevel -----------------------*/
 
@@ -916,16 +902,14 @@ class AGENTPP_DECL SnmpSecurityModel: public SnmpInt32MinMax {
  * @version 3.3
  */
 
+class AGENTPP_DECL SnmpSecurityLevel : public SnmpInt32MinMax {
 
-class AGENTPP_DECL SnmpSecurityLevel: public SnmpInt32MinMax {
+public:
+    SnmpSecurityLevel(const Oidx&, mib_access, int, int);
+    virtual ~SnmpSecurityLevel();
 
- public:
-	SnmpSecurityLevel(const Oidx&, mib_access, int, int);
-	virtual ~SnmpSecurityLevel();
-
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
-
 
 /*------------------ class SnmpMessageProcessingModel -------------------*/
 
@@ -1001,20 +985,19 @@ class AGENTPP_DECL SnmpSecurityLevel: public SnmpInt32MinMax {
  * @version 3.3
  */
 
+class AGENTPP_DECL SnmpMessageProcessingModel : public SnmpInt32MinMax {
 
-class AGENTPP_DECL SnmpMessageProcessingModel: public SnmpInt32MinMax {
+public:
+    SnmpMessageProcessingModel(const Oidx&, mib_access, int, int);
+    virtual ~SnmpMessageProcessingModel();
 
- public:
-	SnmpMessageProcessingModel(const Oidx&, mib_access, int, int);
-	virtual ~SnmpMessageProcessingModel();
-
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 };
 
 /*---------------------- class SnmpAdminString ---------------------*/
 
 /**
- * The class SnmpAdminString implements the textual convention 
+ * The class SnmpAdminString implements the textual convention
  * SnmpAdminString as it is defined in the SNMP-FRAMEWORK-MIB:
  * An octet string containing administrative
  * information, preferably in human-readable form.
@@ -1074,80 +1057,80 @@ class AGENTPP_DECL SnmpMessageProcessingModel: public SnmpInt32MinMax {
  * @version 3.3
  */
 
-class AGENTPP_DECL SnmpAdminString: public OctetStrMinMax {
+class AGENTPP_DECL SnmpAdminString : public OctetStrMinMax {
 
- public:
-	/**
-	 * Construct a SnmpAdminString with initial value.
-	 * 
-	 * @param oid
-	 *    the oid of the leaf or the column of the columnar object.
-	 * @param access
-	 *    the max-access rights for the object.
-	 * @param octetstr
-	 *    a pointer to an OctetStr containing the initial value for
-	 *    the object.
-	 */
-	SnmpAdminString(const Oidx&, mib_access, NS_SNMP OctetStr*);
-	/**
-	 * Construct a SnmpAdminString with initial value.
-	 * 
-	 * @param oid
-	 *    the oid of the leaf or the column of the columnar object.
-	 * @param access
-	 *    the max-access rights for the object.
-	 * @param octetstr
-	 *    a pointer to an OctetStr containing the initial value for
-	 *    the object.
-	 * @param valueMode
-	 *    contains an ored value of one or more of the following modes:
-	 *    VMODE_DEFAULT: the value of the object pointed by value will 
-	 *                   be used as default value, otherwise the managed 
-	 *                   object has no default value.
-	 *    VMODE_LOCKED:  value is locked (cannot be modified) while
-	 *                   the row status of the receiver's row is active(1).
-	 *                   This mode has no effect, if the the leaf is a
-	 *                   scalar or otherwise if the receiver's row has no
-	 *                   snmpRowStatus.  
-	 */
-	SnmpAdminString(const Oidx&, mib_access, NS_SNMP OctetStr*, int);
-	/**
-	 * Construct a SnmpAdminString with initial value.
-	 * 
-	 * @param oid
-	 *    the oid of the leaf or the column of the columnar object.
-	 * @param access
-	 *    the max-access rights for the object.
-	 * @param octetstr
-	 *    a pointer to an OctetStr containing the initial value for
-	 *    the object.
-	 * @param valueMode
-	 *    contains an ored value of one or more of the following modes:
-	 *    VMODE_DEFAULT: the value of the object pointed by value will 
-	 *                   be used as default value, otherwise the managed 
-	 *                   object has no default value.
-	 *    VMODE_LOCKED:  value is locked (cannot be modified) while
-	 *                   the row status of the receiver's row is active(1).
-	 *                   This mode has no effect, if the the leaf is a
-	 *                   scalar or otherwise if the receiver's row has no
-	 *                   snmpRowStatus.  
-	 * @param min_size
-	 *    the minimum size of the SnmpAdminString.
-	 * @param max_size
-	 *    the maxmimum size of the SnmpAdminString.
-	 */
-	SnmpAdminString(const Oidx&, mib_access, NS_SNMP OctetStr*, int, int, int);
-	virtual ~SnmpAdminString();
+public:
+    /**
+     * Construct a SnmpAdminString with initial value.
+     *
+     * @param oid
+     *    the oid of the leaf or the column of the columnar object.
+     * @param access
+     *    the max-access rights for the object.
+     * @param octetstr
+     *    a pointer to an OctetStr containing the initial value for
+     *    the object.
+     */
+    SnmpAdminString(const Oidx&, mib_access, NS_SNMP OctetStr*);
+    /**
+     * Construct a SnmpAdminString with initial value.
+     *
+     * @param oid
+     *    the oid of the leaf or the column of the columnar object.
+     * @param access
+     *    the max-access rights for the object.
+     * @param octetstr
+     *    a pointer to an OctetStr containing the initial value for
+     *    the object.
+     * @param valueMode
+     *    contains an ored value of one or more of the following modes:
+     *    VMODE_DEFAULT: the value of the object pointed by value will
+     *                   be used as default value, otherwise the managed
+     *                   object has no default value.
+     *    VMODE_LOCKED:  value is locked (cannot be modified) while
+     *                   the row status of the receiver's row is active(1).
+     *                   This mode has no effect, if the the leaf is a
+     *                   scalar or otherwise if the receiver's row has no
+     *                   snmpRowStatus.
+     */
+    SnmpAdminString(const Oidx&, mib_access, NS_SNMP OctetStr*, int);
+    /**
+     * Construct a SnmpAdminString with initial value.
+     *
+     * @param oid
+     *    the oid of the leaf or the column of the columnar object.
+     * @param access
+     *    the max-access rights for the object.
+     * @param octetstr
+     *    a pointer to an OctetStr containing the initial value for
+     *    the object.
+     * @param valueMode
+     *    contains an ored value of one or more of the following modes:
+     *    VMODE_DEFAULT: the value of the object pointed by value will
+     *                   be used as default value, otherwise the managed
+     *                   object has no default value.
+     *    VMODE_LOCKED:  value is locked (cannot be modified) while
+     *                   the row status of the receiver's row is active(1).
+     *                   This mode has no effect, if the the leaf is a
+     *                   scalar or otherwise if the receiver's row has no
+     *                   snmpRowStatus.
+     * @param min_size
+     *    the minimum size of the SnmpAdminString.
+     * @param max_size
+     *    the maxmimum size of the SnmpAdminString.
+     */
+    SnmpAdminString(const Oidx&, mib_access, NS_SNMP OctetStr*, int, int, int);
+    virtual ~SnmpAdminString();
 
-	MibEntryPtr	clone() override;
-	
-	/**
-	 * Return the AdminString
-	 *
-	 * @return
-	 *    a OctetStr instance representing a SnmpAdminString.
-	 */
-	NS_SNMP OctetStr		get();
+    MibEntryPtr clone() override;
+
+    /**
+     * Return the AdminString
+     *
+     * @return
+     *    a OctetStr instance representing a SnmpAdminString.
+     */
+    NS_SNMP OctetStr get();
 };
 
 /*---------------------- class TimeStamp ---------------------*/
@@ -1162,35 +1145,34 @@ class AGENTPP_DECL SnmpAdminString: public OctetStrMinMax {
  * @version 3.5.22
  */
 
-class AGENTPP_DECL TimeStamp: public MibLeaf 
-{
- public:
-	/**
-	 * Construct a TimeStamp.
-	 * 
-	 * @param oid
-	 *    the oid of the leaf or the column of the columnar object.
-	 * @param access
-	 *    the max-access rights for the object. (Normally READONLY)
-	 * @param valueMode
-	 *    contains an ored value of one or more of the following modes:
-	 *    VMODE_DEFAULT: the value of the object pointed by value will 
-	 *                   be used as default value, otherwise the managed 
-	 *                   object has no default value.
-	 *    VMODE_LOCKED:  value is locked (cannot be modified) while
-	 *                   the row status of the receiver's row is active(1).
-	 *                   This mode has no effect, if the the leaf is a
-	 *                   scalar or otherwise if the receiver's row has no
-	 *                   snmpRowStatus.  
-	 */
-	TimeStamp(const Oidx&, mib_access, int);
-	virtual ~TimeStamp();
+class AGENTPP_DECL TimeStamp : public MibLeaf {
+public:
+    /**
+     * Construct a TimeStamp.
+     *
+     * @param oid
+     *    the oid of the leaf or the column of the columnar object.
+     * @param access
+     *    the max-access rights for the object. (Normally READONLY)
+     * @param valueMode
+     *    contains an ored value of one or more of the following modes:
+     *    VMODE_DEFAULT: the value of the object pointed by value will
+     *                   be used as default value, otherwise the managed
+     *                   object has no default value.
+     *    VMODE_LOCKED:  value is locked (cannot be modified) while
+     *                   the row status of the receiver's row is active(1).
+     *                   This mode has no effect, if the the leaf is a
+     *                   scalar or otherwise if the receiver's row has no
+     *                   snmpRowStatus.
+     */
+    TimeStamp(const Oidx&, mib_access, int);
+    virtual ~TimeStamp();
 
-	bool		is_volatile() override { return TRUE; }
+    bool is_volatile() override { return TRUE; }
 
-	MibEntryPtr	clone() override;
+    MibEntryPtr clone() override;
 
-	void			update();	
+    void update();
 };
 
 /*---------------------- class TimeStampTable ---------------------*/
@@ -1203,45 +1185,41 @@ class AGENTPP_DECL TimeStamp: public MibLeaf
  * @version 3.5.7
  */
 
-class AGENTPP_DECL TimeStampTable: public MibTable 
-{
- public:
-	/**
-	 * Constructor with object identifier and given index structure.
-	 * In AGENT++ the structure of a table's index is given by an array
-	 * of integer values. Each element represents an object of the index.
-	 * A value of -1 represents a implied variable length string or oid.
-	 * A value of 0 a variable length string or oid index object.
-	 * A value greater than 0 determines the length of the index object 
-	 * meassured in subidentifiers. 
-	 * 
-	 * @param o
-	 *    the object identifier of the table, which has to be
-	 *    the oid of the the SMI table entry object (table.1).
-	 * @param index
-	 *    an integer array. The length of the array corresponds to
-	 *    the number of objects in the INDEX clause.
-	 * @param timeStamp
-	 *    a pointer to a TimeStamp instance.
-	 */
-	TimeStampTable(const Oidx&, const index_info*, unsigned int,
-		       TimeStamp*);
+class AGENTPP_DECL TimeStampTable : public MibTable {
+public:
+    /**
+     * Constructor with object identifier and given index structure.
+     * In AGENT++ the structure of a table's index is given by an array
+     * of integer values. Each element represents an object of the index.
+     * A value of -1 represents a implied variable length string or oid.
+     * A value of 0 a variable length string or oid index object.
+     * A value greater than 0 determines the length of the index object
+     * meassured in subidentifiers.
+     *
+     * @param o
+     *    the object identifier of the table, which has to be
+     *    the oid of the the SMI table entry object (table.1).
+     * @param index
+     *    an integer array. The length of the array corresponds to
+     *    the number of objects in the INDEX clause.
+     * @param timeStamp
+     *    a pointer to a TimeStamp instance.
+     */
+    TimeStampTable(const Oidx&, const index_info*, unsigned int, TimeStamp*);
 
-	virtual ~TimeStampTable();
+    virtual ~TimeStampTable();
 
-	void        	row_added(MibTableRow*, 
-					  const Oidx&, MibTable*) override;
-	void        	row_delete(MibTableRow*, 
-					   const Oidx&, MibTable*) override;
-	/**
-	 * This method should be called whenever the reciever is changed,
-	 * except when a row is added or deleted (row_added and row_deleted
-	 * already call updated()) 
-	 */
-	virtual void	       	updated();	
+    void row_added(MibTableRow*, const Oidx&, MibTable*) override;
+    void row_delete(MibTableRow*, const Oidx&, MibTable*) override;
+    /**
+     * This method should be called whenever the reciever is changed,
+     * except when a row is added or deleted (row_added and row_deleted
+     * already call updated())
+     */
+    virtual void updated();
 
- protected:
-	TimeStamp*		lastChange;
+protected:
+    TimeStamp* lastChange;
 };
 
 /*---------------------- class DateAndTime ---------------------*/
@@ -1279,49 +1257,48 @@ class AGENTPP_DECL TimeStampTable: public MibTable
  * @version 3.4.7
  */
 
-class AGENTPP_DECL DateAndTime: public MibLeaf 
-{
- public:
-	/**
-	 * Construct a DateAndTime instance and initialize its value
-	 * with the system's date and time.
-	 * 
-	 * @param oid
-	 *    the oid of the leaf or the column of the columnar object.
-	 * @param access
-	 *    the max-access rights for the object. (Normally READONLY)
-	 * @param valueMode
-	 *    contains an ored value of one or more of the following modes:
-	 *    VMODE_DEFAULT: the value of the object pointed by value will 
-	 *                   be used as default value, otherwise the managed 
-	 *                   object has no default value.
-	 *    VMODE_LOCKED:  value is locked (cannot be modified) while
-	 *                   the row status of the receiver's row is active(1).
-	 *                   This mode has no effect, if the the leaf is a
-	 *                   scalar or otherwise if the receiver's row has no
-	 *                   snmpRowStatus.  
-	 */
-	DateAndTime(const Oidx&, mib_access, int);
+class AGENTPP_DECL DateAndTime : public MibLeaf {
+public:
+    /**
+     * Construct a DateAndTime instance and initialize its value
+     * with the system's date and time.
+     *
+     * @param oid
+     *    the oid of the leaf or the column of the columnar object.
+     * @param access
+     *    the max-access rights for the object. (Normally READONLY)
+     * @param valueMode
+     *    contains an ored value of one or more of the following modes:
+     *    VMODE_DEFAULT: the value of the object pointed by value will
+     *                   be used as default value, otherwise the managed
+     *                   object has no default value.
+     *    VMODE_LOCKED:  value is locked (cannot be modified) while
+     *                   the row status of the receiver's row is active(1).
+     *                   This mode has no effect, if the the leaf is a
+     *                   scalar or otherwise if the receiver's row has no
+     *                   snmpRowStatus.
+     */
+    DateAndTime(const Oidx&, mib_access, int);
 
-	/**
-	 * Destructor.
-	 */
-	virtual ~DateAndTime();
+    /**
+     * Destructor.
+     */
+    virtual ~DateAndTime();
 
-	MibEntryPtr	clone() override;
-	virtual NS_SNMP OctetStr       	get_state();
-	virtual void       	set_state(const NS_SNMP OctetStr&);
+    MibEntryPtr              clone() override;
+    virtual NS_SNMP OctetStr get_state();
+    virtual void             set_state(const NS_SNMP OctetStr&);
 
-	bool	is_volatile() override { return TRUE; }
+    bool is_volatile() override { return TRUE; }
 
-	/**
-	 * Update current value with the system's date and time.
-	 */
-	void       	update();
+    /**
+     * Update current value with the system's date and time.
+     */
+    void update();
 };
 
 #ifdef AGENTPP_NAMESPACE
 }
 #endif
 
-#endif 
+#endif

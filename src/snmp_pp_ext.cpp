@@ -386,13 +386,13 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
             // octet string
         case sNMP_SYNTAX_OPAQUE: {
             OpaqueStr octets(
-                (unsigned char*)vp->val.string, (unsigned long)vp->val_len);
+                (unsigned char*)vp->val.string, (uint32_t)vp->val_len);
             vbs[i].set_value(octets);
         }
         break;
         case sNMP_SYNTAX_OCTETS: {
             OctetStr octets(
-                (unsigned char*)vp->val.string, (unsigned long)vp->val_len);
+                (unsigned char*)vp->val.string, (uint32_t)vp->val_len);
             vbs[i].set_value(octets);
         }
         break;
@@ -406,21 +406,21 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
 
             // timeticks
         case sNMP_SYNTAX_TIMETICKS: {
-            TimeTicks timeticks((unsigned long)*(vp->val.integer));
+            TimeTicks timeticks((uint32_t) * (vp->val.integer));
             vbs[i].set_value(timeticks);
         }
         break;
 
             // 32 bit counter
         case sNMP_SYNTAX_CNTR32: {
-            Counter32 counter32((unsigned long)*(vp->val.integer));
+            Counter32 counter32((uint32_t) * (vp->val.integer));
             vbs[i].set_value(counter32);
         }
         break;
 
             // 32 bit gauge
         case sNMP_SYNTAX_GAUGE32: {
-            Gauge32 gauge32((unsigned long)*(vp->val.integer));
+            Gauge32 gauge32((uint32_t) * (vp->val.integer));
             vbs[i].set_value(gauge32);
         }
         break;
@@ -515,7 +515,7 @@ int Oidx::compare(const Oidx& other, unsigned int wildcard) const
 }
 
 #if 0
-unsigned long Oidx::first() const
+uint32_t Oidx::first() const
 {
   // check for len == 0
   if ((!Oid::valid()) || (smival.value.oid.len < 1))
@@ -635,7 +635,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
     }
 #        endif
 #    else // HAVE_POLL_SYSCALL
-    fd_set readfds{};
+    fd_set readfds {};
     int    max_fd = -1;
 
     FD_ZERO(&readfds); // NOLINT(clang-analyzer-security.insecureAPI.bzero)
@@ -813,16 +813,14 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             debughexprintf(5, receive_buffer, receive_buffer_len);
 
             int status = snmpmsg.load(receive_buffer, receive_buffer_len);
-            if (status != SNMP_CLASS_SUCCESS)
-                return status;
+            if (status != SNMP_CLASS_SUCCESS) return status;
 
             static_assert(SNMP_CLASS_SUCCESS == SNMP_ERROR_SUCCESS);
             if (snmpmsg.is_v3_message() == TRUE)
             {
                 status = snmpmsg.unloadv3(pdu, version, engine_id,
                     security_name, security_model, fromaddr, *this);
-                if (status != SNMP_CLASS_SUCCESS)
-                    return status;
+                if (status != SNMP_CLASS_SUCCESS) return status;
 
                 target.set_security_name(security_name);
                 target.set_engine_id(engine_id);
@@ -830,8 +828,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             else
             {
                 status = snmpmsg.unload(pdu, community, version);
-                if (status != SNMP_CLASS_SUCCESS)
-                    return status;
+                if (status != SNMP_CLASS_SUCCESS) return status;
                 target.set_security_name(community);
                 if (version == version1)
                     security_model = SNMP_SECURITY_MODEL_V1;

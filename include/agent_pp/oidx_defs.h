@@ -1,24 +1,24 @@
 /*_############################################################################
-  _## 
-  _##  AGENT++ 4.5 - oidx_defs.h  
-  _## 
+  _##
+  _##  AGENT++ 4.5 - oidx_defs.h
+  _##
   _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##  
+  _##
   _##  Licensed under the Apache License, Version 2.0 (the "License");
   _##  you may not use this file except in compliance with the License.
   _##  You may obtain a copy of the License at
-  _##  
+  _##
   _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##  
+  _##
   _##  Unless required by applicable law or agreed to in writing, software
   _##  distributed under the License is distributed on an "AS IS" BASIS,
   _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   _##  See the License for the specific language governing permissions and
   _##  limitations under the License.
-  _##  
+  _##
   _##########################################################################*/
 // This may look like C code, but it is really -*- C++ -*-
-/* 
+/*
 Copyright (C) 1988 Free Software Foundation
     written by Doug Lea (dl@rocky.oswego.edu)
 
@@ -35,43 +35,42 @@ License along with this library; if not, write to the Free Software
 Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-
 #ifndef _OidxPtrdefs_h
 #define _OidxPtrdefs_h 1
 
 #include <agent_pp/oidx_ptr.h>
 
 #ifdef AGENTPP_NAMESPACE
-namespace Agentpp {
-    using namespace Snmp_pp;
+namespace Agentpp
+{
+using namespace Snmp_pp;
 #endif
-
 
 // equality operator
 #ifndef OidxPtrEQ
-#define OidxPtrEQ(a, b)  ((*a) == (*b))
+#    define OidxPtrEQ(a, b) ((*a) == (*b))
 #endif
 
 // less-than-or-equal
 #ifndef OidxPtrLE
-#define OidxPtrLE(a, b)  ((*a) <= (*b))
+#    define OidxPtrLE(a, b) ((*a) <= (*b))
 #endif
 
 // comparison : less-than -> < 0; equal -> 0; greater-than -> > 0
 #ifndef OidxPtrCMP
-#define OidxPtrCMP(a, b) ( ((*a) <= (*b))? (((*a) == (*b))? 0 : -1) : 1 )
+#    define OidxPtrCMP(a, b) (((*a) <= (*b)) ? (((*a) == (*b)) ? 0 : -1) : 1)
 #endif
 
 // hash function
 #ifndef OidxPtrHASH
-extern unsigned int hash(OidxPtr );
-#define OidxPtrHASH(x)  hash(x)
+extern unsigned int hash(OidxPtr);
+#    define OidxPtrHASH(x) hash(x)
 #endif
 
 // initial capacity for structures requiring one
 
 #ifndef DEFAULT_INITIAL_CAPACITY
-#define DEFAULT_INITIAL_CAPACITY 100
+#    define DEFAULT_INITIAL_CAPACITY 100
 #endif
 
 // HASHTABLE_TOO_CROWDED(COUNT, SIZE) is true iff a hash table with COUNT

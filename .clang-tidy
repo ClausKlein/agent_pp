@@ -5,6 +5,8 @@ cert-*,\
 -cert-err58-cpp,\
 -cert-dcl37-c,\
 -cert-dcl51-cpp,\
+-cert-msc30-c,\
+-cert-msc50-cpp,\
 clang-analyzer-*,\
 -clang-analyzer-security.insecureAPI.*,\
 -cppcoreguidelines-*,\
@@ -19,6 +21,7 @@ misc-*,\
 -misc-non-private-member-variables-in-classes,\
 -misc-no-recursion,\
 -misc-unused-parameters,\
+-misc-unconventional-assign-operator,\
 -modernize-*,\
 -modernize-use-trailing-return-type,\
 performance-*,\

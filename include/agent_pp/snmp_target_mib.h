@@ -1,23 +1,22 @@
 /*_############################################################################
-  _## 
-  _##  AGENT++ 4.5 - snmp_target_mib.h  
-  _## 
+  _##
+  _##  AGENT++ 4.5 - snmp_target_mib.h
+  _##
   _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##  
+  _##
   _##  Licensed under the Apache License, Version 2.0 (the "License");
   _##  you may not use this file except in compliance with the License.
   _##  You may obtain a copy of the License at
-  _##  
+  _##
   _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##  
+  _##
   _##  Unless required by applicable law or agreed to in writing, software
   _##  distributed under the License is distributed on an "AS IS" BASIS,
   _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   _##  See the License for the specific language governing permissions and
   _##  limitations under the License.
-  _##  
+  _##
   _##########################################################################*/
-
 
 #ifndef _snmp_target_mib_h_
 #define _snmp_target_mib_h_
@@ -26,13 +25,14 @@
 #include <agent_pp/snmp_textual_conventions.h>
 
 #ifdef AGENTPP_NAMESPACE
-namespace Agentpp {
-    using namespace Snmp_pp;
+namespace Agentpp
+{
+using namespace Snmp_pp;
 #endif
 
-#define oidSnmpTargetAddrEntry      "1.3.6.1.6.3.12.1.2.1"
-#define oidSnmpTargetParamsEntry    "1.3.6.1.6.3.12.1.3.1"
-    
+#define oidSnmpTargetAddrEntry   "1.3.6.1.6.3.12.1.2.1"
+#define oidSnmpTargetParamsEntry "1.3.6.1.6.3.12.1.3.1"
+
 /**
  *  snmpTargetAddrTDomain
  *
@@ -40,18 +40,16 @@ namespace Agentpp {
  contained in the snmpTargetAddrTAddress object."
  */
 
+class AGENTPP_DECL snmpTargetAddrTDomain : public MibLeaf {
 
-class AGENTPP_DECL snmpTargetAddrTDomain: public MibLeaf {
+public:
+    snmpTargetAddrTDomain(const Oidx&);
+    virtual ~snmpTargetAddrTDomain();
 
- public:
-	snmpTargetAddrTDomain(const Oidx&);
-	virtual ~snmpTargetAddrTDomain();
-
-	MibEntryPtr	clone() override;
-	bool    	value_ok(const Vbx&) override;
-	virtual int		get_state();
+    MibEntryPtr clone() override;
+    bool        value_ok(const Vbx&) override;
+    virtual int get_state();
 };
-
 
 /**
  *  snmpTargetAddrTAddress
@@ -61,22 +59,21 @@ class AGENTPP_DECL snmpTargetAddrTDomain: public MibLeaf {
  snmpTargetAddrTDomain object."
  */
 
-class AGENTPP_DECL snmpTargetAddrTAddress: public MibLeaf {
+class AGENTPP_DECL snmpTargetAddrTAddress : public MibLeaf {
 
- public:
-	snmpTargetAddrTAddress(const Oidx&);
-	snmpTargetAddrTAddress(const Oidx&, mib_access, NS_SNMP OctetStr*, int);
-	virtual ~snmpTargetAddrTAddress();
+public:
+    snmpTargetAddrTAddress(const Oidx&);
+    snmpTargetAddrTAddress(const Oidx&, mib_access, NS_SNMP OctetStr*, int);
+    virtual ~snmpTargetAddrTAddress();
 
-	MibEntryPtr	clone() override;
-	int	   	prepare_set_request(Request*, int&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
 
-	/**
-	 * @note The caller has to delete the returned pointer.
-	 */
-	virtual NS_SNMP UdpAddress*	getUdpAddress();
+    /**
+     * @note The caller has to delete the returned pointer.
+     */
+    virtual NS_SNMP UdpAddress* getUdpAddress();
 };
-
 
 /**
  *  snmpTargetAddrTimeout
@@ -103,8 +100,6 @@ class AGENTPP_DECL snmpTargetAddrTAddress: public MibLeaf {
  during authentication and encryption processing."
  */
 
-
-
 /**
  *  snmpTargetAddrRetryCount
  *
@@ -113,8 +108,6 @@ class AGENTPP_DECL snmpTargetAddrTAddress: public MibLeaf {
  message. An application may provide its own retry count,
  in which case the value of this object is ignored."
  */
-
-
 
 /**
  *  snmpTargetAddrParams
@@ -125,18 +118,16 @@ class AGENTPP_DECL snmpTargetAddrTAddress: public MibLeaf {
  messages to be sent to this transport address."
  */
 
+class AGENTPP_DECL snmpTargetAddrParams : public MibLeaf {
 
-class AGENTPP_DECL snmpTargetAddrParams: public MibLeaf {
+public:
+    snmpTargetAddrParams(const Oidx&);
+    virtual ~snmpTargetAddrParams();
 
- public:
-	snmpTargetAddrParams(const Oidx&);
-	virtual ~snmpTargetAddrParams();
-
-	MibEntryPtr	clone() override;
-	int		prepare_set_request(Request*, int&) override;
-	bool    	value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
+    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx&) override;
 };
-
 
 /**
  *  snmpTargetAddrRowStatus
@@ -166,14 +157,12 @@ class AGENTPP_DECL snmpTargetAddrParams: public MibLeaf {
  an inconsistentValue error."
  */
 
-
 /**
  *  snmpTargetParamsMPModel
  *
 "The Message Processing Model to be used when generating
  SNMP messages using this entry."
  */
-
 
 /**
  *  snmpTargetParamsSecurityModel
@@ -186,7 +175,6 @@ class AGENTPP_DECL snmpTargetAddrParams: public MibLeaf {
  not support."
  */
 
-
 /**
  *  snmpTargetParamsSecurityName
  *
@@ -194,8 +182,6 @@ class AGENTPP_DECL snmpTargetAddrParams: public MibLeaf {
  whose behalf SNMP messages will be generated using
  this entry."
  */
-
-
 
 /**
  *  snmpTargetParamsSecurityLevel
@@ -244,81 +230,77 @@ class AGENTPP_DECL snmpTargetAddrParams: public MibLeaf {
  deleted using the snmpTargetParamsRowStatus object."
  */
 
+class AGENTPP_DECL snmpTargetParamsEntry : public StorageTable {
 
-class AGENTPP_DECL snmpTargetParamsEntry: public StorageTable {
+public:
+    snmpTargetParamsEntry();
+    virtual ~snmpTargetParamsEntry();
 
- public:
-	snmpTargetParamsEntry();
-	virtual ~snmpTargetParamsEntry();
+    /**
+     * Get the pointer to the snmpTargetParamsEntry associated with the
+     * provided Mib instance.
+     * @param mib a Mib reference
+     * @return
+     *    a pointer to the entry if available in the Mib or the static
+     *    instance pointer as fallback.
+     * @since 4.3.0
+     */
+    static snmpTargetParamsEntry* get_instance(Mib* mib)
+    {
+        Oidx                   oid(oidSnmpTargetParamsEntry);
+        snmpTargetParamsEntry* entry = (snmpTargetParamsEntry*)mib->get(oid);
+        return (entry) ? entry : instance;
+    }
+    static snmpTargetParamsEntry* instance;
 
-        /**
-         * Get the pointer to the snmpTargetParamsEntry associated with the
-         * provided Mib instance. 
-         * @param mib a Mib reference
-         * @return 
-         *    a pointer to the entry if available in the Mib or the static 
-         *    instance pointer as fallback.
-         * @since 4.3.0
-         */
-        static snmpTargetParamsEntry* get_instance(Mib* mib) {
-            Oidx oid(oidSnmpTargetParamsEntry);
-            snmpTargetParamsEntry* entry = (snmpTargetParamsEntry*)mib->get(oid);
-            return (entry) ? entry : instance;
-        }
-	static snmpTargetParamsEntry* instance;
-
-	virtual bool		contains(const NS_SNMP OctetStr&);
+    virtual bool contains(const NS_SNMP OctetStr&);
 
 #ifdef _SNMPv3
-	/**
-	 * Get the target params values from the given target
-	 * parameters entry.
-	 *
-	 * @param entry
-	 *    a snmpTargetParamsName instance.
-	 * @param target
-	 *    a UTarget instance where target related
-	 *    parameters will be stored in.
-	 * @param secLevel
-	 *    returns the security level of the entry.
-	 * @return
-	 *    true if the entry has been found, false otherwise.
-	 */
-	virtual bool		get_target_params(const NS_SNMP OctetStr&,
-						  NS_SNMP UTarget&, int&);
+    /**
+     * Get the target params values from the given target
+     * parameters entry.
+     *
+     * @param entry
+     *    a snmpTargetParamsName instance.
+     * @param target
+     *    a UTarget instance where target related
+     *    parameters will be stored in.
+     * @param secLevel
+     *    returns the security level of the entry.
+     * @return
+     *    true if the entry has been found, false otherwise.
+     */
+    virtual bool get_target_params(
+        const NS_SNMP OctetStr&, NS_SNMP UTarget&, int&);
 #endif
-	/**
-	 * Add a new SNMP parameter set to the receiver.
-	 *
-	 * @param name
-	 *    a unique identifier used to index this table. It is also
-	 *    used to connect this table to the snmpTargetAddrTable,
-	 *    snmpNotifyFilterProfileTable, and the snmpProxyTable.
-	 * @param mpModel
-	 *    the message processing model to use when generating an
-	 *    SNMP message. For example, a value of 3 specifies SNMPv3's
-	 *    Message Processing Model should be used.
-	 * @param securityModel
-	 *    the Security Model to be use when generating SNMP messages.
-	 *    For example, a value of 3 specifies the USM.
-	 * @param securityName
-	 *    identifies the Principal on whose behalf SNMP messages
-	 *    will be generated.
-	 * @param securityLevel
-	 *    identifies the Security Level to be used when generating
-	 *    SNMP messages. For example, a value of 1 will specify
-	 *    no authentication with no privacy.
-	 * @return
-	 *    the newly created row or 0 if an entry with name already
-	 *    exists.
-	 */
-	MibTableRow*	add_entry(const NS_SNMP OctetStr&,
-				  const int, const int,
-				  const NS_SNMP OctetStr&,
-				  const int);
+    /**
+     * Add a new SNMP parameter set to the receiver.
+     *
+     * @param name
+     *    a unique identifier used to index this table. It is also
+     *    used to connect this table to the snmpTargetAddrTable,
+     *    snmpNotifyFilterProfileTable, and the snmpProxyTable.
+     * @param mpModel
+     *    the message processing model to use when generating an
+     *    SNMP message. For example, a value of 3 specifies SNMPv3's
+     *    Message Processing Model should be used.
+     * @param securityModel
+     *    the Security Model to be use when generating SNMP messages.
+     *    For example, a value of 3 specifies the USM.
+     * @param securityName
+     *    identifies the Principal on whose behalf SNMP messages
+     *    will be generated.
+     * @param securityLevel
+     *    identifies the Security Level to be used when generating
+     *    SNMP messages. For example, a value of 1 will specify
+     *    no authentication with no privacy.
+     * @return
+     *    the newly created row or 0 if an entry with name already
+     *    exists.
+     */
+    MibTableRow* add_entry(const NS_SNMP OctetStr&, const int, const int,
+        const NS_SNMP                    OctetStr&, const int);
 };
-
-
 
 /**
  * snmpTargetAddrEntry
@@ -332,128 +314,119 @@ class AGENTPP_DECL snmpTargetParamsEntry: public StorageTable {
  * @version 3.5.16
  */
 
+class AGENTPP_DECL snmpTargetAddrEntry : public StorageTable {
 
-class AGENTPP_DECL snmpTargetAddrEntry: public StorageTable {
+public:
+    snmpTargetAddrEntry();
+    virtual ~snmpTargetAddrEntry();
 
- public:
-	snmpTargetAddrEntry();
-	virtual ~snmpTargetAddrEntry();
+    static snmpTargetAddrEntry* instance;
+    /**
+     * Get the pointer to the snmpTargetAddrEntry associated with the
+     * provided Mib instance.
+     * @param mib a Mib reference
+     * @return
+     *    a pointer to the entry if available in the Mib or the static
+     *    instance pointer as fallback.
+     * @since 4.3.0
+     */
+    static snmpTargetAddrEntry* get_instance(Mib* mib)
+    {
+        Oidx                 oid(oidSnmpTargetAddrEntry);
+        snmpTargetAddrEntry* entry = (snmpTargetAddrEntry*)mib->get(oid);
+        return (entry) ? entry : instance;
+    }
 
-	static snmpTargetAddrEntry* instance;
-        /**
-         * Get the pointer to the snmpTargetAddrEntry associated with the
-         * provided Mib instance. 
-         * @param mib a Mib reference
-         * @return 
-         *    a pointer to the entry if available in the Mib or the static 
-         *    instance pointer as fallback.
-         * @since 4.3.0
-         */
-        static snmpTargetAddrEntry* get_instance(Mib* mib) {
-            Oidx oid(oidSnmpTargetAddrEntry);
-            snmpTargetAddrEntry* entry = (snmpTargetAddrEntry*)mib->get(oid);
-            return (entry) ? entry : instance;
-        }
-
-	virtual bool		refers_to(NS_SNMP OctetStr&);
-	/**
-	 * Return the address stored in the given row of
-	 * the receiver.
-	 * @note Don't use other rows! This method is not
-	 * synchronized!
-	 * @note The caller has to delete the returned pointer.
-	 *
-	 * @param row
-	 *    a row of snmpTargetAddrEntry.
-	 * @return
-	 *    a pointer to an Address instance or 0 if
-	 *    the domain of row is not supported.
-	 */
-	virtual NS_SNMP Address*	get_address(MibTableRow*);
+    virtual bool refers_to(NS_SNMP OctetStr&);
+    /**
+     * Return the address stored in the given row of
+     * the receiver.
+     * @note Don't use other rows! This method is not
+     * synchronized!
+     * @note The caller has to delete the returned pointer.
+     *
+     * @param row
+     *    a row of snmpTargetAddrEntry.
+     * @return
+     *    a pointer to an Address instance or 0 if
+     *    the domain of row is not supported.
+     */
+    virtual NS_SNMP Address* get_address(MibTableRow*);
 #ifdef _SNMPv3
-	/**
-	 * Return the Target represented by the given address
-	 * name.
-	 * @note The caller has to delete the returned pointer.
-	 *
-	 * @param targetAddrName
-	 *    a SnmpTargetAddrName.
-	 * @param paramsInfo
-	 *    the snmpTargetParamsEntry table to be used for
-	 *    target parameters lookup.
-	 * @param secLevel
-	 *    returns the security_level associated with targetAddrName
-	 * @return
-	 *    a pointer to an UTarget instance or 0 if the
-	 *    address name is not valid.
-	 */
-	virtual NS_SNMP UTarget*	get_target(const NS_SNMP OctetStr&,
-					   snmpTargetParamsEntry*, int&);
+    /**
+     * Return the Target represented by the given address
+     * name.
+     * @note The caller has to delete the returned pointer.
+     *
+     * @param targetAddrName
+     *    a SnmpTargetAddrName.
+     * @param paramsInfo
+     *    the snmpTargetParamsEntry table to be used for
+     *    target parameters lookup.
+     * @param secLevel
+     *    returns the security_level associated with targetAddrName
+     * @return
+     *    a pointer to an UTarget instance or 0 if the
+     *    address name is not valid.
+     */
+    virtual NS_SNMP UTarget* get_target(
+        const NS_SNMP OctetStr&, snmpTargetParamsEntry*, int&);
 #endif
-	/**
-	 * Return the rows that match a given tag. The rows are cloned
-	 * and the method is synchronized on the receiver.
-	 * @note The caller has to delete the returned pointer.
-	 *
-	 * @param tag
-	 *    an OctetStr instance.
-	 * @return
-	 *    a (possibly empty) list of rows.
-	 */
-	List<MibTableRow>*	get_rows_cloned_for_tag(const NS_SNMP OctetStr&);
+    /**
+     * Return the rows that match a given tag. The rows are cloned
+     * and the method is synchronized on the receiver.
+     * @note The caller has to delete the returned pointer.
+     *
+     * @param tag
+     *    an OctetStr instance.
+     * @return
+     *    a (possibly empty) list of rows.
+     */
+    List<MibTableRow>* get_rows_cloned_for_tag(const NS_SNMP OctetStr&);
 
-	void			set_row(MibTableRow* r,
-					const Oidx&,
-					const NS_SNMP OctetStr&,
-					int, int,
-					const NS_SNMP OctetStr&,
-					const NS_SNMP OctetStr&, int, int);
+    void set_row(MibTableRow* r, const Oidx&, const NS_SNMP OctetStr&, int,
+        int, const NS_SNMP OctetStr&, const NS_SNMP OctetStr&, int, int);
 
-	/**
-	 * Add a new target entry to the receiver.
-	 *
-	 * @param name
-	 *    a unique identifier used to identify the new entry.
-	 * @param tdomain
-	 *    specifies the transport type of the address defined by
-	 *    taddress.
-	 * @param taddress
-	 *    specifies the target address. The format of this value
-	 *    depends on the tdomain value. For example, if tdomain
-	 *    specifies UDP (1.3.6.1.6.1.1), then this value will be
-	 *    a 6-byte OctetStr, where the first 4 bytes specify the
-	 *    IP address, and last 2 bytes specify the UDP port number.
-	 * @param taglist
-	 *    a list of tag values that tie this table to both the
-	 *    snmpNotifyTable and the snmpProxyTable. These tags are
-	 *    used to identify target addresses to send notifications
-	 *    to and forward messages to.
-	 * @param params
-	 *    identifies a row in the snmpTargetParamsTable. This in
-	 *    effect specifies the SNMP parameters to use when
-	 *    generating messages.
-	 * @return
-	 *    the created row or 0 if a row with name already exists.
-	 */
-	MibTableRow*	       	add_entry(const NS_SNMP OctetStr&,
-					  const Oidx&,
-					  const NS_SNMP OctetStr&,
-					  const NS_SNMP OctetStr&,
-					  const NS_SNMP OctetStr&);
+    /**
+     * Add a new target entry to the receiver.
+     *
+     * @param name
+     *    a unique identifier used to identify the new entry.
+     * @param tdomain
+     *    specifies the transport type of the address defined by
+     *    taddress.
+     * @param taddress
+     *    specifies the target address. The format of this value
+     *    depends on the tdomain value. For example, if tdomain
+     *    specifies UDP (1.3.6.1.6.1.1), then this value will be
+     *    a 6-byte OctetStr, where the first 4 bytes specify the
+     *    IP address, and last 2 bytes specify the UDP port number.
+     * @param taglist
+     *    a list of tag values that tie this table to both the
+     *    snmpNotifyTable and the snmpProxyTable. These tags are
+     *    used to identify target addresses to send notifications
+     *    to and forward messages to.
+     * @param params
+     *    identifies a row in the snmpTargetParamsTable. This in
+     *    effect specifies the SNMP parameters to use when
+     *    generating messages.
+     * @return
+     *    the created row or 0 if a row with name already exists.
+     */
+    MibTableRow* add_entry(const NS_SNMP OctetStr&, const Oidx&,
+        const NS_SNMP OctetStr&, const NS_SNMP OctetStr&,
+        const NS_SNMP OctetStr&);
 
-	/**
-	 * Check if row can be set active.
-	 */
-	bool			ready_for_service(Vbx*, int) override;
+    /**
+     * Check if row can be set active.
+     */
+    bool ready_for_service(Vbx*, int) override;
 };
 
-
-
-class AGENTPP_DECL snmp_target_mib: public MibGroup
-{
-  public:
-	snmp_target_mib();
-	virtual ~snmp_target_mib() { }
+class AGENTPP_DECL snmp_target_mib : public MibGroup {
+public:
+    snmp_target_mib();
+    virtual ~snmp_target_mib() { }
 };
 
 #ifdef AGENTPP_NAMESPACE

@@ -271,7 +271,7 @@ public:
     /**
      * Get the value of the receiver.
      *
-     * @param i - A reference to an unsigned long the receiver's value
+     * @param i - A reference to an uint32_t the receiver's value
      *            will be copied in.
      * @return SNMP_ERROR_SUCCESS on success.
      */
@@ -302,7 +302,7 @@ public:
      * @param l - The new integer value.
      * @deprecated Use set_value(const SnmpSyntax&) instead.
      */
-    virtual void set_value(const unsigned long);
+    virtual void set_value(const uint32_t);
 
     /**
      * Set the value of the receiver from a variable binding and checks
@@ -1296,7 +1296,7 @@ public:
      * Constructor with object identifier and given fixed index length.
      *
      * @deprecated
-     *    Use MibTable(const Oidx&, unsigned long[][], unsigned int)
+     *    Use MibTable(const Oidx&, uint32_t[][], unsigned int)
      *    instead
      *
      * @param o - The object identifier of the table, which has to be
@@ -2062,7 +2062,7 @@ protected:
      * @return
      *    TRUE if no such subid exists.
      */
-    bool check_index(Oidx&, unsigned long, unsigned long) const;
+    bool check_index(Oidx&, uint32_t, uint32_t) const;
 
     /**
      * Check whether the given row should be serialized or not.

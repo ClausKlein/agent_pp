@@ -746,7 +746,8 @@ void DateAndTime::update()
     struct tm* dt = nullptr;
 
 #ifdef HAVE_LOCALTIME_R
-    dt = localtime_r(&c, &stm); // TODO: check if gmtime_r() would be better? CK
+    dt =
+        localtime_r(&c, &stm); // TODO: check if gmtime_r() would be better? CK
 #else
     dt = localtime(&c);
 #endif
