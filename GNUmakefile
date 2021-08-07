@@ -15,7 +15,7 @@ build:
 check: build/compile_commands.json
 	# run-clang-tidy.py -p build -checks='-*,cppcoreguidelines-init-variables' -j1 -fix src
 	# run-clang-tidy.py -p build -checks='-*,cppcoreguidelines-explicit-virtual-functions' -j1 -fix src
-	run-clang-tidy.py -p build -checks='-clang-analyzer-optin.*,-cert-dcl37-c,-cert-dcl51-cpp' src/*.cpp
+	run-clang-tidy.py -p build -checks='-clang-analyzer-optin.*' src/*.cpp
 
 clean: build
 	rm -f include/agent_pp/agent++.h
