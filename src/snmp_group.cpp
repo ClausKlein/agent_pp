@@ -46,9 +46,9 @@ long snmpEnableAuthenTraps::get_state() { return (long)*((SnmpInt32*)value); }
 bool snmpEnableAuthenTraps::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
-    if (vb.get_value(v) != SNMP_CLASS_SUCCESS) return FALSE;
-    if ((v != 1) && (v != 2)) return FALSE;
-    return TRUE;
+    if (vb.get_value(v) != SNMP_CLASS_SUCCESS) return false;
+    if ((v != 1) && (v != 2)) return false;
+    return true;
 }
 
 /**********************************************************************

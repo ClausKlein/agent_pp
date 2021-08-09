@@ -108,8 +108,8 @@ void Request::init_from_pdu()
         done[i]  = false;
         ready[i] = false;
     }
-    // memset(done, FALSE, sizeof(bool)*size);
-    // memset(ready, FALSE, sizeof(bool)*size);
+    // memset(done, false, sizeof(bool)*size);
+    // memset(ready, false, sizeof(bool)*size);
 
     if (pdu->get_type() == sNMP_PDU_GETBULK)
     {
@@ -254,7 +254,7 @@ bool Request::contains(const Vbx& vb) { return (position(vb) >= 0); }
  * Check whether the request is finished (all variable bindings
  * have been processed).
  *
- * @return TRUE if the request is complete, FALSE otherwise.
+ * @return true if the request is complete, false otherwise.
  */
 bool Request::finished() const { return (outstanding <= 0); }
 
@@ -264,12 +264,12 @@ bool Request::finished() const { return (outstanding <= 0); }
  *
  * @param i - The index (starting from 0) of the variable binding
  *            to check.
- * @return TRUE if the sub-request is done, FALSE otherwise.
+ * @return true if the sub-request is done, false otherwise.
  */
 bool Request::is_done(int i) const
 {
     if ((i >= 0) && (i < size)) return done[i];
-    return FALSE;
+    return false;
 }
 
 /**
@@ -278,22 +278,22 @@ bool Request::is_done(int i) const
  *
  * @param i - The index (starting from 0) of the variable binding
  *            to check.
- * @return TRUE if the sub-request is ready, FALSE otherwise.
+ * @return true if the sub-request is ready, false otherwise.
  */
 bool Request::is_ready(int i) const
 {
     if ((i >= 0) && (i < size)) return ready[i];
-    return FALSE;
+    return false;
 }
 
 void Request::set_ready(int i)
 {
-    if ((i >= 0) && (i < size)) ready[i] = TRUE;
+    if ((i >= 0) && (i < size)) ready[i] = true;
 }
 
 void Request::unset_ready(int i)
 {
-    if ((i >= 0) && (i < size)) ready[i] = FALSE;
+    if ((i >= 0) && (i < size)) ready[i] = false;
 }
 
 void Request::check_exception(int i, Vbx& vbl)
@@ -328,7 +328,7 @@ void Request::finish(int i)
     if ((i >= 0) && (i < size))
     {
         if (!done[i]) outstanding--;
-        done[i] = TRUE;
+        done[i] = true;
         LOG_BEGIN(loggerModuleName, EVENT_LOG | 3);
         LOG("RequestList: finished subrequest (ind)");
         LOG(i);
@@ -344,7 +344,7 @@ void Request::finish(int i, const Vbx& vb)
         Vbx vbl(vb);
         if (!done[i]) outstanding--;
         check_exception(i, vbl);
-        done[i] = TRUE;
+        done[i] = true;
         pdu->set_vb(vbl, i);
 
         LOG_BEGIN(loggerModuleName, EVENT_LOG | 3);
@@ -509,16 +509,16 @@ void Request::set_oid(const Oidx& o, int i)
 /**
  * Add a repetition row to the GETBULK request PDU.
  *
- * @return TRUE if there was enough room in the response PDU for
- *         another repetition, FALSE otherwise.
+ * @return true if there was enough room in the response PDU for
+ *         another repetition, false otherwise.
  */
 bool Request::add_rep_row()
 {
-    if (repeater == 0) return FALSE;
+    if (repeater == 0) return false;
     int rows = (pdu->get_vb_count() - non_rep) / repeater;
-    if (rows == 0) return FALSE;
+    if (rows == 0) return false;
 
-    if (pdu->get_asn1_length() >= get_max_response_length()) return FALSE;
+    if (pdu->get_asn1_length() >= get_max_response_length()) return false;
 
     Vbx vb;
     for (int i = (rows - 1) * repeater + non_rep;
@@ -528,13 +528,13 @@ bool Request::add_rep_row()
         pdu->get_vb(vb, i);
         *pdu += vb;
         // check if there was room for another vb
-        // obsolete: if (pdu->get_vb_count() == sz) return FALSE;
+        // obsolete: if (pdu->get_vb_count() == sz) return false;
     }
 
     if (pdu->get_asn1_length() > get_max_response_length())
     {
         for (int i = 0; i < repeater; i++) pdu->trim();
-        return FALSE;
+        return false;
     }
 
     size = pdu->get_vb_count();
@@ -552,19 +552,19 @@ bool Request::add_rep_row()
     }
     for (; j < size; j++)
     {
-        done[j]  = FALSE;
-        ready[j] = FALSE;
+        done[j]  = false;
+        ready[j] = false;
     }
     delete[] old_done;
     delete[] old_ready;
-    return TRUE;
+    return true;
 }
 
 bool Request::init_rep_row(int row)
 {
     int start = non_rep + row * repeater;
     int end   = start + repeater;
-    if ((row < 1) || (end > size)) return FALSE;
+    if ((row < 1) || (end > size)) return false;
     for (int i = start; i < end; i++)
     {
         if ((!is_done(i)) && (!is_ready(i)))
@@ -572,7 +572,7 @@ bool Request::init_rep_row(int row)
             set_oid(get_oid(i - repeater), i);
         }
     }
-    return TRUE;
+    return true;
 }
 
 void Request::trim_request(int count)
@@ -836,7 +836,7 @@ uint32_t RequestList::get_request_id(const Vbx& vb) TS_SYNCHRONIZED({
             if (req)
             {
                 req->finish(index, vb);
-                if (req->finished()) return TRUE;
+                if (req->finished()) return true;
             }
             else
             {
@@ -845,7 +845,7 @@ uint32_t RequestList::get_request_id(const Vbx& vb) TS_SYNCHRONIZED({
                 LOG(rid);
                 LOG_END;
             }
-            return FALSE;
+            return false;
         })
 
             void RequestList::error(uint32_t rid, int index, int err)
@@ -868,18 +868,18 @@ uint32_t RequestList::get_request_id(const Vbx& vb) TS_SYNCHRONIZED({
      * @param pdutype - A PDU type (e.g., sNMP_PDU_SET,
      *                  sNMP_PDU_GET, etc.)
      * @param community - A v1 or v2c community string.
-     * @return TRUE if the given community is ok, FALSE otherwise.
+     * @return true if the given community is ok, false otherwise.
      */
     bool RequestList::community_ok(int pdutype, const OctetStr& community)
 {
 #ifdef SNMPv3
-    return TRUE;
+    return true;
 #else
     switch (pdutype)
     {
     case sNMP_PDU_SET:
         if (*write_community == community)
-            return TRUE;
+            return true;
         else
         {
             if (*read_community == community)
@@ -887,13 +887,13 @@ uint32_t RequestList::get_request_id(const Vbx& vb) TS_SYNCHRONIZED({
                 snmpInBadCommunityNames::incrementScalar(
                     mib, oidSnmpInBadCommunityNames);
             }
-            return FALSE;
+            return false;
         }
     }
     if ((*read_community == community) || (*write_community == community))
-        return TRUE;
+        return true;
 
-    return FALSE;
+    return false;
 #endif
 }
 
@@ -1369,7 +1369,7 @@ Request* RequestList::receive(int sec)
                 LOG_BEGIN(loggerModuleName, EVENT_LOG | 3);
                 LOG("RequestList: received v1/v2c request "
                     "(FOUND)(community)(cid)(cname)(filter_tag): ");
-                LOG((found) ? "TRUE" : "FALSE");
+                LOG((found) ? "true" : "false");
                 LOG(security_name.get_printable());
                 LOG(context_engine_id.get_printable());
                 LOG(context_name.get_printable());

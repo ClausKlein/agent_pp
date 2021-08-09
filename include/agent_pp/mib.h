@@ -205,7 +205,7 @@ public:
      *
      * @param buf - A pointer to byte stream buffer returned.
      * @param sz - The size of the buffer returned.
-     * @return TRUE if serialization was successful, FALSE otherwise.
+     * @return true if serialization was successful, false otherwise.
      */
     bool serialize(char*&, int&) override;
 
@@ -218,7 +218,7 @@ public:
      *    the size of the input buffer. On output it contains the
      *    size remaining unread in the input buffer.
      * @return
-     *    TRUE if deserialization was successful, FALSE otherwise.
+     *    true if deserialization was successful, false otherwise.
      */
     bool deserialize(char*, int&) override;
 
@@ -393,9 +393,9 @@ public:
      * @note Override this mehtod in subclasses.
      *
      * @param v - A new value.
-     * @return TRUE if the new value is valid, otherwise FALSE.
+     * @return true if the new value is valid, otherwise false.
      */
-    virtual bool value_ok(const Vbx&) { return TRUE; }
+    virtual bool value_ok(const Vbx&) { return true; }
 
     /**
      * Set the receiver's value and backup its old value for a later undo.
@@ -444,14 +444,14 @@ public:
     /**
      * Return whether the receiver has a default value.
      *
-     * @return TRUE if the receiver has a default value, FALSE otherwise.
+     * @return true if the receiver has a default value, false otherwise.
      */
     bool has_default() { return ((value_mode & VMODE_DEFAULT) > 0); }
 
     /**
      * Return whether the receiver has a default value.
      *
-     * @return TRUE if the receiver has a default value, FALSE otherwise.
+     * @return true if the receiver has a default value, false otherwise.
      */
     bool is_locked() { return ((value_mode & VMODE_LOCKED) > 0); }
 
@@ -640,7 +640,7 @@ public:
         const Oidx& columnOid, const Oidx& rowIndex);
 
     virtual void increment();
-    bool         is_volatile() override { return TRUE; }
+    bool         is_volatile() override { return true; }
 };
 
 /*--------------------------- class snmpRowStatus ------------------------*/
@@ -696,13 +696,13 @@ public:
     /**
      * Check whether the receiver's value may be set to
      * a given new value. NOTE: This checks only if the value
-     * may be set at all. Thus notReady(3) will return FALSE.
-     * All other RowStatus enumerated values will return TRUE.
+     * may be set at all. Thus notReady(3) will return false.
+     * All other RowStatus enumerated values will return true.
      *
      * @param value
      *    a new value.
      * @return
-     *    TRUE if the new value is valid, otherwise FALSE.
+     *    true if the new value is valid, otherwise false.
      */
     bool value_ok(const Vbx&) override;
 
@@ -715,7 +715,7 @@ public:
      * @param value
      *    a new value.
      * @return
-     *    TRUE if the new value is valid, otherwise FALSE.
+     *    true if the new value is valid, otherwise false.
      */
     virtual bool transition_ok(const Vbx&);
 
@@ -736,7 +736,7 @@ public:
      *    If req is not 0 the snmpRowStatus attempts to look forward
      *    within the request for sets that will affect its row.
      * @return
-     *    TRUE if the requested state can be set, otherwise FALSE.
+     *    true if the requested state can be set, otherwise false.
      */
     virtual bool check_state_change(const Vbx&, Request* req = 0);
 
@@ -906,8 +906,8 @@ public:
      * Remove the object at a specified column from this row.
      *
      * @param i - The index (starting from 0) of the column to be removed.
-     * @return TRUE if a such a column existed and has been removed,
-     *         FALSE otherwise.
+     * @return true if a such a column existed and has been removed,
+     *         false otherwise.
      */
     bool remove(int);
 
@@ -925,8 +925,8 @@ public:
      * Operator <
      *
      * @param other - The MibTableRow the receiver is compared with.
-     * @return TRUE if the receiver is less than the comparate,
-     *         FALSE otherwise.
+     * @return true if the receiver is less than the comparate,
+     *         false otherwise.
      */
     int operator<(const MibTableRow&);
 
@@ -934,8 +934,8 @@ public:
      * Operator >
      *
      * @param other - The MibTableRow the receiver is compared with.
-     * @return TRUE if the receiver is greater than the comparator,
-     *         FALSE otherwise.
+     * @return true if the receiver is greater than the comparator,
+     *         false otherwise.
      */
     int operator>(const MibTableRow&);
 
@@ -943,8 +943,8 @@ public:
      * Operator ==
      *
      * @param other - The MibTableRow the receiver is compared with.
-     * @return TRUE if the receiver is equals the comparator,
-     *         FALSE otherwise.
+     * @return true if the receiver is equals the comparator,
+     *         false otherwise.
      */
     int operator==(const MibTableRow&);
 
@@ -960,8 +960,8 @@ public:
      * Return whether the receiver row contains an object with a given oid.
      *
      * @param oid - The object identifier to search for.
-     * @return TRUE if the receiver row contains an object with the
-     *         given oid, FALSE otherwise.
+     * @return true if the receiver row contains an object with the
+     *         given oid, false otherwise.
      */
     bool contains(const Oidx&) const;
 
@@ -1042,11 +1042,11 @@ public:
      * @param sz
      *    the size of the array.
      * @param returnVolatileAsNull
-     *    if set to TRUE (FALSE is the default), volatile columns
+     *    if set to true (false is the default), volatile columns
      *    will return a Null value instead of their real value.
      * @version 3.5.22
      */
-    void get_vblist(Vbx*, int, bool returnVolatileAsNull = FALSE);
+    void get_vblist(Vbx*, int, bool returnVolatileAsNull = false);
 
     /**
      * Return the row status object of the receiver row,
@@ -1377,7 +1377,7 @@ public:
      *
      * @param buf - A pointer to byte stream buffer returned.
      * @param sz - The size of the buffer returned.
-     * @return TRUE if serialization was successful, FALSE otherwise.
+     * @return true if serialization was successful, false otherwise.
      */
     bool serialize(char*&, int&) override;
 
@@ -1390,7 +1390,7 @@ public:
      *    the size of the input buffer. On output it contains the
      *    size remaining unread in the input buffer.
      * @return
-     *    TRUE if deserialization was successful, FALSE otherwise.
+     *    true if deserialization was successful, false otherwise.
      */
     bool deserialize(char*, int&) override;
 
@@ -1424,7 +1424,7 @@ public:
     /**
      * Return whether the table is empty or not.
      *
-     * @return TRUE if the table is empty, FALSE otherwise.
+     * @return true if the table is empty, false otherwise.
      */
     bool is_empty() override { return content.empty(); }
 
@@ -1506,7 +1506,7 @@ public:
      * @param pvbs - A pointer to an array of Vbx objects containing
      *               the values and oids of the columns of a row to check.
      * @param sz - The size of the array.
-     * @return TRUE if the specified row is ready to set for service.
+     * @return true if the specified row is ready to set for service.
      */
     virtual bool ready_for_service(Vbx* pvbs, int sz);
 
@@ -1652,7 +1652,7 @@ public:
      * @param index
      *    an Oidx instance.
      * @return
-     *    TRUE if the index is valid, FALSE otherwise.
+     *    true if the index is valid, false otherwise.
      */
     virtual bool is_index_valid(const Oidx&) const;
 
@@ -1848,8 +1848,8 @@ public:
      * Checks whether this table has any listeners for row events.
      *
      * @return
-     *	TRUE if there is at least one listener attached to this
-     *      table via ::add_listener, FALSE otherwise.
+     *	true if there is at least one listener attached to this
+     *      table via ::add_listener, false otherwise.
      */
     bool has_listeners() const { return (listeners.size() > 0); }
 
@@ -1925,7 +1925,7 @@ protected:
      * @param o - The initialize object identifier of the receiver.
      * @param ilen - The fixed index length, or VARIABLE_INDEX_LENGTH
      *               if the index length is variable.
-     * @param a - If TRUE the automatic index object initialization is
+     * @param a - If true the automatic index object initialization is
      *            activated.
      */
     void init(const Oidx&, const index_info*, unsigned int);
@@ -1939,7 +1939,7 @@ protected:
      *    returns the SNMP error code, which explains why creation
      *    could not be performed. Possible values are:
      *    SNMP_ERROR_NO_CREATION and SNMP_ERROR_NOT_WRITEABLE
-     * @return TRUE if an object of the given oid could be created.
+     * @return true if an object of the given oid could be created.
      */
     virtual bool could_ever_be_managed(const Oidx&, int&);
 
@@ -2006,7 +2006,7 @@ protected:
      *    a pointer to the original row. If this is a new row,
      *    it is pointing to a MibTableRow that is filled with the
      *    new values, but is not inserted into the table.
-     * @return TRUE if the specified row is ready to set for service.
+     * @return true if the specified row is ready to set for service.
      */
     virtual bool ready(Vbx* pvbs, int sz, MibTableRow* row);
 
@@ -2060,7 +2060,7 @@ protected:
      * @param begin
      * @param end
      * @return
-     *    TRUE if no such subid exists.
+     *    true if no such subid exists.
      */
     bool check_index(Oidx&, uint32_t, uint32_t) const;
 
@@ -2070,9 +2070,9 @@ protected:
      * @param row
      *    a MibTableRow instance.
      * @return
-     *    TRUE if the row should be stored persistently, FALSE otherwise
+     *    true if the row should be stored persistently, false otherwise
      */
-    virtual bool is_persistent(MibTableRow*) { return TRUE; }
+    virtual bool is_persistent(MibTableRow*) { return true; }
 
     /**
      * Let all voters vote for or against a row status transition.
@@ -2236,7 +2236,7 @@ public:
      * @param path
      *    the storage path to use.
      * @return
-     *    TRUE if the contents could be saved successfully, FALSE otherwise.
+     *    true if the contents could be saved successfully, false otherwise.
      */
     virtual bool save(MibContext*, const NS_SNMP OctetStr&) = 0;
 
@@ -2247,7 +2247,7 @@ public:
      * @param path
      *    the storage path to use.
      * @return
-     *    TRUE if the contents could be saved successfully, FALSE otherwise.
+     *    true if the contents could be saved successfully, false otherwise.
      */
     virtual bool load(MibContext*, const NS_SNMP OctetStr&) = 0;
 
@@ -2278,7 +2278,7 @@ public:
      * @param path
      *    the storage path to use.
      * @return
-     *    TRUE if the contents could be saved successfully, FALSE otherwise.
+     *    true if the contents could be saved successfully, false otherwise.
      */
     bool save(MibContext*, const NS_SNMP OctetStr&) override;
 
@@ -2289,7 +2289,7 @@ public:
      * @param path
      *    the storage path to use.
      * @return
-     *    TRUE if the contents could be saved successfully, FALSE otherwise.
+     *    true if the contents could be saved successfully, false otherwise.
      */
     bool load(MibContext*, const NS_SNMP OctetStr&) override;
 
@@ -2567,8 +2567,8 @@ public:
      *    a textual description of the capabilities identified by the
      *    corresponding instance of sysORID.
      * @return
-     *    TRUE if the context could be found and it contains the
-     *    sysOR MIB objects, FALSE otherwise.
+     *    true if the context could be found and it contains the
+     *    sysOR MIB objects, false otherwise.
      */
     virtual bool add_agent_caps(
         const NS_SNMP OctetStr&, const Oidx&, const NS_SNMP OctetStr&);
@@ -2609,7 +2609,7 @@ public:
      *    the Oidx instance pointing to the key of the MibEntry
      *    to be removed.
      * @return
-     *    TRUE if the entry could be removed, FALSE otherwise
+     *    true if the entry could be removed, false otherwise
      */
     virtual bool remove(const Oidx&);
 
@@ -2639,7 +2639,7 @@ public:
      *    the Oidx instance pointing to the key of the MibEntry
      *    to be removed.
      * @return
-     *    TRUE if the entry could be removed, FALSE otherwise
+     *    true if the entry could be removed, false otherwise
      */
     virtual bool remove(const NS_SNMP OctetStr&, const Oidx&);
 
@@ -2654,7 +2654,7 @@ public:
      * simply call {@link #set_thread_pool()} before calling this method.
      *
      * @return
-     *    TRUE if initialization was successful, FALSE otherwise.
+     *    true if initialization was successful, false otherwise.
      */
     virtual bool init();
 
@@ -2671,7 +2671,7 @@ public:
      * @param path
      *    the path where the data should be stored.
      * @return
-     *    TRUE if data has been saved successfully, FALSE otherwise.
+     *    true if data has been saved successfully, false otherwise.
      */
     virtual bool save(unsigned int, const NS_SNMP OctetStr&);
 
@@ -2683,7 +2683,7 @@ public:
      * @param path
      *    the path where the data should be stored.
      * @return
-     *    TRUE if data has been saved successfully, FALSE otherwise.
+     *    true if data has been saved successfully, false otherwise.
      */
     virtual bool load(unsigned int, const NS_SNMP OctetStr&);
 
@@ -2751,7 +2751,7 @@ public:
      * a path has been explicitly unset, to disable persistent
      * storage at all.
      * @return
-     *    TRUE if persistent storage is activated.
+     *    true if persistent storage is activated.
      */
     bool is_persistency_activated() const
     {
@@ -2900,9 +2900,9 @@ public:
      *    a pointer to a ProxyForwarder instance. Do not delete it
      *    because Mib will delete the proxy when unregistering.
      * @return
-     *    TRUE if the proxy could be registered successfully, if
+     *    true if the proxy could be registered successfully, if
      *    a proxy with the same contextEngineID and PDU types is
-     *    already registered, FALSE will be returned.
+     *    already registered, false will be returned.
      */
     bool register_proxy(ProxyForwarder*);
 
@@ -3090,8 +3090,8 @@ protected:
      * @param reqind
      *    the index of the sub-request to be modified.
      * @return
-     *    TRUE if the request can be further processed (thus it is
-     *    not necessarily finished yet) or FALSE if the it has to
+     *    true if the request can be further processed (thus it is
+     *    not necessarily finished yet) or false if the it has to
      *    be finished.
      */
     static bool set_exception_vb(Request*, int, int);
@@ -3099,7 +3099,7 @@ protected:
     /**
      * Process a subrequest
      * @param req A pointer to the request
-     * @return FALSE if an error occurred and the whole request finished
+     * @return false if an error occurred and the whole request finished
      */
     virtual bool process_request(Request*, int);
 

@@ -161,7 +161,7 @@ public:
      * Check whether the reciever node contains any instance of a
      * managed object.
      *
-     * @return TRUE if the node currently manages an instance.
+     * @return true if the node currently manages an instance.
      */
     virtual bool is_empty()
     {

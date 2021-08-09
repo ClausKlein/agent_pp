@@ -869,7 +869,7 @@ public:
         if ((list) && (cursor))
         {
             list->content->next(cursor);
-            return (cursor) ? TRUE : FALSE;
+            return (cursor) ? true : false;
         }
         else if (cursor)
             cursor = 0;
@@ -881,7 +881,7 @@ public:
         if ((list) && (cursor))
         {
             list->content->prev(cursor);
-            return (cursor) ? TRUE : FALSE;
+            return (cursor) ? true : false;
         }
         else if (cursor)
             cursor = 0;
@@ -893,7 +893,7 @@ public:
         if (list)
         {
             Pix i = list->content->seek_inexact(oidptr);
-            if (!i) return FALSE;
+            if (!i) return false;
             T* t = 0;
             while ((i) && (t = (T*)list->content->contents(i))
                 && (*t->key() > *oidptr))
@@ -903,10 +903,10 @@ public:
             if ((i) && (t))
             {
                 cursor = i;
-                return TRUE;
+                return true;
             }
         }
-        return FALSE;
+        return false;
     }
 
     OidListCursor() : cursor(0) { list = 0; }

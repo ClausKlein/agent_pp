@@ -142,7 +142,7 @@ public:
      * Check whether the receiver request is finished (all variable
      * bindings have been processed).
      *
-     * @return TRUE if the request is complete, FALSE otherwise.
+     * @return true if the request is complete, false otherwise.
      */
     virtual bool finished() const;
 
@@ -152,7 +152,7 @@ public:
      *
      * @param i - The index (starting from 0) of the variable binding
      *            to check.
-     * @return TRUE if the sub-request is done, FALSE otherwise.
+     * @return true if the sub-request is done, false otherwise.
      */
     virtual bool is_done(int) const;
 
@@ -195,12 +195,12 @@ public:
      *
      * @param i - The index (starting from 0) of the variable binding
      *            to check.
-     * @return TRUE if the sub-request is ready, FALSE otherwise.
+     * @return true if the sub-request is ready, false otherwise.
      */
     virtual bool is_ready(int) const;
 
     /**
-     * Return the index of the first pending (done == FALSE) subrequest.
+     * Return the index of the first pending (done == false) subrequest.
      *
      * @return
      *    the index of the first non ready subrequest or -1 if request
@@ -375,8 +375,8 @@ public:
     /**
      * Add a repetition row to the GETBULK request PDU.
      *
-     * @return TRUE if there was enough room in the response PDU for
-     *         another repetition, FALSE otherwise.
+     * @return true if there was enough room in the response PDU for
+     *         another repetition, false otherwise.
      */
     virtual bool add_rep_row();
 
@@ -387,7 +387,7 @@ public:
      *    the repetition row to be initialized (counted from 1, row 0
      *    is the non-repeated first row)
      * @return
-     *    TRUE if such a row exists, FALSE otherwise.
+     *    true if such a row exists, false otherwise.
      */
     virtual bool init_rep_row(int);
 
@@ -689,7 +689,7 @@ public:
      * validation for SNMP v1/v2c requests (SNMP-COMMUNITY-MIB).
      *
      * @param sourceAddressFiltering
-     *    if TRUE incoming v1/v2c requests will be validated
+     *    if true incoming v1/v2c requests will be validated
      *    (not only) on the transport address including the UDP
      *    port.
      */
@@ -700,7 +700,7 @@ public:
      * community base SNMP versions.
      *
      * @return
-     *    TRUE if source address validation is activated.
+     *    true if source address validation is activated.
      */
     bool get_address_validation() { return sourceAddressValidation; }
 
@@ -803,7 +803,7 @@ public:
      * @param vb
      *    a variable binding containing the result of an sub-request.
      * @return
-     *    TRUE if request is ready to answer, FALSE otherwise.
+     *    true if request is ready to answer, false otherwise.
      */
     virtual bool done(uint32_t, int, const Vbx&);
 
@@ -876,7 +876,7 @@ public:
      * Check whether the request list (queue) is empty or not.
      *
      * @return
-     *    TRUE if the queue is empty.
+     *    true if the queue is empty.
      */
     bool is_empty() { return requests->empty(); }
 
@@ -921,7 +921,7 @@ protected:
      * @param pdutype - A PDU type (e.g., sNMP_PDU_SET,
      *                  sNMP_PDU_GET, etc.)
      * @param community - A v1 or v2c community string.
-     * @return TRUE if the given community is ok, FALSE otherwise.
+     * @return true if the given community is ok, false otherwise.
      */
     virtual bool community_ok(int, const NS_SNMP OctetStr&);
 

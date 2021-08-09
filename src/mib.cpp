@@ -247,8 +247,8 @@ bool MibLeaf::serialize(char*& buf, int& sz)
     vb.set_value(*value);
     return (Vbx::to_asn1(&vb, 1, (unsigned char*&)buf, sz)
                == SNMP_CLASS_SUCCESS)
-        ? TRUE
-        : FALSE;
+        ? true
+        : false;
 }
 
 bool MibLeaf::deserialize(char* buf, int& sz)
@@ -264,15 +264,15 @@ bool MibLeaf::deserialize(char* buf, int& sz)
             free_value();
             init(vbs[0].clone_value(), value_mode);
             delete[] vbs;
-            return TRUE;
+            return true;
         }
         else
         {
             delete[] vbs;
-            return FALSE;
+            return false;
         }
     }
-    return FALSE;
+    return false;
 }
 
 void MibLeaf::get_request(Request* req, int ind)
@@ -532,7 +532,7 @@ int snmpRowStatus::prepare_set_request(Request* req, int& ind)
 bool snmpRowStatus::value_ok(const Vbx& v)
 {
     int l = 0;
-    if (v.get_value(l) != SNMP_CLASS_SUCCESS) return FALSE;
+    if (v.get_value(l) != SNMP_CLASS_SUCCESS) return false;
 
     return ((l == rowCreateAndGo) || (l == rowCreateAndWait)
         || (l == rowDestroy) || (l == rowActive) || (l == rowNotInService));
@@ -541,7 +541,7 @@ bool snmpRowStatus::value_ok(const Vbx& v)
 bool snmpRowStatus::transition_ok(const Vbx& v)
 {
     int l = 0;
-    if (v.get_value(l) != SNMP_CLASS_SUCCESS) return FALSE;
+    if (v.get_value(l) != SNMP_CLASS_SUCCESS) return false;
 
     if (value)
     {
@@ -571,13 +571,13 @@ bool snmpRowStatus::transition_ok(const Vbx& v)
  * Check whether the state of the receiver's row may be changed.
  *
  * @param v - A variable binding that holds the requested new state.
- * @return TRUE if the requested state can be set, otherwise FALSE.
+ * @return true if the requested state can be set, otherwise false.
  */
 
 bool snmpRowStatus::check_state_change(const Vbx& v, Request* req)
 {
     int l = 0;
-    if (!req || v.get_value(l) != SNMP_CLASS_SUCCESS) return FALSE;
+    if (!req || v.get_value(l) != SNMP_CLASS_SUCCESS) return false;
 
     if (value)
     {
@@ -618,9 +618,9 @@ bool snmpRowStatus::check_state_change(const Vbx& v, Request* req)
                 if (transition_ok(v))
                 {
                     my_table->delete_rows.add(my_row);
-                    return TRUE;
+                    return true;
                 }
-                return FALSE;
+                return false;
             }
             else
                 return transition_ok(v);
@@ -862,16 +862,16 @@ snmpRowStatus* MibTableRow::add(snmpRowStatus* l)
  * Remove the object at a specified column from the receiver's row.
  *
  * @param i - The index (starting from 0) of the column to be removed.
- * @return TRUE if a such a column existed and has been removed,
- *         FALSE otherwise.
+ * @return true if a such a column existed and has been removed,
+ *         false otherwise.
  */
 
 bool MibTableRow::remove(int i)
 {
     MibLeaf* ptr = row.getNth(i);
-    if (!ptr) return FALSE;
+    if (!ptr) return false;
     delete row.remove(ptr);
-    return TRUE;
+    return true;
 }
 
 void MibTableRow::replace_element(unsigned int i, MibLeaf* l)
@@ -883,7 +883,7 @@ void MibTableRow::replace_element(unsigned int i, MibLeaf* l)
  * Operator <
  *
  * @param other - The MibTableRow the receiver is compared with.
- * @return TRUE if the receiver is less than the comparate, FALSE otherwise.
+ * @return true if the receiver is less than the comparate, false otherwise.
  */
 
 int MibTableRow::operator<(const MibTableRow& other)
@@ -895,7 +895,7 @@ int MibTableRow::operator<(const MibTableRow& other)
  * Operator >
  *
  * @param other - The MibTableRow the receiver is compared with.
- * @return TRUE if the receiver is greater than the comparate, FALSE otherwise.
+ * @return true if the receiver is greater than the comparate, false otherwise.
  */
 
 int MibTableRow::operator>(const MibTableRow& other)
@@ -907,7 +907,7 @@ int MibTableRow::operator>(const MibTableRow& other)
  * Operator ==
  *
  * @param other - The MibTableRow the receiver is compared with.
- * @return TRUE if the receiver is equals the comparate, FALSE otherwise.
+ * @return true if the receiver is equals the comparate, false otherwise.
  */
 
 int MibTableRow::operator==(const MibTableRow& other)
@@ -1028,8 +1028,8 @@ MibLeaf* MibTableRow::get_element(const Oidx& oid)
  * Return whether the receiver row contains an object with a given oid.
  *
  * @param oid - The object identifier to search for.
- * @return TRUE if the receiver row contains an object with the
- *         given oid, FALSE otherwise.
+ * @return true if the receiver row contains an object with the
+ *         given oid, false otherwise.
  */
 bool MibTableRow::contains(const Oidx& oid) const
 {
@@ -1140,7 +1140,7 @@ MibTable::MibTable(const Oidx& o) : MibEntry(o, NOACCESS)
     index_info* istruc = new index_info[1];
     istruc[0].min      = 0;
     istruc[0].max      = 127;
-    istruc[0].implied  = TRUE;
+    istruc[0].implied  = true;
     init(o, istruc, 1);
     delete[] istruc;
 }
@@ -1159,19 +1159,19 @@ MibTable::MibTable(const Oidx& o, int ilen) : MibEntry(o, NOACCESS)
     if (ilen > 0)
     {
         istruc[0].min = istruc[0].max = ilen;
-        istruc[0].implied             = FALSE;
+        istruc[0].implied             = false;
     }
     else if (ilen == 0)
     {
         istruc[0].min     = 0;
         istruc[0].max     = 127;
-        istruc[0].implied = FALSE;
+        istruc[0].implied = false;
     }
     else
     {
         istruc[0].min     = 0;
         istruc[0].max     = 127;
-        istruc[0].implied = TRUE;
+        istruc[0].implied = true;
     }
     init(o, istruc, 1);
     delete[] istruc;
@@ -1185,7 +1185,7 @@ MibTable::MibTable(const Oidx& o, int ilen) : MibEntry(o, NOACCESS)
  * @param o - The object identifier of the table, which has to be
  *            the oid of the the SMI table entry object (table.1).
  * @param ilen - The length of the index measured in subidentifiers.
- * @param a - If TRUE the automatic index object initialization is
+ * @param a - If true the automatic index object initialization is
  *            activated.
  */
 MibTable::MibTable(const Oidx& o, int ilen, bool a) : MibEntry(o, NOACCESS)
@@ -1195,19 +1195,19 @@ MibTable::MibTable(const Oidx& o, int ilen, bool a) : MibEntry(o, NOACCESS)
     if (ilen > 0)
     {
         istruc[0].min = istruc[0].max = ilen;
-        istruc[0].implied             = FALSE;
+        istruc[0].implied             = false;
     }
     else if (ilen == 0)
     {
         istruc[0].min     = 0;
         istruc[0].max     = 127;
-        istruc[0].implied = FALSE;
+        istruc[0].implied = false;
     }
     else
     {
         istruc[0].min     = 0;
         istruc[0].max     = 127;
-        istruc[0].implied = TRUE;
+        istruc[0].implied = true;
     }
     init(o, istruc, 1);
     delete[] istruc;
@@ -1278,7 +1278,7 @@ bool MibTable::serialize(char*& buf, int& sz)
             delete[] b;
             stream += add;
         }
-        if (status != SNMP_CLASS_SUCCESS) return FALSE;
+        if (status != SNMP_CLASS_SUCCESS) return false;
     }
     int size           = stream.len();
     buf                = new char[size + 10];
@@ -1287,7 +1287,7 @@ bool MibTable::serialize(char*& buf, int& sz)
         (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR), size);
     memcpy(cp, stream.data(), size);
     sz = ((size + 10) - len) + stream.len();
-    return TRUE;
+    return true;
 }
 
 bool MibTable::deserialize(char* buf, int& sz)
@@ -1307,7 +1307,7 @@ bool MibTable::deserialize(char* buf, int& sz)
         LOG(key()->get_printable());
         LOG_END;
         sz = 0;
-        return FALSE;
+        return false;
     }
     if (type != (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR))
     {
@@ -1316,7 +1316,7 @@ bool MibTable::deserialize(char* buf, int& sz)
         LOG(key()->get_printable());
         LOG_END;
         sz = 0;
-        return FALSE;
+        return false;
     }
     while (size > 0)
     {
@@ -1339,7 +1339,7 @@ bool MibTable::deserialize(char* buf, int& sz)
             LOG_END;
             sz = 0;
             if (vbs) delete[] vbs;
-            return FALSE;
+            return false;
         }
 
         Oidx ind(index(vbs[0].get_oid()));
@@ -1364,7 +1364,7 @@ bool MibTable::deserialize(char* buf, int& sz)
         delete[] vbs;
     }
     sz -= sz - size;
-    return TRUE;
+    return true;
 }
 
 int MibTable::set_value(Request* req, int reqind)
@@ -1440,7 +1440,7 @@ int MibTable::set_value(Request* req, int reqind)
         int          rowStatusReq = -1;
         // for new rows collect all sets for the row and commit
         // them before the row_status is set
-        bool ok = TRUE;
+        bool ok = true;
         for (int i = 0; i < req->subrequests(); i++)
         {
 
@@ -1458,7 +1458,7 @@ int MibTable::set_value(Request* req, int reqind)
                     r->get_nth(r->index_of(id))->commit_set_request(req, i);
                 if (status != SNMP_ERROR_SUCCESS)
                 {
-                    ok = FALSE;
+                    ok = false;
                     break;
                 }
             }
@@ -1853,28 +1853,28 @@ bool MibTable::is_index_valid(const Oidx& ind) const
     {
         if (index_struc[i].implied)
         {
-            if (i + 1 != index_len) return FALSE;
+            if (i + 1 != index_len) return false;
             if (l < o.len())
             {
                 if ((index_struc[i].type == sNMP_SYNTAX_OCTETS)
                     || (index_struc[i].type == sNMP_SYNTAX_IPADDR))
                 {
-                    if (!check_index(o, l, o.len())) return FALSE;
+                    if (!check_index(o, l, o.len())) return false;
                 }
-                return TRUE;
+                return true;
             }
-            return FALSE;
+            return false;
         }
         else if ((!index_struc[i].implied)
             && (index_struc[i].min != index_struc[i].max))
         {
-            if (o.len() < o[l] + 1) return FALSE;
+            if (o.len() < o[l] + 1) return false;
             if ((o[l] < index_struc[i].min) || (o[l] > index_struc[i].max))
-                return FALSE;
+                return false;
             if ((index_struc[i].type == sNMP_SYNTAX_OCTETS)
                 || (index_struc[i].type == sNMP_SYNTAX_IPADDR))
             {
-                if (!check_index(o, l, l + o[l] + 1)) return FALSE;
+                if (!check_index(o, l, l + o[l] + 1)) return false;
             }
             l += o[l] + 1;
         }
@@ -1883,7 +1883,7 @@ bool MibTable::is_index_valid(const Oidx& ind) const
             if ((index_struc[i].type == sNMP_SYNTAX_OCTETS)
                 || (index_struc[i].type == sNMP_SYNTAX_IPADDR))
             {
-                if (!check_index(o, l, l + index_struc[i].max)) return FALSE;
+                if (!check_index(o, l, l + index_struc[i].max)) return false;
             }
             // min == max
             l += index_struc[i].max;
@@ -1895,15 +1895,15 @@ bool MibTable::is_index_valid(const Oidx& ind) const
 bool MibTable::check_index(Oidx& o, uint32_t b, uint32_t e) const
 {
     for (uint32_t j = b; ((j < o.len()) && (j < e)); j++)
-        if (o[j] > 255) return FALSE;
-    return TRUE;
+        if (o[j] > 255) return false;
+    return true;
 }
 
 /**
  * Check if an object of a given oid could be created.
  *
  * @param o - The oid to be checked.
- * @return TRUE if an object of the given oid could be created.
+ * @return true if an object of the given oid could be created.
  */
 bool MibTable::could_ever_be_managed(const Oidx& o, int& result)
 {
@@ -1915,9 +1915,9 @@ bool MibTable::could_ever_be_managed(const Oidx& o, int& result)
             result = SNMP_ERROR_NOT_WRITEABLE;
         else
             result = SNMP_ERROR_NO_CREATION;
-        return FALSE;
+        return false;
     }
-    return TRUE;
+    return true;
 }
 
 /**
@@ -1927,9 +1927,9 @@ bool MibTable::could_ever_be_managed(const Oidx& o, int& result)
  * @param pvbs - A pointer to an array of Vbx objects containing
  *               the values and oids of the columns of a row to check.
  * @param sz - The size of the array.
- * @return TRUE if the specified row is ready to set for service.
+ * @return true if the specified row is ready to set for service.
  */
-bool MibTable::ready_for_service(Vbx* pvbs, int sz) { return TRUE; }
+bool MibTable::ready_for_service(Vbx* pvbs, int sz) { return true; }
 
 /**
  * Check whether the specified row is ready to set in service.
@@ -1946,7 +1946,7 @@ bool MibTable::ready_for_service(Vbx* pvbs, int sz) { return TRUE; }
  *    a pointer to the original row. If this is a new row,
  *    it is pointing to a MibTableRow that is filled with the
  *    new values, but is not inserted into the table.
- * @return TRUE if the specified row is ready to set for service.
+ * @return true if the specified row is ready to set for service.
  */
 bool MibTable::ready(Vbx* pvbs, int sz, MibTableRow* row)
 {
@@ -1973,7 +1973,7 @@ bool MibTable::ready(Vbx* pvbs, int sz, MibTableRow* row)
                 LOG(pvbs[i].get_printable_value());
                 LOG_END;
 
-                return FALSE;
+                return false;
             }
         }
         // check if value was given for non-default col
@@ -1982,7 +1982,7 @@ bool MibTable::ready(Vbx* pvbs, int sz, MibTableRow* row)
             if (!pvbs[i].valid())
             {
                 delete[] required;
-                return FALSE;
+                return false;
             }
             // check for changed value
             /* this check is redundant and error
@@ -1991,7 +1991,7 @@ bool MibTable::ready(Vbx* pvbs, int sz, MibTableRow* row)
             if ((!l->valid()) &&
                 (l->get_value() == pvbs[i])) {
                     delete[] required;
-                    return FALSE;
+                    return false;
             }
             */
         }
@@ -2087,10 +2087,10 @@ void MibTable::get_required_columns(bool* required, Vbx* pvbs)
     {
         if ((cur.get()->get_access() == READCREATE)
             && (!cur.get()->has_default()))
-            required[i] = TRUE;
+            required[i] = true;
         else
         {
-            required[i] = FALSE;
+            required[i] = false;
             if (pvbs) pvbs[i] = cur.get()->get_value();
         }
     }
@@ -2099,10 +2099,10 @@ void MibTable::get_required_columns(bool* required, Vbx* pvbs)
     {
         if ((generator.row[i].get_access() == READCREATE)
             && (!generator.row[i].has_default()))
-            required[i] = TRUE;
+            required[i] = true;
         else
         {
-            required[i] = FALSE;
+            required[i] = false;
             if (pvbs) pvbs[i] = generator.row[i].get_value();
         }
     }
@@ -2111,9 +2111,9 @@ void MibTable::get_required_columns(bool* required, Vbx* pvbs)
 
 int MibTable::check_creation(Request* req, int& ind)
 {
-    bool ok     = FALSE;
-    bool wait   = FALSE;
-    bool ignore = FALSE;
+    bool ok     = false;
+    bool wait   = false;
+    bool ignore = false;
 
     int rowsize = generator.size();
 
@@ -2121,8 +2121,8 @@ int MibTable::check_creation(Request* req, int& ind)
     bool* required  = new bool[rowsize];
     Vbx*  pvbs      = new Vbx[rowsize];
 
-    memset(fulfilled, FALSE, sizeof(bool) * rowsize);
-    memset(required, FALSE, sizeof(bool) * rowsize);
+    memset(fulfilled, false, sizeof(bool) * rowsize);
+    memset(required, false, sizeof(bool) * rowsize);
 
     get_required_columns(required, pvbs);
 
@@ -2160,14 +2160,14 @@ int MibTable::check_creation(Request* req, int& ind)
                 delete[] required;
                 delete[] pvbs;
                 return SNMP_ERROR_INCONSIST_VAL;
-            case rowCreateAndGo: ok = TRUE; break;
+            case rowCreateAndGo: ok = true; break;
             case rowCreateAndWait:
-                ok   = TRUE;
-                wait = TRUE;
+                ok   = true;
+                wait = true;
                 break;
             case rowDestroy:
-                ok     = TRUE;
-                ignore = TRUE;
+                ok     = true;
+                ignore = true;
                 break;
             default:
                 delete[] fulfilled;
@@ -2223,7 +2223,7 @@ int MibTable::check_creation(Request* req, int& ind)
             if (ignore) // ignore destroying of non existent row
                 req->finish(i);
             col            = generator.index_of(gen);
-            fulfilled[col] = TRUE;
+            fulfilled[col] = true;
             pvbs[col]      = req->get_value(i);
         }
     }
@@ -2684,7 +2684,7 @@ bool MibConfigBER::save(MibContext* context, const NS_SNMP OctetStr& path)
     LOG(path.get_printable());
     LOG_END;
     context->save_to(path);
-    return TRUE;
+    return true;
 }
 
 bool MibConfigBER::load(MibContext* context, const NS_SNMP OctetStr& path)
@@ -2696,7 +2696,7 @@ bool MibConfigBER::load(MibContext* context, const NS_SNMP OctetStr& path)
     LOG(path.get_printable());
     LOG_END;
     context->load_from(path);
-    return TRUE;
+    return true;
 }
 
 /*--------------------------- class Mib -----------------------------*/
@@ -2867,7 +2867,7 @@ void Mib::remove_context(const OctetStr& context)
 
 bool Mib::remove(const Oidx& oid)
 {
-    bool removed = TRUE;
+    bool removed = true;
     lock_mib();
     // first look for a group
     if (!defaultContext->remove_group(oid))
@@ -2891,25 +2891,25 @@ bool Mib::remove(const Oidx& oid)
             if (victim)
                 delete victim;
             else
-                removed = FALSE;
+                removed = false;
         }
     }
     else
-        removed = TRUE;
+        removed = true;
     unlock_mib();
     return removed;
 }
 
 bool Mib::remove(const OctetStr& context, const Oidx& oid)
 {
-    bool removed = TRUE;
+    bool removed = true;
     Oidx contextKey(Oidx::from_string(context));
     lock_mib();
     MibContext* c = contexts.find(&contextKey);
     if (!c)
     {
         unlock_mib();
-        return FALSE;
+        return false;
     }
     if (!c->remove_group(oid))
     {
@@ -2931,11 +2931,11 @@ bool Mib::remove(const OctetStr& context, const Oidx& oid)
             if (victim)
                 delete victim;
             else
-                removed = FALSE;
+                removed = false;
         }
     }
     else
-        removed = TRUE;
+        removed = true;
     unlock_mib();
     return removed;
 }
@@ -2977,7 +2977,7 @@ bool Mib::init()
         }
         unlock_mib();
     }
-    return TRUE;
+    return true;
 }
 
 void Mib::save_all()
@@ -2999,7 +2999,7 @@ bool Mib::save(unsigned int format, const OctetStr& path)
     MibConfigFormat* f = configFormats.getNth(format - 1);
     if (f)
     {
-        bool                      ok = TRUE;
+        bool                      ok = true;
         OidListCursor<MibContext> cur;
         lock_mib();
         for (cur.init(&contexts); cur.get(); cur.next())
@@ -3009,7 +3009,7 @@ bool Mib::save(unsigned int format, const OctetStr& path)
         unlock_mib();
         return ok;
     }
-    return FALSE;
+    return false;
 }
 
 MibConfigFormat* Mib::add_config_format(
@@ -3027,7 +3027,7 @@ bool Mib::load(unsigned int format, const NS_SNMP OctetStr& path)
     MibConfigFormat* f = configFormats.getNth(format - 1);
     if (f)
     {
-        bool                      ok = TRUE;
+        bool                      ok = true;
         OidListCursor<MibContext> cur;
         lock_mib();
         for (cur.init(&contexts); cur.get(); cur.next())
@@ -3037,20 +3037,20 @@ bool Mib::load(unsigned int format, const NS_SNMP OctetStr& path)
         unlock_mib();
         return ok;
     }
-    return FALSE;
+    return false;
 }
 
 bool Mib::add_agent_caps(
     const OctetStr& context, const Oidx& sysORID, const OctetStr& sysORDescr)
 {
     MibContext* c = get_context(context);
-    if (!c) return FALSE;
+    if (!c) return false;
     sysOREntry* e = (sysOREntry*)c->get(oidSysOREntry);
-    if ((!e) || (e->type() != AGENTPP_TABLE)) return FALSE;
+    if ((!e) || (e->type() != AGENTPP_TABLE)) return false;
     MibTableRow* r = e->find(sysORID);
     if (!r) { r = e->add_row(e->get_next_avail_index()); }
     e->set_row(r, sysORID, sysORDescr, sysUpTime::get());
-    return TRUE;
+    return true;
 }
 
 void Mib::remove_agent_caps(const OctetStr& context, const Oidx& sysORID)
@@ -3232,10 +3232,10 @@ bool Mib::set_exception_vb(Request* req, int reqind, int err)
     req->finish(reqind, vb);
     if (!req->finished())
     {
-        if (req->version == version1) { return FALSE; }
-        return TRUE;
+        if (req->version == version1) { return false; }
+        return true;
     }
-    return FALSE;
+    return false;
 }
 
 bool Mib::process_request(Request* req, int reqind)
@@ -3282,7 +3282,7 @@ bool Mib::process_request(Request* req, int reqind)
         {
             unlock_mib();
             req->vacmError(reqind, vacmErrorCode);
-            return FALSE;
+            return false;
         }
 #endif
         entry->start_synch();
@@ -3330,7 +3330,7 @@ bool Mib::process_request(Request* req, int reqind)
         {
             unlock_mib();
             req->vacmError(reqind, vacmErrorCode);
-            return FALSE;
+            return false;
         }
 #else
         switch (entry->type())
@@ -3379,7 +3379,7 @@ bool Mib::process_request(Request* req, int reqind)
         break;
     }
     }
-    return TRUE;
+    return true;
 }
 
 /**
@@ -3426,9 +3426,9 @@ bool Mib::register_proxy(ProxyForwarder* proxy)
     if (!proxies.find(proxy->key()))
     {
         proxies.add(proxy);
-        return TRUE;
+        return true;
     }
-    return FALSE;
+    return false;
 }
 
 void Mib::unregister_proxy(
@@ -3936,7 +3936,7 @@ void Mib::process_get_bulk_request(Request* req)
         // finish at last repetition
         if (j == maxrep - 1) req->dec_outstanding();
 
-        bool all_endofview = TRUE;
+        bool all_endofview = true;
 
         int endofNextRow = nonrep + req->get_rep() * (j + 1);
         for (; (id < req->subrequests()) && (id < endofNextRow); id++)
@@ -3959,7 +3959,7 @@ void Mib::process_get_bulk_request(Request* req)
                 lock_mib();
                 Oidx nextOid;
 #ifdef _SNMPv3
-                bool contin        = FALSE;
+                bool contin        = false;
                 int  vacmErrorCode = VACM_otherError;
                 do {
                     nextOid.clear();
@@ -3990,7 +3990,7 @@ void Mib::process_get_bulk_request(Request* req)
                             return;
                         }
 #ifdef _SNMPv3
-                        contin = TRUE;
+                        contin = true;
                         break;
 #else
                     else
@@ -4054,7 +4054,7 @@ void Mib::process_get_bulk_request(Request* req)
                 }
                 }
 #endif
-                all_endofview = FALSE;
+                all_endofview = false;
                 // set oid of request to found object
                 // this can be done because at this point we are sure
                 // that we can answer the request
@@ -4069,7 +4069,7 @@ void Mib::process_get_bulk_request(Request* req)
             {
                 Vbx vb(req->get_value(id));
                 if (vb.get_exception_status() != sNMP_SYNTAX_ENDOFMIBVIEW)
-                    all_endofview = FALSE;
+                    all_endofview = false;
             }
 
             if (id + 1 == endofNextRow)

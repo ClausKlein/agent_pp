@@ -56,7 +56,7 @@ static const char* loggerModuleName = "agent++.snmp_proxy";
 unsigned short port;
 Mib*           mib;
 RequestList*   requestList;
-bool           run = TRUE;
+bool           run = true;
 
 UdpAddress source("127.0.0.1");
 
@@ -80,7 +80,7 @@ static void sig(int signo)
         case SIGINT:
         case SIGQUIT: {
             if (run) printf("User abort\n");
-            run = FALSE;
+            run = false;
         }
         }
     }

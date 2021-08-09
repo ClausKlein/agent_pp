@@ -146,21 +146,21 @@ public:
     MibTableRow* addNewRow(const NS_SNMP OctetStr& engineID,
         const NS_SNMP OctetStr& userName, const NS_SNMP OctetStr& securityName,
         int authProtocol, const NS_SNMP OctetStr& authKey, int privProtocol,
-        const NS_SNMP OctetStr& privKey, const bool add_to_usm = TRUE);
+        const NS_SNMP OctetStr& privKey, const bool add_to_usm = true);
 
     /**
      * Add a user to the table.
      *
      * This function calls the addNewRow() function with security name
      * set to user name (which is recommended). The add_to_usm is only used
-     * internally by agent++ and should be kept to TRUE.
+     * internally by agent++ and should be kept to true.
      *
      * @note This function takes the localized keys as param.
      */
     MibTableRow* addNewRow(const NS_SNMP OctetStr& engineID,
         const NS_SNMP OctetStr& userName, int authProtocol,
         const NS_SNMP OctetStr& authKey, int privProtocol,
-        const NS_SNMP OctetStr& privKey, const bool add_to_usm = TRUE)
+        const NS_SNMP OctetStr& privKey, const bool add_to_usm = true)
     {
         return addNewRow(engineID, userName, userName, authProtocol, authKey,
             privProtocol, privKey, add_to_usm);

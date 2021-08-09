@@ -62,7 +62,7 @@ static const char* loggerModuleName = "agent++.multi.agent";
 // globals:
 const int MAX_NUMBER_OF_AGENTS = 10;
 
-bool go = TRUE;
+bool go = true;
 
 unsigned short port[MAX_NUMBER_OF_AGENTS];
 #ifdef _SNMPv3
@@ -90,7 +90,7 @@ static void sig(int signo)
         case SIGINT: {
             if (go)
             {
-                go = FALSE;
+                go = false;
                 printf("User abort\n");
             }
         }
@@ -492,7 +492,7 @@ void SnmpAgent::run()
     {
         OctetStr     co("public");
         MibTableRow* row =
-            communityEntry->add_row(Oidx::from_string(co, FALSE));
+            communityEntry->add_row(Oidx::from_string(co, false));
         OctetStr tag("v1v2cPermittedManagers");
         communityEntry->set_row(row, co, co,
             reqList->get_v3mp()->get_local_engine_id(), "", tag, 3, 1);
@@ -563,7 +563,7 @@ int main(int argc, char* argv[])
     init_signals();
 
     ThreadPool agentPool(num_agents);
-    agentPool.set_one_time_execution(TRUE);
+    agentPool.set_one_time_execution(true);
 
     // NOTE: error C2131: expression did not evaluate to a constant! CK
     // XXX std::vector<SnmpAgent *, num_agents> agents;

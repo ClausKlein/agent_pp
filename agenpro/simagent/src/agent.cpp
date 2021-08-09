@@ -52,7 +52,7 @@ static const char* loggerModuleName = "agenpro.simagent";
 unsigned short port;
 Mib*           mib;
 RequestList*   reqList;
-bool           run = TRUE;
+bool           run = true;
 
 #define VERSION  AGENTPP_VERSION
 #define RELEASE  AGENTPP_RELEASE
@@ -139,7 +139,7 @@ static void sig(int signo)
             if (run)
             {
                 printf("User abort\n");
-                run = FALSE;
+                run = false;
             }
         }
         }

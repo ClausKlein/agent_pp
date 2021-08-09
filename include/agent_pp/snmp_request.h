@@ -57,7 +57,7 @@ public:
     static int process(int, const NS_SNMP UdpAddress&, Vbx*, int& sz, Vbx*,
         int&, const NS_SNMP OctetStr&, const int = 0, const int = 0);
     static int process_trap(NS_SNMP SnmpTarget&, Vbx*, int sz, const Oidx&,
-        const Oidx&, bool = FALSE);
+        const Oidx&, bool = false);
 
     static int get(const NS_SNMP UdpAddress&, Vbx*, int sz, int&);
     static int next(const NS_SNMP UdpAddress&, Vbx*, int sz, int&);

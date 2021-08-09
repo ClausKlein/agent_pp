@@ -67,7 +67,7 @@ long AgentTools::file_size(FILE* stream)
 
 bool AgentTools::make_path(const std::string& path)
 {
-    bool result = TRUE;
+    bool result = true;
     int  rc     = mkdir(path.c_str(), 0775);
     if (rc == -1)
     {
@@ -80,13 +80,13 @@ bool AgentTools::make_path(const std::string& path)
             }
             else
             {
-                result = FALSE;
+                result = false;
             }
             break;
         case EEXIST:
             // done
             break;
-        default: result = FALSE; break;
+        default: result = false; break;
         }
     }
     return result;
@@ -100,7 +100,7 @@ bool Timer::in_time()
     time(&now);
 
     if (lifetime > 0) return (now <= timestamp + lifetime);
-    return TRUE;
+    return true;
 }
 
 time_t Timer::due_time()
@@ -118,7 +118,7 @@ bool Timer::in_time(int frac)
     time(&now);
 
     if (lifetime > 0) return (now <= timestamp + lifetime / frac);
-    return TRUE;
+    return true;
 }
 
 #ifdef AGENTPP_NAMESPACE

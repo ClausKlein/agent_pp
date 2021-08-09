@@ -81,12 +81,12 @@ using namespace Snmp_pp;
 #    define oidSnmpUnknownContexts     "1.3.6.1.6.3.12.1.5.0"
 #endif
 
-#ifndef TRUE
-#    define TRUE 1
+#ifndef true
+#    define true 1
 #endif
 
-#ifndef FALSE
-#    define FALSE 0
+#ifndef false
+#    define false 0
 #endif
 
 #define VACM_accessAllowed 0

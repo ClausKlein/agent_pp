@@ -225,7 +225,7 @@ public:
      *
      * @param buf - A pointer to byte stream buffer returned.
      * @param sz - The size of the buffer returned.
-     * @return TRUE if serialization was successful, FALSE otherwise.
+     * @return true if serialization was successful, false otherwise.
      */
     virtual bool serialize(char*&, int&);
 
@@ -238,7 +238,7 @@ public:
      *    the size of the input buffer. On output it contains the
      *    size remaining unread in the input buffer.
      * @return
-     *    TRUE if deserialization was successful, FALSE otherwise.
+     *    true if deserialization was successful, false otherwise.
      */
     virtual bool deserialize(char*, int&);
 
@@ -246,9 +246,9 @@ public:
      * Check whether the receiver node contains any instance of a
      * managed object.
      *
-     * @return TRUE if the node currently manages an instance.
+     * @return true if the node currently manages an instance.
      */
-    virtual bool is_empty() { return FALSE; }
+    virtual bool is_empty() { return false; }
 
     // communication between mib objects
 
@@ -319,7 +319,7 @@ public:
      * Check whether the entry is volatile or not.
      *
      * @return
-     *    TRUE if the entry contains volatile data, FALSE otherwise.
+     *    true if the entry contains volatile data, false otherwise.
      */
     virtual bool is_volatile();
 

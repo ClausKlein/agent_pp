@@ -35,7 +35,7 @@ static const char* loggerModuleName = "agent++.mib_proxy";
 
 //----------------------- MibProxy ------------------------------------
 
-MibProxy::MibProxy() : MibEntry(), translating(FALSE)
+MibProxy::MibProxy() : MibEntry(), translating(false)
 {
     community[READING] = "public";
     community[WRITING] = "public";
@@ -59,7 +59,7 @@ MibProxy::MibProxy(const MibProxy& other)
 }
 
 MibProxy::MibProxy(const Oidx& o, mib_access a, const UdpAddress& src)
-    : MibEntry(o, a), source(src), translating(FALSE)
+    : MibEntry(o, a), source(src), translating(false)
 {
     community[READING] = "public";
     community[WRITING] = "public";
@@ -69,7 +69,7 @@ MibProxy::MibProxy(const Oidx& o, mib_access a, const UdpAddress& src)
 
 MibProxy::MibProxy(
     const Oidx& o, mib_access a, const Oidx& trans, const UdpAddress& src)
-    : MibEntry(o, a), source(src), translation(trans), translating(TRUE)
+    : MibEntry(o, a), source(src), translation(trans), translating(true)
 {
     community[READING] = "public";
     community[WRITING] = "public";
@@ -323,7 +323,7 @@ OidxPtr MibProxyV3::max_key() { return &range; }
 
 OidList<MibTableRow>* MibProxyV3::get_matches(Request* req)
 {
-    List<MibTableRow>*      list    = myProxyInfo->get_rows_cloned(TRUE);
+    List<MibTableRow>*      list    = myProxyInfo->get_rows_cloned(true);
     OidList<MibTableRow>*   matches = new OidList<MibTableRow>;
     ListCursor<MibTableRow> cur;
     for (cur.init(list); cur.get(); cur.next())
@@ -387,7 +387,7 @@ bool MibProxyV3::match_target_params(Request* req, const OctetStr& paramsIn)
 {
     snmpTargetParamsEntry::instance->start_synch();
     MibTableRow* paramsRow = snmpTargetParamsEntry::instance->find_index(
-        Oidx::from_string(paramsIn, FALSE));
+        Oidx::from_string(paramsIn, false));
 
     if ((!paramsRow) || (paramsRow->get_row_status()->get() != rowActive))
     {
@@ -399,7 +399,7 @@ bool MibProxyV3::match_target_params(Request* req, const OctetStr& paramsIn)
         LOG(OctetStr(paramsIn).get_printable());
         LOG((paramsRow) ? "no active row found" : "missing row");
         LOG_END;
-        return FALSE;
+        return false;
     }
 
     int      secModel, secLevel, mpModel;
@@ -424,11 +424,11 @@ bool MibProxyV3::match_target_params(Request* req, const OctetStr& paramsIn)
     LOG_END;
 
     if ((req->get_address()->get_version() == version1) && (mpModel != 0))
-        return FALSE;
+        return false;
     if ((req->get_address()->get_version() == version2c) && (mpModel != 1))
-        return FALSE;
+        return false;
     if ((req->get_address()->get_version() == version3) && (mpModel != 3))
-        return FALSE;
+        return false;
 
     OctetStr sname;
     req->get_address()->get_security_name(sname);
@@ -439,12 +439,12 @@ bool MibProxyV3::match_target_params(Request* req, const OctetStr& paramsIn)
     LOG(secName.get_printable());
     LOG_END;
 
-    if (sname != secName) return FALSE;
+    if (sname != secName) return false;
     if ((secModel != 0)
         && (req->get_address()->get_security_model() != secModel))
-        return FALSE;
-    if (req->get_pdu()->get_security_level() != secLevel) return FALSE;
-    return TRUE;
+        return false;
+    if (req->get_pdu()->get_security_level() != secLevel) return false;
+    return true;
 }
 
 void MibProxyV3::get_request(Request* req, int reqind)

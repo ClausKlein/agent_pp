@@ -83,7 +83,7 @@ void ProxyForwarder::check_references(Mib* mib)
 
 OidList<MibTableRow>* ProxyForwarder::get_matches(Request* req)
 {
-    List<MibTableRow>*      list    = _snmpProxyEntry->get_rows_cloned(TRUE);
+    List<MibTableRow>*      list    = _snmpProxyEntry->get_rows_cloned(true);
     OidList<MibTableRow>*   matches = new OidList<MibTableRow>;
     ListCursor<MibTableRow> cur;
     for (cur.init(list); cur.get(); cur.next())
@@ -148,7 +148,7 @@ bool ProxyForwarder::match_target_params(
 {
     _snmpTargetParamsEntry->start_synch();
     MibTableRow* paramsRow =
-        _snmpTargetParamsEntry->find_index(Oidx::from_string(paramsIn, FALSE));
+        _snmpTargetParamsEntry->find_index(Oidx::from_string(paramsIn, false));
 
     if ((!paramsRow) || (paramsRow->get_row_status()->get() != rowActive))
     {
@@ -160,7 +160,7 @@ bool ProxyForwarder::match_target_params(
         LOG(OctetStr(paramsIn).get_printable());
         LOG((paramsRow) ? "no active row found" : "missing row");
         LOG_END;
-        return FALSE;
+        return false;
     }
 
     int      secModel = 0, secLevel = 0, mpModel = 0;
@@ -185,11 +185,11 @@ bool ProxyForwarder::match_target_params(
     LOG_END;
 
     if ((req->get_address()->get_version() == version1) && (mpModel != 0))
-        return FALSE;
+        return false;
     if ((req->get_address()->get_version() == version2c) && (mpModel != 1))
-        return FALSE;
+        return false;
     if ((req->get_address()->get_version() == version3) && (mpModel != 3))
-        return FALSE;
+        return false;
 
     OctetStr sname;
     req->get_address()->get_security_name(sname);
@@ -200,20 +200,20 @@ bool ProxyForwarder::match_target_params(
     LOG(secName.get_printable());
     LOG_END;
 
-    if (sname != secName) return FALSE;
+    if (sname != secName) return false;
     if ((secModel != 0)
         && (req->get_address()->get_security_model() != secModel))
-        return FALSE;
-    if (req->get_pdu()->get_security_level() != secLevel) return FALSE;
-    return TRUE;
+        return false;
+    if (req->get_pdu()->get_security_level() != secLevel) return false;
+    return true;
 }
 
 bool ProxyForwarder::process_multiple(Pdux& pdu, Request* req)
 {
     OidList<MibTableRow>* matches = get_matches(req);
-    if (!matches) return FALSE;
+    if (!matches) return false;
 
-    bool                       OK = FALSE;
+    bool                       OK = false;
     OidListCursor<MibTableRow> cur;
     for (cur.init(matches); cur.get(); cur.next())
     {
@@ -274,7 +274,7 @@ bool ProxyForwarder::process_multiple(Pdux& pdu, Request* req)
             delete target;
             if (status != SNMP_ERROR_SUCCESS) { break; }
 
-            OK = TRUE; // TODO: may not right! CK
+            OK = true; // TODO: may not right! CK
         }
         delete targets;
     }
@@ -285,7 +285,7 @@ bool ProxyForwarder::process_multiple(Pdux& pdu, Request* req)
 bool ProxyForwarder::process_single(Pdux& pdu, Request* req)
 {
     OidList<MibTableRow>* matches = get_matches(req);
-    if (!matches) return FALSE;
+    if (!matches) return false;
 
     MibTableRow* match = matches->first();
     if (!match)
@@ -294,7 +294,7 @@ bool ProxyForwarder::process_single(Pdux& pdu, Request* req)
         LOG("ProxyForwarder: no matching proxy entry");
         LOG_END;
         delete matches;
-        return FALSE;
+        return false;
     }
     OctetStr out;
     match->get_nth(4)->get_value(out);
@@ -308,7 +308,7 @@ bool ProxyForwarder::process_single(Pdux& pdu, Request* req)
         LOG("ProxyForwarder: no matching single out address entry");
         LOG_END;
         delete matches;
-        return FALSE;
+        return false;
     }
     pdu.set_security_level(secLevel);
 
@@ -345,7 +345,7 @@ bool ProxyForwarder::process_single(Pdux& pdu, Request* req)
 
     delete matches;
 
-    return TRUE;
+    return true;
 }
 
 bool ProxyForwarder::process_request(Request* req)

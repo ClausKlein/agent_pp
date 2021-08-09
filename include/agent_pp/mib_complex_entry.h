@@ -174,9 +174,9 @@ public:
      *
      * @param buf - A pointer to byte stream buffer returned.
      * @param sz - The size of the buffer returned.
-     * @return TRUE if serialization was successful, FALSE otherwise.
+     * @return true if serialization was successful, false otherwise.
      */
-    bool serialize(char*&, int&) override { return FALSE; }
+    bool serialize(char*&, int&) override { return false; }
 
     /**
      * Read the value of the receiver from a byte stream.
@@ -187,17 +187,17 @@ public:
      *    the size of the input buffer. On output it contains the
      *    size remaining unread in the input buffer.
      * @return
-     *    TRUE if deserialization was successful, FALSE otherwise.
+     *    true if deserialization was successful, false otherwise.
      */
-    bool deserialize(char*, int&) override { return FALSE; }
+    bool deserialize(char*, int&) override { return false; }
 
     /**
      * Check whether the receiver node contains any instance of a
      * managed object.
      *
-     * @return TRUE if the node currently manages an instance.
+     * @return true if the node currently manages an instance.
      */
-    bool is_empty() override { return FALSE; }
+    bool is_empty() override { return false; }
 
     // communication between mib objects
 
@@ -320,7 +320,7 @@ public:
 
     /**
      * Get the entry instance with the given OID. If suffixOnly
-     * is FALSE (the default), the specified OID must be the full
+     * is false (the default), the specified OID must be the full
      * OID of the entry, including the OID prefix from the
      * MibStaticTable. (NOT SYBCHRONIZED)
      *
@@ -334,7 +334,7 @@ public:
      *    the entry with the given OID or 0 if such an object does
      *    not exist.
      */
-    virtual MibStaticEntry* get(const Oidx&, bool suffixOnly = FALSE);
+    virtual MibStaticEntry* get(const Oidx&, bool suffixOnly = false);
 
     /**
      * Return the successor of a given object identifier within the

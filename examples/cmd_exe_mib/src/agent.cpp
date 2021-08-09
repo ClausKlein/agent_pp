@@ -51,7 +51,7 @@ static const char* loggerModuleName = "agent++.cmd_exe_mib";
 unsigned short port;
 Mib*           mib;
 RequestList*   reqList;
-bool           run = TRUE;
+bool           run = true;
 
 static void sig(int signo)
 {
@@ -69,7 +69,7 @@ static void sig(int signo)
         }
         case SIGTERM:
         case SIGINT: {
-            run = FALSE;
+            run = false;
             printf("User abort\n");
         }
         }

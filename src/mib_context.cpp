@@ -289,7 +289,7 @@ MibContext::~MibContext() TS_SYNCHRONIZED({
             cur.get()->load_from_file(path.get_printable());
         }
     }
-    return TRUE;
+    return true;
 }
 
 bool MibContext::load_from(const OctetStr& p)
@@ -320,7 +320,7 @@ bool MibContext::load_from(const OctetStr& p)
             }
         }
     }
-    return TRUE;
+    return true;
 }
 
 bool MibContext::save_to(const OctetStr& p)
@@ -337,7 +337,7 @@ bool MibContext::save_to(const OctetStr& p)
             cur.get()->save_to_file(path.get_printable());
         }
     }
-    return TRUE;
+    return true;
 }
 
 OidxPtr MibContext::key() { return &contextKey; }
@@ -472,9 +472,9 @@ bool MibContext::remove_group(const Oidx& oid) TS_SYNCHRONIZED({
             if (v) delete content.remove(v);
         }
         delete groups.remove(victim);
-        return TRUE;
+        return true;
     }
-    return FALSE;
+    return false;
 })
 
     MibGroup* MibContext::find_group_of(const Oidx& oid)

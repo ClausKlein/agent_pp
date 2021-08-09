@@ -77,8 +77,8 @@ public:
      * @param request
      *    a pointer to a Request instance.
      * @return
-     *    TRUE if the request could be proxied successfully (i.e.,
-     *    an appropriate outgoing target could be found), or FALSE
+     *    true if the request could be proxied successfully (i.e.,
+     *    an appropriate outgoing target could be found), or false
      *    otherwise.
      */
     bool process_request(Request*);

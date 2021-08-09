@@ -170,12 +170,12 @@ Synchronized::Synchronized()
 #    else
 #        ifdef WIN32
     // Semaphore initially auto signaled, auto reset mode, unnamed
-    semEvent = CreateEvent(0, FALSE, FALSE, 0);
+    semEvent = CreateEvent(0, false, false, 0);
     // Semaphore initially unowned, unnamed
-    semMutex = CreateMutex(0, FALSE, 0);
+    semMutex = CreateMutex(0, false, 0);
 #        endif
 #    endif
-    isLocked = FALSE;
+    isLocked = false;
 }
 
 Synchronized::~Synchronized()
@@ -208,7 +208,7 @@ Synchronized::~Synchronized()
             && (retries++ < AGENTPP_SYNCHRONIZED_UNLOCK_RETRIES));
     }
 #        endif
-    isLocked = FALSE;
+    isLocked = false;
     if (result)
     {
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 2);
@@ -221,7 +221,7 @@ Synchronized::~Synchronized()
 #        ifdef WIN32
     CloseHandle(semEvent);
     CloseHandle(semMutex);
-    isLocked = FALSE;
+    isLocked = false;
 #        endif
 #    endif
 }
@@ -241,19 +241,19 @@ void Synchronized::wait()
 int Synchronized::cond_timed_wait(const struct timespec* ts)
 {
     int result = 0;
-    isLocked   = FALSE;
+    isLocked   = false;
     if (ts)
         result = pthread_cond_timedwait(&cond, &monitor, ts);
     else
         result = pthread_cond_wait(&cond, &monitor);
-    isLocked = TRUE;
+    isLocked = true;
     return result;
 }
 #    endif
 
 bool Synchronized::wait(long timeout)
 {
-    bool timeoutOccurred = FALSE;
+    bool timeoutOccurred = false;
 #    ifdef POSIX_THREADS
     struct timespec ts;
 #        ifdef HAVE_CLOCK_GETTIME
@@ -272,7 +272,7 @@ bool Synchronized::wait(long timeout)
 #        endif
 
     int err  = 0;
-    isLocked = FALSE;
+    isLocked = false;
     if ((err = cond_timed_wait(&ts)) > 0)
     {
         switch (err)
@@ -282,7 +282,7 @@ bool Synchronized::wait(long timeout)
             LOG("Synchronized: wait with timeout returned (error)");
             LOG(err);
             LOG_END;
-        case ETIMEDOUT: timeoutOccurred = TRUE; break;
+        case ETIMEDOUT: timeoutOccurred = true; break;
         default:
             LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
             LOG("Synchronized: wait with timeout returned (error)");
@@ -293,7 +293,7 @@ bool Synchronized::wait(long timeout)
     }
 #    else
 #        ifdef WIN32
-    isLocked = FALSE;
+    isLocked = false;
     if (!ReleaseMutex(semMutex))
     {
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 2);
@@ -308,7 +308,7 @@ bool Synchronized::wait(long timeout)
         LOG_BEGIN(loggerModuleName, EVENT_LOG | 8);
         LOG("Synchronized: timeout on wait");
         LOG_END;
-        timeoutOccurred = TRUE;
+        timeoutOccurred = true;
         break;
     case WAIT_ABANDONED:
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 2);
@@ -323,7 +323,7 @@ bool Synchronized::wait(long timeout)
     }
 #        endif
 #    endif
-    isLocked = TRUE;
+    isLocked = true;
     return timeoutOccurred;
 }
 
@@ -385,8 +385,8 @@ bool Synchronized::lock()
 #        ifndef AGENTPP_PTHREAD_RECURSIVE
     if (!err)
     {
-        isLocked = TRUE;
-        return TRUE;
+        isLocked = true;
+        return true;
     }
     else if (err == EDEADLK)
     {
@@ -396,7 +396,7 @@ bool Synchronized::lock()
         LOG("Synchronized: recursive locking detected (id)!");
         LOG(id);
         LOG_END;
-        return TRUE;
+        return true;
     }
 #        else
     if (!err)
@@ -423,10 +423,10 @@ bool Synchronized::lock()
         }
         else
         {
-            isLocked = TRUE;
+            isLocked = true;
             // no logging because otherwise deep (virtual endless) recursion
         }
-        return TRUE;
+        return true;
     }
 #        endif
     else
@@ -436,7 +436,7 @@ bool Synchronized::lock()
         LOG(id);
         LOG(err);
         LOG_END;
-        return FALSE;
+        return false;
     }
 #    else
 #        ifdef WIN32
@@ -445,7 +445,7 @@ bool Synchronized::lock()
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
         LOG("Synchronized: lock failed");
         LOG_END;
-        return FALSE;
+        return false;
     }
     if (isLocked)
     {
@@ -458,15 +458,15 @@ bool Synchronized::lock()
             LOG("Synchronized: unlock failed (id)");
             LOG(id);
             LOG_END;
-            return FALSE;
+            return false;
         }
         LOG_BEGIN(loggerModuleName, WARNING_LOG | 5);
         LOG("Synchronized: recursive locking detected (id)!");
         LOG(id);
         LOG_END;
     }
-    isLocked = TRUE;
-    return TRUE;
+    isLocked = true;
+    return true;
 #        endif
 #    endif
 }
@@ -509,8 +509,8 @@ bool Synchronized::lock(long timeout)
     {
 #        endif
 #        ifndef AGENTPP_PTHREAD_RECURSIVE
-        isLocked = TRUE;
-        return TRUE;
+        isLocked = true;
+        return true;
 #        else
         if (isLocked)
         {
@@ -534,10 +534,10 @@ bool Synchronized::lock(long timeout)
         }
         else
         {
-            isLocked = TRUE;
+            isLocked = true;
             // no logging because otherwise deep (virtual endless) recursion
         }
-        return TRUE;
+        return true;
 #        endif
     }
     else
@@ -547,7 +547,7 @@ bool Synchronized::lock(long timeout)
         LOG(id);
         LOG(error);
         LOG_END;
-        return FALSE;
+        return false;
     }
 #    else
 #        ifdef WIN32
@@ -556,7 +556,7 @@ bool Synchronized::lock(long timeout)
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
         LOG("Synchronized: lock failed");
         LOG_END;
-        return FALSE;
+        return false;
     }
     if (isLocked)
     {
@@ -569,15 +569,15 @@ bool Synchronized::lock(long timeout)
             LOG("Synchronized: unlock failed (id)");
             LOG(id);
             LOG_END;
-            return FALSE;
+            return false;
         }
         LOG_BEGIN(loggerModuleName, WARNING_LOG | 5);
         LOG("Synchronized: recursive locking detected (id)!");
         LOG(id);
         LOG_END;
     }
-    isLocked = TRUE;
-    return TRUE;
+    isLocked = true;
+    return true;
 #        endif
 #    endif
 }
@@ -585,7 +585,7 @@ bool Synchronized::lock(long timeout)
 bool Synchronized::unlock()
 {
     bool wasLocked = isLocked;
-    isLocked       = FALSE;
+    isLocked       = false;
 #    ifdef POSIX_THREADS
     int err = pthread_mutex_unlock(&monitor);
     if (err != 0)
@@ -597,7 +597,7 @@ bool Synchronized::unlock()
         LOG(wasLocked);
         LOG_END;
         isLocked = wasLocked;
-        return FALSE;
+        return false;
     }
 #    else
 #        ifdef WIN32
@@ -610,11 +610,11 @@ bool Synchronized::unlock()
         LOG(wasLocked);
         LOG_END;
         isLocked = wasLocked;
-        return FALSE;
+        return false;
     }
 #        endif
 #    endif
-    return TRUE;
+    return true;
 }
 
 Synchronized::TryLockResult Synchronized::trylock()
@@ -624,7 +624,7 @@ Synchronized::TryLockResult Synchronized::trylock()
     int err = pthread_mutex_trylock(&monitor);
     if (!err)
     {
-        isLocked = TRUE;
+        isLocked = true;
         LOG_BEGIN(loggerModuleName, DEBUG_LOG | 8);
         LOG("Synchronized: try lock success (id)(ptr)");
         LOG(id);
@@ -672,7 +672,7 @@ Synchronized::TryLockResult Synchronized::trylock()
         }
         else
         {
-            isLocked = TRUE;
+            isLocked = true;
             LOG_BEGIN(loggerModuleName, DEBUG_LOG | 8);
             LOG("Synchronized: try lock success (id)(ptr)");
             LOG(id);
@@ -715,7 +715,7 @@ Synchronized::TryLockResult Synchronized::trylock()
     }
     else
     {
-        isLocked = TRUE;
+        isLocked = true;
         LOG_BEGIN(loggerModuleName, DEBUG_LOG | 8);
         LOG("Synchronized: try lock success (id)");
         LOG(id);
@@ -1019,7 +1019,7 @@ TaskManager::TaskManager(ThreadPool* tp, int stackSize) : thread(*this)
 {
     threadPool = tp;
     task       = 0;
-    go         = TRUE;
+    go         = true;
     thread.set_stack_size(stackSize);
     thread.start();
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
@@ -1030,7 +1030,7 @@ TaskManager::TaskManager(ThreadPool* tp, int stackSize) : thread(*this)
 TaskManager::~TaskManager()
 {
     lock();
-    go = FALSE;
+    go = false;
     notify();
     unlock();
     thread.join();
@@ -1078,7 +1078,7 @@ bool TaskManager::set_task(Runnable* t)
         LOG_BEGIN(loggerModuleName, DEBUG_LOG | 2);
         LOG("TaskManager: after notify");
         LOG_END;
-        return TRUE;
+        return true;
     }
     else
     {
@@ -1086,7 +1086,7 @@ bool TaskManager::set_task(Runnable* t)
         LOG_BEGIN(loggerModuleName, DEBUG_LOG | 2);
         LOG("TaskManager: got already a task");
         LOG_END;
-        return FALSE;
+        return false;
     }
 }
 
@@ -1133,11 +1133,11 @@ bool ThreadPool::is_idle()
         if (!cur.get()->is_idle())
         {
             unlock();
-            return FALSE;
+            return false;
         }
     }
     unlock();
-    return TRUE;
+    return true;
 }
 
 bool ThreadPool::is_busy()
@@ -1149,11 +1149,11 @@ bool ThreadPool::is_busy()
         if (cur.get()->is_busy())
         {
             unlock();
-            return TRUE;
+            return true;
         }
     }
     unlock();
-    return FALSE;
+    return false;
 }
 
 void ThreadPool::terminate()
@@ -1189,12 +1189,12 @@ void ThreadPool::join()
     joined.clear();
 }
 
-ThreadPool::ThreadPool(int size) : oneTimeExecution(FALSE)
+ThreadPool::ThreadPool(int size) : oneTimeExecution(false)
 {
     for (int i = 0; i < size; i++) { taskList.add(new TaskManager(this)); }
 }
 
-ThreadPool::ThreadPool(int size, int stack_size) : oneTimeExecution(FALSE)
+ThreadPool::ThreadPool(int size, int stack_size) : oneTimeExecution(false)
 {
     stackSize = stack_size;
     for (int i = 0; i < size; i++)
@@ -1219,7 +1219,7 @@ QueuedThreadPool::QueuedThreadPool(int size, int stack_size)
 
 QueuedThreadPool::~QueuedThreadPool()
 {
-    go = FALSE;
+    go = false;
     Thread::lock();
     Thread::notify_all();
     Thread::unlock();
@@ -1272,7 +1272,7 @@ void QueuedThreadPool::execute(Runnable* t)
 
 void QueuedThreadPool::run()
 {
-    go = TRUE;
+    go = true;
     Thread::lock();
     while (go)
     {
@@ -1315,13 +1315,13 @@ LockRequest::~LockRequest() { unlock(); }
 
 LockQueue::LockQueue()
 {
-    go = TRUE;
+    go = true;
     start();
 }
 
 LockQueue::~LockQueue()
 {
-    go = FALSE;
+    go = false;
     lock();
     // wake up queue
     notify();

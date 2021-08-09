@@ -69,7 +69,7 @@ void Pdux::clear()
     pdu_type         = 0;
     notify_timestamp = 0;
 
-    validity = FALSE;
+    validity = false;
 
     // init all instance vars to null and invalid
     for (int z = 0; z < vb_count; z++) delete vbs[z];
@@ -98,12 +98,12 @@ bool Vbx::equal(Vbx* avbs, Vbx* bvbs, int sz)
     for (int i = 0; i < sz; i++)
     {
         if (avbs[i].get_syntax() != bvbs[i].get_syntax())
-            return FALSE;
+            return false;
         else if (strcmp(avbs[i].get_printable_value(),
                      bvbs[i].get_printable_value()))
-            return FALSE;
+            return false;
     }
-    return TRUE;
+    return true;
 }
 
 void Vbx::clear()
@@ -740,7 +740,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             target.set_address(fromaddr);
 
             int status = SNMP_CLASS_SUCCESS;
-            if (snmpmsg.is_v3_message() == TRUE)
+            if (snmpmsg.is_v3_message() == true)
             {
                 status = snmpmsg.unloadv3(pdu, version, engine_id,
                     security_name, security_model, fromaddr, *this);
@@ -819,7 +819,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             if (status != SNMP_CLASS_SUCCESS) return status;
 
             static_assert(SNMP_CLASS_SUCCESS == SNMP_ERROR_SUCCESS);
-            if (snmpmsg.is_v3_message() == TRUE)
+            if (snmpmsg.is_v3_message() == true)
             {
                 status = snmpmsg.unloadv3(pdu, version, engine_id,
                     security_name, security_model, fromaddr, *this);

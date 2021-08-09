@@ -152,7 +152,7 @@ public:
      * @param secLevel
      *    security level to use when sending v3 traps
      * @return
-     *    TRUE if the operation has been successful, FALSE otherwise.
+     *    true if the operation has been successful, false otherwise.
      */
     /**@{ */
     virtual bool add_v1_trap_destination(const NS_SNMP UdpAddress& addr,
@@ -340,10 +340,10 @@ protected:
             : vbs(_vbs), size(_size), id(_id), timestamp(_timestamp),
               enterprise(_enterprise), contextName(_contextName)
         {
-            target = 0;
+            target        = 0;
             securityModel = 0;
             securityLevel = 0;
-            mpModel = 0;
+            mpModel       = 0;
         }
 
         Vbx*             vbs;
@@ -390,9 +390,9 @@ protected:
      * Check notification access for a management target.
      * Call this to validate access before sending the notificaiton.  The
      * NotificationOriginatorParams parameter must have the vbs, size, id,
-     * and contextName parameters filled in.  Upon a TRUE return, the
+     * and contextName parameters filled in.  Upon a true return, the
      * securityName, securityModel, securityLevel, mpModel, and target
-     * parameters will be filled in.  If TRUE is returned, the caller is
+     * parameters will be filled in.  If true is returned, the caller is
      * responsible to delete the target object in the
      * NotificationOriginatorParams object (after sending the notification).
      *
@@ -401,7 +401,7 @@ protected:
      * @param nop
      *    the notification originator parameters
      * @return
-     *    TRUE if access is okay, FALSE otherwise
+     *    true if access is okay, false otherwise
      */
     bool check_access(
         ListCursor<MibTableRow>& cur, NotificationOriginatorParams& nop);

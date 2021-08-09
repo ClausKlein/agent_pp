@@ -60,7 +60,7 @@ static const char* loggerModuleName = "agent++.proxy_forwarder";
 unsigned short port;
 Mib*           mib;
 RequestList*   reqList;
-bool           run = TRUE;
+bool           run = true;
 
 static void sig(int signo)
 {
@@ -79,7 +79,7 @@ static void sig(int signo)
         case SIGINT: {
             if (run)
             {
-                run = FALSE;
+                run = false;
                 printf("User abort\n");
             }
         }

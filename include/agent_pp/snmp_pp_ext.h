@@ -223,23 +223,23 @@ public:
      * Check if the receiver is in the subtree of a given oid.
      *
      * @param o - An Oidx object identifier.
-     * @return TRUE if the receiver is in the subtree of o,
-     *         FALSE otherwise.
+     * @return true if the receiver is in the subtree of o,
+     *         false otherwise.
      */
     bool in_subtree_of(const Oidx& o) const
     {
-        if (len() <= o.len()) return FALSE;
+        if (len() <= o.len()) return false;
         for (unsigned int i = 0; i < o.len(); i++)
-            if ((*this)[i] != o[i]) return FALSE;
-        return TRUE;
+            if ((*this)[i] != o[i]) return false;
+        return true;
     }
 
     /**
      * Check if the receiver is root of a given oid.
      *
      * @param o - An Oidx object identifier.
-     * @return TRUE if the receiver is root of o,
-     *         FALSE otherwise.
+     * @return true if the receiver is root of o,
+     *         false otherwise.
      */
     bool is_root_of(const Oidx& o) const
     {
@@ -285,7 +285,7 @@ public:
      * between 0 and 255.
      *
      * @param withoutLength
-     *    if TRUE there will be no preceeding subid containing
+     *    if true there will be no preceeding subid containing
      *    the length of the string
      * @return An OctetStr.
      */
@@ -307,12 +307,12 @@ public:
      * following subidentifier represents one character.
      *
      * @param withExplicitLength
-     *    if FALSE there will be no preceeding subid containing
+     *    if false there will be no preceeding subid containing
      *    the length of the string will be generated.
      * @return An Oidx.
      */
     static Oidx from_string(
-        const NS_SNMP OctetStr& str, bool withLength = TRUE)
+        const NS_SNMP OctetStr& str, bool withLength = true)
     {
         Oidx oid;
         if (withLength) oid += (long)str.len();
@@ -447,7 +447,7 @@ public:
      * @param n
      *    the number of elements in the above arrays.
      * @return
-     *    TRUE if the oids and the values of both variable binding
+     *    true if the oids and the values of both variable binding
      *    arrays are equal.
      */
     static bool equal(Vbx*, Vbx*, int);
@@ -553,7 +553,7 @@ public:
      * @param other
      *    another OidxRange instance
      * @return
-     *    TRUE if lower and upper bounds of both OID ranges are equal
+     *    true if lower and upper bounds of both OID ranges are equal
      */
     virtual bool operator==(const OidxRange&) const;
     /**
@@ -562,7 +562,7 @@ public:
      * @param other
      *    another OidxRange instance
      * @return
-     *    TRUE if the upper bound of the receiver is less or equal to the
+     *    true if the upper bound of the receiver is less or equal to the
      *    lower bound of other
      */
     virtual bool operator<(const OidxRange&) const;
@@ -572,7 +572,7 @@ public:
      * @param other
      *    another OidxRange instance
      * @return
-     *    TRUE if the lower bound of the receiver is greater or equal to
+     *    true if the lower bound of the receiver is greater or equal to
      *    the upper bound of other
      */
     virtual bool operator>(const OidxRange&) const;
@@ -583,7 +583,7 @@ public:
      * @param oid
      *    an object identifier
      * @return
-     *    TRUE if oid is greater or equal to the receiver's lower
+     *    true if oid is greater or equal to the receiver's lower
      *    bound and less or equal to its upper bound.
      */
     virtual bool includes(const Oidx&) const;
@@ -594,7 +594,7 @@ public:
      * @param oid
      *    an object identifier
      * @return
-     *    TRUE if oid is greater or equal the receiver's lower
+     *    true if oid is greater or equal the receiver's lower
      *    bound and less than its upper bound.
      */
     virtual bool includes_excl(const Oidx&) const;
@@ -605,9 +605,9 @@ public:
      * @param range
      *    a OidxRange instance
      * @return
-     *    TRUE if the lower bound of range is greater or equal the
+     *    true if the lower bound of range is greater or equal the
      *    receiver's lower bound and if the upper bound of range is
-     *    less or equal the upper bound of the receiver, FALSE otherwise
+     *    less or equal the upper bound of the receiver, false otherwise
      */
     virtual bool covers(const OidxRange&) const;
 
@@ -617,7 +617,7 @@ public:
      * @param range
      *    a OidxRange instance
      * @return
-     *    TRUE if at least one oid is part of both ranges, FALSE otherwise
+     *    true if at least one oid is part of both ranges, false otherwise
      */
     virtual bool overlaps(const OidxRange&) const;
 

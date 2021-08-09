@@ -77,7 +77,7 @@ public:
     static unsigned int get();
     static time_t       get_currentTime();
 
-    bool is_volatile() override { return TRUE; }
+    bool is_volatile() override { return true; }
 #ifdef HAVE_CLOCK_GETTIME
     static struct timespec start;
 #else
@@ -136,7 +136,7 @@ public:
 
     static sysORLastChange* instance;
 
-    bool is_volatile() override { return TRUE; }
+    bool is_volatile() override { return true; }
     void update();
 };
 
@@ -167,7 +167,7 @@ public:
      */
     virtual MibTableRow* find(const Oidx&);
 
-    bool is_volatile() override { return TRUE; }
+    bool is_volatile() override { return true; }
 };
 
 /**********************************************************************

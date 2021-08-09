@@ -58,7 +58,7 @@ static const char* loggerModuleName = "agent++.atm_mib.agent";
 unsigned short port;
 Mib*           mib;
 RequestList*   reqList;
-bool           run = TRUE;
+bool           run = true;
 #ifdef _SNMPv3
 const table_size_def table_sizes[4] = { table_size_def(oidUsmUserEntry, 30),
     table_size_def(oidVacmSecurityToGroupEntry, 30),
@@ -84,7 +84,7 @@ static void sig(int signo)
         case SIGINT: {
             if (run)
             {
-                run = FALSE;
+                run = false;
                 printf("User abort\n");
             }
         }
@@ -464,7 +464,7 @@ int main(int argc, char* argv[])
     // add SNMPv1/v2c community to v3 security name mapping
     OctetStr     co("public");
     MibTableRow* row =
-        snmpCommunityEntry::instance->add_row(Oidx::from_string(co, FALSE));
+        snmpCommunityEntry::instance->add_row(Oidx::from_string(co, false));
     OctetStr tag("v1v2cPermittedManagers");
     snmpCommunityEntry::instance->set_row(row, co, co,
         reqList->get_v3mp()->get_local_engine_id(), "", tag, 3, 1);

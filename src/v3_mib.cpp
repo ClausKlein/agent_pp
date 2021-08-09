@@ -39,8 +39,8 @@ namespace Agentpp
 #    ifndef _NO_LOGGING
 static const char* loggerModuleName = "agent++.v3_mib";
 #    endif
-const index_info   iUsmUserTable[2] = { { sNMP_SYNTAX_OCTETS, FALSE, 5, 32 },
-    { sNMP_SYNTAX_OCTETS, FALSE, 1, 32 } };
+const index_info   iUsmUserTable[2] = { { sNMP_SYNTAX_OCTETS, false, 5, 32 },
+    { sNMP_SYNTAX_OCTETS, false, 1, 32 } };
 const unsigned int lUsmUserTable    = 2;
 
 /**********************************************************************
@@ -290,7 +290,7 @@ void usm_callback(const OctetStr& engine_id, const OctetStr& usm_user_name,
     if (usm_user_table_ptr)
         usm_user_table_ptr->addNewRow(engine_id, usm_user_name,
             usm_user_security_name, auth_protocol, auth_key, priv_protocol,
-            priv_key, FALSE);
+            priv_key, false);
 }
 
 const Oidx UsmUserTable::auth_base = oidUsmAuthProtocolBase;
@@ -366,9 +366,9 @@ UsmUserTable::UsmUserTable(v3MP* v3mp)
 
         o = Oidx::from_string(
             OctetStr(user->usmUserEngineID, user->usmUserEngineIDLength),
-            TRUE);
+            true);
         o += Oidx::from_string(
-            OctetStr(user->usmUserName, user->usmUserNameLength), TRUE);
+            OctetStr(user->usmUserName, user->usmUserNameLength), true);
 
         if (find_index(o)) continue;
 
@@ -485,8 +485,8 @@ bool UsmUserTable::ready(Vbx* pvbs, int sz, MibTableRow* row)
             // check if cloneFrom ("4") was set:
             Oidx o;
             pvbs[3].get_value(o);
-            if (o == "0.0") { return FALSE; }
-            return TRUE;
+            if (o == "0.0") { return false; }
+            return true;
         }
     }
     return ready;
@@ -685,7 +685,7 @@ MibTableRow* UsmUserTable::addNewRow(const OctetStr& userName,
             LOG(res);
             LOG_END;
         }
-        return FALSE;
+        return false;
     }
 
     // add User into MIB
@@ -713,8 +713,8 @@ MibTableRow* UsmUserTable::addNewRow(const OctetStr& engineID,
     const OctetStr& authKey, int privProtocol, const OctetStr& privKey,
     const bool add_to_usm)
 {
-    Oidx newIndex = Oidx::from_string(engineID, TRUE);
-    newIndex += Oidx::from_string(userName, TRUE);
+    Oidx newIndex = Oidx::from_string(engineID, true);
+    newIndex += Oidx::from_string(userName, true);
 
     if (add_to_usm)
     {
@@ -818,14 +818,14 @@ MibTableRow* UsmUserTable::addNewRow(const OctetStr& engineID,
 bool UsmUserTable::deleteRow(
     const OctetStr& engineID, const OctetStr& userName)
 {
-    Oidx newIndex = Oidx::from_string(engineID, TRUE);
-    newIndex += Oidx::from_string(userName, TRUE);
+    Oidx newIndex = Oidx::from_string(engineID, true);
+    newIndex += Oidx::from_string(userName, true);
 
     start_synch();
     if (!find_index(newIndex))
     {
         end_synch();
-        return FALSE; // no such user
+        return false; // no such user
     }
     end_synch();
     // ignore possible error, just make sure that there is no entry
@@ -834,7 +834,7 @@ bool UsmUserTable::deleteRow(
     start_synch();
     remove_row(newIndex);
     end_synch();
-    return TRUE;
+    return true;
 }
 
 /* Delete all rows from the table and from USM. */
@@ -1063,10 +1063,10 @@ bool UsmCloneFrom::value_ok(const Vbx& vb)
     Oidx o;
     Oidx base = oidUsmUserEntry;
 
-    if (vb.get_value(o) != SNMP_CLASS_SUCCESS) return FALSE;
+    if (vb.get_value(o) != SNMP_CLASS_SUCCESS) return false;
 
     Oidx n("0.0");
-    if (o == n) return TRUE;
+    if (o == n) return true;
 
     if ((o.len() < base.len() + 3)
         || (o.cut_right(o.len() - base.len()) != base))
@@ -1075,7 +1075,7 @@ bool UsmCloneFrom::value_ok(const Vbx& vb)
         LOG("UsmCloneFrom::value_ok: wrong length of oid or wrong base");
         LOG(o.get_printable());
         LOG_END;
-        return FALSE;
+        return false;
     }
     o = o.cut_left(base.len());
     // RowPointer has to point to first accessible object
@@ -1086,7 +1086,7 @@ bool UsmCloneFrom::value_ok(const Vbx& vb)
             "but value is");
         LOG(o[0]);
         LOG_END;
-        return FALSE;
+        return false;
     }
 
     /* commented out because of SilverCreek test 4.13.3
@@ -1096,10 +1096,10 @@ bool UsmCloneFrom::value_ok(const Vbx& vb)
       LOG("UsmCloneFrom::value_ok: wrong length of oid");
       LOG(o.get_printable());
       LOG_END;
-      return FALSE;
+      return false;
     }
     */
-    return TRUE;
+    return true;
 }
 
 MibEntryPtr UsmCloneFrom::clone()
@@ -1211,7 +1211,7 @@ int UsmKeyChange::set(const Vbx& vb)
             LOG(os.get_printable());
             LOG_END;
 
-            if (process_key_change(os) == TRUE)
+            if (process_key_change(os) == true)
             {
                 // CAUTION: Remove this log for higher security
                 LOG_BEGIN(loggerModuleName, DEBUG_LOG | 2);
@@ -1308,7 +1308,7 @@ int UsmKeyChange::unset()
 bool UsmKeyChange::value_ok(const Vbx& vb)
 {
     OctetStr os;
-    if (vb.get_value(os) != SNMP_CLASS_SUCCESS) return FALSE;
+    if (vb.get_value(os) != SNMP_CLASS_SUCCESS) return false;
 
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
     LOG("UsmKeyChange: value_ok (len) (key_len) ");
@@ -1316,7 +1316,7 @@ bool UsmKeyChange::value_ok(const Vbx& vb)
     LOG(key_len);
     LOG_END;
 
-    return TRUE;
+    return true;
 }
 
 bool UsmKeyChange::process_key_change(OctetStr& os)
@@ -1628,21 +1628,21 @@ usmUserAuthProtocol::usmUserAuthProtocol(const Oidx& o, USM* u)
 bool usmUserAuthProtocol::value_ok(const Vbx& vb)
 {
     Oidx o;
-    if (vb.get_value(o) != SNMP_CLASS_SUCCESS) return FALSE;
-    if (o == oidUsmNoAuthProtocol) return TRUE;
-    if ((o == *(Oidx*)value) && (o.len() > 2)) return TRUE;
+    if (vb.get_value(o) != SNMP_CLASS_SUCCESS) return false;
+    if (o == oidUsmNoAuthProtocol) return true;
+    if ((o == *(Oidx*)value) && (o.len() > 2)) return true;
     if ((((Oidx*)value)->len() == 2)
         && (UsmUserTable::auth_base.len() + 1 == o.len())
         && (UsmUserTable::auth_base.is_root_of(o)))
     {
-        if (usm->get_auth_priv()->get_auth(o.last())) return TRUE;
+        if (usm->get_auth_priv()->get_auth(o.last())) return true;
 
         LOG_BEGIN(loggerModuleName, INFO_LOG | 4);
         LOG("Unknown auth protocol");
         LOG(o.last());
         LOG_END;
     }
-    return FALSE;
+    return false;
 }
 
 MibEntryPtr usmUserAuthProtocol::clone()
@@ -1683,15 +1683,15 @@ int usmUserPrivProtocol::prepare_set_request(Request* req, int& ind)
 bool usmUserPrivProtocol::value_ok(const Vbx& vb)
 {
     Oidx o;
-    if (vb.get_value(o) != SNMP_CLASS_SUCCESS) return FALSE;
-    if (o == oidUsmNoPrivProtocol) return TRUE;
-    if ((o == *(Oidx*)value) && (o.len() > 2)) return TRUE;
+    if (vb.get_value(o) != SNMP_CLASS_SUCCESS) return false;
+    if (o == oidUsmNoPrivProtocol) return true;
+    if ((o == *(Oidx*)value) && (o.len() > 2)) return true;
     if ((((Oidx*)value)->len() == 2)
         && (UsmUserTable::priv_base.len() + 1 == o.len())
         && (UsmUserTable::priv_base.is_root_of(o))
         && (usm->get_auth_priv()->get_priv(o.last())))
-        return TRUE;
-    return FALSE;
+        return true;
+    return false;
 }
 
 MibEntryPtr usmUserPrivProtocol::clone()

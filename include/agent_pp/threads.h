@@ -35,8 +35,8 @@
 #include <sys/types.h>
 #include <time.h>
 
-#define MULTI_THREADED            TRUE
-#define SINGLE_THREADED           FALSE
+#define MULTI_THREADED            true
+#define SINGLE_THREADED           false
 #define AGENTPP_DEFAULT_STACKSIZE 0x10000
 
 #ifdef AGENTPP_NAMESPACE
@@ -159,7 +159,7 @@ public:
      * @param timeout
      *    timeout in milliseconds.
      * @param
-     *    return TRUE if timeout occurred, FALSE otherwise.
+     *    return true if timeout occurred, false otherwise.
      */
     bool wait(long timeout);
 
@@ -176,29 +176,29 @@ public:
 
     /**
      * Enter a critical section. If this thread owned this
-     * lock already, the call succeeds too (returns TRUE), but there
+     * lock already, the call succeeds too (returns true), but there
      * will not be recursive locking. Unlocking will always free the lock.
      *
      * @return
-     *    TRUE if the attempt was successful, FALSE otherwise.
+     *    true if the attempt was successful, false otherwise.
      */
     bool lock();
 
     /**
      * Enter a critical section. If this thread owned this
-     * lock already, the call succeeds too (returns TRUE), but there
+     * lock already, the call succeeds too (returns true), but there
      * will not be recursive locking. Unlocking will always free the lock.
      *
      * @param timeout
-     *    timeout in milliseconds. If timeout occurred FALSE is returned.
+     *    timeout in milliseconds. If timeout occurred false is returned.
      * @return
-     *    TRUE if the attempt was successful, FALSE otherwise.
+     *    true if the attempt was successful, false otherwise.
      */
     bool lock(long timeout);
 
     /**
      * Try to enter a critical section. If this thread owned this
-     * lock already, the call succeeds too (returns TRUE), but there
+     * lock already, the call succeeds too (returns true), but there
      * will not be recursive locking. Unlocking will always free the lock.
      *
      * @return
@@ -216,7 +216,7 @@ public:
      * more than once successfully, this call will nevertheless release
      * the lock (non-recursive locking).
      * @return
-     *    TRUE if the unlock succeeded, FALSE if there was no lock
+     *    true if the unlock succeeded, false if there was no lock
      *    to unlock.
      */
     bool unlock();
@@ -406,7 +406,7 @@ public:
      * Check whether thread is alive.
      *
      * @return
-     *    Returns TRUE if the thread is running; otherwise FALSE.
+     *    Returns true if the thread is running; otherwise false.
      */
     bool is_alive() { return (status == RUNNING); }
 
@@ -535,7 +535,7 @@ public:
      * Check whether the ThreadPool is idle or not.
      *
      * @return
-     *    TRUE if non of the threads in the pool is currently
+     *    true if non of the threads in the pool is currently
      *    executing any task.
      */
     virtual bool is_idle();
@@ -545,7 +545,7 @@ public:
      * running a task or not.
      *
      * @return
-     *    TRUE if there exists at least one thread in the pool that is
+     *    true if there exists at least one thread in the pool that is
      * currently busy (executing any task).
      */
     virtual bool is_busy();
@@ -594,9 +594,9 @@ public:
 
     /**
      * Check if a thread (i.e. task manager) in this pool is used to execute
-     * exactly one task and then stops. Default is FALSE.
-     * @return TRUE if a thread in this pool will execute up to one task or
-     * FALSE if it can execute arbitrary tasks.
+     * exactly one task and then stops. Default is false.
+     * @return true if a thread in this pool will execute up to one task or
+     * false if it can execute arbitrary tasks.
      * @since 4.3.0
      */
     bool is_one_time_execution() { return oneTimeExecution; }
@@ -604,10 +604,10 @@ public:
     /**
      * Defines if a thread (i.e. task manager) in this pool is used to
      * execute exactly one (new or already running) task and then stops.
-     * Default is FALSE.
+     * Default is false.
      * @param singleExec
-     *    if TRUE a thread in this pool will execute up to one task or
-     *    FALSE if it can execute arbitrary tasks.
+     *    if true a thread in this pool will execute up to one task or
+     *    false if it can execute arbitrary tasks.
      * @since 4.3.0
      */
     void set_one_time_execution(bool singleExec)
@@ -689,7 +689,7 @@ public:
     /**
      * Stop queue processing.
      */
-    void stop() { go = FALSE; }
+    void stop() { go = false; }
 
     /**
      * Notifies the thread pool about an idle thread.
@@ -700,7 +700,7 @@ public:
      * Check whether the ThreadPool is idle or not.
      *
      * @return
-     *    TRUE if non of the threads in the pool is currently
+     *    true if non of the threads in the pool is currently
      *    executing any task.
      */
     bool is_idle() override { return ThreadPool::is_idle(); }
@@ -710,7 +710,7 @@ public:
      * running a task or not.
      *
      * @return
-     *    TRUE if there exists at least one thread in the pool that is
+     *    true if there exists at least one thread in the pool that is
      * currently busy (executing any task).
      */
     bool is_busy() override { return ThreadPool::is_busy(); }
@@ -748,16 +748,16 @@ public:
      * Check whether this thread is idle or not.
      *
      * @return
-     *   TRUE if the thread managed by this TaskManager does
+     *   true if the thread managed by this TaskManager does
      *   not currently execute any task and the associated thread is running;
-     *   FALSE otherwise.
+     *   false otherwise.
      */
     bool is_idle() { return (!task) && thread.is_alive(); }
 
     /**
      * Check whether a task is being executed by this TaskManager.
      * @return
-     *    TRUE if there is a task assigned this TaskManager.
+     *    true if there is a task assigned this TaskManager.
      * @since 4.3.0
      */
     bool is_busy() { return (task); }
@@ -770,7 +770,7 @@ public:
     /**
      * Stop thread execution after having finished current task.
      */
-    void stop() { go = FALSE; }
+    void stop() { go = false; }
 
     /**
      * Wait for the internal thread to join
@@ -791,8 +791,8 @@ public:
      * @param task
      *   a Runnable instance.
      * @return
-     *   TRUE if the task could be assigned successfully and
-     *   FALSE if another thread has assigned a task concurrently.
+     *   true if the task could be assigned successfully and
+     *   false if another thread has assigned a task concurrently.
      *   In the latter case, the task has not been assigned!
      */
     bool set_task(Runnable*);
@@ -864,7 +864,7 @@ public:
      */
     bool waitForLock;
     /**
-     * Returns the lock result if tryĹock was set to TRUE before the lock
+     * Returns the lock result if tryĹock was set to true before the lock
      * was acquired. Otherwise always LOCKED will be returned.
      */
     TryLockResult tryLockResult;

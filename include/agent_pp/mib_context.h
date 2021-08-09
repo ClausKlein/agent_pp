@@ -165,8 +165,8 @@ public:
      * Return whether objects in this group are persistent or not.
      *
      * @return
-     *    TRUE if objects of this group should be stored persistently,
-     *    FALSE otherwise.
+     *    true if objects of this group should be stored persistently,
+     *    false otherwise.
      */
     bool is_persistent() { return (persistencyName != 0); }
 
@@ -254,7 +254,7 @@ public:
      * @param path
      *    where data should be loaded from.
      * @return
-     *    TRUE if initialization was successful, FALSE otherwise.
+     *    true if initialization was successful, false otherwise.
      */
     virtual bool init_from(const NS_SNMP OctetStr&);
 
@@ -265,7 +265,7 @@ public:
      * @param path
      *    where data should be loaded from.
      * @return
-     *    TRUE if initialization was successful, FALSE otherwise.
+     *    true if initialization was successful, false otherwise.
      */
     virtual bool load_from(const NS_SNMP OctetStr&);
 
@@ -277,7 +277,7 @@ public:
      * @param path
      *    where data should be written to.
      * @return
-     *    TRUE if data could be saved successfully, FALSE otherwise.
+     *    true if data could be saved successfully, false otherwise.
      */
     virtual bool save_to(const NS_SNMP OctetStr&);
 
@@ -427,8 +427,8 @@ public:
      * @param oid
      *    a group's oid.
      * @return
-     *    TRUE if such a group could be found (and removed),
-     *    FALSE otherwise.
+     *    true if such a group could be found (and removed),
+     *    false otherwise.
      */
     virtual bool remove_group(const Oidx&);
 

@@ -57,7 +57,7 @@ public:
      * @param path
      *    the directory path to create if not present.
      * @return
-     *    TRUE if the directory path is now present, FALSE otherwise.
+     *    true if the directory path is now present, false otherwise.
      * @since 4.3.0
      */
     static bool make_path(const std::string&);
@@ -72,8 +72,8 @@ public:
     Timer() : timestamp(0), lifetime(0) { }
     Timer(time_t life) : timestamp(0), lifetime(life) { }
 
-    time_t  get_life() { return lifetime; }
-    void set_life(unsigned int sec) { lifetime = sec; }
+    time_t get_life() { return lifetime; }
+    void   set_life(time_t sec) { lifetime = sec; }
 
     bool   in_time();
     time_t due_time();

@@ -125,7 +125,7 @@ sysServices::sysServices(const int s)
 
 sysOREntry* sysOREntry::instance = 0;
 
-const index_info indSysOREntry[1] = { { sNMP_SYNTAX_INT, FALSE, 1, 1 } };
+const index_info indSysOREntry[1] = { { sNMP_SYNTAX_INT, false, 1, 1 } };
 
 sysOREntry::sysOREntry(TimeStamp* lc)
     : TimeStampTable(oidSysOREntry, indSysOREntry, 1, lc)

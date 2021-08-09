@@ -33,7 +33,7 @@ namespace Agentpp
 using namespace Snmp_pp;
 #endif
 
-const index_info iSnmpAdminString[1] = { { sNMP_SYNTAX_OCTETS, TRUE, 1, 32 } };
+const index_info iSnmpAdminString[1] = { { sNMP_SYNTAX_OCTETS, true, 1, 32 } };
 
 /*---------------------- class snmpDisplayString ---------------------*/
 
@@ -72,7 +72,7 @@ public:
      *    a pointer to an OctetStr containing the initial value for
      *    the object.
      * @param hasdefault
-     *    if TRUE treat the inital value as default value (this
+     *    if true treat the inital value as default value (this
      *    applies to columnar objects only)
      */
     SnmpDisplayString(const Oidx&, mib_access, NS_SNMP OctetStr*, bool);
@@ -87,7 +87,7 @@ public:
      *    a pointer to an OctetStr containing the initial value for
      *    the object.
      * @param hasdefault
-     *    if TRUE treat the initial value as default value (this
+     *    if true treat the initial value as default value (this
      *    applies to columnar objects only)
      * @param min_size
      *    the minimum size of the DisplayString.
@@ -438,7 +438,7 @@ public:
     bool            value_ok(const Vbx&) override;
     int             prepare_set_request(Request*, int&) override;
 
-    bool is_volatile() override { return TRUE; }
+    bool is_volatile() override { return true; }
 };
 
 /*--------------------------- class StorageType -------------------------*/
@@ -480,7 +480,7 @@ public:
     /**
      * Return whether the row of the receiver is volatile or permanent.
      *
-     * @return TRUE, if the row is volatile, FALSE otherwise.
+     * @return true, if the row is volatile, false otherwise.
      */
     virtual bool row_is_volatile();
 
@@ -582,7 +582,7 @@ public:
      * @param o - The object identifier of the table, which has to be
      *            the oid of the the SMI table entry object (table.1).
      * @param ilen - The length of the index measured in subidentifiers.
-     * @param a - If TRUE the automatic index object initialization is
+     * @param a - If true the automatic index object initialization is
      *            activated.
      */
     StorageTable(const Oidx&, unsigned int, bool);
@@ -648,12 +648,12 @@ public:
 protected:
     /**
      * Check whether the given row should be serialized or not.
-     * Return TRUE if the given row has a volatile class StorageType.
+     * Return true if the given row has a volatile class StorageType.
      *
      * @param row
      *    a MibTableRow instance.
      * @return
-     *    TRUE if the row should be stored persistently, FALSE otherwise
+     *    true if the row should be stored persistently, false otherwise
      */
     bool is_persistent(MibTableRow*) override;
 
@@ -1168,7 +1168,7 @@ public:
     TimeStamp(const Oidx&, mib_access, int);
     virtual ~TimeStamp();
 
-    bool is_volatile() override { return TRUE; }
+    bool is_volatile() override { return true; }
 
     MibEntryPtr clone() override;
 
@@ -1289,7 +1289,7 @@ public:
     virtual NS_SNMP OctetStr get_state();
     virtual void             set_state(const NS_SNMP OctetStr&);
 
-    bool is_volatile() override { return TRUE; }
+    bool is_volatile() override { return true; }
 
     /**
      * Update current value with the system's date and time.

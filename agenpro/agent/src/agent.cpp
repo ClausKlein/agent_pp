@@ -47,7 +47,7 @@ static const char* loggerModuleName = "agenpro.agent";
 unsigned short port;
 Mib*           mib;
 RequestList*   reqList;
-bool           run = TRUE;
+bool           run = true;
 
 static void sig(int signo)
 {
@@ -67,7 +67,7 @@ static void sig(int signo)
             if (run)
             {
                 printf("User abort\n");
-                run = FALSE;
+                run = false;
             }
         }
         }
@@ -418,7 +418,7 @@ int main(int argc, char* argv[])
     if (communityEntry) {
         OctetStr co("public");
         MibTableRow* row = communityEntry->add_row(Oidx::from_string(co,
-    FALSE)); OctetStr tag("v1v2cPermittedManagers");
+    false)); OctetStr tag("v1v2cPermittedManagers");
         communityEntry->set_row(row, co, co,
                     reqList->get_v3mp()->get_local_engine_id(),
                     "", tag, 3, 1);

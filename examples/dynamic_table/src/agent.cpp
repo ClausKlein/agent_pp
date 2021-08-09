@@ -49,9 +49,9 @@ static const char* loggerModuleName = "agent++.dynamic_table";
 unsigned short port;
 Mib*           mib;
 RequestList*   reqList;
-bool           run = TRUE;
+bool           run = true;
 
-const index_info indDynamicTable[1] = { { sNMP_SYNTAX_INT, FALSE, 1, 1 } };
+const index_info indDynamicTable[1] = { { sNMP_SYNTAX_INT, false, 1, 1 } };
 
 class DynamicTable : public MibTable {
 public:
@@ -107,7 +107,7 @@ static void sig(int signo)
         case SIGINT: {
             if (run)
             {
-                run = FALSE;
+                run = false;
                 printf("User abort\n");
             }
         }

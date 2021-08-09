@@ -211,11 +211,11 @@ void MibEntry::save_to_file(const char* fname)
     }
 }
 
-bool MibEntry::serialize(char*&, int&) { return FALSE; }
+bool MibEntry::serialize(char*&, int&) { return false; }
 
-bool MibEntry::deserialize(char*, int&) { return FALSE; }
+bool MibEntry::deserialize(char*, int&) { return false; }
 
-bool MibEntry::is_volatile() { return FALSE; }
+bool MibEntry::is_volatile() { return false; }
 
 #ifdef AGENTPP_NAMESPACE
 }

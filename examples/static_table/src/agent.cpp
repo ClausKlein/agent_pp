@@ -48,7 +48,7 @@ using namespace Agentpp;
 static const char* loggerModuleName = "agent++.static_table";
 #endif
 
-static bool run = TRUE;
+static bool run = true;
 
 static void sig(int signo)
 {
@@ -67,7 +67,7 @@ static void sig(int signo)
         case SIGINT: {
             if (run)
             {
-                run = FALSE;
+                run = false;
                 printf("User abort\n");
             }
         }

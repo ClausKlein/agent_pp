@@ -293,7 +293,7 @@ bool NotificationOriginator::check_access(
     paramsPtr->get_value(paramsStr);
 
     // Check whether trap oid passes filter
-    Oidx                   targetOid(Oidx::from_string(paramsStr, FALSE));
+    Oidx                   targetOid(Oidx::from_string(paramsStr, false));
     snmpNotifyFilterEntry* notifyFilterEntry = get_snmp_notify_filter_entry();
     if (!notifyFilterEntry
         || !notifyFilterEntry->passes_filter(targetOid, id, vbs, size))
@@ -305,17 +305,17 @@ bool NotificationOriginator::check_access(
         LOG(Oidx(id).get_printable());
         LOG(paramsStr.get_printable());
         LOG_END;
-        return FALSE;
+        return false;
     }
 
     OctetStr targetAddress;
     cur.get()->get_nth(1)->get_value(targetAddress);
 
     snmpTargetParamsEntry* targetParamsEntry = get_snmp_target_params_entry();
-    if (!targetParamsEntry) { return FALSE; }
+    if (!targetParamsEntry) { return false; }
     targetParamsEntry->start_synch();
     MibTableRow* paramsRow =
-        targetParamsEntry->find_index(Oidx::from_string(paramsStr, FALSE));
+        targetParamsEntry->find_index(Oidx::from_string(paramsStr, false));
 
     if ((!paramsRow) || (paramsRow->get_row_status()->get() != rowActive))
     {
@@ -327,7 +327,7 @@ bool NotificationOriginator::check_access(
         LOG(paramsStr.get_printable());
         LOG((paramsRow) ? "no active row found" : "missing row");
         LOG_END;
-        return FALSE;
+        return false;
     }
 
     paramsRow->get_nth(0)->get_value(mpModel);
@@ -337,7 +337,7 @@ bool NotificationOriginator::check_access(
 
     targetParamsEntry->end_synch();
 
-    bool accessAllowed = TRUE;
+    bool accessAllowed = true;
 #ifdef _SNMPv3
     if ((!mib) || (!mib->get_request_list())
         || (!mib->get_request_list()->get_vacm()))
@@ -346,7 +346,7 @@ bool NotificationOriginator::check_access(
         LOG("NotificationOriginator: Mib or its requestList are not "
             "initialized, aborting!");
         LOG_END;
-        return FALSE;
+        return false;
     }
     Vacm* vacm = mib->get_request_list()->get_vacm();
 
@@ -357,7 +357,7 @@ bool NotificationOriginator::check_access(
                 mibView_notify, contextName, vbs[i].get_oid())
             != VACM_accessAllowed)
         {
-            accessAllowed = FALSE;
+            accessAllowed = false;
             break;
         }
     }
@@ -378,7 +378,7 @@ bool NotificationOriginator::check_access(
         LOG(paramsStr.get_printable());
         LOG_END;
 
-        return FALSE;
+        return false;
     }
 
     target                               = 0;
@@ -396,12 +396,12 @@ bool NotificationOriginator::check_access(
             delete address;
         }
         else
-            return FALSE;
+            return false;
     }
     else
-        return FALSE;
+        return false;
 
-    return TRUE;
+    return true;
 }
 
 int NotificationOriginator::send_notify(ListCursor<MibTableRow>& cur,
@@ -560,7 +560,7 @@ bool NotificationOriginator::add_v1_trap_destination(const UdpAddress& addr,
 
     if (!get_snmp_target_addr_entry() || !get_snmp_target_params_entry())
     {
-        return FALSE;
+        return false;
     }
     if (get_snmp_target_params_entry()->add_entry(name, // row index
             mpV1,                                       // mpModel
@@ -579,9 +579,9 @@ bool NotificationOriginator::add_v1_trap_destination(const UdpAddress& addr,
             tag,                              // tag
             name))
     { // params entry
-        return TRUE;
+        return true;
     }
-    return FALSE;
+    return false;
 }
 
 bool NotificationOriginator::add_v2_trap_destination(const UdpAddress& addr,
@@ -598,7 +598,7 @@ bool NotificationOriginator::add_v2_trap_destination(const UdpAddress& addr,
 
     if (!get_snmp_target_addr_entry() || !get_snmp_target_params_entry())
     {
-        return FALSE;
+        return false;
     }
     if (get_snmp_target_params_entry()->add_entry(name, // row index
             mpV2c,                                      // mpModel
@@ -616,8 +616,8 @@ bool NotificationOriginator::add_v2_trap_destination(const UdpAddress& addr,
             address,                          // target address
             tag,                              // tag
             name))                            // params entry
-        return TRUE;
-    return FALSE;
+        return true;
+    return false;
 }
 
 bool NotificationOriginator::add_v3_trap_destination(const UdpAddress& addr,
@@ -635,7 +635,7 @@ bool NotificationOriginator::add_v3_trap_destination(const UdpAddress& addr,
 
     if (!get_snmp_target_addr_entry() || !get_snmp_target_params_entry()
         || !get_snmp_notify_entry())
-        return FALSE;
+        return false;
 
     if (get_snmp_target_params_entry()->add_entry(name, // row index
             mpV3,                                       // mpModel
@@ -651,8 +651,8 @@ bool NotificationOriginator::add_v3_trap_destination(const UdpAddress& addr,
             address,                          // target address
             tag,                              // tag
             name))                            // params entry
-        return TRUE;
-    return FALSE;
+        return true;
+    return false;
 }
 
 #ifdef AGENTPP_NAMESPACE

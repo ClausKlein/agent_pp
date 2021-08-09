@@ -51,7 +51,7 @@ static void* inform_caller(void* ptr)
     LOG_END;
     int status = 0;
     status     = SnmpRequest::process_trap(callInfo->target, callInfo->vbs,
-        callInfo->sz, callInfo->oid, "", TRUE);
+        callInfo->sz, callInfo->oid, "", true);
 #    ifdef _NO_LOGGING
     (void)status;
 #    endif
@@ -287,7 +287,7 @@ void SnmpRequest::inform(CTarget& target, Vbx* vbs, int sz, const Oidx& oid)
     pthread_create(&thread, attr, &inform_caller, (void*)callInfo);
 #    endif
 #else
-    process_trap(target, vbs, sz, oid, "", TRUE);
+    process_trap(target, vbs, sz, oid, "", true);
 #endif
 }
 
