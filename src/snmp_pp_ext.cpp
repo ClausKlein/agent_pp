@@ -111,7 +111,7 @@ void Vbx::clear()
     free_vb(); // clear only value, NOT the OID!
 }
 
-int operator==(const Vbx& a, const Vbx& b)
+bool operator==(const Vbx& a, const Vbx& b)
 {
     return (!strcmp(a.get_printable_value(), b.get_printable_value()));
 }
@@ -406,6 +406,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
 
             // timeticks
         case sNMP_SYNTAX_TIMETICKS: {
+            // FIXME: Warning C6011 Dereferencing NULL pointer! CK
             TimeTicks timeticks((uint32_t) * (vp->val.integer));
             vbs[i].set_value(timeticks);
         }
@@ -428,6 +429,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
             // ip address
         case sNMP_SYNTAX_IPADDR: {
             char buffer[20];
+            // FIXME: Warning C6011 Dereferencing NULL pointer! CK
             snprintf(buffer, sizeof(buffer), "%d.%d.%d.%d", vp->val.string[0],
                 vp->val.string[1], vp->val.string[2], vp->val.string[3]);
             IpAddress ipaddress(buffer);
@@ -444,6 +446,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
 
             // v2 counter 64's
         case sNMP_SYNTAX_CNTR64: { // Frank Fock (was empty before)
+            // FIXME: Warning C6011 Dereferencing NULL pointer! CK
             Counter64 c64(((counter64*)vp->val.counter64)->high,
                 ((counter64*)vp->val.counter64)->low);
             vbs[i].set_value(c64);

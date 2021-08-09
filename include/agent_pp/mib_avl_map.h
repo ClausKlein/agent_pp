@@ -128,13 +128,17 @@ inline void OidxPtrMibEntryPtrAVLMap::prev(Pix& i)
 
 inline OidxPtr& OidxPtrMibEntryPtrAVLMap::key(Pix i)
 {
-    if (i == 0) error("null Pix");
+    if (i == 0)
+        error("null Pix"); // FIXME: Warning C6011 Dereferencing NULL pointer
+
     return ((OidxPtrMibEntryPtrAVLNode*)i)->item;
 }
 
 inline MibEntryPtr& OidxPtrMibEntryPtrAVLMap::contents(Pix i)
 {
-    if (i == 0) error("null Pix");
+    if (i == 0)
+        error("null Pix"); // FIXME: Warning C6011 Dereferencing NULL pointer
+
     return ((OidxPtrMibEntryPtrAVLNode*)i)->cont;
 }
 

@@ -103,7 +103,7 @@ bool Timer::in_time()
     return TRUE;
 }
 
-int Timer::due_time()
+time_t Timer::due_time()
 {
     time_t now = 0;
     time(&now);

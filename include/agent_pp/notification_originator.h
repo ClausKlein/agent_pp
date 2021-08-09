@@ -341,6 +341,9 @@ protected:
               enterprise(_enterprise), contextName(_contextName)
         {
             target = 0;
+            securityModel = 0;
+            securityLevel = 0;
+            mpModel = 0;
         }
 
         Vbx*             vbs;

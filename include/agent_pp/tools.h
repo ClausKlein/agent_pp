@@ -70,20 +70,20 @@ public:
 class AGENTPP_DECL Timer {
 public:
     Timer() : timestamp(0), lifetime(0) { }
-    Timer(int life) : timestamp(0), lifetime(life) { }
+    Timer(time_t life) : timestamp(0), lifetime(life) { }
 
-    int  get_life() { return lifetime; }
+    time_t  get_life() { return lifetime; }
     void set_life(unsigned int sec) { lifetime = sec; }
 
     bool   in_time();
-    int    due_time();
+    time_t due_time();
     bool   in_time(int frac);
     void   set_timestamp() { time(&timestamp); }
     time_t get_timestamp() { return timestamp; }
 
 protected:
     time_t timestamp;
-    int    lifetime;
+    time_t lifetime;
 };
 
 #ifdef AGENTPP_NAMESPACE

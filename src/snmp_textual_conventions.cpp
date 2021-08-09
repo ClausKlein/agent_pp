@@ -169,7 +169,7 @@ OctetStr SnmpEngineID::create_engine_id(unsigned short p)
 {
     // 8 = v3EngineID, 1370h = 4976 = AGENT++ enterprise ID
     OctetStr      engineID((const unsigned char*)"\x80\x00\x13\x70\x05", 5);
-    unsigned char port[3];
+    unsigned char port[3]{};
     port[0] = p / 256;
     port[1] = p % 256;
     port[2] = 0;
@@ -185,7 +185,7 @@ OctetStr SnmpEngineID::create_engine_id(unsigned short p)
     else
     {
         time_t   ct = time(0);
-        char*    tp = ctime(&ct);
+        char*    tp = ctime(&ct);  // TODO: use ctime_s()! CK
         OctetStr t((unsigned char*)tp, (strlen(tp) > 23) ? 23 : strlen(tp));
         engineID += t;
         engineID += OctetStr(port, 2);
@@ -305,7 +305,7 @@ bool SnmpTagList::contains(const char* tag)
 
     int   len = ((OctetStr*)value)->len();
     char* l   = new char[len + 1];
-    strncpy(l, (char*)((OctetStr*)value)->data(), len);
+    strlcpy(l, (char*)((OctetStr*)value)->data(), len);
     l[len] = 0; // OK, CK
 
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 10);
@@ -749,7 +749,7 @@ void DateAndTime::update()
     dt =
         localtime_r(&c, &stm); // TODO: check if gmtime_r() would be better? CK
 #else
-    dt = localtime(&c);
+    dt = localtime(&c); // TODO: use localtime_s()! CK
 #endif
 
     if (!dt) return; // TODO: possibly log an error;
@@ -775,7 +775,7 @@ void DateAndTime::update()
     // initialize timezone needed?
     // tzset();
 #    ifdef WIN32
-    long timezone = _timezone;
+    long timezone = _timezone;  // TODO: use _get_timezone! CK
 #    endif
     if (timezone < 0)
         val += '+';

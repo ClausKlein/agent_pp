@@ -9,9 +9,9 @@ UseTab: Never
 ### see BinPack... too
 AlignAfterOpenBracket: DontAlign
 #XXX AlignArrayOfStructures: Right
-AlignConsecutiveAssignments: Consecutive
-AlignConsecutiveDeclarations: Consecutive
-AlignConsecutiveMacros: Consecutive
+# AlignConsecutiveAssignments: Consecutive
+# AlignConsecutiveDeclarations: Consecutive
+# AlignConsecutiveMacros: Consecutive
 AlignEscapedNewlines: Left
 AlignTrailingComments: true
 AllowAllArgumentsOnNextLine: true

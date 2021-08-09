@@ -75,7 +75,7 @@ unsigned int sysUpTime::get()
     return (get_currentTime() * 100 + ct.tv_usec / 10000) - start;
 #    else
     struct _timeb tstruct;
-    _ftime(&tstruct);
+    _ftime(&tstruct); // TODO: use _ftime64_s()! CK
     return ((get_currentTime() * 100 + tstruct.millitm / 10) - start)
         % MAXUINT32;
 #    endif

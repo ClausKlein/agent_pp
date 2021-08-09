@@ -435,7 +435,7 @@ public:
 
     Vbx* clone() const { return new Vbx(*this); }
 
-    friend int operator==(const Vbx&, const Vbx&);
+    friend bool operator==(const Vbx&, const Vbx&);
 
     /**
      * Compare two Vbx arrays for equality.

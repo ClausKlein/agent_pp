@@ -258,7 +258,7 @@ set(SNMP_PP_VERSION 3.4.7)
 CPMAddPackage(
   NAME snmp_pp
   #TODO GIT_TAG v${SNMP_PP_VERSION}.10
-  GIT_TAG e878cdc9bbf4a0b48203847e9d1301ec2d911189
+  GIT_TAG 95fce1ec85e19414dea62c670c5e2018277f8c34
   GITHUB_REPOSITORY ClausKlein/snmp_pp
   OPTIONS "SNMP_PP_LOGGING NO" "SNMP_PP_EXAMPLES YES"
 )
@@ -349,8 +349,9 @@ option(BUILD_SHARED_LIBS "Global flag to cause add_library() to create shared li
 add_library(${PROJECT_NAME} ${MY_HEADER_FILES} ${MY_HEADER_LIB_FILES} ${CMAKE_CURRENT_BINARY_DIR}/config.h ${MY_SRC_FILES})
 
 if(MSVC)
-  # warning level 4 (all warnings as errors: /WX)
-  # FIXME target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX)
+  # FIXME: should be warning level 4 (and all warnings as errors! /WX)
+  target_compile_options(${PROJECT_NAME} PRIVATE /W3 /wd4251)
+  target_compile_definitions(${PROJECT_NAME} PRIVATE _CRT_SECURE_NO_WARNINGS)
 else()
   target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -Wno-unused-parameter)
   # TODO: lots of warnings (more: -Wpedantic)
@@ -478,7 +479,7 @@ if(AGENT_PP_EXAMPLES)
 
   add_test(
     NAME simple-snmp-test
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/simple-snmp-test.sh $<TARGET_FILE:static_table> $<TARGET_FILE:test_app>
+    COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/simple-snmp-test.sh $<TARGET_FILE:static_table> $<TARGET_FILE:test_app>
     WORKING_DIRECTORY $<TARGET_FILE_DIR:test_app>
   )
 endif()
