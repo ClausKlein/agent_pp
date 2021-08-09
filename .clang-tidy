@@ -10,6 +10,8 @@ cert-*,\
 clang-analyzer-*,\
 -clang-analyzer-security.insecureAPI.*,\
 -cppcoreguidelines-*,\
+cppcoreguidelines-init-variables,\
+cppcoreguidelines-explicit-virtual-functions,\
 -cppcoreguidelines-pro-*,\
 -cppcoreguidelines-avoid-*,\
 -cppcoreguidelines-special-*,\
