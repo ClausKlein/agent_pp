@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 dir_name=`dirname "$0"`
 export MIBDIRS=+${dir_name}/mibs

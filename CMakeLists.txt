@@ -479,7 +479,7 @@ if(AGENT_PP_EXAMPLES)
 
   add_test(
     NAME simple-snmp-test
-    COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/simple-snmp-test.sh $<TARGET_FILE:static_table> $<TARGET_FILE:test_app>
+    COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/simple-snmp-test.sh $<TARGET_FILE:static_table> $<TARGET_FILE:test_app>
     WORKING_DIRECTORY $<TARGET_FILE_DIR:test_app>
   )
 endif()
