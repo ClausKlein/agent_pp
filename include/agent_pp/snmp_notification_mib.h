@@ -1,21 +1,21 @@
 /*_############################################################################
-  _## 
-  _##  AGENT++ 4.5 - snmp_notification_mib.h  
-  _## 
+  _##
+  _##  AGENT++ 4.5 - snmp_notification_mib.h
+  _##
   _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##  
+  _##
   _##  Licensed under the Apache License, Version 2.0 (the "License");
   _##  you may not use this file except in compliance with the License.
   _##  You may obtain a copy of the License at
-  _##  
+  _##
   _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##  
+  _##
   _##  Unless required by applicable law or agreed to in writing, software
   _##  distributed under the License is distributed on an "AS IS" BASIS,
   _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   _##  See the License for the specific language governing permissions and
   _##  limitations under the License.
-  _##  
+  _##
   _##########################################################################*/
 
 #ifndef _snmp_notification_mib_h_
@@ -25,12 +25,13 @@
 #include <agent_pp/snmp_textual_conventions.h>
 
 #ifdef AGENTPP_NAMESPACE
-namespace Agentpp {
-    using namespace Snmp_pp;
+namespace Agentpp
+{
+using namespace Snmp_pp;
 #endif
 
-#define oidSnmpNotifyEntry          "1.3.6.1.6.3.13.1.1.1"
-#define oidSnmpNotifyFilterEntry    "1.3.6.1.6.3.13.1.3.1"
+#define oidSnmpNotifyEntry       "1.3.6.1.6.3.13.1.1.1"
+#define oidSnmpNotifyFilterEntry "1.3.6.1.6.3.13.1.3.1"
 
 /**
  *  snmpNotifyType
@@ -56,7 +57,6 @@ namespace Agentpp {
  read-only."
  */
 
-
 /**
  *  snmpNotifyRowStatus
  *
@@ -67,7 +67,6 @@ namespace Agentpp {
  createAndWait(5)."
  */
 
-
 /**
  *  snmpNotifyFilterProfileName
  *
@@ -75,8 +74,6 @@ namespace Agentpp {
  notifications using the corresponding entry in the
  snmpTargetAddrTable."
  */
-
-
 
 /**
  *  snmpNotifyFilterProfileRowStatus
@@ -96,7 +93,6 @@ namespace Agentpp {
  active until the corresponding instance of
  snmpNotifyFilterProfileName has been set."
  */
-
 
 /**
  *  snmpNotifyFilterMask
@@ -147,7 +143,6 @@ namespace Agentpp {
  instance of snmpNotifyFilterSubtree."
  */
 
-
 /**
  *  snmpNotifyFilterType
  *
@@ -156,7 +151,6 @@ namespace Agentpp {
  filter. A more detailed discussion of the use of this
  object can be found in section 6. of [SNMP-APPL]."
  */
-
 
 /**
  *  snmpNotifyFilterRowStatus
@@ -167,7 +161,6 @@ namespace Agentpp {
  set this object to either createAndGo(4) or
  createAndWait(5)."
  */
-
 
 /**
  * snmpNotifyEntry
@@ -183,37 +176,34 @@ namespace Agentpp {
  * @version 3.4
  */
 
+class AGENTPP_DECL snmpNotifyEntry : public StorageTable {
 
-class AGENTPP_DECL snmpNotifyEntry: public StorageTable {
+public:
+    snmpNotifyEntry();
+    virtual ~snmpNotifyEntry();
 
- public:
-	snmpNotifyEntry();
-	virtual ~snmpNotifyEntry();
+    /**
+     * Add a new entry to the receiver. The new entry is
+     * used to specify target addresses to send notifications
+     * to.
+     *
+     * @param name
+     *    a unique identifier used to index this table.
+     * @param tag
+     *    a tag value used to select entries in
+     *    snmpTargetAddrTable.
+     * @param type
+     *    specifies whether to generate a Trap PDU (1)
+     *    or an Inform-PDU (2).
+     * @return
+     *    a pointer to the newly created entry or 0 if
+     *    a row with index name already exists.
+     */
+    MibTableRow* add_entry(
+        const NS_SNMP OctetStr&, const NS_SNMP OctetStr&, const int);
 
-	/**
-	 * Add a new entry to the receiver. The new entry is
-	 * used to specify target addresses to send notifications
-	 * to.
-	 *
-	 * @param name
-	 *    a unique identifier used to index this table.
-	 * @param tag
-	 *    a tag value used to select entries in 
-	 *    snmpTargetAddrTable.
-	 * @param type
-	 *    specifies whether to generate a Trap PDU (1)
-	 *    or an Inform-PDU (2).
-	 * @return
-	 *    a pointer to the newly created entry or 0 if
-	 *    a row with index name already exists.
-	 */
-	MibTableRow* add_entry(const NS_SNMP OctetStr&,
-			       const NS_SNMP OctetStr&,
-			       const int);
-
-	static snmpNotifyEntry* instance;
+    static snmpNotifyEntry* instance;
 };
-
 
 /**
  *  snmpNotifyFilterProfileEntry
@@ -227,16 +217,14 @@ class AGENTPP_DECL snmpNotifyEntry: public StorageTable {
  object."
  */
 
+class AGENTPP_DECL snmpNotifyFilterProfileEntry : public StorageTable {
 
-class AGENTPP_DECL snmpNotifyFilterProfileEntry: public StorageTable {
+public:
+    snmpNotifyFilterProfileEntry();
+    virtual ~snmpNotifyFilterProfileEntry();
 
- public:
-	snmpNotifyFilterProfileEntry();
-	virtual ~snmpNotifyFilterProfileEntry();
-
-	static snmpNotifyFilterProfileEntry* instance;
+    static snmpNotifyFilterProfileEntry* instance;
 };
-
 
 /**
  *  snmpNotifyFilterEntry
@@ -247,67 +235,62 @@ class AGENTPP_DECL snmpNotifyFilterProfileEntry: public StorageTable {
  deleted using the snmpNotifyFilterRowStatus object."
  */
 
+class AGENTPP_DECL snmpNotifyFilterEntry : public StorageTable {
 
-class AGENTPP_DECL snmpNotifyFilterEntry: public StorageTable {
+public:
+    snmpNotifyFilterEntry();
+    snmpNotifyFilterEntry(snmpNotifyFilterProfileEntry* profileEntry);
+    virtual ~snmpNotifyFilterEntry();
 
- public:
-	snmpNotifyFilterEntry();
-        snmpNotifyFilterEntry(snmpNotifyFilterProfileEntry* profileEntry);
-	virtual ~snmpNotifyFilterEntry();
+    /**
+     * Get the pointer to the snmpNotifyFilterEntry associated with the
+     * provided Mib instance.
+     * @param mib a Mib reference
+     * @return
+     *    a pointer to the entry if available in the Mib or the static
+     *    instance pointer as fallback.
+     * @since 4.3.0
+     */
+    static snmpNotifyFilterEntry* get_instance(Mib* mib)
+    {
+        Oidx                   oid(oidSnmpNotifyFilterEntry);
+        snmpNotifyFilterEntry* entry = (snmpNotifyFilterEntry*)mib->get(oid);
+        return (entry) ? entry : instance;
+    }
+    static snmpNotifyFilterEntry* instance;
 
-        /**
-         * Get the pointer to the snmpNotifyFilterEntry associated with the
-         * provided Mib instance. 
-         * @param mib a Mib reference
-         * @return 
-         *    a pointer to the entry if available in the Mib or the static 
-         *    instance pointer as fallback.
-         * @since 4.3.0
-         */
-        static snmpNotifyFilterEntry* get_instance(Mib* mib) {
-            Oidx oid(oidSnmpNotifyFilterEntry);
-            snmpNotifyFilterEntry* entry = (snmpNotifyFilterEntry*)mib->get(oid);
-            return (entry) ? entry : instance;
-        }
-	static snmpNotifyFilterEntry* instance;
-
-	/**
-	 * Checks whether an object identifier passes the notification
-	 * filter specified by the given profile name (a pointer into
-	 * the snmpNotifyFilterTable).
-	 *
-	 * @param target
-	 *    an object identifier representing an index value of the
-	 *    snmpTargetParamsTable. 
-	 * @param oid
-	 *    an object identifier to check. 
-	 * @param vbs
-	 *    an array of Vbx instances whose OIDs should be checked.
-	 * @param vb_count
-	 *    the number of the above variable bindings.
-	 * @return 
-	 *    TRUE if the object id passes the filter or if no appropriate
-	 *    filter exists, in any other case return FALSE.
-	 */
-	bool passes_filter(const Oidx&, const Oidx&, const Vbx*, unsigned int);
+    /**
+     * Checks whether an object identifier passes the notification
+     * filter specified by the given profile name (a pointer into
+     * the snmpNotifyFilterTable).
+     *
+     * @param target
+     *    an object identifier representing an index value of the
+     *    snmpTargetParamsTable.
+     * @param oid
+     *    an object identifier to check.
+     * @param vbs
+     *    an array of Vbx instances whose OIDs should be checked.
+     * @param vb_count
+     *    the number of the above variable bindings.
+     * @return
+     *    true if the object id passes the filter or if no appropriate
+     *    filter exists, in any other case return false.
+     */
+    bool passes_filter(const Oidx&, const Oidx&, const Vbx*, unsigned int);
 
 protected:
-        snmpNotifyFilterProfileEntry* _snmpNotifyFilterProfileEntry;
+    snmpNotifyFilterProfileEntry* _snmpNotifyFilterProfileEntry;
 };
 
-
-class AGENTPP_DECL snmp_notification_mib: public MibGroup
-{
-  public:
-	snmp_notification_mib();
-	virtual ~snmp_notification_mib() { }
+class AGENTPP_DECL snmp_notification_mib : public MibGroup {
+public:
+    snmp_notification_mib();
+    virtual ~snmp_notification_mib() { }
 };
 
 #ifdef AGENTPP_NAMESPACE
 }
 #endif
 
-
 #endif
-
-

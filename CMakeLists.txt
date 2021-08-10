@@ -43,14 +43,15 @@ check_include_files(sys/stat.h CNF_HAVE_SYS_STAT_H)
 
 if(NOT CNF_STDCXX_98_HEADERS)
   check_include_files("stdlib.h;stddef.h" CNF_STDC_HEADERS)
+  check_include_files(ctype.h CNF_HAVE_CTYPE_H)
+  check_include_files(errno.h CNF_HAVE_ERRNO_H)
+  check_include_files(inttypes.h CNF_HAVE_INTTYPES_H)
+  check_include_files(malloc.h HAVE_MALLOC_H)
+  check_include_files(memory.h CNF_HAVE_MEMORY_H)
+  check_include_files(signal.h CNF_HAVE_SIGNAL_H)
   check_include_files(stdlib.h CNF_HAVE_STDLIB_H)
   check_include_files(string.h CNF_HAVE_STRING_H)
-  check_include_files(memory.h CNF_HAVE_MEMORY_H)
   check_include_files(strings.h CNF_HAVE_STRINGS_H)
-  check_include_files(inttypes.h CNF_HAVE_INTTYPES_H)
-  check_include_files(ctype.h CNF_HAVE_CTYPE_H)
-  check_include_files(signal.h CNF_HAVE_SIGNAL_H)
-  check_include_files(errno.h CNF_HAVE_ERRNO_H)
   check_include_files(time.h CNF_HAVE_TIME_H)
 endif()
 
@@ -83,66 +84,47 @@ check_function_exists("strcasecmp" CNF_HAVE_STRCASECMP)
 check_function_exists("stricmp" CNF_HAVE_STRICMP)
 check_function_exists("getpid" CNF_HAVE_GETPID)
 set(HAVE_GETPID ${CNF_HAVE_GETPID})
+set(HAVE_STRCASECMP ${CNF_HAVE_STRCASECMP})
 
-check_function_exists("clock_gettime" HAVE_CLOCK_GETTIME)
-check_function_exists("getaddrinfo" HAVE_GETADDRINFO)
-check_function_exists("gethostbyaddr" HAVE_GETHOSTBYADDR)
-check_function_exists("gethostbyaddr_r" HAVE_GETHOSTBYADDR_R)
-check_function_exists("gethostbyname" HAVE_GETHOSTBYNAME)
-check_function_exists("gethostbyname2" HAVE_GETHOSTBYNAME2)
-check_function_exists("gethostbyname_r" HAVE_GETHOSTBYNAME_R)
-check_function_exists("gethostname" HAVE_GETHOSTNAME)
-check_function_exists("gettimeofday" HAVE_GETTIMEOFDAY)
-check_function_exists("htonl" HAVE_HTONL)
-check_function_exists("inet_aton" HAVE_INET_ATON)
-check_function_exists("inet_ntoa" HAVE_INET_NTOA)
-check_function_exists("inet_ntop" HAVE_INET_NTOP)
-check_function_exists("inet_pton" HAVE_INET_PTON)
-check_function_exists("isdigit" HAVE_ISDIGIT)
-check_function_exists("localtime_r" HAVE_LOCALTIME_R)
-check_include_files(malloc.h HAVE_MALLOC_H)
-check_function_exists("malloc" HAVE_MALLOC)
-check_function_exists("memset" HAVE_MEMSET)
-check_function_exists("poll" HAVE_POLL)
-check_function_exists("realloc" HAVE_REALLOC)
-check_function_exists("select" HAVE_SELECT)
-check_function_exists("socket" HAVE_SOCKET)
-#check_function_exists("strcasecmp" HAVE_STRCASECMP) # again
-check_function_exists("strchr" HAVE_STRCHR)
-check_function_exists("strerror" HAVE_STRERROR)
-#check_function_exists("stricmp" HAVE_STRICMP) # again?
-check_function_exists("strstr" HAVE_STRSTR)
-#check_include_files(inttypes.h HAVE_INTTYPES_H) # again?
-#check_include_files(io.h HAVE_IO_H) # again?
-#check_include_files(limits.h HAVE_LIMITS_H)
-#check_include_files(memory.h HAVE_MEMORY_H) # again?
-#check_include_files(netdb.h HAVE_NETDB_H) # again?
-#check_include_files(netinet/in.h HAVE_NETINET_IN_H) # again?
-#check_include_files(poll.h HAVE_POLL_H) # again?
-#check_include_files(process.h HAVE_PROCESS_H) # again?
-#check_include_files(signal.h HAVE_SIGNAL_H) # again?
-#check_include_files(stdint.h HAVE_STDINT_H) # again?
-#check_include_files(stdio.h HAVE_STDIO_H)
-#check_include_files(stdlib.h HAVE_STDLIB_H) # again?
-#check_include_files(string.h HAVE_STRING_H) # again?
-#check_include_files(strings.h HAVE_STRINGS_H) # again?
-#check_include_files(sys/param.h HAVE_SYS_PARAM_H) # again?
-#check_include_files(sys/select.h HAVE_SYS_SELECT_H) # again?
-#check_include_files(sys/socket.h HAVE_SYS_SOCKET_H) # again?
-#check_include_files(sys/stat.h HAVE_SYS_STAT_H) # again?
-#check_include_files(sys/time.h HAVE_SYS_TIME_H) # again?
-#check_include_files(sys/timeb.h HAVE_SYS_TIMEB_H) # again?
-#check_include_files(sys/types.h HAVE_SYS_TYPES_H) # again?
-#check_include_files(sys/unistd.h HAVE_SYS_UNISTD_H) # again?
-#check_include_files(time.h HAVE_TIME_H) # again?
-#check_include_files(unistd.h HAVE_UNISTD_H) # again?
-
-#if(MSVC)
-#  check_include_files(winsock2.h HAVE_WINSOCK2_H) # again?
-#  check_include_files(ws2tcpip.h HAVE_WS2TCPIP_H) # again?
-#  check_include_files(wspiapi.h HAVE_WSPIAPI_H) # again?
-#  check_function_exists("_getpid" HAVE__GETPID) # again?
-#endif()
+if(NOT MSVC)
+  check_function_exists("clock_gettime" HAVE_CLOCK_GETTIME)
+  check_function_exists("getaddrinfo" HAVE_GETADDRINFO)
+  check_function_exists("gethostbyaddr" HAVE_GETHOSTBYADDR)
+  check_function_exists("gethostbyaddr_r" HAVE_GETHOSTBYADDR_R)
+  check_function_exists("gethostbyname" HAVE_GETHOSTBYNAME)
+  check_function_exists("gethostbyname2" HAVE_GETHOSTBYNAME2)
+  check_function_exists("gethostbyname_r" HAVE_GETHOSTBYNAME_R)
+  check_function_exists("gethostname" HAVE_GETHOSTNAME)
+  check_function_exists("gettimeofday" HAVE_GETTIMEOFDAY)
+  check_function_exists("htonl" HAVE_HTONL)
+  check_function_exists("inet_aton" HAVE_INET_ATON)
+  check_function_exists("inet_ntoa" HAVE_INET_NTOA)
+  check_function_exists("inet_ntop" HAVE_INET_NTOP)
+  check_function_exists("inet_pton" HAVE_INET_PTON)
+  check_function_exists("isdigit" HAVE_ISDIGIT)
+  check_function_exists("localtime_r" HAVE_LOCALTIME_R)
+  check_function_exists("malloc" HAVE_MALLOC)
+  check_function_exists("memset" HAVE_MEMSET)
+  check_function_exists("poll" HAVE_POLL)
+  check_function_exists("realloc" HAVE_REALLOC)
+  check_function_exists("select" HAVE_SELECT)
+  check_function_exists("socket" HAVE_SOCKET)
+  check_function_exists("strchr" HAVE_STRCHR)
+  check_function_exists("strerror" HAVE_STRERROR)
+  check_function_exists("strstr" HAVE_STRSTR)
+else()
+  set(HAVE_GETADDRINFO YES)
+  set(HAVE_HTONL YES)
+  set(HAVE_INET_NTOP YES)
+  set(HAVE_INET_PTON YES)
+  set(HAVE_MALLOC YES)
+  set(HAVE_MEMSET YES)
+  set(HAVE_REALLOC YES)
+  set(HAVE_SELECT YES)
+  set(HAVE_STRCHR YES)
+  set(HAVE_STRERROR YES)
+  set(HAVE_STRSTR YES)
+endif()
 
 check_type_size("pthread_t" SIZEOF_PTHREAD_T LANGUAGE CXX)
 check_type_size("long" SIZEOF_LONG LANGUAGE CXX)
@@ -179,9 +161,9 @@ check_struct_has_member(
   "struct sockaddr_storage" ss_family "${SOCKADDR_HEADERS}" CNF_HAVE_STRUCT_SOCKADDR_STORAGE_SS_FAMILY LANGUAGE CXX
 )
 
-check_struct_has_member(
-  "struct sockaddr_storage" __ss_family "${SOCKADDR_HEADERS}" CNF_HAVE_STRUCT_SOCKADDR_STORAGE___SS_FAMILY LANGUAGE CXX
-)
+# check_struct_has_member(
+#   "struct sockaddr_storage" __ss_family "${SOCKADDR_HEADERS}" CNF_HAVE_STRUCT_SOCKADDR_STORAGE___SS_FAMILY LANGUAGE CXX
+# )
 
 check_type_size("bool" SIZEOF_BOOL LANGUAGE CXX)
 if(SIZEOF_BOOL)
@@ -225,7 +207,6 @@ else()
 endif()
 
 check_include_files("sys/mount.h" HAVE_SYS_MOUNT_H)
-check_function_exists("strcasecmp" HAVE_STRCASECMP)
 
 if(CNF_HAVE_PTHREAD_H)
   set(CMAKE_REQUIRED_LINK_AGENT_PPS "-lpthread")
@@ -257,10 +238,10 @@ set(SNMP_PP_VERSION 3.4.7)
 # see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.8
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG v${SNMP_PP_VERSION}.9
+  #TODO GIT_TAG v${SNMP_PP_VERSION}.10
+  GIT_TAG 194b94174e58b80b11f0e46d32a84f67b6974f89
   GITHUB_REPOSITORY ClausKlein/snmp_pp
-  OPTIONS "SNMP_PP_LOGGING NO"
-          "SNMP_PP_EXAMPLES YES"
+  OPTIONS "SNMP_PP_LOGGING NO" "SNMP_PP_EXAMPLES YES"
 )
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake_config.h.in config.h)
@@ -349,8 +330,9 @@ option(BUILD_SHARED_LIBS "Global flag to cause add_library() to create shared li
 add_library(${PROJECT_NAME} ${MY_HEADER_FILES} ${MY_HEADER_LIB_FILES} ${CMAKE_CURRENT_BINARY_DIR}/config.h ${MY_SRC_FILES})
 
 if(MSVC)
-  # warning level 4 (all warnings as errors: /WX)
-  # FIXME target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX)
+  # FIXME: should be warning level 4 (and all warnings as errors! /WX)
+  target_compile_options(${PROJECT_NAME} PRIVATE /W3 /wd4251)
+  target_compile_definitions(${PROJECT_NAME} PRIVATE _CRT_SECURE_NO_WARNINGS)
 else()
   target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -Wno-unused-parameter)
   # TODO: lots of warnings (more: -Wpedantic)
@@ -478,7 +460,7 @@ if(AGENT_PP_EXAMPLES)
 
   add_test(
     NAME simple-snmp-test
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/simple-snmp-test.sh $<TARGET_FILE:static_table> $<TARGET_FILE:test_app>
+    COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/simple-snmp-test.sh $<TARGET_FILE:static_table> $<TARGET_FILE:test_app>
     WORKING_DIRECTORY $<TARGET_FILE_DIR:test_app>
   )
 endif()

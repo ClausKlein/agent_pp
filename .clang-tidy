@@ -3,8 +3,15 @@ Checks: "-*,\
 boost-*,\
 cert-*,\
 -cert-err58-cpp,\
+-cert-dcl37-c,\
+-cert-dcl51-cpp,\
+-cert-msc30-c,\
+-cert-msc50-cpp,\
 clang-analyzer-*,\
-cppcoreguidelines-*,\
+-clang-analyzer-security.insecureAPI.*,\
+-cppcoreguidelines-*,\
+cppcoreguidelines-init-variables,\
+cppcoreguidelines-explicit-virtual-functions,\
 -cppcoreguidelines-pro-*,\
 -cppcoreguidelines-avoid-*,\
 -cppcoreguidelines-special-*,\
@@ -16,6 +23,7 @@ misc-*,\
 -misc-non-private-member-variables-in-classes,\
 -misc-no-recursion,\
 -misc-unused-parameters,\
+-misc-unconventional-assign-operator,\
 -modernize-*,\
 -modernize-use-trailing-return-type,\
 performance-*,\
