@@ -793,12 +793,13 @@ MibTableRow::MibTableRow(const MibTableRow& other)
 #endif
     for (cur.init(&other.row); cur.get(); cur.next())
     {
-        //		if (cur.get()->get_access() != NOACCESS)
+        // if (cur.get()->get_access() != NOACCESS)
         // Attention! Cast to MibLeaf* avoids special
         // handling of snmpRowStatus objects. So we must
         // check it manually.
         if ((other.row_status) && (cur.get() == other.row_status))
         {
+            // NOLINTNEXTLINE(clang-analyzer-cplusplus.NewDeleteLeaks)
             row_status = add((snmpRowStatus*)cur.get()->clone());
         }
         else
@@ -821,7 +822,10 @@ MibTableRow::MibTableRow(const MibTableRow& other)
  * Destructor - destroys the row and all the MibLeaf objects it contains.
  */
 
-MibTableRow::~MibTableRow() { }
+MibTableRow::~MibTableRow()
+{
+    // NOTE: NOT needed! CK if (row_status != nullptr) delete row_status;
+}
 
 MibTableRow* MibTableRow::clone() { return new MibTableRow(*this); }
 
@@ -1747,7 +1751,11 @@ Oidx MibTable::find_succ(const Oidx& o, Request*)
         {
             l = find_next(l->get_oid());
         }
+
+        // TODO: Potential leak of memory pointed to by field 'ptr'! CK
+        // NOLINTNEXTLINE(clang-analyzer-cplusplus.NewDeleteLeaks)
         if (l) { return l->get_oid(); }
+
         return Oidx();
     }
 }
@@ -1775,7 +1783,6 @@ MibLeaf* MibTable::find_prev(const Oidx& o)
 #endif
     for (cur.initLast(&content.first()->row); cur.get(); cur.prev(), col--)
     {
-
         if (cur.get()->get_oid() < o) break;
     }
     if (!cur.get()) return 0;

@@ -942,9 +942,12 @@ public:
     {
         T** h   = content;
         content = new T*[sz + 1];
-        memcpy(content + 1, h, sz * sizeof(T*));
+        if (h != nullptr)
+        {
+            memcpy(content + 1, h, sz * sizeof(T*));
+            delete[] h;
+        }
         content[0] = t;
-        if (h) { delete[] h; }
         sz++;
         return t;
     }
@@ -961,9 +964,13 @@ public:
     {
         T** h   = content;
         content = new T*[sz + 1];
-        memcpy(content, h, sz * sizeof(T*));
-        content[sz++] = t;
-        if (h) { delete[] h; }
+        if (h != nullptr)
+        {
+            memcpy(content, h, sz * sizeof(T*));
+            delete[] h;
+        }
+        content[sz] = t;
+        sz++;
         return t;
     }
 
@@ -1307,8 +1314,10 @@ public:
 
     void initLast(const Array<T>* l)
     {
+        // NOTE: checked Called C++ object pointer is null! CK
+        // XXX assert(l != nullptr);
         list   = l;
-        cursor = l->size() - 1;
+        cursor = l->size() - 1; // NOLINT(clang-analyzer-core.CallAndMessage)
     }
 
     T* get()

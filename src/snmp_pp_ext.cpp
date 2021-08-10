@@ -721,13 +721,14 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
                 return SNMP_ERROR_TOO_BIG;
 
             // copy fromaddress and remote port
-            char* addr    = inet_ntoa(((sockaddr_in&)from_addr).sin_addr); // TODO: use inet_ntop()! CK
+            char*    addr = inet_ntoa(((sockaddr_in&)from_addr)
+                                       .sin_addr); // TODO: use inet_ntop()! CK
             uint16_t port = ntohs(((sockaddr_in&)from_addr).sin_port);
             fromaddr      = addr;
             fromaddr.set_port(port);
 
-            debugprintf(1, "++ AGENT++: data received from %s port %d.",
-                addr, port);
+            debugprintf(
+                1, "++ AGENT++: data received from %s port %d.", addr, port);
             debughexprintf(5, receive_buffer, receive_buffer_len);
 
             OctetStr engine_id;
@@ -777,8 +778,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
                     engine_id.get_printable(), security_name.get_printable(),
                     security_model, pdu.get_security_level());
                 debugprintf(2, " Addr = %s, port = %i\n",
-                    fromaddr.get_printable(),
-                    fromaddr.get_port());
+                    fromaddr.get_printable(), fromaddr.get_port());
             }
             return status; // Success! return
         }
@@ -810,8 +810,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             fromaddr.set_port(ntohs(((sockaddr_in6&)from_addr).sin6_port));
 
             debugprintf(1, "++ AGENT++: ipv6 data received from %s port %d.",
-                fromaddr.get_printable(),
-                fromaddr.get_port());
+                fromaddr.get_printable(), fromaddr.get_port());
             debughexprintf(5, receive_buffer, receive_buffer_len);
 
             int status = snmpmsg.load(receive_buffer, receive_buffer_len);

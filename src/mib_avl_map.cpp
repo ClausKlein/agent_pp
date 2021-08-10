@@ -364,6 +364,7 @@ MibEntryPtr& OidxPtrMibEntryPtrAVLMap::operator[](OidxPtr item)
         // NOLINTNEXTLINE(clang-analyzer-core.StackAddressEscape)
         return _found_node->cont;
     }
+    // NOLINTNEXTLINE(clang-analyzer-core.StackAddressEscape)
 }
 
 void OidxPtrMibEntryPtrAVLMap::_del(

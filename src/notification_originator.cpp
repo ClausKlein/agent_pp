@@ -427,7 +427,8 @@ int NotificationOriginator::send_notify(ListCursor<MibTableRow>& cur,
     targetDomain = ((snmpTargetAddrTDomain*)cur.get()->first())->get_state();
 #endif
 
-    Oidx trapoid(id);
+    const Oidx& trapoid(id);
+
 #ifdef _SNMPv3
     Pdux pdu;
     pdu.set_type((notify == TRAP) ? sNMP_PDU_TRAP : sNMP_PDU_INFORM);

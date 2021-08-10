@@ -73,7 +73,7 @@ void CmdThread::run()
 
     cmdExecutionCmdEntry::instance->end_synch();
 
-    int err = system(cmdline.get_printable());
+    int err = system(cmdline.get_printable()); // NOLINT(cert-env33-c)
 
     cmdExecutionCmdEntry::instance->start_synch();
     ((cmdExecutionCmdStatus*)row->get_nth(1))->set_state((err != 0) ? 4 : 3);
