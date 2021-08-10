@@ -720,26 +720,23 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             if (receive_buffer_len >= MAX_SNMP_PACKET)
                 return SNMP_ERROR_TOO_BIG;
 
+            // copy fromaddress and remote port
+            char* addr    = inet_ntoa(((sockaddr_in&)from_addr).sin_addr); // TODO: use inet_ntop()! CK
+            uint16_t port = ntohs(((sockaddr_in&)from_addr).sin_port);
+            fromaddr      = addr;
+            fromaddr.set_port(port);
+
             debugprintf(1, "++ AGENT++: data received from %s port %d.",
-                IpAddress(inet_ntoa(((sockaddr_in&)from_addr).sin_addr))
-                    .get_printable(),
-                ntohs(((sockaddr_in&)from_addr).sin_port));
+                addr, port);
             debughexprintf(5, receive_buffer, receive_buffer_len);
 
             OctetStr engine_id;
             OctetStr security_name;
             SmiINT32 security_model = 0;
 
-            // copy fromaddress and remote port
-            char* addr = inet_ntoa(((sockaddr_in&)from_addr).sin_addr);
-            fromaddr   = addr;
-            fromaddr.set_port(ntohs(((sockaddr_in&)from_addr).sin_port));
+            int status = snmpmsg.load(receive_buffer, receive_buffer_len);
+            if (status != SNMP_CLASS_SUCCESS) return status;
 
-            snmpmsg.load(receive_buffer, receive_buffer_len);
-
-            target.set_address(fromaddr);
-
-            int status = SNMP_CLASS_SUCCESS;
             if (snmpmsg.is_v3_message() == true)
             {
                 status = snmpmsg.unloadv3(pdu, version, engine_id,
@@ -768,6 +765,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             }
             target.set_security_model(security_model);
             target.set_version(version);
+            target.set_address(fromaddr);
 
             // v3 support
             if (version == version3)
@@ -779,7 +777,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
                     engine_id.get_printable(), security_name.get_printable(),
                     security_model, pdu.get_security_level());
                 debugprintf(2, " Addr = %s, port = %i\n",
-                    inet_ntoa(((sockaddr_in&)from_addr).sin_addr),
+                    fromaddr.get_printable(),
                     fromaddr.get_port());
             }
             return status; // Success! return
@@ -811,8 +809,9 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             fromaddr = addr;
             fromaddr.set_port(ntohs(((sockaddr_in6&)from_addr).sin6_port));
 
-            debugprintf(1, "++ AGENT++: ipv6 data received from %s",
-                fromaddr.get_printable());
+            debugprintf(1, "++ AGENT++: ipv6 data received from %s port %d.",
+                fromaddr.get_printable(),
+                fromaddr.get_port());
             debughexprintf(5, receive_buffer, receive_buffer_len);
 
             int status = snmpmsg.load(receive_buffer, receive_buffer_len);
