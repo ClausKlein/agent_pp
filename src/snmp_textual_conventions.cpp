@@ -83,18 +83,18 @@ int SnmpDisplayString::prepare_set_request(Request* req, int& ind)
 bool SnmpDisplayString::value_ok(const Vbx& vb)
 {
     OctetStr ostr;
-    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return FALSE;
+    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return false;
     for (unsigned int i = 0; i < ostr.len(); i++)
     {
-        if (ostr[i] > 127u) return FALSE;
+        if (ostr[i] > 127u) return false;
         // check for CR NULL or CR LF
         if (ostr[i] == '\r')
         {
-            if (i + 1 == ostr.len()) return FALSE;
-            if ((ostr[i + 1] != 0) && (ostr[i + 1] != '\n')) return FALSE;
+            if (i + 1 == ostr.len()) return false;
+            if ((ostr[i + 1] != 0) && (ostr[i + 1] != '\n')) return false;
         }
     }
-    return TRUE;
+    return true;
 }
 
 /*--------------------- class SnmpAdminString -------------------------*/
@@ -169,7 +169,7 @@ OctetStr SnmpEngineID::create_engine_id(unsigned short p)
 {
     // 8 = v3EngineID, 1370h = 4976 = AGENT++ enterprise ID
     OctetStr      engineID((const unsigned char*)"\x80\x00\x13\x70\x05", 5);
-    unsigned char port[3];
+    unsigned char port[3] {};
     port[0] = p / 256;
     port[1] = p % 256;
     port[2] = 0;
@@ -185,7 +185,7 @@ OctetStr SnmpEngineID::create_engine_id(unsigned short p)
     else
     {
         time_t   ct = time(0);
-        char*    tp = ctime(&ct);
+        char*    tp = ctime(&ct); // TODO: use ctime_s()! CK
         OctetStr t((unsigned char*)tp, (strlen(tp) > 23) ? 23 : strlen(tp));
         engineID += t;
         engineID += OctetStr(port, 2);
@@ -221,16 +221,16 @@ MibEntryPtr SnmpTagValue::clone()
 bool SnmpTagValue::value_ok(const Vbx& vb)
 {
     OctetStr ostr;
-    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return FALSE;
+    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return false;
     int length = ostr.len();
-    if (length == 0) return TRUE;
-    if ((length < 0) || (length > 255)) return FALSE;
+    if (length == 0) return true;
+    if ((length < 0) || (length > 255)) return false;
 
     for (int i = 0; i < length; i++)
     {
-        if (is_delimiter(ostr[i])) return FALSE;
+        if (is_delimiter(ostr[i])) return false;
     }
-    return TRUE;
+    return true;
 }
 
 bool SnmpTagValue::is_delimiter(char c)
@@ -276,37 +276,37 @@ MibEntryPtr SnmpTagList::clone()
 bool SnmpTagList::value_ok(const Vbx& vb)
 {
     OctetStr ostr;
-    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return FALSE;
+    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return false;
 
     // pointer into ostr!
     char* s = (char*)ostr.data();
     if (s)
     {
         int length = ostr.len();
-        if (length > 255) return FALSE;
+        if (length > 255) return false;
 
-        if ((length > 0) && (SnmpTagValue::is_delimiter(s[0]))) return FALSE;
+        if ((length > 0) && (SnmpTagValue::is_delimiter(s[0]))) return false;
         if ((length > 0) && (SnmpTagValue::is_delimiter(s[length - 1])))
-            return FALSE;
+            return false;
         for (int i = 0; i < length; i++)
         {
             if ((SnmpTagValue::is_delimiter(s[i]))
                 && ((i + 1 < length)
                     && (SnmpTagValue::is_delimiter(s[i + 1]))))
-                return FALSE;
+                return false;
         }
     }
-    return TRUE;
+    return true;
 }
 
 bool SnmpTagList::contains(const char* tag)
 {
-    if (!tag) return FALSE;
+    if (!tag) return false;
 
     int   len = ((OctetStr*)value)->len();
     char* l   = new char[len + 1];
-    strncpy(l, (char*)((OctetStr*)value)->data(), len);
-    l[len] = 0;
+    strlcpy(l, (char*)((OctetStr*)value)->data(), len);
+    l[len] = 0; // OK, CK
 
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 10);
     LOG("SnmpTagList: contains: (taglist)(tag)");
@@ -324,12 +324,12 @@ bool SnmpTagList::contains(const char* tag)
                 || (SnmpTagValue::is_delimiter(*(start + strlen(tag))))))
         {
             delete[] l;
-            return TRUE;
+            return true;
         }
         start++;
     }
     delete[] l;
-    return FALSE;
+    return false;
 }
 
 /**
@@ -372,9 +372,9 @@ int TestAndIncr::prepare_set_request(Request* req, int& reqind)
 bool TestAndIncr::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
-    if (vb.get_value(v) != SNMP_CLASS_SUCCESS) return FALSE;
-    if ((v < 0) || (v > 2147483647)) return FALSE;
-    return TRUE;
+    if (vb.get_value(v) != SNMP_CLASS_SUCCESS) return false;
+    if ((v < 0) || (v > 2147483647)) return false;
+    return true;
 }
 
 /*--------------------------- class storageType -------------------------*/
@@ -394,13 +394,13 @@ MibEntryPtr StorageType::clone()
 bool StorageType::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
-    if (vb.get_value(v) != SNMP_CLASS_SUCCESS) return FALSE;
-    if ((v < 1) || (v > 5)) return FALSE;
+    if (vb.get_value(v) != SNMP_CLASS_SUCCESS) return false;
+    if ((v < 1) || (v > 5)) return false;
     if ((valid()) && (get_state() < storageType_permanent)
         && (v >= storageType_permanent))
-        return FALSE;
-    if ((valid()) && (get_state() >= storageType_readOnly)) return FALSE;
-    return TRUE;
+        return false;
+    if ((valid()) && (get_state() >= storageType_readOnly)) return false;
+    return true;
 }
 
 bool StorageType::row_is_volatile() { return (get_state() <= 2); }
@@ -480,10 +480,10 @@ bool StorageTable::is_persistent(MibTableRow* row)
     {
         if (((StorageType*)(row->get_nth(storage_type)))->row_is_volatile())
         {
-            return FALSE;
+            return false;
         }
     }
-    return TRUE;
+    return true;
 }
 
 void StorageTable::add_storage_col(StorageType* col)
@@ -575,9 +575,9 @@ MibEntryPtr SnmpInt32MinMax::clone()
 bool SnmpInt32MinMax::value_ok(const Vbx& v)
 {
     SnmpInt32 si;
-    if (v.get_value(si) != SNMP_CLASS_SUCCESS) return FALSE;
-    if (((int)si < min) || ((int)si > max)) return FALSE;
-    return TRUE;
+    if (v.get_value(si) != SNMP_CLASS_SUCCESS) return false;
+    if (((int)si < min) || ((int)si > max)) return false;
+    return true;
 }
 
 int SnmpInt32MinMax::get_state() { return *((SnmpInt32*)value); }
@@ -741,9 +741,19 @@ void DateAndTime::set_state(const OctetStr& s) { *((OctetStr*)value) = s; }
 
 void DateAndTime::update()
 {
-    time_t     c  = sysUpTime::get_currentTime();
-    struct tm* dt = localtime(&c);
-    if (!dt) return; // TODO: possibly log an error; Use localtime_r!
+    time_t     c = sysUpTime::get_currentTime();
+    struct tm  stm { };
+    struct tm* dt = nullptr;
+
+#ifdef HAVE_LOCALTIME_R
+    dt =
+        localtime_r(&c, &stm); // TODO: check if gmtime_r() would be better? CK
+#else
+    dt = localtime(&c); // TODO: use localtime_s()! CK
+#endif
+
+    if (!dt) return; // TODO: possibly log an error;
+
     OctetStr val;
     val += (unsigned char)((dt->tm_year + 1900) >> 8) & 0xFF;
     val += (unsigned char)(dt->tm_year + 1900) & 0xFF;
@@ -753,6 +763,7 @@ void DateAndTime::update()
     val += (unsigned char)dt->tm_min;
     val += (unsigned char)dt->tm_sec;
     val += (unsigned char)0;
+
 #if defined __FreeBSD__ || defined __APPLE__
     if (dt->tm_gmtoff >= 0)
         val += '+';
@@ -764,7 +775,7 @@ void DateAndTime::update()
     // initialize timezone needed?
     // tzset();
 #    ifdef WIN32
-    long timezone = _timezone;
+    long timezone = _timezone; // TODO: use _get_timezone! CK
 #    endif
     if (timezone < 0)
         val += '+';
@@ -772,6 +783,7 @@ void DateAndTime::update()
         val += '-';
     unsigned int tz = std::abs(timezone);
 #endif
+
     val += (unsigned char)((tz / 3600)
         + ((dt->tm_isdst > 0) ? ((timezone > 0) ? -1 : 1) : 0));
     val += (unsigned char)((tz % 3600) / 60);

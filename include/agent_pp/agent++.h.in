@@ -92,29 +92,6 @@
 #    define GENERIC_CLASS_TYPE_MISMATCH -1
 #endif
 
-#ifndef TRUE
-#    define TRUE 1
-#endif
-
-#ifndef FALSE
-#    define FALSE 0
-#endif
-
-#if @NEED_DEFINE_BOOL@
-#    ifdef bool
-#        undef bool
-#    endif
-#    define bool int
-#    ifdef true
-#        undef true
-#    endif
-#    define true TRUE
-#    ifdef false
-#        undef false
-#    endif
-#    define false FALSE
-#endif
-
 #if @WITH_NAMESPACE@
 #    define AGENTPP_NAMESPACE
 #else

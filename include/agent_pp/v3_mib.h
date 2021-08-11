@@ -1,21 +1,21 @@
 /*_############################################################################
-  _## 
-  _##  AGENT++ 4.5 - v3_mib.h  
-  _## 
+  _##
+  _##  AGENT++ 4.5 - v3_mib.h
+  _##
   _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##  
+  _##
   _##  Licensed under the Apache License, Version 2.0 (the "License");
   _##  you may not use this file except in compliance with the License.
   _##  You may obtain a copy of the License at
-  _##  
+  _##
   _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##  
+  _##
   _##  Unless required by applicable law or agreed to in writing, software
   _##  distributed under the License is distributed on an "AS IS" BASIS,
   _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   _##  See the License for the specific language governing permissions and
   _##  limitations under the License.
-  _##  
+  _##
   _##########################################################################*/
 #ifndef v3_mib_h_
 #define v3_mib_h_
@@ -24,80 +24,81 @@
 
 #ifdef _SNMPv3
 
-#include <agent_pp/mib.h>
-#include <snmp_pp/usm_v3.h>
-#include <snmp_pp/v3.h>
-#include <agent_pp/snmp_textual_conventions.h>
+#    include <agent_pp/mib.h>
+#    include <agent_pp/snmp_textual_conventions.h>
+#    include <snmp_pp/usm_v3.h>
+#    include <snmp_pp/v3.h>
 
-#ifdef AGENTPP_NAMESPACE
-namespace Agentpp {
-    using namespace Snmp_pp;
-#endif
+#    ifdef AGENTPP_NAMESPACE
+namespace Agentpp
+{
+using namespace Snmp_pp;
+#    endif
 
 /**********************************************************************
- *  
+ *
  *  class V3SnmpEngine
- * 
+ *
  **********************************************************************/
 
-class AGENTPP_DECL V3SnmpEngine: public MibGroup {
+class AGENTPP_DECL V3SnmpEngine : public MibGroup {
 
 public:
-
-	V3SnmpEngine(void);
-	V3SnmpEngine(NS_SNMP v3MP *mp);
+    V3SnmpEngine(void);
+    V3SnmpEngine(NS_SNMP v3MP* mp);
 };
 
-class AGENTPP_DECL V3SnmpEngineID: public MibLeaf {
+class AGENTPP_DECL V3SnmpEngineID : public MibLeaf {
 
 public:
-       V3SnmpEngineID(const NS_SNMP v3MP *mp);
-       void get_request(Request*, int) override;
+    V3SnmpEngineID(const NS_SNMP v3MP* mp);
+    void get_request(Request*, int) override;
+
 private:
-       const NS_SNMP v3MP *v3mp;
+    const NS_SNMP v3MP* v3mp;
 };
 
-class AGENTPP_DECL V3SnmpEngineBoots: public MibLeaf {
+class AGENTPP_DECL V3SnmpEngineBoots : public MibLeaf {
 
 public:
-       V3SnmpEngineBoots(const NS_SNMP USM *u);
-       void get_request(Request*, int) override;
+    V3SnmpEngineBoots(const NS_SNMP USM* u);
+    void get_request(Request*, int) override;
+
 private:
-       const NS_SNMP USM *usm;
+    const NS_SNMP USM* usm;
 };
 
-class AGENTPP_DECL V3SnmpEngineTime: public MibLeaf {
+class AGENTPP_DECL V3SnmpEngineTime : public MibLeaf {
 
 public:
-       V3SnmpEngineTime(const NS_SNMP USM *u);
-       void get_request(Request*, int) override;
+    V3SnmpEngineTime(const NS_SNMP USM* u);
+    void get_request(Request*, int) override;
+
 private:
-       const NS_SNMP USM *usm;
+    const NS_SNMP USM* usm;
 };
 
-class AGENTPP_DECL V3SnmpEngineMaxMessageSize: public MibLeaf {
+class AGENTPP_DECL V3SnmpEngineMaxMessageSize : public MibLeaf {
 
 public:
-       V3SnmpEngineMaxMessageSize();
+    V3SnmpEngineMaxMessageSize();
 };
 
+class AGENTPP_DECL UsmUserTableStatus : public snmpRowStatus {
+public:
+    UsmUserTableStatus(const Oidx&, int _base_len, NS_SNMP USM* usm);
+    virtual ~UsmUserTableStatus();
 
-class AGENTPP_DECL UsmUserTableStatus: public snmpRowStatus 
-{
- public:
-  UsmUserTableStatus(const Oidx&, int _base_len, NS_SNMP USM *usm);
-  virtual ~UsmUserTableStatus();
+    MibEntryPtr clone() override;
+    int         set(const Vbx& vb) override;
+    int         unset() override;
 
-  MibEntryPtr clone() override;
-  int set(const Vbx& vb) override;
-  int unset() override;
+    void deleteUsmUser();
+    void addUsmUser();
 
-  void deleteUsmUser();
-  void addUsmUser();
-
- private:
-  int base_len;
-  NS_SNMP USM *usm;
+private:
+    int     base_len;
+    NS_SNMP USM* usm;
 };
 
 /**
@@ -123,397 +124,389 @@ class AGENTPP_DECL UsmUserTableStatus: public snmpRowStatus
  * The difference between user name and security name is documented in
  * the USM class.
  */
-class AGENTPP_DECL UsmUserTable: public StorageTable
-{
- public:
-  UsmUserTable();
-  UsmUserTable(v3MP*);
-  virtual ~UsmUserTable();
+class AGENTPP_DECL UsmUserTable : public StorageTable {
+public:
+    UsmUserTable();
+    UsmUserTable(v3MP*);
+    virtual ~UsmUserTable();
 
-  bool ready(Vbx*, int, MibTableRow*) override;
-  void row_added(MibTableRow* new_row, const Oidx& ind, MibTable*) override;
-  void row_init(MibTableRow* new_row, const Oidx& ind, MibTable*) override;
-  void row_deactivated(MibTableRow*, const Oidx&, MibTable*) override; 
+    bool ready(Vbx*, int, MibTableRow*) override;
+    void row_added(MibTableRow* new_row, const Oidx& ind, MibTable*) override;
+    void row_init(MibTableRow* new_row, const Oidx& ind, MibTable*) override;
+    void row_deactivated(MibTableRow*, const Oidx&, MibTable*) override;
 
-  /**
-   * Add a user to the table.
-   *
-   * It is not recommended to add a user where userName and
-   * securityName differ.
-   *
-   * @note This function takes the localized keys as param.
-   */
-  MibTableRow *addNewRow(const NS_SNMP OctetStr& engineID,
-			 const NS_SNMP OctetStr& userName,
-			 const NS_SNMP OctetStr& securityName,
-			 int authProtocol, const NS_SNMP OctetStr& authKey,
-			 int privProtocol, const NS_SNMP OctetStr& privKey,
-			 const bool add_to_usm = TRUE);
+    /**
+     * Add a user to the table.
+     *
+     * It is not recommended to add a user where userName and
+     * securityName differ.
+     *
+     * @note This function takes the localized keys as param.
+     */
+    MibTableRow* addNewRow(const NS_SNMP OctetStr& engineID,
+        const NS_SNMP OctetStr& userName, const NS_SNMP OctetStr& securityName,
+        int authProtocol, const NS_SNMP OctetStr& authKey, int privProtocol,
+        const NS_SNMP OctetStr& privKey, const bool add_to_usm = true);
 
-  /**
-   * Add a user to the table.
-   *
-   * This function calls the addNewRow() function with security name
-   * set to user name (which is recommended). The add_to_usm is only used
-   * internally by agent++ and should be kept to TRUE.
-   *
-   * @note This function takes the localized keys as param.
-   */
-  MibTableRow *addNewRow(const NS_SNMP OctetStr& engineID,
-			 const NS_SNMP OctetStr& userName,
-			 int authProtocol, const NS_SNMP OctetStr& authKey,
-			 int privProtocol, const NS_SNMP OctetStr& privKey,
-			 const bool add_to_usm = TRUE)
-      { return addNewRow(engineID, userName, userName, authProtocol, authKey,
-			 privProtocol, privKey, add_to_usm); };
+    /**
+     * Add a user to the table.
+     *
+     * This function calls the addNewRow() function with security name
+     * set to user name (which is recommended). The add_to_usm is only used
+     * internally by agent++ and should be kept to true.
+     *
+     * @note This function takes the localized keys as param.
+     */
+    MibTableRow* addNewRow(const NS_SNMP OctetStr& engineID,
+        const NS_SNMP OctetStr& userName, int authProtocol,
+        const NS_SNMP OctetStr& authKey, int privProtocol,
+        const NS_SNMP OctetStr& privKey, const bool add_to_usm = true)
+    {
+        return addNewRow(engineID, userName, userName, authProtocol, authKey,
+            privProtocol, privKey, add_to_usm);
+    };
 
-  /**
-   * Add a user to the table and to USM.
-   *
-   * From the passed params and the local engineID a localized entry
-   * is created and added to the table. If addPasswordsToUSM is
-   * true, the passwords are passed to the USM, so localized
-   * entries can automatically be added when needed.
-   *
-   * For all users added with passwords, localized entries will be
-   * created automatically when needed.
-   *
-   * @note This function takes the passwords as param.
-   */
-  MibTableRow *addNewRow(const NS_SNMP OctetStr& userName,
-			 const NS_SNMP OctetStr& securityName,
-			 int authProtocol,
-			 int privProtocol,
-			 const NS_SNMP OctetStr& authPassword,
-			 const NS_SNMP OctetStr& privPassword,
-			 const bool addPasswordsToUSM = true);
+    /**
+     * Add a user to the table and to USM.
+     *
+     * From the passed params and the local engineID a localized entry
+     * is created and added to the table. If addPasswordsToUSM is
+     * true, the passwords are passed to the USM, so localized
+     * entries can automatically be added when needed.
+     *
+     * For all users added with passwords, localized entries will be
+     * created automatically when needed.
+     *
+     * @note This function takes the passwords as param.
+     */
+    MibTableRow* addNewRow(const NS_SNMP OctetStr& userName,
+        const NS_SNMP OctetStr& securityName, int authProtocol,
+        int privProtocol, const NS_SNMP OctetStr& authPassword,
+        const NS_SNMP OctetStr& privPassword,
+        const bool              addPasswordsToUSM = true);
 
-  /**
-   * Add a user to the table and to USM.
-   *
-   * From the passed params and the engineID a localized entry
-   * is created and added to the table. If addPasswordsToUSM is
-   * true, the passwords are passed to the USM, so localized
-   * entries can automatically be added when needed.
-   *
-   * @note This function takes the passwords as param.
-   */
-  MibTableRow *addNewRow(const NS_SNMP OctetStr& userName,
-			 const NS_SNMP OctetStr& securityName,
-			 int authProtocol,
-			 int privProtocol,
-			 const NS_SNMP OctetStr& authPassword,
-			 const NS_SNMP OctetStr& privPassword,
-			 const NS_SNMP OctetStr& engineID,
-			 const bool addPassWordsToUSM = false);
+    /**
+     * Add a user to the table and to USM.
+     *
+     * From the passed params and the engineID a localized entry
+     * is created and added to the table. If addPasswordsToUSM is
+     * true, the passwords are passed to the USM, so localized
+     * entries can automatically be added when needed.
+     *
+     * @note This function takes the passwords as param.
+     */
+    MibTableRow* addNewRow(const NS_SNMP OctetStr& userName,
+        const NS_SNMP OctetStr& securityName, int authProtocol,
+        int privProtocol, const NS_SNMP OctetStr& authPassword,
+        const NS_SNMP OctetStr& privPassword, const NS_SNMP OctetStr& engineID,
+        const bool addPassWordsToUSM = false);
 
-  /**
-   * Add a user to the table and to USM.
-   *
-   * This function calls the addNewRow() function with security name
-   * set to user name (which is recommended).
-   *
-   * @note This function takes the passwords as param.
-   */
-  MibTableRow *addNewRow(const NS_SNMP OctetStr& userName,
-			 int authProtocol,
-			 int privProtocol,
-			 const NS_SNMP OctetStr& authPassword,
-			 const NS_SNMP OctetStr& privPassword)
-      { return addNewRow(userName, userName, authProtocol, privProtocol,
-			 authPassword, privPassword, true); };
+    /**
+     * Add a user to the table and to USM.
+     *
+     * This function calls the addNewRow() function with security name
+     * set to user name (which is recommended).
+     *
+     * @note This function takes the passwords as param.
+     */
+    MibTableRow* addNewRow(const NS_SNMP OctetStr& userName, int authProtocol,
+        int privProtocol, const NS_SNMP OctetStr& authPassword,
+        const NS_SNMP OctetStr& privPassword)
+    {
+        return addNewRow(userName, userName, authProtocol, privProtocol,
+            authPassword, privPassword, true);
+    };
 
-  /**
-   * Add a user to the table and to USM.
-   *
-   * This function calls the addNewRow() function with security name
-   * set to user name (which is recommended).
-   *
-   * @note This function takes the passwords as param.
-   */
-  MibTableRow *addNewRow(const NS_SNMP OctetStr& userName,
-			 int authProtocol,
-			 int privProtocol,
-			 const NS_SNMP OctetStr& authPassword,
-			 const NS_SNMP OctetStr& privPassword,
-			 const NS_SNMP OctetStr& engineID,
-			 const bool addPassWordsToUSM = false)
-      { return addNewRow(userName, userName, authProtocol, privProtocol,
-			 authPassword, privPassword, engineID, addPassWordsToUSM); };
+    /**
+     * Add a user to the table and to USM.
+     *
+     * This function calls the addNewRow() function with security name
+     * set to user name (which is recommended).
+     *
+     * @note This function takes the passwords as param.
+     */
+    MibTableRow* addNewRow(const NS_SNMP OctetStr& userName, int authProtocol,
+        int privProtocol, const NS_SNMP OctetStr& authPassword,
+        const NS_SNMP OctetStr& privPassword, const NS_SNMP OctetStr& engineID,
+        const bool addPassWordsToUSM = false)
+    {
+        return addNewRow(userName, userName, authProtocol, privProtocol,
+            authPassword, privPassword, engineID, addPassWordsToUSM);
+    };
 
-  /**
-   * Delete a row from the table and from USM.
-   *
-   * The entry with engineID and userName is removed from the table
-   * and from the USM.
-   */
-  bool deleteRow(const NS_SNMP OctetStr& engineID,
-                    const NS_SNMP OctetStr& userName);
+    /**
+     * Delete a row from the table and from USM.
+     *
+     * The entry with engineID and userName is removed from the table
+     * and from the USM.
+     */
+    bool deleteRow(
+        const NS_SNMP OctetStr& engineID, const NS_SNMP OctetStr& userName);
 
-  /**
-   * Delete all rows from the table and from USM.
-   *
-   * All entries with the userName are removed from the table
-   * and from the USM. If a password was stored in USM, it is also
-   * removed.
-   * This method is thread-safe regarding concurrent calls on the
-   * same user.
-   *
-   * @param userName
-   *    the name of the user whose entries should be deleted.
-   */
-  void deleteRows(const NS_SNMP OctetStr& userName);
-  
-  /**
-   * Remove all users from the USM. Engine times, boot counter, and ID will
-   * not be affected.This method is not synchronized, do not use it while
-   * other threads might use the USM.
-   */
-  void removeAllUsers();
+    /**
+     * Delete all rows from the table and from USM.
+     *
+     * All entries with the userName are removed from the table
+     * and from the USM. If a password was stored in USM, it is also
+     * removed.
+     * This method is thread-safe regarding concurrent calls on the
+     * same user.
+     *
+     * @param userName
+     *    the name of the user whose entries should be deleted.
+     */
+    void deleteRows(const NS_SNMP OctetStr& userName);
 
-  MibTableRow* get_row(const Oidx& o) {  return find_index(o); };
+    /**
+     * Remove all users from the USM. Engine times, boot counter, and ID will
+     * not be affected.This method is not synchronized, do not use it while
+     * other threads might use the USM.
+     */
+    void removeAllUsers();
 
-  static const Oidx auth_base;
-  static const Oidx priv_base;
+    MibTableRow* get_row(const Oidx& o) { return find_index(o); };
 
- protected:
-  void initialize_key_change(MibTableRow*);
+    static const Oidx auth_base;
+    static const Oidx priv_base;
 
- private:
-  NS_SNMP USM *usm;
+protected:
+    void initialize_key_change(MibTableRow*);
+
+private:
+    NS_SNMP USM* usm;
 };
 
+class AGENTPP_DECL UsmCloneFrom : public MibLeaf {
+public:
+    UsmCloneFrom(const Oidx& o, NS_SNMP USM* u);
+    virtual ~UsmCloneFrom() {};
+    int         prepare_set_request(Request* req, int& ind) override;
+    void        get_request(Request* req, int ind) override;
+    int         set(const Vbx& vb) override;
+    bool        value_ok(const Vbx& vb) override;
+    MibEntryPtr clone() override;
 
-class AGENTPP_DECL UsmCloneFrom: public MibLeaf
-{
- public:
-  UsmCloneFrom(const Oidx& o, NS_SNMP USM *u);
-  virtual ~UsmCloneFrom() {};
-  int prepare_set_request(Request* req, int& ind) override;
-  void get_request(Request* req, int ind) override;
-  int set(const Vbx& vb) override;
-  bool value_ok(const Vbx& vb) override;
-  MibEntryPtr clone() override;
- private:
-  NS_SNMP USM *usm;
+private:
+    NS_SNMP USM* usm;
 };
 
-class AGENTPP_DECL UsmKeyChange: public MibLeaf
-{
- public:
-  UsmKeyChange(const Oidx& o, int keylen, int hashfunction, int typeOfKey,
-	       UsmKeyChange* ukc, NS_SNMP USM *u);
-  UsmKeyChange(const Oidx& o, NS_SNMP USM *u);
-  virtual ~UsmKeyChange();
-  
-  int unset() override;
-  void initialize(int keylen, int hashfunction, int typeOfKey, UsmKeyChange* ukc);
-  void get_request(Request* req, int ind) override;
-  int prepare_set_request(Request* req, int& ind) override;
-  int set(const Vbx& vb) override;
-  bool value_ok(const Vbx& vb) override;
-  MibEntryPtr clone() override;
+class AGENTPP_DECL UsmKeyChange : public MibLeaf {
+public:
+    UsmKeyChange(const Oidx& o, int keylen, int hashfunction, int typeOfKey,
+        UsmKeyChange* ukc, NS_SNMP USM* u);
+    UsmKeyChange(const Oidx& o, NS_SNMP USM* u);
+    virtual ~UsmKeyChange();
 
- protected:
-  bool process_key_change(NS_SNMP OctetStr& os);
+    int  unset() override;
+    void initialize(
+        int keylen, int hashfunction, int typeOfKey, UsmKeyChange* ukc);
+    void        get_request(Request* req, int ind) override;
+    int         prepare_set_request(Request* req, int& ind) override;
+    int         set(const Vbx& vb) override;
+    bool        value_ok(const Vbx& vb) override;
+    MibEntryPtr clone() override;
 
-  int type_of_key;
-  int key_len;
-  int hash_function;
-  UsmKeyChange* otherKeyChangeObject;
-  NS_SNMP USM *usm;
+protected:
+    bool process_key_change(NS_SNMP OctetStr& os);
+
+    int           type_of_key;
+    int           key_len;
+    int           hash_function;
+    UsmKeyChange* otherKeyChangeObject;
+    NS_SNMP USM* usm;
 };
 
-class AGENTPP_DECL UsmOwnKeyChange: public UsmKeyChange
-{
- public:
-  UsmOwnKeyChange(const Oidx& o, NS_SNMP USM *u) : UsmKeyChange(o, u) {};
-  UsmOwnKeyChange(const Oidx& o, int keylen, int hashfunction, int typeOfKey,
-		  UsmKeyChange* ukc, NS_SNMP USM *u)
-    : UsmKeyChange(o, keylen, hashfunction, typeOfKey, ukc, u){};
-  virtual ~UsmOwnKeyChange();
-  
-  int prepare_set_request(Request* req, int& ind) override;
-  MibEntryPtr clone() override;
+class AGENTPP_DECL UsmOwnKeyChange : public UsmKeyChange {
+public:
+    UsmOwnKeyChange(const Oidx& o, NS_SNMP USM* u) : UsmKeyChange(o, u) {};
+    UsmOwnKeyChange(const Oidx& o, int keylen, int hashfunction, int typeOfKey,
+        UsmKeyChange* ukc, NS_SNMP USM* u)
+        : UsmKeyChange(o, keylen, hashfunction, typeOfKey, ukc, u) {};
+    virtual ~UsmOwnKeyChange();
 
- private:
+    int         prepare_set_request(Request* req, int& ind) override;
+    MibEntryPtr clone() override;
 
+private:
 };
-
 
 /**********************************************************************
- *  
+ *
  *  class UsmStatsUnsupportedSecLevels
- * 
+ *
  **********************************************************************/
 
-class AGENTPP_DECL UsmStatsUnsupportedSecLevels: public MibLeaf {
+class AGENTPP_DECL UsmStatsUnsupportedSecLevels : public MibLeaf {
 
 public:
-	UsmStatsUnsupportedSecLevels(const NS_SNMP USM *u);
-        void get_request(Request*, int) override;
+    UsmStatsUnsupportedSecLevels(const NS_SNMP USM* u);
+    void get_request(Request*, int) override;
+
 private:
-	const NS_SNMP USM *usm;
+    const NS_SNMP USM* usm;
 };
 
 /**********************************************************************
- *  
+ *
  *  class UsmStatsNotInTimeWindows
- * 
+ *
  **********************************************************************/
 
-class AGENTPP_DECL UsmStatsNotInTimeWindows: public MibLeaf {
+class AGENTPP_DECL UsmStatsNotInTimeWindows : public MibLeaf {
 
 public:
-	UsmStatsNotInTimeWindows(const NS_SNMP USM *u);
-        void get_request(Request*, int) override;
+    UsmStatsNotInTimeWindows(const NS_SNMP USM* u);
+    void get_request(Request*, int) override;
+
 private:
-	const NS_SNMP USM *usm;
+    const NS_SNMP USM* usm;
 };
 
 /**********************************************************************
- *  
+ *
  *  class UsmStatsUnknownUserNames
- * 
+ *
  **********************************************************************/
 
-class AGENTPP_DECL UsmStatsUnknownUserNames: public MibLeaf {
+class AGENTPP_DECL UsmStatsUnknownUserNames : public MibLeaf {
 
 public:
-	UsmStatsUnknownUserNames(const NS_SNMP USM *u);
-        void get_request(Request*, int) override;
+    UsmStatsUnknownUserNames(const NS_SNMP USM* u);
+    void get_request(Request*, int) override;
+
 private:
-	const NS_SNMP USM *usm;
+    const NS_SNMP USM* usm;
 };
 
 /**********************************************************************
- *  
+ *
  *  class UsmStatsUnknownEngineIDs
- * 
+ *
  **********************************************************************/
 
-class AGENTPP_DECL UsmStatsUnknownEngineIDs: public MibLeaf {
+class AGENTPP_DECL UsmStatsUnknownEngineIDs : public MibLeaf {
 
 public:
-	UsmStatsUnknownEngineIDs(const NS_SNMP USM *u);
-        void get_request(Request*, int) override;
+    UsmStatsUnknownEngineIDs(const NS_SNMP USM* u);
+    void get_request(Request*, int) override;
+
 private:
-	const NS_SNMP USM *usm;
+    const NS_SNMP USM* usm;
 };
 
 /**********************************************************************
- *  
+ *
  *  class UsmStatsWrongDigests
- * 
+ *
  **********************************************************************/
 
-class AGENTPP_DECL UsmStatsWrongDigests: public MibLeaf {
+class AGENTPP_DECL UsmStatsWrongDigests : public MibLeaf {
 
 public:
-	UsmStatsWrongDigests(const NS_SNMP USM *u);
-        void get_request(Request*, int) override;
+    UsmStatsWrongDigests(const NS_SNMP USM* u);
+    void get_request(Request*, int) override;
+
 private:
-	const NS_SNMP USM *usm;
+    const NS_SNMP USM* usm;
 };
 
 /**********************************************************************
- *  
+ *
  *  class UsmStatsDecryptionErrors
- * 
+ *
  **********************************************************************/
 
-class AGENTPP_DECL UsmStatsDecryptionErrors: public MibLeaf {
+class AGENTPP_DECL UsmStatsDecryptionErrors : public MibLeaf {
 
 public:
-	UsmStatsDecryptionErrors(const NS_SNMP USM *u);
-        void get_request(Request*, int) override;
-private:
-	const NS_SNMP USM *usm;
-};
+    UsmStatsDecryptionErrors(const NS_SNMP USM* u);
+    void get_request(Request*, int) override;
 
+private:
+    const NS_SNMP USM* usm;
+};
 
 /**********************************************************************
- *  
+ *
  *  class UsmStats
- * 
+ *
  **********************************************************************/
 
-class AGENTPP_DECL UsmStats: public MibGroup {
+class AGENTPP_DECL UsmStats : public MibGroup {
 
 public:
-
-	UsmStats(void);
-	UsmStats(NS_SNMP v3MP*);
+    UsmStats(void);
+    UsmStats(NS_SNMP v3MP*);
 };
 
-class	AGENTPP_DECL usm_mib: public MibGroup {
+class AGENTPP_DECL usm_mib : public MibGroup {
 
 public:
-
-        usm_mib(UsmUserTable*);
+    usm_mib(UsmUserTable*);
 };
 
-
-class AGENTPP_DECL MPDGroup: public MibGroup {
+class AGENTPP_DECL MPDGroup : public MibGroup {
 
 public:
-
-       MPDGroup(void);
-       MPDGroup(NS_SNMP v3MP*);
+    MPDGroup(void);
+    MPDGroup(NS_SNMP v3MP*);
 };
 
-class AGENTPP_DECL MPDGroupSnmpUnknownSecurityModels: public MibLeaf {
+class AGENTPP_DECL MPDGroupSnmpUnknownSecurityModels : public MibLeaf {
 
 public:
-	MPDGroupSnmpUnknownSecurityModels(const NS_SNMP v3MP *mp);
-        void get_request(Request*, int) override;
+    MPDGroupSnmpUnknownSecurityModels(const NS_SNMP v3MP* mp);
+    void get_request(Request*, int) override;
+
 private:
-	const NS_SNMP v3MP *v3mp;
+    const NS_SNMP v3MP* v3mp;
 };
 
-class AGENTPP_DECL MPDGroupSnmpInvalidMsgs: public MibLeaf {
+class AGENTPP_DECL MPDGroupSnmpInvalidMsgs : public MibLeaf {
 
 public:
-	MPDGroupSnmpInvalidMsgs(const NS_SNMP v3MP *mp);
-        void get_request(Request*, int) override;
+    MPDGroupSnmpInvalidMsgs(const NS_SNMP v3MP* mp);
+    void get_request(Request*, int) override;
+
 private:
-	const NS_SNMP v3MP *v3mp;
+    const NS_SNMP v3MP* v3mp;
 };
 
-class AGENTPP_DECL MPDGroupSnmpUnknownPDUHandlers: public MibLeaf {
+class AGENTPP_DECL MPDGroupSnmpUnknownPDUHandlers : public MibLeaf {
 
 public:
-	MPDGroupSnmpUnknownPDUHandlers(const NS_SNMP v3MP *mp);
-        void get_request(Request*, int) override;
+    MPDGroupSnmpUnknownPDUHandlers(const NS_SNMP v3MP* mp);
+    void get_request(Request*, int) override;
+
 private:
-	const NS_SNMP v3MP *v3mp;
+    const NS_SNMP v3MP* v3mp;
 };
 
+class AGENTPP_DECL usmUserAuthProtocol : public MibLeaf {
 
-class AGENTPP_DECL usmUserAuthProtocol: public MibLeaf {
+public:
+    usmUserAuthProtocol(const Oidx&, NS_SNMP USM* u);
+    bool        value_ok(const Vbx&) override;
+    MibEntryPtr clone() override;
 
- public:
-	usmUserAuthProtocol(const Oidx&, NS_SNMP USM *u);
-	bool value_ok(const Vbx&) override;
-	MibEntryPtr clone() override;
- private:
-	NS_SNMP USM *usm;
+private:
+    NS_SNMP USM* usm;
 };
 
-class AGENTPP_DECL usmUserPrivProtocol: public MibLeaf {
+class AGENTPP_DECL usmUserPrivProtocol : public MibLeaf {
 
- public:
-	usmUserPrivProtocol(const Oidx&, NS_SNMP USM *u);
-	bool value_ok(const Vbx&) override;
-	int prepare_set_request(Request*, int&) override;
-	MibEntryPtr clone() override;
- private:
-	NS_SNMP USM *usm;
+public:
+    usmUserPrivProtocol(const Oidx&, NS_SNMP USM* u);
+    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request*, int&) override;
+    MibEntryPtr clone() override;
+
+private:
+    NS_SNMP USM* usm;
 };
-#ifdef AGENTPP_NAMESPACE
+#    ifdef AGENTPP_NAMESPACE
 }
-#endif
-#endif
-
+#    endif
 #endif
 
+#endif

@@ -1,12 +1,15 @@
 #!/bin/bash
 
-dir_name=`basename "$0"`
+dir_name=`dirname "$0"`
 export MIBDIRS=+${dir_name}/mibs
 export MIBS=ALL
 
 set -u
 set -e
 set -x
+
+agent="$1"
+test_app="$2"
 
 # cleanup config files
 rm -f snmpv3_boot_counter
@@ -17,8 +20,8 @@ mkdir -p config
 killall agent || echo OK
 pkill agent || echo OK
 
-# start as bg job
-examples/static_table/src/agent 4700 &
+# start agent as bg job
+${agent} 4700 &
 sleep 1
 cat snmpv3_boot_counter
 
@@ -45,7 +48,7 @@ snmptable -Cib -v2c -c public localhost:4700 snmptargetaddrtable
 snmptable -Cib -v3 -l noAuthNoPriv -u MD5DES -n "" localhost:4700 snmptargetaddrtable
 
 snmpwalk -v3 -l AuthNoPriv -u MD5 -a SHA -A MD5UserAuthPassword -n "" localhost:4700 system || echo OK
-snmpwalk -v3 -l AuthNoPriv -u SHA -a SHA -A SHAUserAuthPassword -n "" localhost:4700 system
+snmpwalk -v3 -l AuthNoPriv -u SHA -a SHA -A SHAUserAuthPassword -n "" localhost:4700 system || echo ignored
 snmpwalk -v3 -l AuthNoPriv -u MD5 -a MD5 -A MD5UserAuthPassword -n "" localhost:4700 system
 
 snmpget -v3 -l noAuthNoPriv -u MD5DES -n "wrong" localhost:4700 snmpEnableAuthenTraps.0 || echo OK
@@ -53,11 +56,11 @@ snmpwalk -v3 -l AuthNoPriv -u SHA -a SHA -A WrongUserAuthPassword -n "" localhos
 snmpwalk -v3 -l AuthNoPriv -u MD5 -n "" localhost:4700 || echo OK
 
 snmpOutTraps=`snmpget -v1 -c public -Onqv localhost:4700 snmpOutTraps.0`
-test ${snmpOutTraps} -ne 1 || exit 1
+test ${snmpOutTraps} -ne 1 &&
 echo "OK, authentication failure trap sent"
 
 # start snmp_pp test_app too
-_deps/snmp_pp-build/test_app 127.0.0.1 get
+${test_app} 127.0.0.1 get
 
 # pkill agent
 kill -s TERM %%
@@ -65,13 +68,13 @@ wait
 
 ls -lrta config
 
-# start as bg job
-examples/static_table/src/agent 4700 &
+# start agent as bg job
+${agent} 4700 &
 sleep 1
 cat snmpv3_boot_counter
 
 snmpEngineBoots=`snmpget -v2c -c public -Onqv localhost:4700 snmpEngineBoots.0`
-test ${snmpEngineBoots} -eq 2 || exit 1
+test ${snmpEngineBoots} -eq 2 &&
 echo "OK, second boot"
 
 snmpget -v3 -l noAuthNoPriv -u MD5DES -n "" localhost:4700 snmpEngineBoots.0

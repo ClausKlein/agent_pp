@@ -69,7 +69,7 @@ void Pdux::clear()
     pdu_type         = 0;
     notify_timestamp = 0;
 
-    validity = FALSE;
+    validity = false;
 
     // init all instance vars to null and invalid
     for (int z = 0; z < vb_count; z++) delete vbs[z];
@@ -98,12 +98,12 @@ bool Vbx::equal(Vbx* avbs, Vbx* bvbs, int sz)
     for (int i = 0; i < sz; i++)
     {
         if (avbs[i].get_syntax() != bvbs[i].get_syntax())
-            return FALSE;
+            return false;
         else if (strcmp(avbs[i].get_printable_value(),
                      bvbs[i].get_printable_value()))
-            return FALSE;
+            return false;
     }
-    return TRUE;
+    return true;
 }
 
 void Vbx::clear()
@@ -111,7 +111,7 @@ void Vbx::clear()
     free_vb(); // clear only value, NOT the OID!
 }
 
-int operator==(const Vbx& a, const Vbx& b)
+bool operator==(const Vbx& a, const Vbx& b)
 {
     return (!strcmp(a.get_printable_value(), b.get_printable_value()));
 }
@@ -283,6 +283,9 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
         }
         else
         {
+            assert(vp != nullptr);
+
+            // NOLINTNEXTLINE(clang-analyzer-core.NullDereference)
             vp->next_variable =
                 (struct variable_list*)malloc(sizeof(struct variable_list));
             vp = vp->next_variable;
@@ -383,13 +386,13 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
             // octet string
         case sNMP_SYNTAX_OPAQUE: {
             OpaqueStr octets(
-                (unsigned char*)vp->val.string, (unsigned long)vp->val_len);
+                (unsigned char*)vp->val.string, (uint32_t)vp->val_len);
             vbs[i].set_value(octets);
         }
         break;
         case sNMP_SYNTAX_OCTETS: {
             OctetStr octets(
-                (unsigned char*)vp->val.string, (unsigned long)vp->val_len);
+                (unsigned char*)vp->val.string, (uint32_t)vp->val_len);
             vbs[i].set_value(octets);
         }
         break;
@@ -403,21 +406,22 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
 
             // timeticks
         case sNMP_SYNTAX_TIMETICKS: {
-            TimeTicks timeticks((unsigned long)*(vp->val.integer));
+            // FIXME: Warning C6011 Dereferencing NULL pointer! CK
+            TimeTicks timeticks((uint32_t) * (vp->val.integer));
             vbs[i].set_value(timeticks);
         }
         break;
 
             // 32 bit counter
         case sNMP_SYNTAX_CNTR32: {
-            Counter32 counter32((unsigned long)*(vp->val.integer));
+            Counter32 counter32((uint32_t) * (vp->val.integer));
             vbs[i].set_value(counter32);
         }
         break;
 
             // 32 bit gauge
         case sNMP_SYNTAX_GAUGE32: {
-            Gauge32 gauge32((unsigned long)*(vp->val.integer));
+            Gauge32 gauge32((uint32_t) * (vp->val.integer));
             vbs[i].set_value(gauge32);
         }
         break;
@@ -425,7 +429,8 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
             // ip address
         case sNMP_SYNTAX_IPADDR: {
             char buffer[20];
-            sprintf(buffer, "%d.%d.%d.%d", vp->val.string[0],
+            // FIXME: Warning C6011 Dereferencing NULL pointer! CK
+            snprintf(buffer, sizeof(buffer), "%d.%d.%d.%d", vp->val.string[0],
                 vp->val.string[1], vp->val.string[2], vp->val.string[3]);
             IpAddress ipaddress(buffer);
             vbs[i].set_value(ipaddress);
@@ -441,6 +446,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
 
             // v2 counter 64's
         case sNMP_SYNTAX_CNTR64: { // Frank Fock (was empty before)
+            // FIXME: Warning C6011 Dereferencing NULL pointer! CK
             Counter64 c64(((counter64*)vp->val.counter64)->high,
                 ((counter64*)vp->val.counter64)->low);
             vbs[i].set_value(c64);
@@ -512,7 +518,7 @@ int Oidx::compare(const Oidx& other, unsigned int wildcard) const
 }
 
 #if 0
-unsigned long Oidx::first() const
+uint32_t Oidx::first() const
 {
   // check for len == 0
   if ((!Oid::valid()) || (smival.value.oid.len < 1))
@@ -632,10 +638,10 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
     }
 #        endif
 #    else // HAVE_POLL_SYSCALL
-    fd_set readfds;
+    fd_set readfds {};
     int    max_fd = -1;
 
-    FD_ZERO(&readfds);
+    FD_ZERO(&readfds); // NOLINT(clang-analyzer-security.insecureAPI.bzero)
 
     if (iv_snmp_session != INVALID_SOCKET)
     {
@@ -714,27 +720,25 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             if (receive_buffer_len >= MAX_SNMP_PACKET)
                 return SNMP_ERROR_TOO_BIG;
 
-            debugprintf(1, "++ AGENT++: data received from %s port %d.",
-                IpAddress(inet_ntoa(((sockaddr_in&)from_addr).sin_addr))
-                    .get_printable(),
-                ntohs(((sockaddr_in&)from_addr).sin_port));
+            // copy fromaddress and remote port
+            char*    addr = inet_ntoa(((sockaddr_in&)from_addr)
+                                       .sin_addr); // TODO: use inet_ntop()! CK
+            uint16_t port = ntohs(((sockaddr_in&)from_addr).sin_port);
+            fromaddr      = addr;
+            fromaddr.set_port(port);
+
+            debugprintf(
+                1, "++ AGENT++: data received from %s port %d.", addr, port);
             debughexprintf(5, receive_buffer, receive_buffer_len);
 
             OctetStr engine_id;
             OctetStr security_name;
             SmiINT32 security_model = 0;
 
-            // copy fromaddress and remote port
-            char* addr = inet_ntoa(((sockaddr_in&)from_addr).sin_addr);
-            fromaddr   = addr;
-            fromaddr.set_port(ntohs(((sockaddr_in&)from_addr).sin_port));
+            int status = snmpmsg.load(receive_buffer, receive_buffer_len);
+            if (status != SNMP_CLASS_SUCCESS) return status;
 
-            snmpmsg.load(receive_buffer, receive_buffer_len);
-
-            target.set_address(fromaddr);
-
-            int status = SNMP_CLASS_SUCCESS;
-            if (snmpmsg.is_v3_message() == TRUE)
+            if (snmpmsg.is_v3_message() == true)
             {
                 status = snmpmsg.unloadv3(pdu, version, engine_id,
                     security_name, security_model, fromaddr, *this);
@@ -762,6 +766,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             }
             target.set_security_model(security_model);
             target.set_version(version);
+            target.set_address(fromaddr);
 
             // v3 support
             if (version == version3)
@@ -773,8 +778,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
                     engine_id.get_printable(), security_name.get_printable(),
                     security_model, pdu.get_security_level());
                 debugprintf(2, " Addr = %s, port = %i\n",
-                    inet_ntoa(((sockaddr_in&)from_addr).sin_addr),
-                    fromaddr.get_port());
+                    fromaddr.get_printable(), fromaddr.get_port());
             }
             return status; // Success! return
         }
@@ -805,22 +809,19 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             fromaddr = addr;
             fromaddr.set_port(ntohs(((sockaddr_in6&)from_addr).sin6_port));
 
-            debugprintf(1, "++ AGENT++: ipv6 data received from %s",
-                fromaddr.get_printable());
+            debugprintf(1, "++ AGENT++: ipv6 data received from %s port %d.",
+                fromaddr.get_printable(), fromaddr.get_port());
             debughexprintf(5, receive_buffer, receive_buffer_len);
 
-            // Frank: warum nicht Ergebnis pruefen?
             int status = snmpmsg.load(receive_buffer, receive_buffer_len);
             if (status != SNMP_CLASS_SUCCESS) return status;
 
-            // prevent warning DeadStores: status = SNMP_CLASS_SUCCESS;
-            if (snmpmsg.is_v3_message() == TRUE)
+            static_assert(SNMP_CLASS_SUCCESS == SNMP_ERROR_SUCCESS);
+            if (snmpmsg.is_v3_message() == true)
             {
                 status = snmpmsg.unloadv3(pdu, version, engine_id,
                     security_name, security_model, fromaddr, *this);
-                if ((status != SNMP_CLASS_SUCCESS)
-                    && (status != SNMP_ERROR_SUCCESS))
-                    return status;
+                if (status != SNMP_CLASS_SUCCESS) return status;
 
                 target.set_security_name(security_name);
                 target.set_engine_id(engine_id);
@@ -828,9 +829,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             else
             {
                 status = snmpmsg.unload(pdu, community, version);
-                if ((status != SNMP_CLASS_SUCCESS)
-                    && (status != SNMP_ERROR_SUCCESS))
-                    return status;
+                if (status != SNMP_CLASS_SUCCESS) return status;
                 target.set_security_name(community);
                 if (version == version1)
                     security_model = SNMP_SECURITY_MODEL_V1;
@@ -907,7 +906,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UdpAddress& fromaddr,
     fd_set readfds;
     int    max_fd = -1;
 
-    FD_ZERO(&readfds);
+    FD_ZERO(&readfds); // NOLINT(clang-analyzer-security.insecureAPI.bzero)
 
     if (iv_snmp_session != INVALID_SOCKET)
     {
