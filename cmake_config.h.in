@@ -180,9 +180,6 @@
    your system. */
 #cmakedefine PTHREAD_CREATE_JOINABLE
 
-/* Define to 1 if you have the ANSI C header files. */
-#define STDC_HEADERS @STDC_HEADERS@
-
 /* Define if ISO C++ 1998 header files are present. */
 #cmakedefine STDCXX_98_HEADERS
 

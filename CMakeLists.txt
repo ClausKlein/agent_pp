@@ -5,7 +5,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # NOTE: We need LANGUAGE C too for libdes. It may be required to build at Windows! CK
 project(
   agent_pp
-  VERSION 4.5.1.9
+  VERSION 4.5.1.10
   LANGUAGES CXX C
 )
 
@@ -37,47 +37,31 @@ set(AGENT_PP_MICRO_VERSION ${PROJECT_VERSION_PATCH})
 
 message(STATUS "agent++ Version ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 
-check_include_files(sys/types.h CNF_HAVE_SYS_TYPES_H)
-check_include_files(sys/stat.h CNF_HAVE_SYS_STAT_H)
-#NO! CK check_include_files("cctype;cerrno;cinttypes;climits;csignal;cstddef;cstdint;cstdio;cstdlib;cstring;ctime;string;memory" CNF_STDCXX_98_HEADERS)
-
-if(NOT CNF_STDCXX_98_HEADERS)
-  check_include_files("stdlib.h;stddef.h" CNF_STDC_HEADERS)
-  check_include_files(ctype.h CNF_HAVE_CTYPE_H)
-  check_include_files(errno.h CNF_HAVE_ERRNO_H)
-  check_include_files(inttypes.h CNF_HAVE_INTTYPES_H)
-  check_include_files(malloc.h HAVE_MALLOC_H)
-  check_include_files(memory.h CNF_HAVE_MEMORY_H)
-  check_include_files(signal.h CNF_HAVE_SIGNAL_H)
-  check_include_files(stdlib.h CNF_HAVE_STDLIB_H)
-  check_include_files(string.h CNF_HAVE_STRING_H)
-  check_include_files(strings.h CNF_HAVE_STRINGS_H)
-  check_include_files(time.h CNF_HAVE_TIME_H)
-endif()
-
-check_include_files(unistd.h CNF_HAVE_UNISTD_H)
-check_include_files(sys/unistd.h CNF_HAVE_SYS_UNISTD_H)
-check_include_files(stdint.h CNF_HAVE_STDINT_H)
-check_include_files(sys/time.h CNF_HAVE_SYS_TIME_H)
 check_include_files(sys/param.h CNF_HAVE_SYS_PARAM_H)
+check_include_files(sys/stat.h CNF_HAVE_SYS_STAT_H)
+check_include_files(sys/time.h CNF_HAVE_SYS_TIME_H)
 check_include_files(sys/timeb.h CNF_HAVE_SYS_TIMEB_H)
+check_include_files(sys/types.h CNF_HAVE_SYS_TYPES_H)
 
 if(MSVC)
+  check_include_files(io.h CNF_HAVE_IO_H)
+  check_include_files(process.h CNF_HAVE_PROCESS_H)
   check_include_files(winsock2.h CNF_HAVE_WINSOCK2_H)
   check_include_files(ws2tcpip.h CNF_HAVE_WS2TCPIP_H)
   check_include_files(wspiapi.h CNF_HAVE_WSPIAPI_H)
   check_function_exists("_getpid" CNF_HAVE__GETPID)
+else()
+  check_include_files(sys/unistd.h CNF_HAVE_SYS_UNISTD_H)
+  check_include_files(unistd.h CNF_HAVE_UNISTD_H)
 endif()
 
-check_include_files(netdb.h CNF_HAVE_NETDB_H)
-check_include_files(sys/socket.h CNF_HAVE_SYS_SOCKET_H)
 check_include_files(arpa/inet.h CNF_HAVE_ARPA_INET_H)
+check_include_files(netdb.h CNF_HAVE_NETDB_H)
 check_include_files(netinet/in.h CNF_HAVE_NETINET_IN_H)
 check_include_files(poll.h CNF_HAVE_POLL_H)
-check_include_files(sys/select.h CNF_HAVE_SYS_SELECT_H)
-check_include_files(io.h CNF_HAVE_IO_H)
-check_include_files(process.h CNF_HAVE_PROCESS_H)
 check_include_files(pthread.h CNF_HAVE_PTHREAD_H)
+check_include_files(sys/select.h CNF_HAVE_SYS_SELECT_H)
+check_include_files(sys/socket.h CNF_HAVE_SYS_SOCKET_H)
 set(HAVE_PTHREAD ${CNF_HAVE_PTHREAD_H})
 
 check_function_exists("strcasecmp" CNF_HAVE_STRCASECMP)
@@ -161,17 +145,11 @@ check_struct_has_member(
   "struct sockaddr_storage" ss_family "${SOCKADDR_HEADERS}" CNF_HAVE_STRUCT_SOCKADDR_STORAGE_SS_FAMILY LANGUAGE CXX
 )
 
-# check_struct_has_member(
-#   "struct sockaddr_storage" __ss_family "${SOCKADDR_HEADERS}" CNF_HAVE_STRUCT_SOCKADDR_STORAGE___SS_FAMILY LANGUAGE CXX
-# )
-
 check_type_size("bool" SIZEOF_BOOL LANGUAGE CXX)
 if(SIZEOF_BOOL)
-  # message(STATUS "HAVE_BOOL")
   set(NEED_DEFINE_BOOL 0)
 else()
-  message(WARNING "NO HAVE_BOOL")
-  set(NEED_DEFINE_BOOL 1)
+  message(FATAL_ERROR "NO BOOL?")
 endif()
 
 if(AGENT_PP_PROXY)
@@ -189,21 +167,14 @@ endif()
 if(AGENT_PP_NAMESPACE)
   set(WITH_NAMESPACE 1)
 else()
-  message(WARNING "NO NAMESPACE?")
+  message(FATAL_ERROR "NO NAMESPACE?")
   set(WITH_NAMESPACE 0)
-endif()
-
-if(CNF_STDC_HEADERS)
-  set(STDC_HEADERS 1)
-else()
-  set(STDC_HEADERS 0)
 endif()
 
 if(CNF_STDCXX_98_HEADERS)
   set(STDCXX_98_HEADERS 1)
-  set(STDC_HEADERS 0)
 else()
-  set(STDCXX_98_HEADERS 0)
+  message(FATAL_ERROR "NO STD C++?")
 endif()
 
 check_include_files("sys/mount.h" HAVE_SYS_MOUNT_H)
