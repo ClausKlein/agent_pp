@@ -26,20 +26,21 @@ build: $(BUILD_DIR)
 build: $(BUILD_DIR)/compile_commands.json
 $(BUILD_DIR)/compile_commands.json:
 	cmake -B $(BUILD_DIR) -S . -G Ninja -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
-	perl -i.bak -p -e 's#-W[-\w]+\b##g;' -e 's#-I($$CPM_SOURCE_CACHE)#-isystem $$1#g;' $(BUILD_DIR)/compile_commands.json
+	perl -i.bak -p -e 's#-W[-\w]+\b##g;' -e 's#-I(${CPM_SOURCE_CACHE})#-isystem $$1#g;' $(BUILD_DIR)/compile_commands.json
 
 $(BUILD_DIR):
 	mkdir -p $@
 
 check: $(BUILD_DIR)/compile_commands.json
 	# run-clang-tidy.py -p $(BUILD_DIR) -checks='-*,cppcoreguidelines-init-variables' -j1 -fix src
-	# run-clang-tidy.py -p $(BUILD_DIR) -checks='-*,cppcoreguidelines-explicit-virtual-functions' -j1 -fix src
-	run-clang-tidy.py -p $(BUILD_DIR) -checks='-clang-analyzer-optin.*' src/*.cpp *examples
+	# clang-tidy -p $(BUILD_DIR) --checks='-*,cppcoreguidelines-explicit-virtual-functions' --fix include/agent_pp/*.h
+	run-clang-tidy.py -p $(BUILD_DIR) -checks='-clang-analyzer-optin.*' src/*.cpp examples
 
 clean:
 	rm -f include/agent_pp/agent++.h
+	rm -f $(BUILD_DIR)/compile_commands.json
 	rm -f $(BUILD_DIR)/*.h
-	-ninja -C $< clean
+	-ninja -C $(BUILD_DIR) clean
 
 distclean: clean
 	rm -rf $(BUILD_DIR) build
