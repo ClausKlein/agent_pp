@@ -16,13 +16,16 @@ include(CheckLibraryExists)
 include(CheckStructHasMember)
 include(CheckTypeSize)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CNF_STDCXX_98_HEADERS YES)
-set(HAVE_INTTYPES_H YES)
-
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
-option(AGENT_PP_NAMESPACE "Use Namespaces (needed!)" ON)
+# =======================================
+set(CMAKE_CXX_STANDARD 17)
+# =======================================
+# NOTE: in consideration of std=c++17! CK
+set(CNF_STDCXX_98_HEADERS YES)
+set(HAVE_INTTYPES_H YES)
+set(AGENT_PP_NAMESPACE on) # "Enable Namespaces (needed!)" ON)
+
 option(AGENT_PP_PROXY "Enable Proxy" ON)
 option(AGENT_PP_PROXY_FORWARDER "Enable Proxy Forwarder" ON)
 option(AGENT_PP_AGENPRO "build with AgenPro templates (usually disabled)" OFF)
@@ -206,10 +209,10 @@ include(CPM)
 
 set(SNMP_PP_VERSION 3.4.7)
 # XXX find_package(snmp_pp CONFIG ${SNMP_PP_VERSION} REQUIRED)
-# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.11
+# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.12
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG v${SNMP_PP_VERSION}.11
+  GIT_TAG e1a64d97615930fbcb79a63e2076500c312a6f8a # v${SNMP_PP_VERSION}.12
   GITHUB_REPOSITORY ClausKlein/snmp_pp
   OPTIONS "SNMP_PP_LOGGING NO" "SNMP_PP_EXAMPLES YES"
 )
