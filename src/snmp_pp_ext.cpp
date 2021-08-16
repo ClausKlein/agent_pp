@@ -428,7 +428,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
 
             // ip address
         case sNMP_SYNTAX_IPADDR: {
-            char buffer[20];
+            char buffer[20] {};
             // FIXME: Warning C6011 Dereferencing NULL pointer! CK
             snprintf(buffer, sizeof(buffer), "%d.%d.%d.%d", vp->val.string[0],
                 vp->val.string[1], vp->val.string[2], vp->val.string[3]);

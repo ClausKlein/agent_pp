@@ -49,7 +49,7 @@ sysUpTime::sysUpTime() : MibLeaf(oidSysUpTime, READONLY, new TimeTicks(0))
 #if defined(HAVE_CLOCK_GETTIME)
     clock_gettime(CLOCK_MONOTONIC, &start);
 #else
-    start = get();
+    start             = get();
 #endif
 }
 
@@ -63,18 +63,18 @@ time_t sysUpTime::get_currentTime()
 unsigned int sysUpTime::get()
 {
 #ifdef HAVE_CLOCK_GETTIME
-    struct timespec tsp;
+    struct timespec tsp = {};
     clock_gettime(CLOCK_MONOTONIC, &tsp);
     return (((tsp.tv_sec - start.tv_sec) * 100)
                + ((tsp.tv_nsec - start.tv_nsec) / 10000000))
         % MAXUINT32;
 #else
 #    ifndef _WIN32
-    struct timeval ct;
+    struct timeval ct = {};
     gettimeofday(&ct, 0);
     return (get_currentTime() * 100 + ct.tv_usec / 10000) - start;
 #    else
-    struct _timeb tstruct;
+    struct _timeb tstruct = {};
     _ftime(&tstruct); // TODO: use _ftime64_s()! CK
     return ((get_currentTime() * 100 + tstruct.millitm / 10) - start)
         % MAXUINT32;

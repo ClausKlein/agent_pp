@@ -255,7 +255,7 @@ bool Synchronized::wait(long timeout)
 {
     bool timeoutOccurred = false;
 #    ifdef POSIX_THREADS
-    struct timespec ts;
+    struct timespec ts = {};
 #        ifdef HAVE_CLOCK_GETTIME
     clock_gettime(CLOCK_REALTIME, &ts);
     ts.tv_sec += (time_t)timeout / 1000;
@@ -263,7 +263,7 @@ bool Synchronized::wait(long timeout)
     if (millis >= 1000) { ts.tv_sec += 1; }
     ts.tv_nsec = (millis % 1000) * 1000000;
 #        else
-    struct timeval tv;
+    struct timeval tv = {};
     gettimeofday(&tv, 0);
     ts.tv_sec  = tv.tv_sec + (time_t)timeout / 1000;
     int millis = tv.tv_usec / 1000 + (timeout % 1000);
@@ -475,7 +475,7 @@ bool Synchronized::lock(long timeout)
 {
 
 #    ifdef POSIX_THREADS
-    struct timespec ts;
+    struct timespec ts = {};
 #        ifdef HAVE_CLOCK_GETTIME
     clock_gettime(CLOCK_REALTIME, &ts);
     ts.tv_sec += (time_t)timeout / 1000;
@@ -483,7 +483,7 @@ bool Synchronized::lock(long timeout)
     if (millis >= 1000) { ts.tv_sec += 1; }
     ts.tv_nsec = (millis % 1000) * 1000000;
 #        else
-    struct timeval tv;
+    struct timeval tv = {};
     gettimeofday(&tv, 0);
     ts.tv_sec  = tv.tv_sec + (time_t)timeout / 1000;
     int millis = tv.tv_usec / 1000 + (timeout % 1000);
@@ -978,8 +978,8 @@ void Thread::nsleep(int secs, long nanos)
     long n = nanos % 1000000000;
 
 #        ifdef _POSIX_TIMERS
-    struct timespec interval, remainder;
-    interval.tv_sec = (int)s;
+    struct timespec interval = {}, remainder = {};
+    interval.tv_sec = s;
     interval.tv_nsec = n;
     if (nanosleep(&interval, &remainder) == -1)
     {
@@ -991,9 +991,9 @@ void Thread::nsleep(int secs, long nanos)
         }
     }
 #        else
-    struct timeval interval;
-    interval.tv_sec  = s;
-    interval.tv_usec = n / 1000;
+    struct timeval interval = {};
+    interval.tv_sec         = s;
+    interval.tv_usec        = n / 1000;
     fd_set writefds, readfds, exceptfds;
     FD_ZERO(&writefds);  // NOLINT(clang-analyzer-security.insecureAPI.bzero)
     FD_ZERO(&readfds);   // NOLINT(clang-analyzer-security.insecureAPI.bzero)

@@ -99,9 +99,9 @@ int agentppTestTimeout::set(const Vbx& vb)
     //--AgentGen BEGIN=agentppTestTimeout::set
     uint32_t timeout = 0;
     vb.get_value(timeout);
-    struct timeval tvptr;
-    tvptr.tv_sec  = timeout / 1000; // wait up to sec seconds
-    tvptr.tv_usec = (timeout % 1000) * 1000;
+    struct timeval tvptr = {};
+    tvptr.tv_sec         = timeout / 1000; // wait up to sec seconds
+    tvptr.tv_usec        = (timeout % 1000) * 1000;
 
     select(0, NULL, NULL, NULL, &tvptr);
     //--AgentGen END
