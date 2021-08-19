@@ -65,8 +65,7 @@ unsigned int sysUpTime::get()
 #ifdef HAVE_CLOCK_GETTIME
     struct timespec tsp = {};
     clock_gettime(CLOCK_MONOTONIC, &tsp);
-    return (((tsp.tv_sec - start.tv_sec) * 100)
-               + ((tsp.tv_nsec - start.tv_nsec) / 10000000))
+    return (((tsp.tv_sec - start.tv_sec) * 100) + ((tsp.tv_nsec - start.tv_nsec) / 10000000))
         % MAXUINT32;
 #else
 #    ifndef _WIN32
@@ -76,8 +75,7 @@ unsigned int sysUpTime::get()
 #    else
     struct _timeb tstruct = {};
     _ftime(&tstruct); // TODO: use _ftime64_s()! CK
-    return ((get_currentTime() * 100 + tstruct.millitm / 10) - start)
-        % MAXUINT32;
+    return ((get_currentTime() * 100 + tstruct.millitm / 10) - start) % MAXUINT32;
 #    endif
 #endif
 }
@@ -94,9 +92,7 @@ void sysUpTime::get_request(Request* req, int ind)
  *
  **********************************************************************/
 
-sysDescr::sysDescr(const char* str)
-    : SnmpDisplayString(oidSysDescr, READONLY, new OctetStr(str))
-{ }
+sysDescr::sysDescr(const char* str) : SnmpDisplayString(oidSysDescr, READONLY, new OctetStr(str)) { }
 
 /**********************************************************************
  *
@@ -104,9 +100,7 @@ sysDescr::sysDescr(const char* str)
  *
  **********************************************************************/
 
-sysObjectID::sysObjectID(const Oidx& o)
-    : MibLeaf(oidSysObjectID, READONLY, new Oid(o))
-{ }
+sysObjectID::sysObjectID(const Oidx& o) : MibLeaf(oidSysObjectID, READONLY, new Oid(o)) { }
 
 /**********************************************************************
  *
@@ -114,9 +108,7 @@ sysObjectID::sysObjectID(const Oidx& o)
  *
  **********************************************************************/
 
-sysServices::sysServices(const int s)
-    : MibLeaf(oidSysServices, READONLY, new SnmpInt32(s))
-{ }
+sysServices::sysServices(const int s) : MibLeaf(oidSysServices, READONLY, new SnmpInt32(s)) { }
 
 /**
  *  sysOREntry
@@ -127,8 +119,7 @@ sysOREntry* sysOREntry::instance = 0;
 
 const index_info indSysOREntry[1] = { { sNMP_SYNTAX_INT, false, 1, 1 } };
 
-sysOREntry::sysOREntry(TimeStamp* lc)
-    : TimeStampTable(oidSysOREntry, indSysOREntry, 1, lc)
+sysOREntry::sysOREntry(TimeStamp* lc) : TimeStampTable(oidSysOREntry, indSysOREntry, 1, lc)
 {
     // This table object is a singleton. In order to access it use
     // the static pointer sysOREntry::instance.
@@ -153,8 +144,7 @@ MibTableRow* sysOREntry::find(const Oidx& id)
     return 0;
 }
 
-void sysOREntry::set_row(
-    MibTableRow* r, const Oidx& id, const OctetStr& descr, int lastUpdate)
+void sysOREntry::set_row(MibTableRow* r, const Oidx& id, const OctetStr& descr, int lastUpdate)
 {
     r->get_nth(0)->replace_value(new Oid(id));
     r->get_nth(1)->replace_value(new OctetStr(descr));
@@ -168,19 +158,16 @@ void sysOREntry::set_row(
  *
  **********************************************************************/
 
-sysGroup::sysGroup(const char* descr, const Oidx& o, const int services,
-    const char* contact, const char* name, const char* location)
+sysGroup::sysGroup(const char* descr, const Oidx& o, const int services, const char* contact,
+    const char* name, const char* location)
     : MibGroup(oidSysGroup, "systemGroup")
 {
     add(new sysDescr(descr));
     add(new sysObjectID(o));
     add(new sysUpTime());
-    add(new SnmpDisplayString(
-        oidSysContact, READWRITE, new OctetStr(contact ? contact : "")));
-    add(new SnmpDisplayString(
-        oidSysName, READWRITE, new OctetStr(name ? name : "")));
-    add(new SnmpDisplayString(
-        oidSysLocation, READWRITE, new OctetStr(location ? location : "")));
+    add(new SnmpDisplayString(oidSysContact, READWRITE, new OctetStr(contact ? contact : "")));
+    add(new SnmpDisplayString(oidSysName, READWRITE, new OctetStr(name ? name : "")));
+    add(new SnmpDisplayString(oidSysLocation, READWRITE, new OctetStr(location ? location : "")));
     add(new sysServices(services));
     TimeStamp* ptr = new TimeStamp(oidSysORLastChange, READONLY, VMODE_NONE);
     add(ptr);

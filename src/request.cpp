@@ -53,9 +53,8 @@ Request::Request()
 #ifdef _THREADS
       Synchronized(),
 #endif
-      pdu(0), originalVbs(0), originalSize(0), from(), done(0), ready(0),
-      outstanding(0), size(0), non_rep(0), max_rep(0), repeater(0), version(),
-      transaction_id(0), locks()
+      pdu(0), originalVbs(0), originalSize(0), from(), done(0), ready(0), outstanding(0), size(0),
+      non_rep(0), max_rep(0), repeater(0), version(), transaction_id(0), locks()
 #ifdef _SNMPv3
       ,
       viewName(), vacm(0)
@@ -73,9 +72,8 @@ Request::Request(const Pdux& p, const TargetType& t)
 #ifdef _THREADS
       Synchronized(),
 #endif
-      pdu(0), originalVbs(0), originalSize(0), from(), done(0), ready(0),
-      outstanding(0), size(0), non_rep(0), max_rep(0), repeater(0), version(),
-      transaction_id(0), locks()
+      pdu(0), originalVbs(0), originalSize(0), from(), done(0), ready(0), outstanding(0), size(0),
+      non_rep(0), max_rep(0), repeater(0), version(), transaction_id(0), locks()
 #ifdef _SNMPv3
       ,
       viewName(), vacm(0)
@@ -145,10 +143,7 @@ Request::Request(const Request& other)
 #endif
     pdu         = other.pdu->clone();
     originalVbs = new Vbx[other.originalSize];
-    for (int i = 0; i < other.originalSize; i++)
-    {
-        originalVbs[i] = other.originalVbs[i];
-    }
+    for (int i = 0; i < other.originalSize; i++) { originalVbs[i] = other.originalVbs[i]; }
     from  = other.from;
     done  = new bool[other.size];
     ready = new bool[other.size];
@@ -306,8 +301,7 @@ void Request::check_exception(int i, Vbx& vbl)
             LOG("RequestList: finished subrequest (ind)");
             LOG(i);
             LOG_END;
-            if ((i < non_rep) || (i < originalSize))
-                vbl.set_oid(originalVbs[i].get_oid());
+            if ((i < non_rep) || (i < originalSize)) vbl.set_oid(originalVbs[i].get_oid());
             /*			else {
                     vbl.set_oid(originalVbs[((i-non_rep)%repeater)+
                                            non_rep].get_oid());
@@ -521,8 +515,7 @@ bool Request::add_rep_row()
     if (pdu->get_asn1_length() >= get_max_response_length()) return false;
 
     Vbx vb;
-    for (int i = (rows - 1) * repeater + non_rep;
-         i < (rows * repeater) + non_rep; i++)
+    for (int i = (rows - 1) * repeater + non_rep; i < (rows * repeater) + non_rep; i++)
     {
 
         pdu->get_vb(vb, i);
@@ -567,10 +560,7 @@ bool Request::init_rep_row(int row)
     if ((row < 1) || (end > size)) return false;
     for (int i = start; i < end; i++)
     {
-        if ((!is_done(i)) && (!is_ready(i)))
-        {
-            set_oid(get_oid(i - repeater), i);
-        }
+        if ((!is_done(i)) && (!is_ready(i))) { set_oid(get_oid(i - repeater), i); }
     }
     return true;
 }
@@ -605,8 +595,7 @@ int Request::lock_index(MibEntry* entry)
         MibEntry* l = locks.getNth(i);
         if (l == entry)
             return i;
-        else if ((l) && (l->type() == AGENTPP_TABLE)
-            && (((MibTable*)l)->has_listeners()))
+        else if ((l) && (l->type() == AGENTPP_TABLE) && (((MibTable*)l)->has_listeners()))
         {
 
             ListCursor<MibTable>* cur = ((MibTable*)l)->get_listeners();
@@ -675,8 +664,7 @@ void Request::set_unlocked(int i)
             // table object.
             if (entry->type() == AGENTPP_TABLE)
             {
-                ListCursor<MibTable>* cur =
-                    ((MibTable*)entry)->get_listeners();
+                ListCursor<MibTable>* cur = ((MibTable*)entry)->get_listeners();
                 for (; cur->get(); cur->next())
                 {
                     if (lock_index(cur->get()) < 0)
@@ -722,10 +710,7 @@ void Request::trim_bulk_response()
         if ((*pdu)[i].get_syntax() == sNMP_SYNTAX_ENDOFMIBVIEW)
         {
             end++;
-            if ((j == 0) && (i < originalSize))
-            {
-                (*pdu)[i].set_oid(originalVbs[i].get_oid());
-            }
+            if ((j == 0) && (i < originalSize)) { (*pdu)[i].set_oid(originalVbs[i].get_oid()); }
             else
             {
                 (*pdu)[i].set_oid(Request::get_oid(i - rep));
@@ -743,9 +728,8 @@ int Request::get_max_response_length()
 {
 #ifdef _SNMPv3
     if (version < version3) return MAX_SNMP_PACKET;
-    return (pdu->get_maxsize_scopedpdu() >= MAX_SNMP_PACKET)
-        ? MAX_SNMP_PACKET
-        : pdu->get_maxsize_scopedpdu();
+    return (pdu->get_maxsize_scopedpdu() >= MAX_SNMP_PACKET) ? MAX_SNMP_PACKET
+                                                             : pdu->get_maxsize_scopedpdu();
 #else
     return MAX_SNMP_PACKET;
 #endif
@@ -761,8 +745,8 @@ RequestList::RequestList()
 #endif
       ,
       write_community(new OctetStr(DEFAULT_WRITE_COMMUNITY)),
-      read_community(new OctetStr(DEFAULT_READ_COMMUNITY)),
-      next_transaction_id(0), sourceAddressValidation(false)
+      read_community(new OctetStr(DEFAULT_READ_COMMUNITY)), next_transaction_id(0),
+      sourceAddressValidation(false)
 {
 #ifdef NO_FAST_MUTEXES
     init_lock_queue();
@@ -810,10 +794,7 @@ Request* RequestList::find_request_on_id(uint32_t rid)
     ListCursor<Request> cur;
     for (cur.init(requests); cur.get(); cur.next())
     {
-        if (cur.get()->get_pdu()->get_request_id() == rid)
-        {
-            return cur.get();
-        }
+        if (cur.get()->get_pdu()->get_request_id() == rid) { return cur.get(); }
     }
     return 0;
 }
@@ -822,22 +803,31 @@ uint32_t RequestList::get_request_id(const Vbx& vb) TS_SYNCHRONIZED({
     ListCursor<Request> cur;
     for (cur.init(requests); cur.get(); cur.next())
     {
-        if (cur.get()->contains(vb))
-        {
-            return cur.get()->get_transaction_id();
-        }
+        if (cur.get()->contains(vb)) { return cur.get()->get_transaction_id(); }
     }
     return 0;
 })
 
-    bool RequestList::done(uint32_t rid, int index, const Vbx& vb)
-        TS_SYNCHRONIZED({
+    bool RequestList::done(uint32_t rid, int index, const Vbx& vb) TS_SYNCHRONIZED({
+        Request* req = get_request(rid);
+        if (req)
+        {
+            req->finish(index, vb);
+            if (req->finished()) return true;
+        }
+        else
+        {
+            LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
+            LOG("RequestList: done: can't find request id");
+            LOG(rid);
+            LOG_END;
+        }
+        return false;
+    })
+
+        void RequestList::error(uint32_t rid, int index, int err) TS_SYNCHRONIZED({
             Request* req = get_request(rid);
-            if (req)
-            {
-                req->finish(index, vb);
-                if (req->finished()) return true;
-            }
+            if (req) { req->error(index, err); }
             else
             {
                 LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
@@ -845,21 +835,7 @@ uint32_t RequestList::get_request_id(const Vbx& vb) TS_SYNCHRONIZED({
                 LOG(rid);
                 LOG_END;
             }
-            return false;
         })
-
-            void RequestList::error(uint32_t rid, int index, int err)
-                TS_SYNCHRONIZED({
-                    Request* req = get_request(rid);
-                    if (req) { req->error(index, err); }
-                    else
-                    {
-                        LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
-                        LOG("RequestList: done: can't find request id");
-                        LOG(rid);
-                        LOG_END;
-                    }
-                })
 
     /**
      * Check whether a given community is acceptable for the specified
@@ -884,14 +860,12 @@ uint32_t RequestList::get_request_id(const Vbx& vb) TS_SYNCHRONIZED({
         {
             if (*read_community == community)
             {
-                snmpInBadCommunityNames::incrementScalar(
-                    mib, oidSnmpInBadCommunityNames);
+                snmpInBadCommunityNames::incrementScalar(mib, oidSnmpInBadCommunityNames);
             }
             return false;
         }
     }
-    if ((*read_community == community) || (*write_community == community))
-        return true;
+    if ((*read_community == community) || (*write_community == community)) return true;
 
     return false;
 #endif
@@ -908,8 +882,8 @@ void RequestList::remove_request(Request* req)
 #ifdef _SNMPv3
     if (req->get_security_model() == version3)
     {
-        get_v3mp()->delete_from_cache(req->get_pdu()->get_request_id(),
-            req->get_pdu()->get_message_id(), false);
+        get_v3mp()->delete_from_cache(
+            req->get_pdu()->get_request_id(), req->get_pdu()->get_message_id(), false);
     }
 #endif
 
@@ -927,8 +901,7 @@ Synchronized::TryLockResult RequestList::trylock_request(Request* req)
         r.wait();
         // OWNED is treated as BUSY, because the lockQueue (and not the
         // requesting thread) will always own the lock if it is present:
-        return (r.tryLockResult == Synchronized::LOCKED) ? Synchronized::LOCKED
-                                                         : Synchronized::BUSY;
+        return (r.tryLockResult == Synchronized::LOCKED) ? Synchronized::LOCKED : Synchronized::BUSY;
     }
     return req->trylock();
 #else
@@ -1000,8 +973,7 @@ void RequestList::report(Request* req)
 void RequestList::null_vbs(Request* req)
 {
     Pdux* pdu = req->get_pdu();
-    for (int i = 0; ((i < req->subrequests()) && (i < pdu->get_vb_count()));
-         i++)
+    for (int i = 0; ((i < req->subrequests()) && (i < pdu->get_vb_count())); i++)
     {
         Vbx null;
         null.set_oid(req->get_oid(i));
@@ -1023,24 +995,17 @@ void RequestList::answer(Request* req)
         case SNMP_ERROR_NO_ACCESS:
         case SNMP_ERROR_NO_CREATION:
         case SNMP_ERROR_INCONSIS_NAME:
-        case SNMP_ERROR_AUTH_ERR:
-            pdu->set_error_status(SNMP_ERROR_NO_SUCH_NAME);
-            break;
+        case SNMP_ERROR_AUTH_ERR: pdu->set_error_status(SNMP_ERROR_NO_SUCH_NAME); break;
         case SNMP_ERROR_RESOURCE_UNAVAIL:
         case SNMP_ERROR_COMMITFAIL:
-        case SNMP_ERROR_UNDO_FAIL:
-            pdu->set_error_status(SNMP_ERROR_GENERAL_VB_ERR);
-            break;
+        case SNMP_ERROR_UNDO_FAIL: pdu->set_error_status(SNMP_ERROR_GENERAL_VB_ERR); break;
         case SNMP_ERROR_WRONG_VALUE:
         case SNMP_ERROR_WRONG_LENGTH:
         case SNMP_ERROR_INCONSIST_VAL:
-        case SNMP_ERROR_WRONG_TYPE:
-            pdu->set_error_status(SNMP_ERROR_BAD_VALUE);
-            break;
+        case SNMP_ERROR_WRONG_TYPE: pdu->set_error_status(SNMP_ERROR_BAD_VALUE); break;
         }
     }
-    for (int i = 0; ((i < req->subrequests()) && (i < pdu->get_vb_count()));
-         i++)
+    for (int i = 0; ((i < req->subrequests()) && (i < pdu->get_vb_count())); i++)
     {
         Vbx vb((*pdu)[i]);
         switch (vb.get_exception_status())
@@ -1070,8 +1035,7 @@ void RequestList::answer(Request* req)
         }
         case sNMP_SYNTAX_NOSUCHINSTANCE: {
 
-            if (req->version >= version2c)
-                Counter32MibLeaf::incrementScalar(mib, oidSnmpOutBadValues);
+            if (req->version >= version2c) Counter32MibLeaf::incrementScalar(mib, oidSnmpOutBadValues);
             break;
         }
         case sNMP_SYNTAX_ENDOFMIBVIEW: {
@@ -1085,8 +1049,7 @@ void RequestList::answer(Request* req)
         }
     }
 
-    if ((req->get_error_status() != SNMP_ERROR_SUCCESS)
-        && (pdu->get_type() != sNMP_PDU_SET))
+    if ((req->get_error_status() != SNMP_ERROR_SUCCESS) && (pdu->get_type() != sNMP_PDU_SET))
     {
         null_vbs(req);
     }
@@ -1173,8 +1136,8 @@ void RequestList::answer(Request* req)
 #ifdef _SNMPv3
     int status = snmp->send(*pdu, &(req->target));
 #else
-    int status = snmp->send(*pdu, req->from, req->target.get_version(),
-        req->target.get_readcommunity());
+    int status =
+        snmp->send(*pdu, req->from, req->target.get_version(), req->target.get_readcommunity());
 #endif
     if (status == SNMP_ERROR_TOO_BIG)
     {
@@ -1193,12 +1156,11 @@ void RequestList::answer(Request* req)
 #ifdef _SNMPv3
                 status = snmp->send(*pdu, &(req->target));
 #else
-                status = snmp->send(*pdu, req->from, req->target.get_version(),
-                    req->target.get_readcommunity());
+                status = snmp->send(
+                    *pdu, req->from, req->target.get_version(), req->target.get_readcommunity());
 #endif
             } while ((status == SNMP_ERROR_TOO_BIG)
-                && (pdu->get_vb_count()
-                    >= req->get_non_rep() + 2 * req->get_rep()));
+                && (pdu->get_vb_count() >= req->get_non_rep() + 2 * req->get_rep()));
         }
         if (status == SNMP_ERROR_TOO_BIG)
         {
@@ -1208,8 +1170,8 @@ void RequestList::answer(Request* req)
 #ifdef _SNMPv3
             status = snmp->send(*pdu, &(req->target));
 #else
-            status = snmp->send(*pdu, req->from, req->target.get_version(),
-                req->target.get_readcommunity());
+            status = snmp->send(
+                *pdu, req->from, req->target.get_version(), req->target.get_readcommunity());
 #endif
 #ifdef _NO_LOGGING
             (void)status;
@@ -1357,14 +1319,13 @@ Request* RequestList::receive(int sec)
         }
         else
         {
-            snmpCommunityEntry* communityEntry =
-                snmpCommunityEntry::get_instance(mib);
+            snmpCommunityEntry* communityEntry = snmpCommunityEntry::get_instance(mib);
             if (communityEntry)
             {
 
                 OctetStr transport_tag;
-                bool     found = communityEntry->get_v3_info(security_name,
-                    context_engine_id, context_name, transport_tag);
+                bool     found = communityEntry->get_v3_info(
+                    security_name, context_engine_id, context_name, transport_tag);
 
                 LOG_BEGIN(loggerModuleName, EVENT_LOG | 3);
                 LOG("RequestList: received v1/v2c request "
@@ -1384,11 +1345,9 @@ Request* RequestList::receive(int sec)
                     LOG(pdu.get_request_id());
                     LOG_END;
 
-                    authenticationFailure(
-                        context_name, target.get_address(), 0);
+                    authenticationFailure(context_name, target.get_address(), 0);
 
-                    Counter32MibLeaf::incrementScalar(
-                        mib, oidSnmpInBadCommunityNames);
+                    Counter32MibLeaf::incrementScalar(mib, oidSnmpInBadCommunityNames);
                     return 0;
                 }
 
@@ -1400,17 +1359,14 @@ Request* RequestList::receive(int sec)
                 else
                     security_model = SNMP_SECURITY_MODEL_V1;
 
-                security_level = SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV;
-                snmpTargetAddrEntry* snmpTargetAddrEntry =
-                    snmpTargetAddrEntry::get_instance(mib);
+                security_level                              = SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV;
+                snmpTargetAddrEntry*    snmpTargetAddrEntry = snmpTargetAddrEntry::get_instance(mib);
                 snmpTargetAddrExtEntry* snmpTargetAddrExtEntry =
                     snmpTargetAddrExtEntry::get_instance(mib);
 
-                if ((sourceAddressValidation) && (snmpTargetAddrEntry)
-                    && (snmpTargetAddrExtEntry))
+                if ((sourceAddressValidation) && (snmpTargetAddrEntry) && (snmpTargetAddrExtEntry))
                 {
-                    if (!snmpTargetAddrExtEntry->passes_filter(
-                            transport_tag, target))
+                    if (!snmpTargetAddrExtEntry->passes_filter(transport_tag, target))
                     {
 
                         LOG_BEGIN(loggerModuleName, WARNING_LOG | 1);
@@ -1420,8 +1376,7 @@ Request* RequestList::receive(int sec)
                         LOG(pdu.get_request_id());
                         LOG_END;
 
-                        authenticationFailure(
-                            context_name, target.get_address(), 0);
+                        authenticationFailure(context_name, target.get_address(), 0);
 
                         return 0;
                     }
@@ -1501,8 +1456,8 @@ Request* RequestList::receive(int sec)
         }
         }
         // initialize viewName;
-        int  vacmErrorCode = vacm->getViewName(security_model, security_name,
-            security_level, viewType, context_name, viewName);
+        int vacmErrorCode = vacm->getViewName(
+            security_model, security_name, security_level, viewType, context_name, viewName);
         Vbx  v;
         Oidx o;
         // check first VB of PDU
@@ -1510,10 +1465,7 @@ Request* RequestList::receive(int sec)
         pdu.get_vb(v, i);
         v.get_oid(o);
         // access control
-        if (vacmErrorCode == VACM_viewFound)
-        {
-            vacmErrorCode = vacm->isAccessAllowed(viewName, o);
-        }
+        if (vacmErrorCode == VACM_viewFound) { vacmErrorCode = vacm->isAccessAllowed(viewName, o); }
         switch (vacmErrorCode)
         {
         case VACM_noSuchView:
@@ -1536,12 +1488,10 @@ Request* RequestList::receive(int sec)
             }
             else
             {
-                Counter32MibLeaf::incrementScalar(
-                    mib, oidSnmpInBadCommunityNames);
+                Counter32MibLeaf::incrementScalar(mib, oidSnmpInBadCommunityNames);
             }
 
-            authenticationFailure(
-                context_name, target.get_address(), vacmErrorCode);
+            authenticationFailure(context_name, target.get_address(), vacmErrorCode);
 
             return 0;
         }
@@ -1640,14 +1590,12 @@ Request* RequestList::receive(int sec)
             break;
         }
         case SNMPv3_MP_UNSUPPORTED_SECURITY_MODEL: {
-            authenticationFailure("", target.get_address(),
-                SNMPv3_MP_UNSUPPORTED_SECURITY_MODEL);
+            authenticationFailure("", target.get_address(), SNMPv3_MP_UNSUPPORTED_SECURITY_MODEL);
             break;
         }
         case SNMPv3_MP_NOT_IN_TIME_WINDOW: {
             v3mp->inc_stats_invalid_msgs();
-            authenticationFailure(
-                "", target.get_address(), SNMPv3_MP_NOT_IN_TIME_WINDOW);
+            authenticationFailure("", target.get_address(), SNMPv3_MP_NOT_IN_TIME_WINDOW);
             break;
         }
         case SNMPv3_MP_DOUBLED_MESSAGE:
@@ -1686,8 +1634,7 @@ Request* RequestList::add_request(Request* req) TS_SYNCHRONIZED({
     Request* dupl;
     // ignore request, if request_id is already known
     if (((dupl = find_request_on_id(rid)) == 0)
-        || (strcmp(dupl->from.get_printable(), req->from.get_printable())
-            != 0))
+        || (strcmp(dupl->from.get_printable(), req->from.get_printable()) != 0))
     {
 
         req->set_transaction_id(next_transaction_id++);
@@ -1732,8 +1679,7 @@ void RequestList::authenticationFailure(
         return;
     }
 #endif
-    snmpEnableAuthenTraps* snmpEnableAuthenTraps =
-        snmpEnableAuthenTraps::get_instance(mib);
+    snmpEnableAuthenTraps* snmpEnableAuthenTraps = snmpEnableAuthenTraps::get_instance(mib);
     if ((snmpEnableAuthenTraps) && (snmpEnableAuthenTraps->get_state() == 1))
     {
         NotificationOriginator   no;

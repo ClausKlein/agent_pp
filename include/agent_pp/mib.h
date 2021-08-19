@@ -244,30 +244,21 @@ public:
      *            the receiver's value.
      * @return SNMP_ERROR_SUCCESS on success.
      */
-    virtual int get_value(NS_SNMP SnmpSyntax& s) const
-    {
-        return get_value().get_value(s);
-    }
+    virtual int get_value(NS_SNMP SnmpSyntax& s) const { return get_value().get_value(s); }
     /**
      * Get the value of the receiver.
      *
      * @param i - A reference to an int the receiver's value will be copied in.
      * @return SNMP_ERROR_SUCCESS on success.
      */
-    virtual int get_value(int32_t& i) const
-    {
-        return get_value().get_value(i);
-    }
+    virtual int get_value(int32_t& i) const { return get_value().get_value(i); }
     /**
      * Get the value of the receiver.
      *
      * @param i - A reference to a long the receiver's value will be copied in.
      * @return SNMP_ERROR_SUCCESS on success.
      */
-    virtual int get_value(uint32_t& i) const
-    {
-        return get_value().get_value(i);
-    }
+    virtual int get_value(uint32_t& i) const { return get_value().get_value(i); }
     /**
      * Get the value of the receiver.
      *
@@ -275,10 +266,7 @@ public:
      *            will be copied in.
      * @return SNMP_ERROR_SUCCESS on success.
      */
-    virtual int get_value(uint64_t& i) const
-    {
-        return get_value().get_value(i);
-    }
+    virtual int get_value(uint64_t& i) const { return get_value().get_value(i); }
     /**
      * Get the value of the receiver.
      *
@@ -560,14 +548,11 @@ public:
      *    the value of the managed object. NOTE: Do not delete this
      *    pointer from outside MibLeaf. It will be deleted by ~MibLeaf
      */
-    Counter32MibLeaf(const Oidx& oid)
-        : MibLeaf(oid, READONLY, new Counter32(0), VMODE_LOCKED)
-    { }
+    Counter32MibLeaf(const Oidx& oid) : MibLeaf(oid, READONLY, new Counter32(0), VMODE_LOCKED) { }
 
+    static Counter32MibLeaf* get_instance(Mib* mib, const Oidx& oid, const Oidx& ind = Oidx());
     static Counter32MibLeaf* get_instance(
-        Mib* mib, const Oidx& oid, const Oidx& ind = Oidx());
-    static Counter32MibLeaf* get_instance(Mib* mib, const OctetStr& context,
-        const Oidx& oid, const Oidx& ind = Oidx());
+        Mib* mib, const OctetStr& context, const Oidx& oid, const Oidx& ind = Oidx());
     /**
      * Increment a scalar counter with the given instance OID (with .0 suffix)
      * associated with the default context.
@@ -598,8 +583,7 @@ public:
      *    not exists.
      * @since 4.3.0
      */
-    static uint32_t incrementColumnar(
-        Mib* mib, const Oidx& columnOid, const Oidx& rowIndex);
+    static uint32_t incrementColumnar(Mib* mib, const Oidx& columnOid, const Oidx& rowIndex);
 
     /**
      * Increment a scalar counter with the given instance OID (with .0 suffix)
@@ -616,8 +600,7 @@ public:
      *    not exists.
      * @since 4.3.0
      */
-    static uint32_t incrementScalar(
-        Mib* mib, const OctetStr& context, const Oidx& counterInstanceOid);
+    static uint32_t incrementScalar(Mib* mib, const OctetStr& context, const Oidx& counterInstanceOid);
 
     /**
      * Increment a columnar counter with the given column OID and row index
@@ -636,8 +619,8 @@ public:
      *    not exists.
      * @since 4.3.0
      */
-    static uint32_t incrementColumnar(Mib* mib, const OctetStr& context,
-        const Oidx& columnOid, const Oidx& rowIndex);
+    static uint32_t incrementColumnar(
+        Mib* mib, const OctetStr& context, const Oidx& columnOid, const Oidx& rowIndex);
 
     virtual void increment();
     bool         is_volatile() override { return true; }
@@ -1163,8 +1146,7 @@ public:
      *    a SNMP error status or SNMP_ERROR_SUCCESS if the transition
      *    is acknowledged by the voter.
      */
-    virtual int is_transition_ok(
-        MibTable*, MibTableRow*, const Oidx&, int, int)
+    virtual int is_transition_ok(MibTable*, MibTableRow*, const Oidx&, int, int)
     {
         return SNMP_ERROR_SUCCESS;
     }
@@ -1556,10 +1538,7 @@ public:
      *    a pointer to the source MibTable of the event, or 0 if the
      *    event is local.
      */
-    virtual void row_init(MibTableRow*, const Oidx&, MibTable* t = 0)
-    {
-        (void)t;
-    }
+    virtual void row_init(MibTableRow*, const Oidx&, MibTable* t = 0) { (void)t; }
 
     /**
      * Is called after a new row has been created and automatic index
@@ -1571,10 +1550,7 @@ public:
      *    a pointer to the source MibTable of the event, or 0 if the
      *    event is local.
      */
-    virtual void row_added(MibTableRow*, const Oidx&, MibTable* t = 0)
-    {
-        (void)t;
-    }
+    virtual void row_added(MibTableRow*, const Oidx&, MibTable* t = 0) { (void)t; }
     /**
      * Is called before a row is deleted by MibTable
      *
@@ -1584,10 +1560,7 @@ public:
      *    a pointer to the source MibTable of the event, or 0 if the
      *    event is local.
      */
-    virtual void row_delete(MibTableRow*, const Oidx&, MibTable* t = 0)
-    {
-        (void)t;
-    }
+    virtual void row_delete(MibTableRow*, const Oidx&, MibTable* t = 0) { (void)t; }
 
     /**
      * Is called when a row is activated by a SET request setting
@@ -1599,10 +1572,7 @@ public:
      *    a pointer to the source MibTable of the event, or 0 if the
      *    event is local.
      */
-    virtual void row_activated(MibTableRow*, const Oidx&, MibTable* t = 0)
-    {
-        (void)t;
-    }
+    virtual void row_activated(MibTableRow*, const Oidx&, MibTable* t = 0) { (void)t; }
 
     /**
      * Is called when a row is deactivated by a SET request setting
@@ -1614,10 +1584,7 @@ public:
      *    a pointer to the source MibTable of the event, or 0 if the
      *    event is local.
      */
-    virtual void row_deactivated(MibTableRow*, const Oidx&, MibTable* t = 0)
-    {
-        (void)t;
-    }
+    virtual void row_deactivated(MibTableRow*, const Oidx&, MibTable* t = 0) { (void)t; }
 
     /**
      * Return the next available index value for the receiver table,
@@ -1839,10 +1806,7 @@ public:
      * @return
      *	a pointer to a ListCursor.
      */
-    ListCursor<MibTable>* get_listeners()
-    {
-        return new ListCursor<MibTable>(&listeners);
-    }
+    ListCursor<MibTable>* get_listeners() { return new ListCursor<MibTable>(&listeners); }
 
     /**
      * Checks whether this table has any listeners for row events.
@@ -2165,8 +2129,7 @@ public:
      *    successfully, otherwise an appropriate SNMP error is
      *    returned.
      */
-    virtual int notify(
-        const NS_SNMP OctetStr&, const Oidx&, Vbx*, int, unsigned int = 0) = 0;
+    virtual int notify(const NS_SNMP OctetStr&, const Oidx&, Vbx*, int, unsigned int = 0) = 0;
 };
 
 /*--------------------- class NotificationType --------------------*/
@@ -2457,8 +2420,7 @@ public:
      *    successfully, otherwise an appropriate SNMP error is
      *    returned.
      */
-    virtual int notify(
-        const NS_SNMP OctetStr&, const Oidx&, Vbx*, int, unsigned int = 0);
+    virtual int notify(const NS_SNMP OctetStr&, const Oidx&, Vbx*, int, unsigned int = 0);
 
     /**
      * Sets the notification sender to be used by this Mib.
@@ -2484,10 +2446,7 @@ public:
      *    a pointer to a NotificationSender instance or 0 if it has
      *    not been set yet.
      */
-    NotificationSender* get_notification_sender() const
-    {
-        return notificationSender;
-    }
+    NotificationSender* get_notification_sender() const { return notificationSender; }
 
     /**
      * Clean up MIB. Currently, the only clean up procedure is to
@@ -2570,8 +2529,7 @@ public:
      *    true if the context could be found and it contains the
      *    sysOR MIB objects, false otherwise.
      */
-    virtual bool add_agent_caps(
-        const NS_SNMP OctetStr&, const Oidx&, const NS_SNMP OctetStr&);
+    virtual bool add_agent_caps(const NS_SNMP OctetStr&, const Oidx&, const NS_SNMP OctetStr&);
 
     /**
      * Remove Agent Capabilities from a context.
@@ -2753,10 +2711,7 @@ public:
      * @return
      *    true if persistent storage is activated.
      */
-    bool is_persistency_activated() const
-    {
-        return (persistent_objects_path != 0);
-    }
+    bool is_persistency_activated() const { return (persistent_objects_path != 0); }
 
     /**
      * Check whether a node (a MIB object) is complex, i.e.
@@ -2772,10 +2727,7 @@ public:
      * @param entry
      *    a pointer to a node (MIB object).
      */
-    bool is_table_node(const MibEntryPtr& e)
-    {
-        return (e->type() == AGENTPP_TABLE);
-    }
+    bool is_table_node(const MibEntryPtr& e) { return (e->type() == AGENTPP_TABLE); }
 
     /**
      * Check whether a node (a MIB object) is a leaf node.
@@ -2783,10 +2735,7 @@ public:
      * @param entry
      *    a pointer to a node (MIB object).
      */
-    bool is_leaf_node(const MibEntryPtr& e)
-    {
-        return (e->type() == AGENTPP_LEAF);
-    }
+    bool is_leaf_node(const MibEntryPtr& e) { return (e->type() == AGENTPP_LEAF); }
 
     // Pointer to the singleton instance of the Mib class.
     static Mib* instance;
@@ -2867,8 +2816,8 @@ public:
      *    SNMP_ERROR_SUCCESS if an entry has been found and
      *    sNMP_SYNTAX_NOSUCHOBJECT otherwise.
      */
-    virtual int find_next(MibContext*, const Oidx& oid, MibEntryPtr&,
-        Request* req, const int, Oidx& nextOid);
+    virtual int find_next(
+        MibContext*, const Oidx& oid, MibEntryPtr&, Request* req, const int, Oidx& nextOid);
 
     /**
      * Find the MIB object (i.e., MibTable, MibLeaf, etc.) that is
@@ -2888,8 +2837,7 @@ public:
      *    SNMP_ERROR_SUCCESS if an entry has been found and
      *    SNMP_ERROR_NO_SUCH_NAME otherwise.
      */
-    virtual int find_managing_object(
-        MibContext*, const Oidx&, MibEntryPtr&, Request*);
+    virtual int find_managing_object(MibContext*, const Oidx&, MibEntryPtr&, Request*);
 
 #ifdef _SNMPv3
 #    ifdef _PROXY_FORWARDER

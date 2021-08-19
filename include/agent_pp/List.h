@@ -68,8 +68,7 @@ public:
 private:
     ListItem<T>*prev, *next;
     T*          item;
-    ListItem(ListItem<T>* p, ListItem<T>* n, T* i) : prev(p), next(n), item(i)
-    { }
+    ListItem(ListItem<T>* p, ListItem<T>* n, T* i) : prev(p), next(n), item(i) { }
 };
 
 template <class T>
@@ -585,8 +584,7 @@ public:
             ListCursor<T> cur;
             for (cur.init(&content); cur.get(); cur.next())
             {
-                if (*item < *cur.get())
-                    return content.insertBefore(item, cur.get());
+                if (*item < *cur.get()) return content.insertBefore(item, cur.get());
             }
             return content.add(item);
         }
@@ -601,8 +599,7 @@ public:
             ListCursor<T> cur;
             for (cur.initLast(&content); cur.get(); cur.prev())
             {
-                if (*item > *cur.get())
-                    return content.insertAfter(item, cur.get());
+                if (*item > *cur.get()) return content.insertAfter(item, cur.get());
             }
             return content.addFirst(item);
         }
@@ -624,8 +621,7 @@ public:
                     delete item;
                     return 0;
                 }
-                if (*item < *cur.get())
-                    return content.insertBefore(item, cur.get());
+                if (*item < *cur.get()) return content.insertBefore(item, cur.get());
             }
             return content.add(item);
         }
@@ -712,8 +708,7 @@ public:
     {
         Pix i = content->seek_inexact(oidptr);
         if (!i) return 0;
-        while ((i) && (i != content->last()) && (*content->key(i) < *oidptr))
-            content->next(i);
+        while ((i) && (i != content->last()) && (*content->key(i) < *oidptr)) content->next(i);
         while ((i) && (*content->key(i) > *oidptr)) content->prev(i);
 
         if (i) return (T*)content->contents(i);
@@ -724,8 +719,7 @@ public:
     {
         Pix i = content->seek_inexact(oidptr);
         if (!i) return 0;
-        while ((i) && (i != content->first()) && (*content->key(i) > *oidptr))
-            content->prev(i);
+        while ((i) && (i != content->first()) && (*content->key(i) > *oidptr)) content->prev(i);
         while ((i) && (*content->key(i) < *oidptr)) content->next(i);
         if (i) return (T*)content->contents(i);
         return 0;
@@ -895,8 +889,7 @@ public:
             Pix i = list->content->seek_inexact(oidptr);
             if (!i) return false;
             T* t = 0;
-            while ((i) && (t = (T*)list->content->contents(i))
-                && (*t->key() > *oidptr))
+            while ((i) && (t = (T*)list->content->contents(i)) && (*t->key() > *oidptr))
             {
                 list->content->prev(i);
             }
@@ -911,10 +904,7 @@ public:
 
     OidListCursor() : cursor(0) { list = 0; }
     OidListCursor(OidList<T>* l) : cursor(l->content->first()) { list = l; }
-    OidListCursor(const OidListCursor<T>& c) : cursor(c.cursor)
-    {
-        list = c.list;
-    }
+    OidListCursor(const OidListCursor<T>& c) : cursor(c.cursor) { list = c.list; }
 
 protected:
     Pix         cursor;
@@ -1034,9 +1024,7 @@ public:
                 T** h   = content;
                 content = new T*[sz + 1];
                 memcpy(content, h, (i + 1) * sizeof(T*));
-                if (i + 1 < sz)
-                    memcpy(
-                        content + i + 2, h + i + 1, (sz - i - 1) * sizeof(T*));
+                if (i + 1 < sz) memcpy(content + i + 2, h + i + 1, (sz - i - 1) * sizeof(T*));
                 content[i + 1] = item;
                 if (h) { delete[] h; }
                 sz++;
@@ -1140,8 +1128,7 @@ public:
         T** h   = content;
         content = new T*[sz - 1];
         if (i > 0) memcpy(content, h, i * sizeof(T*));
-        if (i + 1 < sz)
-            memcpy(content + i, h + i + 1, (sz - i - 1) * sizeof(T*));
+        if (i + 1 < sz) memcpy(content + i, h + i + 1, (sz - i - 1) * sizeof(T*));
         if (h) { delete[] h; }
         sz--;
         return t;
@@ -1265,10 +1252,7 @@ public:
         r->sz = sz;
         delete[] r->content;
         r->content = new T*[sz];
-        for (unsigned int i = 0; i < sz; i++)
-        {
-            r->content[i] = (T*)content[i]->clone();
-        }
+        for (unsigned int i = 0; i < sz; i++) { r->content[i] = (T*)content[i]->clone(); }
         return r;
     }
 
@@ -1278,10 +1262,7 @@ public:
         clearAll();
         sz      = o.sz;
         content = new T*[sz];
-        for (unsigned int i = 0; i < sz; i++)
-        {
-            content[i] = (T*)o.content[i]->clone();
-        }
+        for (unsigned int i = 0; i < sz; i++) { content[i] = (T*)o.content[i]->clone(); }
         return (*this);
     }
 
@@ -1380,8 +1361,7 @@ public:
         {
             for (unsigned int i = 0; i < this->sz; i++)
             {
-                if (*item < *(this->content[i]))
-                    return this->insertBefore(item, this->content[i]);
+                if (*item < *(this->content[i])) return this->insertBefore(item, this->content[i]);
             }
             return Array<T>::add(item);
         }
@@ -1397,8 +1377,7 @@ public:
         {
             for (int i = this->sz - 1; i >= 0; i--)
             {
-                if (*item > *(this->content[i]))
-                    return this->insertAfter(item, this->content[i]);
+                if (*item > *(this->content[i])) return this->insertAfter(item, this->content[i]);
             }
             return Array<T>::addFirst(item);
         }
@@ -1419,8 +1398,7 @@ public:
                     delete item;
                     return 0;
                 }
-                if (*item < *(this->content[i]))
-                    return this->insertBefore(item, this->content[i]);
+                if (*item < *(this->content[i])) return this->insertBefore(item, this->content[i]);
             }
             return Array<T>::add(item);
         }

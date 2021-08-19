@@ -36,8 +36,7 @@ using namespace Agentpp;
 static const char* loggerModuleName = "agent++.proxy_forwarder";
 #        endif
 
-ProxyForwarder::ProxyForwarder(
-    Mib* mib, const OctetStr& contextEngineID, pdu_type t)
+ProxyForwarder::ProxyForwarder(Mib* mib, const OctetStr& contextEngineID, pdu_type t)
 {
     regKey = Oidx::from_string(contextEngineID);
     regKey += t;
@@ -66,13 +65,10 @@ void ProxyForwarder::check_references(Mib* mib)
 
         return;
     }
-    _snmpProxyEntry = (snmpProxyEntry*)mib->get(oidSnmpProxyEntry);
-    _snmpTargetAddrEntry =
-        (snmpTargetAddrEntry*)mib->get(oidSnmpTargetAddrEntry);
-    _snmpTargetParamsEntry =
-        (snmpTargetParamsEntry*)mib->get(oidSnmpTargetParamsEntry);
-    if ((!_snmpProxyEntry) || (!_snmpTargetParamsEntry)
-        || (!_snmpTargetAddrEntry))
+    _snmpProxyEntry        = (snmpProxyEntry*)mib->get(oidSnmpProxyEntry);
+    _snmpTargetAddrEntry   = (snmpTargetAddrEntry*)mib->get(oidSnmpTargetAddrEntry);
+    _snmpTargetParamsEntry = (snmpTargetParamsEntry*)mib->get(oidSnmpTargetParamsEntry);
+    if ((!_snmpProxyEntry) || (!_snmpTargetParamsEntry) || (!_snmpTargetAddrEntry))
     {
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 0);
         LOG("ProxyForwarder: internal error: need SNMP-PROXY- and "
@@ -94,12 +90,10 @@ OidList<MibTableRow>* ProxyForwarder::get_matches(Request* req)
 
         OctetStr contextID, contextName, paramsIn;
 
-        if ((!(((type == sNMP_PDU_GET) || (type == sNMP_PDU_GETNEXT)
-                   || (type == sNMP_PDU_GETBULK))
+        if ((!(((type == sNMP_PDU_GET) || (type == sNMP_PDU_GETNEXT) || (type == sNMP_PDU_GETBULK))
                 && (state == 1)))
             && (!((type == sNMP_PDU_SET) && (state == 2)))
-            && (!(((type == sNMP_PDU_TRAP) || (type == sNMP_PDU_V1TRAP))
-                && (state == 3)))
+            && (!(((type == sNMP_PDU_TRAP) || (type == sNMP_PDU_V1TRAP)) && (state == 3)))
             && (!((type == sNMP_PDU_INFORM) && (state == 4))))
             continue;
 
@@ -143,12 +137,10 @@ OidList<MibTableRow>* ProxyForwarder::get_matches(Request* req)
     return matches;
 }
 
-bool ProxyForwarder::match_target_params(
-    Request* req, const OctetStr& paramsIn)
+bool ProxyForwarder::match_target_params(Request* req, const OctetStr& paramsIn)
 {
     _snmpTargetParamsEntry->start_synch();
-    MibTableRow* paramsRow =
-        _snmpTargetParamsEntry->find_index(Oidx::from_string(paramsIn, false));
+    MibTableRow* paramsRow = _snmpTargetParamsEntry->find_index(Oidx::from_string(paramsIn, false));
 
     if ((!paramsRow) || (paramsRow->get_row_status()->get() != rowActive))
     {
@@ -184,12 +176,9 @@ bool ProxyForwarder::match_target_params(
     LOG(secLevel);
     LOG_END;
 
-    if ((req->get_address()->get_version() == version1) && (mpModel != 0))
-        return false;
-    if ((req->get_address()->get_version() == version2c) && (mpModel != 1))
-        return false;
-    if ((req->get_address()->get_version() == version3) && (mpModel != 3))
-        return false;
+    if ((req->get_address()->get_version() == version1) && (mpModel != 0)) return false;
+    if ((req->get_address()->get_version() == version2c) && (mpModel != 1)) return false;
+    if ((req->get_address()->get_version() == version3) && (mpModel != 3)) return false;
 
     OctetStr sname;
     req->get_address()->get_security_name(sname);
@@ -201,9 +190,7 @@ bool ProxyForwarder::match_target_params(
     LOG_END;
 
     if (sname != secName) return false;
-    if ((secModel != 0)
-        && (req->get_address()->get_security_model() != secModel))
-        return false;
+    if ((secModel != 0) && (req->get_address()->get_security_model() != secModel)) return false;
     if (req->get_pdu()->get_security_level() != secLevel) return false;
     return true;
 }
@@ -225,8 +212,7 @@ bool ProxyForwarder::process_multiple(Pdux& pdu, Request* req)
         LOG(out.get_printable());
         LOG_END;
 
-        List<MibTableRow>* targets =
-            _snmpTargetAddrEntry->get_rows_cloned_for_tag(out);
+        List<MibTableRow>*      targets = _snmpTargetAddrEntry->get_rows_cloned_for_tag(out);
         ListCursor<MibTableRow> tcur;
         for (tcur.init(targets); tcur.get(); tcur.next())
         {
@@ -248,8 +234,8 @@ bool ProxyForwarder::process_multiple(Pdux& pdu, Request* req)
             if (params.len() == 0) continue;
 
             int      secLevel = 0;
-            UTarget* target   = _snmpTargetAddrEntry->get_target(
-                targetOut, _snmpTargetParamsEntry, secLevel);
+            UTarget* target =
+                _snmpTargetAddrEntry->get_target(targetOut, _snmpTargetParamsEntry, secLevel);
             if (!target) continue;
             GenAddress addr;
             target->get_address(addr);
@@ -300,8 +286,7 @@ bool ProxyForwarder::process_single(Pdux& pdu, Request* req)
     match->get_nth(4)->get_value(out);
 
     int      secLevel = 0;
-    UTarget* target   = _snmpTargetAddrEntry->get_target(
-        out, _snmpTargetParamsEntry, secLevel);
+    UTarget* target   = _snmpTargetAddrEntry->get_target(out, _snmpTargetParamsEntry, secLevel);
     if (!target)
     {
         LOG_BEGIN(loggerModuleName, INFO_LOG | 3);
@@ -324,8 +309,7 @@ bool ProxyForwarder::process_single(Pdux& pdu, Request* req)
     LOG(pdu.get_context_engine_id().get_printable());
     LOG_END;
 
-    int status = snmp->send_request(
-        *target, pdu, req->get_non_rep(), req->get_max_rep());
+    int status = snmp->send_request(*target, pdu, req->get_non_rep(), req->get_max_rep());
     if (status != SNMP_ERROR_SUCCESS)
     {
         pdu.set_error_status(SNMP_ERROR_GENERAL_VB_ERR);

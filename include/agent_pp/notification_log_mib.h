@@ -371,13 +371,7 @@ public:
     int         set(const Vbx&) override;
     int         prepare_set_request(Request*, int&) override;
     bool        value_ok(const Vbx&) override;
-    enum labels {
-        e_other       = 1,
-        e_volatile    = 2,
-        e_nonVolatile = 3,
-        e_permanent   = 4,
-        e_readOnly    = 5
-    };
+    enum labels { e_other = 1, e_volatile = 2, e_nonVolatile = 3, e_permanent = 4, e_readOnly = 5 };
 
     //--AgentGen BEGIN=nlmConfigLogStorageType
     //--AgentGen END
@@ -429,8 +423,7 @@ public:
  *  put into multiple logs is counted multiple times."
  */
 
-class AGENTPP_DECL nlmStatsGlobalNotificationsLogged
-    : public Counter32MibLeaf {
+class AGENTPP_DECL nlmStatsGlobalNotificationsLogged : public Counter32MibLeaf {
 
 public:
     nlmStatsGlobalNotificationsLogged();
@@ -456,8 +449,7 @@ public:
  * due to the value of nlmConfigGlobalAgeOut."
  */
 
-class AGENTPP_DECL nlmStatsGlobalNotificationsBumped
-    : public Counter32MibLeaf {
+class AGENTPP_DECL nlmStatsGlobalNotificationsBumped : public Counter32MibLeaf {
 
 public:
     nlmStatsGlobalNotificationsBumped();
@@ -494,8 +486,8 @@ public:
     void         row_added(MibTableRow*, const Oidx&, MibTable*) override;
     void         row_delete(MibTableRow*, const Oidx&, MibTable*) override;
     void         row_init(MibTableRow*, const Oidx&, MibTable*) override;
-    virtual void set_row(MibTableRow* r, const NS_SNMP OctetStr& p0,
-        uint32_t p1, int32_t p2, int32_t p3, int32_t p4, int32_t p5);
+    virtual void set_row(MibTableRow* r, const NS_SNMP OctetStr& p0, uint32_t p1, int32_t p2,
+        int32_t p3, int32_t p4, int32_t p5);
 
     //--AgentGen BEGIN=nlmConfigLogEntry
 protected:
@@ -561,9 +553,8 @@ class AGENTPP_DECL nlmLogEntry : public MibTable {
     friend class nlmConfigLogOperStatus;
 
 public:
-    nlmLogEntry(Mib*, nlmConfigLogEntry*, nlmStatsLogEntry*,
-        nlmLogVariableEntry*, nlmConfigGlobalEntryLimit*,
-        nlmConfigGlobalAgeOut*);
+    nlmLogEntry(Mib*, nlmConfigLogEntry*, nlmStatsLogEntry*, nlmLogVariableEntry*,
+        nlmConfigGlobalEntryLimit*, nlmConfigGlobalAgeOut*);
     virtual ~nlmLogEntry();
 
     static nlmLogEntry* instance;
@@ -571,19 +562,17 @@ public:
     void         row_added(MibTableRow*, const Oidx&, MibTable*) override;
     void         row_delete(MibTableRow*, const Oidx&, MibTable*) override;
     void         row_init(MibTableRow*, const Oidx&, MibTable*) override;
-    virtual void set_row(MibTableRow* r, uint32_t p0,
-        const NS_SNMP OctetStr& p1, const NS_SNMP OctetStr& p2,
-        const NS_SNMP OctetStr& p3, const char* p4, const NS_SNMP OctetStr& p5,
-        const NS_SNMP OctetStr& p6, const char* p7);
+    virtual void set_row(MibTableRow* r, uint32_t p0, const NS_SNMP OctetStr& p1,
+        const NS_SNMP OctetStr& p2, const NS_SNMP OctetStr& p3, const char* p4,
+        const NS_SNMP OctetStr& p5, const NS_SNMP OctetStr& p6, const char* p7);
 
     //--AgentGen BEGIN=nlmLogEntry
     bool is_volatile() override { return true; }
 
     bool check_access(const Vbx*, const int, const NS_SNMP Oid&, MibTableRow*);
     void check_limits(List<MibTableRow>*);
-    void add_notification(const NS_SNMP SnmpTarget*, const NS_SNMP Oid&,
-        const Vbx*, const int vbcount, const NS_SNMP OctetStr&,
-        const NS_SNMP OctetStr&, const NS_SNMP OctetStr&);
+    void add_notification(const NS_SNMP SnmpTarget*, const NS_SNMP Oid&, const Vbx*, const int vbcount,
+        const NS_SNMP OctetStr&, const NS_SNMP OctetStr&, const NS_SNMP OctetStr&);
 
 protected:
     OidList<MibStaticEntry>    logIndexes;
@@ -618,9 +607,8 @@ public:
     void         row_added(MibTableRow*, const Oidx&, MibTable*) override;
     void         row_delete(MibTableRow*, const Oidx&, MibTable*) override;
     void         row_init(MibTableRow*, const Oidx&, MibTable*) override;
-    virtual void set_row(MibTableRow* r, const char* p0, int32_t p1,
-        uint32_t p2, uint32_t p3, uint32_t p4, int32_t p5,
-        const NS_SNMP OctetStr& p6, const char* p7, const char* p8,
+    virtual void set_row(MibTableRow* r, const char* p0, int32_t p1, uint32_t p2, uint32_t p3,
+        uint32_t p4, int32_t p5, const NS_SNMP OctetStr& p6, const char* p7, const char* p8,
         uint32_t p9hi, uint32_t p9lo, const NS_SNMP OctetStr& p10);
 
     //--AgentGen BEGIN=nlmLogVariableEntry

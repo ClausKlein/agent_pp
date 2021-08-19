@@ -143,10 +143,9 @@ public:
      *
      * @note This function takes the localized keys as param.
      */
-    MibTableRow* addNewRow(const NS_SNMP OctetStr& engineID,
-        const NS_SNMP OctetStr& userName, const NS_SNMP OctetStr& securityName,
-        int authProtocol, const NS_SNMP OctetStr& authKey, int privProtocol,
-        const NS_SNMP OctetStr& privKey, const bool add_to_usm = true);
+    MibTableRow* addNewRow(const NS_SNMP OctetStr& engineID, const NS_SNMP OctetStr& userName,
+        const NS_SNMP OctetStr& securityName, int authProtocol, const NS_SNMP OctetStr& authKey,
+        int privProtocol, const NS_SNMP OctetStr& privKey, const bool add_to_usm = true);
 
     /**
      * Add a user to the table.
@@ -157,13 +156,12 @@ public:
      *
      * @note This function takes the localized keys as param.
      */
-    MibTableRow* addNewRow(const NS_SNMP OctetStr& engineID,
-        const NS_SNMP OctetStr& userName, int authProtocol,
-        const NS_SNMP OctetStr& authKey, int privProtocol,
+    MibTableRow* addNewRow(const NS_SNMP OctetStr& engineID, const NS_SNMP OctetStr& userName,
+        int authProtocol, const NS_SNMP OctetStr& authKey, int privProtocol,
         const NS_SNMP OctetStr& privKey, const bool add_to_usm = true)
     {
-        return addNewRow(engineID, userName, userName, authProtocol, authKey,
-            privProtocol, privKey, add_to_usm);
+        return addNewRow(
+            engineID, userName, userName, authProtocol, authKey, privProtocol, privKey, add_to_usm);
     };
 
     /**
@@ -179,11 +177,9 @@ public:
      *
      * @note This function takes the passwords as param.
      */
-    MibTableRow* addNewRow(const NS_SNMP OctetStr& userName,
-        const NS_SNMP OctetStr& securityName, int authProtocol,
-        int privProtocol, const NS_SNMP OctetStr& authPassword,
-        const NS_SNMP OctetStr& privPassword,
-        const bool              addPasswordsToUSM = true);
+    MibTableRow* addNewRow(const NS_SNMP OctetStr& userName, const NS_SNMP OctetStr& securityName,
+        int authProtocol, int privProtocol, const NS_SNMP OctetStr& authPassword,
+        const NS_SNMP OctetStr& privPassword, const bool addPasswordsToUSM = true);
 
     /**
      * Add a user to the table and to USM.
@@ -195,9 +191,8 @@ public:
      *
      * @note This function takes the passwords as param.
      */
-    MibTableRow* addNewRow(const NS_SNMP OctetStr& userName,
-        const NS_SNMP OctetStr& securityName, int authProtocol,
-        int privProtocol, const NS_SNMP OctetStr& authPassword,
+    MibTableRow* addNewRow(const NS_SNMP OctetStr& userName, const NS_SNMP OctetStr& securityName,
+        int authProtocol, int privProtocol, const NS_SNMP OctetStr& authPassword,
         const NS_SNMP OctetStr& privPassword, const NS_SNMP OctetStr& engineID,
         const bool addPassWordsToUSM = false);
 
@@ -209,12 +204,11 @@ public:
      *
      * @note This function takes the passwords as param.
      */
-    MibTableRow* addNewRow(const NS_SNMP OctetStr& userName, int authProtocol,
-        int privProtocol, const NS_SNMP OctetStr& authPassword,
-        const NS_SNMP OctetStr& privPassword)
+    MibTableRow* addNewRow(const NS_SNMP OctetStr& userName, int authProtocol, int privProtocol,
+        const NS_SNMP OctetStr& authPassword, const NS_SNMP OctetStr& privPassword)
     {
-        return addNewRow(userName, userName, authProtocol, privProtocol,
-            authPassword, privPassword, true);
+        return addNewRow(
+            userName, userName, authProtocol, privProtocol, authPassword, privPassword, true);
     };
 
     /**
@@ -225,13 +219,12 @@ public:
      *
      * @note This function takes the passwords as param.
      */
-    MibTableRow* addNewRow(const NS_SNMP OctetStr& userName, int authProtocol,
-        int privProtocol, const NS_SNMP OctetStr& authPassword,
-        const NS_SNMP OctetStr& privPassword, const NS_SNMP OctetStr& engineID,
-        const bool addPassWordsToUSM = false)
+    MibTableRow* addNewRow(const NS_SNMP OctetStr& userName, int authProtocol, int privProtocol,
+        const NS_SNMP OctetStr& authPassword, const NS_SNMP OctetStr& privPassword,
+        const NS_SNMP OctetStr& engineID, const bool addPassWordsToUSM = false)
     {
-        return addNewRow(userName, userName, authProtocol, privProtocol,
-            authPassword, privPassword, engineID, addPassWordsToUSM);
+        return addNewRow(userName, userName, authProtocol, privProtocol, authPassword, privPassword,
+            engineID, addPassWordsToUSM);
     };
 
     /**
@@ -240,8 +233,7 @@ public:
      * The entry with engineID and userName is removed from the table
      * and from the USM.
      */
-    bool deleteRow(
-        const NS_SNMP OctetStr& engineID, const NS_SNMP OctetStr& userName);
+    bool deleteRow(const NS_SNMP OctetStr& engineID, const NS_SNMP OctetStr& userName);
 
     /**
      * Delete all rows from the table and from USM.
@@ -292,14 +284,13 @@ private:
 
 class AGENTPP_DECL UsmKeyChange : public MibLeaf {
 public:
-    UsmKeyChange(const Oidx& o, int keylen, int hashfunction, int typeOfKey,
-        UsmKeyChange* ukc, NS_SNMP USM* u);
+    UsmKeyChange(
+        const Oidx& o, int keylen, int hashfunction, int typeOfKey, UsmKeyChange* ukc, NS_SNMP USM* u);
     UsmKeyChange(const Oidx& o, NS_SNMP USM* u);
     virtual ~UsmKeyChange();
 
-    int  unset() override;
-    void initialize(
-        int keylen, int hashfunction, int typeOfKey, UsmKeyChange* ukc);
+    int         unset() override;
+    void        initialize(int keylen, int hashfunction, int typeOfKey, UsmKeyChange* ukc);
     void        get_request(Request* req, int ind) override;
     int         prepare_set_request(Request* req, int& ind) override;
     int         set(const Vbx& vb) override;
@@ -319,8 +310,8 @@ protected:
 class AGENTPP_DECL UsmOwnKeyChange : public UsmKeyChange {
 public:
     UsmOwnKeyChange(const Oidx& o, NS_SNMP USM* u) : UsmKeyChange(o, u) {};
-    UsmOwnKeyChange(const Oidx& o, int keylen, int hashfunction, int typeOfKey,
-        UsmKeyChange* ukc, NS_SNMP USM* u)
+    UsmOwnKeyChange(
+        const Oidx& o, int keylen, int hashfunction, int typeOfKey, UsmKeyChange* ukc, NS_SNMP USM* u)
         : UsmKeyChange(o, keylen, hashfunction, typeOfKey, ukc, u) {};
     virtual ~UsmOwnKeyChange();
 

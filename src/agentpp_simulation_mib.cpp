@@ -114,11 +114,9 @@ int agentppSimDeleteRow::commit_set_request(Request* req, int ind)
     MibEntryPtr entry = 0;
     int         status =
 #ifdef _SNMPv3
-        mib->find_managing_object(
-            mib->get_context(req->get_context()), toid, entry, req);
+        mib->find_managing_object(mib->get_context(req->get_context()), toid, entry, req);
 #else
-        mib->find_managing_object(
-            mib->get_default_context(), toid, entry, req);
+        mib->find_managing_object(mib->get_default_context(), toid, entry, req);
 #endif
     if (status != SNMP_ERROR_SUCCESS) return SNMP_ERROR_WRONG_VALUE;
     if (entry->type() != AGENTPP_TABLE) return SNMP_ERROR_WRONG_VALUE;
@@ -135,20 +133,16 @@ int agentppSimDeleteRow::commit_set_request(Request* req, int ind)
 int agentppSimDeleteRow::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = MibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
-        return status;
+    if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
     Oidx toid;
     Vbx  vb(req->get_value(ind));
     if (vb.get_value(toid) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
     MibEntryPtr entry = 0;
     status =
 #ifdef _SNMPv3
-        mib->find_managing_object(
-            mib->get_context(req->get_context()), toid, entry, req);
+        mib->find_managing_object(mib->get_context(req->get_context()), toid, entry, req);
 #else
-        mib->find_managing_object(
-            mib->get_default_context(), toid, entry, req);
+        mib->find_managing_object(mib->get_default_context(), toid, entry, req);
 #endif
     if (status != SNMP_ERROR_SUCCESS) return SNMP_ERROR_WRONG_VALUE;
     if (entry->type() != AGENTPP_TABLE) return SNMP_ERROR_WRONG_VALUE;
@@ -184,11 +178,9 @@ int agentppSimDeleteTableContents::commit_set_request(Request* req, int ind)
     MibEntryPtr entry = 0;
     int         status =
 #ifdef _SNMPv3
-        mib->find_managing_object(
-            mib->get_context(req->get_context()), toid, entry, req);
+        mib->find_managing_object(mib->get_context(req->get_context()), toid, entry, req);
 #else
-        mib->find_managing_object(
-            mib->get_default_context(), toid, entry, req);
+        mib->find_managing_object(mib->get_default_context(), toid, entry, req);
 #endif
     if (status != SNMP_ERROR_SUCCESS) return SNMP_ERROR_WRONG_VALUE;
     if (entry->type() != AGENTPP_TABLE) return SNMP_ERROR_WRONG_VALUE;
@@ -204,9 +196,7 @@ int agentppSimDeleteTableContents::commit_set_request(Request* req, int ind)
 int agentppSimDeleteTableContents::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = MibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
-        return status;
+    if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
 
     Oidx toid;
     Vbx  vb(req->get_value(ind));
@@ -214,11 +204,9 @@ int agentppSimDeleteTableContents::prepare_set_request(Request* req, int& ind)
     MibEntryPtr entry = 0;
     status =
 #ifdef _SNMPv3
-        mib->find_managing_object(
-            mib->get_context(req->get_context()), toid, entry, req);
+        mib->find_managing_object(mib->get_context(req->get_context()), toid, entry, req);
 #else
-        mib->find_managing_object(
-            mib->get_default_context(), toid, entry, req);
+        mib->find_managing_object(mib->get_default_context(), toid, entry, req);
 #endif
     if (status != SNMP_ERROR_SUCCESS) return SNMP_ERROR_WRONG_VALUE;
     if (entry->type() != AGENTPP_TABLE) return SNMP_ERROR_WRONG_VALUE;
@@ -234,8 +222,7 @@ agentpp_simulation_mib::agentpp_simulation_mib(Mib* mib)
     add(new agentppSimDeleteTableContents(mib));
 }
 
-agentpp_simulation_mib::agentpp_simulation_mib()
-    : MibGroup("1.3.6.1.4.1.4976.2.1", "agentppSimMIB")
+agentpp_simulation_mib::agentpp_simulation_mib() : MibGroup("1.3.6.1.4.1.4976.2.1", "agentppSimMIB")
 {
     add(new agentppSimMode());
 }

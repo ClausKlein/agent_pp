@@ -154,8 +154,7 @@ public:
 
     static sysOREntry* instance;
 
-    virtual void set_row(
-        MibTableRow* r, const Oidx&, const NS_SNMP OctetStr&, int);
+    virtual void set_row(MibTableRow* r, const Oidx&, const NS_SNMP OctetStr&, int);
     /**
      * Check whether the receiver contains a row with a given sysORID.
      *
@@ -185,9 +184,8 @@ public:
      * ID, and the services of the system. Optional values are system contact,
      * system name and system location
      */
-    sysGroup(const char* descr, const Oidx& o, const int services,
-        const char* contact = 0, const char* name = 0,
-        const char* location = 0);
+    sysGroup(const char* descr, const Oidx& o, const int services, const char* contact = 0,
+        const char* name = 0, const char* location = 0);
 };
 #ifdef AGENTPP_NAMESPACE
 }

@@ -470,10 +470,7 @@ public:
      *    a pointer to the n-th MibGroup of this context or
      *    0 if n is out of range.
      */
-    MibGroup* get_group(int n)
-    {
-        return ((n >= 0) && (n < groups.size())) ? groups.getNth(n) : 0;
-    }
+    MibGroup* get_group(int n) { return ((n >= 0) && (n < groups.size())) ? groups.getNth(n) : 0; }
 
     /**
      * Get the number of entries in this context.

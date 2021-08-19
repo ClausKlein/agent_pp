@@ -87,8 +87,7 @@ void* method_routine_caller(void*);
 #ifdef _THREADS
 #    ifndef WIN32
 #        ifndef POSIX_THREADS
-#            error \
-                "This SYSTEM does not support threads. Undefine _THREADS in agent++.h"
+#            error "This SYSTEM does not support threads. Undefine _THREADS in agent++.h"
 #        endif
 #    endif
 
@@ -610,10 +609,7 @@ public:
      *    false if it can execute arbitrary tasks.
      * @since 4.3.0
      */
-    void set_one_time_execution(bool singleExec)
-    {
-        oneTimeExecution = singleExec;
-    }
+    void set_one_time_execution(bool singleExec) { oneTimeExecution = singleExec; }
 };
 
 #        if !defined(AGENTPP_DECL_TEMPL_LIST_RUNNABLE)
@@ -802,8 +798,7 @@ public:
      */
     TaskManager* clone()
     {
-        return new TaskManager(
-            new ThreadPool(threadPool->size(), threadPool->stack_size()));
+        return new TaskManager(new ThreadPool(threadPool->size(), threadPool->stack_size()));
     }
 
 protected:

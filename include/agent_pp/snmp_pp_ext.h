@@ -101,10 +101,7 @@ public:
      * @param n - The number of subidentifiers to cut of from left side.
      * @return An Oidx object identifier.
      */
-    Oidx cut_left(const unsigned int index) const
-    {
-        return cut_left(*this, index);
-    }
+    Oidx cut_left(const unsigned int index) const { return cut_left(*this, index); }
 
     /**
      * Return a copy of the receiver oid without the n rightmost
@@ -113,10 +110,7 @@ public:
      * @param n - The number of subidentifiers to cut of from right side.
      * @return An Oidx object identifier.
      */
-    Oidx cut_right(const unsigned int index) const
-    {
-        return cut_right(*this, index);
-    }
+    Oidx cut_right(const unsigned int index) const { return cut_right(*this, index); }
 
     /**
      * Mask the receiver, i.e. zero those sub-identifiers for which
@@ -154,8 +148,7 @@ public:
         if (oid.valid())
         {
             // constructor can handle negative length
-            Oidx retval(oid.smival.value.oid.ptr + index,
-                oid.smival.value.oid.len - index);
+            Oidx retval(oid.smival.value.oid.ptr + index, oid.smival.value.oid.len - index);
             return retval;
         }
         else
@@ -174,9 +167,7 @@ public:
     {
         if (oid.valid())
         {
-            unsigned int l = oid.smival.value.oid.len >= index
-                ? oid.smival.value.oid.len - index
-                : 0;
+            unsigned int l = oid.smival.value.oid.len >= index ? oid.smival.value.oid.len - index : 0;
             Oidx         retval(oid.smival.value.oid.ptr, l);
             return retval;
         }
@@ -311,8 +302,7 @@ public:
      *    the length of the string will be generated.
      * @return An Oidx.
      */
-    static Oidx from_string(
-        const NS_SNMP OctetStr& str, bool withLength = true)
+    static Oidx from_string(const NS_SNMP OctetStr& str, bool withLength = true)
     {
         Oidx oid;
         if (withLength) oid += (long)str.len();
@@ -412,10 +402,7 @@ public:
      * @param value
      *    the value part of the new variable binding.
      */
-    Vbx(const NS_SNMP Oid& oid, const NS_SNMP SnmpSyntax& val) : Vb(oid)
-    {
-        set_value(val);
-    }
+    Vbx(const NS_SNMP Oid& oid, const NS_SNMP SnmpSyntax& val) : Vb(oid) { set_value(val); }
 
     /**
      * Return the oid value of the receiver.
@@ -494,10 +481,8 @@ public:
     static int from_asn1(Vbx*&, int&, unsigned char*&, int&);
 
 private:
-    static unsigned char* asn_build_long_len_sequence(
-        unsigned char*, int*, unsigned char, int, int);
-    static unsigned char* asn_build_long_length(
-        unsigned char*, int*, int, int);
+    static unsigned char* asn_build_long_len_sequence(unsigned char*, int*, unsigned char, int, int);
+    static unsigned char* asn_build_long_length(unsigned char*, int*, int, int);
 };
 
 /*------------------------- class OidxRange ---------------------------*/
@@ -755,8 +740,7 @@ public:
      *   SNMP_CLASS_SUCCESS on success and SNMP_CLASS_ERROR,
      *   SNMP_CLASS_TL_FAILED on failure.
      */
-    int receive(struct timeval*, Pdux&, NS_SNMP UdpAddress&,
-        NS_SNMP snmp_version&, NS_SNMP OctetStr&);
+    int receive(struct timeval*, Pdux&, NS_SNMP UdpAddress&, NS_SNMP snmp_version&, NS_SNMP OctetStr&);
 #endif
 #ifdef _SNMPv3
     /**
@@ -792,8 +776,7 @@ public:
      *   SNMP_CLASS_SUCCESS on success and SNMP_CLASS_ERROR,
      *   SNMP_CLASS_TL_FAILED on failure.
      */
-    int send(Pdux const&, NS_SNMP UdpAddress const&, NS_SNMP snmp_version,
-        NS_SNMP OctetStr const&);
+    int send(Pdux const&, NS_SNMP UdpAddress const&, NS_SNMP snmp_version, NS_SNMP OctetStr const&);
 #endif
 
     /**

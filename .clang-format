@@ -1,8 +1,8 @@
 ---
-# This configuration requires clang-format 7 or higher.
+# This configuration requires clang-format 11 or higher.
 BasedOnStyle:  WebKit
-ColumnLimit: 79
-#< ColumnLimit: 123
+#NOTE: keep // AgentGen BEGIN=... in one line! CK
+ColumnLimit: 103
 IndentWidth: 4
 UseTab: Never
 # ---

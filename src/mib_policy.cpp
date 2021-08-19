@@ -26,14 +26,12 @@ namespace Agentpp
 {
 #endif
 
-MibTableSizePolicy::MibTableSizePolicy(
-    const table_size_def* r, unsigned int sz, unsigned int def)
+MibTableSizePolicy::MibTableSizePolicy(const table_size_def* r, unsigned int sz, unsigned int def)
     : defaultLimit(def)
 {
     for (unsigned int i = 0; i < sz; i++)
     {
-        MibStaticEntry* e =
-            new MibStaticEntry(r[i].tableID, Gauge32(r[i].sizeLimit));
+        MibStaticEntry* e = new MibStaticEntry(r[i].tableID, Gauge32(r[i].sizeLimit));
         policies.add(e);
     }
 }
@@ -68,15 +66,13 @@ int MibTableSizePolicy::is_transition_ok(
             e->get_value(g);
             limit = (int)g;
         }
-        if ((limit > 0) && (t->size() >= limit))
-            return SNMP_ERROR_RESOURCE_UNAVAIL;
+        if ((limit > 0) && (t->size() >= limit)) return SNMP_ERROR_RESOURCE_UNAVAIL;
         return SNMP_ERROR_SUCCESS;
     }
     return SNMP_ERROR_SUCCESS;
 }
 
-void MibTableSizePolicy::register_policy(
-    MibContext* context, MibTableSizePolicy* p)
+void MibTableSizePolicy::register_policy(MibContext* context, MibTableSizePolicy* p)
 {
     OidListCursor<MibEntry> cur(context->get_content());
     for (; cur.get(); cur.next())

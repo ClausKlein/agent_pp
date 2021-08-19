@@ -939,8 +939,8 @@ protected:
      *    the error code that further classifies the authentication
      *    failure.
      */
-    virtual void authenticationFailure(const NS_SNMP OctetStr& context,
-        const NS_SNMP GenAddress& sourceAddress, int status);
+    virtual void authenticationFailure(
+        const NS_SNMP OctetStr& context, const NS_SNMP GenAddress& sourceAddress, int status);
 
     /**
      * Set all variable bindings (for response) to null values.
@@ -999,10 +999,7 @@ protected:
 
 class AGENTPP_DECL RequestID {
 public:
-    RequestID(uint32_t req_id, const Oidx& r_key) : id(r_key)
-    {
-        request_id = req_id;
-    }
+    RequestID(uint32_t req_id, const Oidx& r_key) : id(r_key) { request_id = req_id; }
 
     uint32_t get_request_id() const { return request_id; }
     Oidx*    key() { return &id; }

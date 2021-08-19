@@ -58,20 +58,14 @@ namespace Agentpp
 #define LTHREADBIT 4
 #define RTHREADBIT 8
 
-static inline int bf(OidxPtrEntryPtrAVLNode* t)
-{
-    return t->stat & AVLBALANCEMASK;
-}
+static inline int bf(OidxPtrEntryPtrAVLNode* t) { return t->stat & AVLBALANCEMASK; }
 
 static inline void set_bf(OidxPtrEntryPtrAVLNode* t, int b)
 {
     t->stat = (t->stat & ~AVLBALANCEMASK) | (b & AVLBALANCEMASK);
 }
 
-static inline int rthread(OidxPtrEntryPtrAVLNode* t)
-{
-    return t->stat & RTHREADBIT;
-}
+static inline int rthread(OidxPtrEntryPtrAVLNode* t) { return t->stat & RTHREADBIT; }
 
 static inline void set_rthread(OidxPtrEntryPtrAVLNode* t, int b)
 {
@@ -81,10 +75,7 @@ static inline void set_rthread(OidxPtrEntryPtrAVLNode* t, int b)
         t->stat &= ~RTHREADBIT;
 }
 
-static inline int lthread(OidxPtrEntryPtrAVLNode* t)
-{
-    return t->stat & LTHREADBIT;
-}
+static inline int lthread(OidxPtrEntryPtrAVLNode* t) { return t->stat & LTHREADBIT; }
 
 static inline void set_lthread(OidxPtrEntryPtrAVLNode* t, int b)
 {
@@ -114,8 +105,7 @@ OidxPtrEntryPtrAVLNode* OidxPtrEntryPtrAVLMap::rightmost() const
     return t;
 }
 
-OidxPtrEntryPtrAVLNode* OidxPtrEntryPtrAVLMap::succ(
-    OidxPtrEntryPtrAVLNode* t) const
+OidxPtrEntryPtrAVLNode* OidxPtrEntryPtrAVLMap::succ(OidxPtrEntryPtrAVLNode* t) const
 {
     OidxPtrEntryPtrAVLNode* r = t->rt;
     if (!rthread(t))
@@ -123,8 +113,7 @@ OidxPtrEntryPtrAVLNode* OidxPtrEntryPtrAVLMap::succ(
     return r;
 }
 
-OidxPtrEntryPtrAVLNode* OidxPtrEntryPtrAVLMap::pred(
-    OidxPtrEntryPtrAVLNode* t) const
+OidxPtrEntryPtrAVLNode* OidxPtrEntryPtrAVLMap::pred(OidxPtrEntryPtrAVLNode* t) const
 {
     OidxPtrEntryPtrAVLNode* l = t->lt;
     if (!lthread(t))
@@ -362,8 +351,7 @@ EntryPtr& OidxPtrEntryPtrAVLMap::operator[](OidxPtr item)
     }
 }
 
-void OidxPtrEntryPtrAVLMap::_del(
-    OidxPtrEntryPtrAVLNode* par, OidxPtrEntryPtrAVLNode*& t)
+void OidxPtrEntryPtrAVLMap::_del(OidxPtrEntryPtrAVLNode* par, OidxPtrEntryPtrAVLNode*& t)
 {
     int comp = 0;
     if (_already_found)
@@ -594,13 +582,11 @@ void OidxPtrEntryPtrAVLMap::_kill(OidxPtrEntryPtrAVLNode* t)
     }
 }
 
-OidxPtrEntryPtrAVLMap::OidxPtrEntryPtrAVLMap(OidxPtrEntryPtrAVLMap& b)
-    : OidxPtrEntryPtrMap(b.def)
+OidxPtrEntryPtrAVLMap::OidxPtrEntryPtrAVLMap(OidxPtrEntryPtrAVLMap& b) : OidxPtrEntryPtrMap(b.def)
 {
     root  = 0;
     count = 0;
-    for (Pix i = b.first(); i != 0; b.next(i))
-        (*this)[b.key(i)] = b.contents(i);
+    for (Pix i = b.first(); i != 0; b.next(i)) (*this)[b.key(i)] = b.contents(i);
 }
 
 int OidxPtrEntryPtrAVLMap::OK()

@@ -75,8 +75,7 @@ static const char* loggerModuleName = "agent++.snmp_notification_mib";
 
 snmpNotifyEntry* snmpNotifyEntry::instance = 0;
 
-snmpNotifyEntry::snmpNotifyEntry()
-    : StorageTable(oidSnmpNotifyEntry, iSnmpAdminString, 1)
+snmpNotifyEntry::snmpNotifyEntry() : StorageTable(oidSnmpNotifyEntry, iSnmpAdminString, 1)
 {
     // This table object is a singleton. In order to access it use
     // the static pointer snmpNotifyEntry::instance.
@@ -90,8 +89,7 @@ snmpNotifyEntry::snmpNotifyEntry()
 
 snmpNotifyEntry::~snmpNotifyEntry() { }
 
-MibTableRow* snmpNotifyEntry::add_entry(
-    const OctetStr& name, const OctetStr& tag, const int type)
+MibTableRow* snmpNotifyEntry::add_entry(const OctetStr& name, const OctetStr& tag, const int type)
 {
     start_synch();
     Oidx         index = Oidx::from_string(name, false);
@@ -117,8 +115,7 @@ MibTableRow* snmpNotifyEntry::add_entry(
 
 snmpNotifyFilterProfileEntry* snmpNotifyFilterProfileEntry::instance = 0;
 
-const index_info indSnmpNotifyFilterProfileEntry[1] = { { sNMP_SYNTAX_OCTETS,
-    true, 1, 32 } };
+const index_info indSnmpNotifyFilterProfileEntry[1] = { { sNMP_SYNTAX_OCTETS, true, 1, 32 } };
 
 snmpNotifyFilterProfileEntry::snmpNotifyFilterProfileEntry()
     : StorageTable("1.3.6.1.6.3.13.1.2.1", indSnmpNotifyFilterProfileEntry, 1)
@@ -127,8 +124,7 @@ snmpNotifyFilterProfileEntry::snmpNotifyFilterProfileEntry()
     // the static pointer snmpNotifyFilterProfileEntry::instance.
     instance = this;
 
-    add_col(new SnmpAdminString(
-        "1", READCREATE, new OctetStr(""), VMODE_NONE, 1, 32));
+    add_col(new SnmpAdminString("1", READCREATE, new OctetStr(""), VMODE_NONE, 1, 32));
     add_storage_col(new StorageType("2", 3));
     add_col(new snmpRowStatus("3"));
 }
@@ -142,16 +138,14 @@ snmpNotifyFilterProfileEntry::~snmpNotifyFilterProfileEntry() { }
 
 snmpNotifyFilterEntry* snmpNotifyFilterEntry::instance = 0;
 
-const index_info iSnmpNotifyFilterEntry[2] = {
-    { sNMP_SYNTAX_OCTETS, false, 0, 32 }, { sNMP_SYNTAX_OID, true, 1, 95 }
-};
+const index_info iSnmpNotifyFilterEntry[2] = { { sNMP_SYNTAX_OCTETS, false, 0, 32 },
+    { sNMP_SYNTAX_OID, true, 1, 95 } };
 
 snmpNotifyFilterEntry::snmpNotifyFilterEntry()
     : snmpNotifyFilterEntry(snmpNotifyFilterProfileEntry::instance)
 { }
 
-snmpNotifyFilterEntry::snmpNotifyFilterEntry(
-    snmpNotifyFilterProfileEntry* profileEntry)
+snmpNotifyFilterEntry::snmpNotifyFilterEntry(snmpNotifyFilterProfileEntry* profileEntry)
     : StorageTable("1.3.6.1.6.3.13.1.3.1", iSnmpNotifyFilterEntry, 2),
       _snmpNotifyFilterProfileEntry(profileEntry)
 {
@@ -159,8 +153,7 @@ snmpNotifyFilterEntry::snmpNotifyFilterEntry(
     // the static pointer snmpNotifyFilterEntry::instance.
     instance = this;
 
-    add_col(new OctetStrMinMax(
-        "2", READCREATE, new OctetStr(""), VMODE_DEFAULT, 0, 16));
+    add_col(new OctetStrMinMax("2", READCREATE, new OctetStr(""), VMODE_DEFAULT, 0, 16));
     add_col(new SnmpInt32MinMax("3", READCREATE, 1, VMODE_DEFAULT, 1, 2));
     add_storage_col(new StorageType("4", 3));
     add_col(new snmpRowStatus("5"));
@@ -204,8 +197,7 @@ bool snmpNotifyFilterEntry::passes_filter(
     }
 
     OidList<MibStaticEntry>  matches;
-    OidList<MibStaticEntry>* oidmatches =
-        new OidList<MibStaticEntry>[vb_count];
+    OidList<MibStaticEntry>* oidmatches = new OidList<MibStaticEntry>[vb_count];
     for (cur.init(list); cur.get(); cur.next())
     {
 
@@ -226,8 +218,7 @@ bool snmpNotifyFilterEntry::passes_filter(
             Oidx sid;
             sid += subtree.len();
             sid += subtree;
-            MibStaticEntry* match =
-                new MibStaticEntry(sid, SnmpInt32(filterType));
+            MibStaticEntry* match = new MibStaticEntry(sid, SnmpInt32(filterType));
             matches.add(match);
 
             LOG_BEGIN(loggerModuleName, INFO_LOG | 4);
@@ -260,8 +251,7 @@ bool snmpNotifyFilterEntry::passes_filter(
                 Oidx sid;
                 sid += subtree.len();
                 sid += subtree;
-                MibStaticEntry* match =
-                    new MibStaticEntry(sid, SnmpInt32(filterType));
+                MibStaticEntry* match = new MibStaticEntry(sid, SnmpInt32(filterType));
                 oidmatches[i].add(match);
             }
         }
@@ -293,14 +283,11 @@ bool snmpNotifyFilterEntry::passes_filter(
     return (pass == 1);
 }
 
-snmp_notification_mib::snmp_notification_mib()
-    : MibGroup("1.3.6.1.6.3.13.1", "snmpNotificationMIB")
+snmp_notification_mib::snmp_notification_mib() : MibGroup("1.3.6.1.6.3.13.1", "snmpNotificationMIB")
 {
-    snmpNotifyEntry*              notifyEntry = new snmpNotifyEntry();
-    snmpNotifyFilterProfileEntry* notifyFilterProfileEntry =
-        new snmpNotifyFilterProfileEntry();
-    snmpNotifyFilterEntry* notifyFilterEntry =
-        new snmpNotifyFilterEntry(notifyFilterProfileEntry);
+    snmpNotifyEntry*              notifyEntry              = new snmpNotifyEntry();
+    snmpNotifyFilterProfileEntry* notifyFilterProfileEntry = new snmpNotifyFilterProfileEntry();
+    snmpNotifyFilterEntry* notifyFilterEntry = new snmpNotifyFilterEntry(notifyFilterProfileEntry);
     add(notifyEntry);
     add(notifyFilterProfileEntry);
     add(notifyFilterEntry);

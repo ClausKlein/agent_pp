@@ -129,10 +129,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and
      *         SNMP_ERROR_COMITFAIL on failure.
      */
-    int commit_set_request(Request*, int) override
-    {
-        return SNMP_ERROR_COMMITFAIL;
-    }
+    int commit_set_request(Request*, int) override { return SNMP_ERROR_COMMITFAIL; }
 
     /**
      * Let the receiver prepare a SNMP SET subrequest
@@ -143,10 +140,7 @@ public:
      *         SNMP_ERROR_WRONG_TYPE, or
      *         SNMP_ERROR_NOT_WRITEABLE on failure.
      */
-    int prepare_set_request(Request*, int&) override
-    {
-        return SNMP_ERROR_NOT_WRITEABLE;
-    }
+    int prepare_set_request(Request*, int&) override { return SNMP_ERROR_NOT_WRITEABLE; }
 
     /**
      * Let the receiver undo a SNMP SET subrequest
@@ -156,10 +150,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and
      *         SNMP_ERROR_UNDO_FAIL on failure.
      */
-    int undo_set_request(Request*, int&) override
-    {
-        return SNMP_ERROR_SUCCESS;
-    }
+    int undo_set_request(Request*, int&) override { return SNMP_ERROR_SUCCESS; }
 
     /**
      * Clean up resources used for performing (or undoing) set requests.
@@ -228,10 +219,7 @@ protected:
 class AGENTPP_DECL MibStaticEntry : public Vbx {
 public:
     MibStaticEntry(const Vbx& v) : Vbx(v) { }
-    MibStaticEntry(const Oidx& o, const NS_SNMP SnmpSyntax& v) : Vbx(o)
-    {
-        set_value(v);
-    }
+    MibStaticEntry(const Oidx& o, const NS_SNMP SnmpSyntax& v) : Vbx(o) { set_value(v); }
     MibStaticEntry(const MibStaticEntry& other) : Vbx(other) { }
 
     OidxPtr key() { return (Oidx*)&iv_vb_oid; }

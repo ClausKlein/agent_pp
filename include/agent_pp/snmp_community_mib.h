@@ -211,9 +211,8 @@ public:
         return (entry) ? entry : instance;
     }
 
-    virtual void set_row(MibTableRow* r, const NS_SNMP OctetStr& p0,
-        const NS_SNMP OctetStr& p1, const NS_SNMP OctetStr& p2,
-        const NS_SNMP OctetStr& p3, const NS_SNMP OctetStr& p4, int p5,
+    virtual void set_row(MibTableRow* r, const NS_SNMP OctetStr& p0, const NS_SNMP OctetStr& p1,
+        const NS_SNMP OctetStr& p2, const NS_SNMP OctetStr& p3, const NS_SNMP OctetStr& p4, int p5,
         int p6);
     /**
      * Get the v3 information for a community.
@@ -234,8 +233,8 @@ public:
      *    true if an entry for the given community could be found,
      *    false otherwise.
      */
-    virtual bool get_v3_info(NS_SNMP OctetStr&, NS_SNMP OctetStr&,
-        NS_SNMP OctetStr&, NS_SNMP OctetStr&);
+    virtual bool get_v3_info(
+        NS_SNMP OctetStr&, NS_SNMP OctetStr&, NS_SNMP OctetStr&, NS_SNMP OctetStr&);
 
     /**
      * Get the community for a given securityName/contextEngineId/
@@ -251,8 +250,7 @@ public:
      *    true if an appropriate community could be found,
      *    false otherwise.
      */
-    virtual bool get_community(
-        NS_SNMP OctetStr&, const NS_SNMP OctetStr&, const NS_SNMP OctetStr&);
+    virtual bool get_community(NS_SNMP OctetStr&, const NS_SNMP OctetStr&, const NS_SNMP OctetStr&);
 };
 
 /**
@@ -291,16 +289,14 @@ public:
      */
     static snmpTargetAddrExtEntry* get_instance(Mib* mib);
 
-    void row_added(MibTableRow*, const Oidx&, MibTable* s = 0) override;
-    void row_delete(MibTableRow*, const Oidx&, MibTable* s = 0) override;
+    void         row_added(MibTableRow*, const Oidx&, MibTable* s = 0) override;
+    void         row_delete(MibTableRow*, const Oidx&, MibTable* s = 0) override;
     virtual void set_row(MibTableRow* r, const NS_SNMP OctetStr& p0, int p1);
     int          prepare_set_request(Request*, int&) override;
 #    ifdef _SNMPv3
-    virtual bool passes_filter(
-        const NS_SNMP OctetStr&, const NS_SNMP UTarget&);
+    virtual bool passes_filter(const NS_SNMP OctetStr&, const NS_SNMP UTarget&);
 #    endif
-    virtual bool passes_filter(
-        const NS_SNMP OctetStr&, const NS_SNMP OctetStr&);
+    virtual bool passes_filter(const NS_SNMP OctetStr&, const NS_SNMP OctetStr&);
 
 protected:
     snmpTargetAddrEntry* baseTable;

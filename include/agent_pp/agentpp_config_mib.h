@@ -135,8 +135,7 @@ public:
      * @param mibRef a pointer to the Mib instance.
      * @since 4.3.0.
      */
-    agentppCfgSecSrcAddrValidation(Mib* mibRef)
-        : agentppCfgSecSrcAddrValidation()
+    agentppCfgSecSrcAddrValidation(Mib* mibRef) : agentppCfgSecSrcAddrValidation()
     {
         mibReference = mibRef;
     }
@@ -325,13 +324,7 @@ public:
     void        set_state(int32_t) override;
     int         set(const Vbx&) override;
     int         prepare_set_request(Request*, int&) override;
-    enum labels {
-        e_other       = 1,
-        e_volatile    = 2,
-        e_nonVolatile = 3,
-        e_permanent   = 4,
-        e_readOnly    = 5
-    };
+    enum labels { e_other = 1, e_volatile = 2, e_nonVolatile = 3, e_permanent = 4, e_readOnly = 5 };
 
     //--AgentGen BEGIN=agentppCfgStorageStorageType
     //--AgentGen END
@@ -385,13 +378,11 @@ public:
 
     static agentppCfgStorageEntry* instance;
 
-    void get_request(Request*, int) override;
-    int  prepare_set_request(Request*, int&) override;
-    int  is_transition_ok(
-         MibTable*, MibTableRow*, const Oidx&, int, int) override;
-    virtual void set_row(MibTableRow* r, const NS_SNMP OctetStr& p1,
-        int32_t p2, uint32_t p3, uint32_t p4, int32_t p5, int32_t p6,
-        int32_t p7);
+    void         get_request(Request*, int) override;
+    int          prepare_set_request(Request*, int&) override;
+    int          is_transition_ok(MibTable*, MibTableRow*, const Oidx&, int, int) override;
+    virtual void set_row(MibTableRow* r, const NS_SNMP OctetStr& p1, int32_t p2, uint32_t p3,
+        uint32_t p4, int32_t p5, int32_t p6, int32_t p7);
     //--AgentGen BEGIN=agentppCfgStorageEntry
     void set_mib(Mib* m);
     Mib* get_mib() { return mib; }

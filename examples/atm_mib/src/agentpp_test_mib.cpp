@@ -60,8 +60,7 @@ namespace Agentpp
 
 agentppTestTimeout* agentppTestTimeout::instance = 0;
 
-agentppTestTimeout::agentppTestTimeout()
-    : MibLeaf(oidAgentppTestTimeout, READWRITE, new Gauge32())
+agentppTestTimeout::agentppTestTimeout() : MibLeaf(oidAgentppTestTimeout, READWRITE, new Gauge32())
 {
     // This leaf object is a singleton. In order to access it use
     // the static pointer agentppTestTimeout::instance.
@@ -121,9 +120,7 @@ bool agentppTestTimeout::value_ok(const Vbx& vb)
 int agentppTestTimeout::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = MibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
-        return status;
+    if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
 
     //--AgentGen BEGIN=agentppTestTimeout::prepare_set_request
     //--AgentGen END
@@ -141,30 +138,25 @@ int agentppTestTimeout::prepare_set_request(Request* req, int& ind)
  * "The date and time when this row has been created."
  */
 
-agentppTestSharedTableCreationTime::agentppTestSharedTableCreationTime(
-    const Oidx& id)
+agentppTestSharedTableCreationTime::agentppTestSharedTableCreationTime(const Oidx& id)
     : DateAndTime(id, READONLY, VMODE_DEFAULT)
 {
-    //--AgentGen
-    // BEGIN=agentppTestSharedTableCreationTime::agentppTestSharedTableCreationTime
+    //--AgentGen BEGIN=agentppTestSharedTableCreationTime::agentppTestSharedTableCreationTime
     //--AgentGen END
 }
 
 agentppTestSharedTableCreationTime::~agentppTestSharedTableCreationTime()
 {
 
-    //--AgentGen
-    // BEGIN=agentppTestSharedTableCreationTime::~agentppTestSharedTableCreationTime
+    //--AgentGen BEGIN=agentppTestSharedTableCreationTime::~agentppTestSharedTableCreationTime
     //--AgentGen END
 }
 
 MibEntryPtr agentppTestSharedTableCreationTime::clone()
 {
     MibEntryPtr other = new agentppTestSharedTableCreationTime(oid);
-    ((agentppTestSharedTableCreationTime*)other)
-        ->replace_value(value->clone());
-    ((agentppTestSharedTableCreationTime*)other)
-        ->set_reference_to_table(my_table);
+    ((agentppTestSharedTableCreationTime*)other)->replace_value(value->clone());
+    ((agentppTestSharedTableCreationTime*)other)->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppTestSharedTableCreationTime::clone
     //--AgentGen END
     return other;
@@ -190,8 +182,7 @@ agentppTestSharedTableDelay::agentppTestSharedTableDelay(const Oidx& id)
 agentppTestSharedTableDelay::~agentppTestSharedTableDelay()
 {
 
-    //--AgentGen
-    // BEGIN=agentppTestSharedTableDelay::~agentppTestSharedTableDelay
+    //--AgentGen BEGIN=agentppTestSharedTableDelay::~agentppTestSharedTableDelay
     //--AgentGen END
 }
 
@@ -218,16 +209,14 @@ MibEntryPtr agentppTestSharedTableDelay::clone()
 agentppTestSharedTableSession::agentppTestSharedTableSession(const Oidx& id)
     : MibLeaf(id, READONLY, new Gauge32())
 {
-    //--AgentGen
-    // BEGIN=agentppTestSharedTableSession::agentppTestSharedTableSession
+    //--AgentGen BEGIN=agentppTestSharedTableSession::agentppTestSharedTableSession
     //--AgentGen END
 }
 
 agentppTestSharedTableSession::~agentppTestSharedTableSession()
 {
 
-    //--AgentGen
-    // BEGIN=agentppTestSharedTableSession::~agentppTestSharedTableSession
+    //--AgentGen BEGIN=agentppTestSharedTableSession::~agentppTestSharedTableSession
     //--AgentGen END
 }
 
@@ -250,20 +239,17 @@ MibEntryPtr agentppTestSharedTableSession::clone()
  * "The row status of the row."
  */
 
-agentppTestSharedTableRowStatus::agentppTestSharedTableRowStatus(
-    const Oidx& id)
+agentppTestSharedTableRowStatus::agentppTestSharedTableRowStatus(const Oidx& id)
     : snmpRowStatus(id, READCREATE)
 {
-    //--AgentGen
-    // BEGIN=agentppTestSharedTableRowStatus::agentppTestSharedTableRowStatus
+    //--AgentGen BEGIN=agentppTestSharedTableRowStatus::agentppTestSharedTableRowStatus
     //--AgentGen END
 }
 
 agentppTestSharedTableRowStatus::~agentppTestSharedTableRowStatus()
 {
 
-    //--AgentGen
-    // BEGIN=agentppTestSharedTableRowStatus::~agentppTestSharedTableRowStatus
+    //--AgentGen BEGIN=agentppTestSharedTableRowStatus::~agentppTestSharedTableRowStatus
     //--AgentGen END
 }
 
@@ -271,8 +257,7 @@ MibEntryPtr agentppTestSharedTableRowStatus::clone()
 {
     MibEntryPtr other = new agentppTestSharedTableRowStatus(oid);
     ((agentppTestSharedTableRowStatus*)other)->replace_value(value->clone());
-    ((agentppTestSharedTableRowStatus*)other)
-        ->set_reference_to_table(my_table);
+    ((agentppTestSharedTableRowStatus*)other)->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppTestSharedTableRowStatus::clone
     //--AgentGen END
     return other;
@@ -390,9 +375,7 @@ bool agentppTestSparseCol1::value_ok(const Vbx& vb)
 int agentppTestSparseCol1::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = MibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
-        return status;
+    if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
 
     //--AgentGen BEGIN=agentppTestSparseCol1::prepare_set_request
     //--AgentGen END
@@ -475,9 +458,7 @@ bool agentppTestSparseCol2::value_ok(const Vbx& vb)
 int agentppTestSparseCol2::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = MibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
-        return status;
+    if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
 
     //--AgentGen BEGIN=agentppTestSparseCol2::prepare_set_request
     //--AgentGen END
@@ -559,9 +540,7 @@ bool agentppTestSparseCol3::value_ok(const Vbx& vb)
 int agentppTestSparseCol3::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = MibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
-        return status;
+    if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
 
     Vb       vb(req->get_value(ind));
     OctetStr v;
@@ -581,8 +560,7 @@ int agentppTestSparseCol3::prepare_set_request(Request* req, int& ind)
  * "Use this column to create a row in the test table."
  */
 
-agentppTestSparseRowStatus::agentppTestSparseRowStatus(const Oidx& id)
-    : snmpRowStatus(id, READCREATE)
+agentppTestSparseRowStatus::agentppTestSparseRowStatus(const Oidx& id) : snmpRowStatus(id, READCREATE)
 {
     //--AgentGen BEGIN=agentppTestSparseRowStatus::agentppTestSparseRowStatus
     //--AgentGen END
@@ -629,9 +607,7 @@ int agentppTestSparseRowStatus::set(const Vbx& vb)
 int agentppTestSparseRowStatus::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = snmpRowStatus::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
-        return status;
+    if ((status = snmpRowStatus::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
 
     //--AgentGen BEGIN=agentppTestSparseRowStatus::prepare_set_request
     //--AgentGen END
@@ -652,8 +628,7 @@ int agentppTestSparseRowStatus::prepare_set_request(Request* req, int& ind)
 
 agentppTestSharedEntry* agentppTestSharedEntry::instance = 0;
 
-const index_info indAgentppTestSharedEntry[1] = { { sNMP_SYNTAX_INT, false, 1,
-    1 } };
+const index_info indAgentppTestSharedEntry[1] = { { sNMP_SYNTAX_INT, false, 1, 1 } };
 
 agentppTestSharedEntry::agentppTestSharedEntry()
     : MibTable(oidAgentppTestSharedEntry, indAgentppTestSharedEntry, 1)
@@ -662,13 +637,10 @@ agentppTestSharedEntry::agentppTestSharedEntry()
     // the static pointer agentppTestSharedEntry::instance.
     instance = this;
 
-    add_col(new agentppTestSharedTableCreationTime(
-        colAgentppTestSharedTableCreationTime));
+    add_col(new agentppTestSharedTableCreationTime(colAgentppTestSharedTableCreationTime));
     add_col(new agentppTestSharedTableDelay(colAgentppTestSharedTableDelay));
-    add_col(
-        new agentppTestSharedTableSession(colAgentppTestSharedTableSession));
-    add_col(new agentppTestSharedTableRowStatus(
-        colAgentppTestSharedTableRowStatus));
+    add_col(new agentppTestSharedTableSession(colAgentppTestSharedTableSession));
+    add_col(new agentppTestSharedTableRowStatus(colAgentppTestSharedTableRowStatus));
     //--AgentGen BEGIN=agentppTestSharedEntry::agentppTestSharedEntry
     //--AgentGen END
 }
@@ -693,8 +665,7 @@ agentppTestSharedEntry::~agentppTestSharedEntry()
 
 agentppTestSessionsEntry* agentppTestSessionsEntry::instance = 0;
 
-const index_info indAgentppTestSessionsEntry[1] = { { sNMP_SYNTAX_INT, false,
-    1, 1 } };
+const index_info indAgentppTestSessionsEntry[1] = { { sNMP_SYNTAX_INT, false, 1, 1 } };
 
 agentppTestSessionsEntry::agentppTestSessionsEntry()
     : MibTable(oidAgentppTestSessionsEntry, indAgentppTestSessionsEntry, 1)
@@ -728,8 +699,7 @@ agentppTestSessionsEntry::~agentppTestSessionsEntry()
 
 agentppTestSparseEntry* agentppTestSparseEntry::instance = 0;
 
-const index_info indAgentppTestSparseEntry[1] = { { sNMP_SYNTAX_OCTETS, false,
-    0, 255 } };
+const index_info indAgentppTestSparseEntry[1] = { { sNMP_SYNTAX_OCTETS, false, 0, 255 } };
 
 agentppTestSparseEntry::agentppTestSparseEntry()
     : MibTable(oidAgentppTestSparseEntry, indAgentppTestSparseEntry, 1)
@@ -774,8 +744,7 @@ int agentppTestSparseEntry::prepare_set_request(Request* req, int& ind)
 // Notifications
 
 // Group
-agentpp_test_mib::agentpp_test_mib()
-    : MibGroup("1.3.6.1.4.1.4976.6.3", "agentpp_test_mib")
+agentpp_test_mib::agentpp_test_mib() : MibGroup("1.3.6.1.4.1.4976.6.3", "agentpp_test_mib")
 {
     //--AgentGen BEGIN=agentpp_test_mib::agentpp_test_mib
     //--AgentGen END

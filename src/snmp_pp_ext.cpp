@@ -42,8 +42,7 @@ using namespace Snmp_pp;
 namespace Snmp_pp
 {
 #endif
-extern int send_snmp_request(
-    SnmpSocket, unsigned char*, size_t, const NS_SNMP Address&);
+extern int send_snmp_request(SnmpSocket, unsigned char*, size_t, const NS_SNMP Address&);
 #ifdef SNMP_PP_NAMESPACE
 }
 #endif
@@ -99,8 +98,7 @@ bool Vbx::equal(Vbx* avbs, Vbx* bvbs, int sz)
     {
         if (avbs[i].get_syntax() != bvbs[i].get_syntax())
             return false;
-        else if (strcmp(avbs[i].get_printable_value(),
-                     bvbs[i].get_printable_value()))
+        else if (strcmp(avbs[i].get_printable_value(), bvbs[i].get_printable_value()))
             return false;
     }
     return true;
@@ -134,16 +132,15 @@ int Vbx::to_asn1(Vbx* vbs, int sz, unsigned char*& buf, int& length)
             snmp_free_pdu(pdu);
             return status;
         }
-        snmp_add_var(pdu, vbs[i].get_oid().oidval()->ptr,
-            vbs[i].get_oid().oidval()->len, &smival);
+        snmp_add_var(pdu, vbs[i].get_oid().oidval()->ptr, vbs[i].get_oid().oidval()->len, &smival);
         freeSmivalDescriptor(&smival);
     }
     // asn1 encode
     // cp = packet;
     for (vp = pdu->variables; vp; vp = vp->next_variable)
     {
-        cp = snmp_build_var_op(cp, vp->name, &vp->name_length, vp->type,
-            vp->val_len, (unsigned char*)vp->val.string, &len);
+        cp = snmp_build_var_op(cp, vp->name, &vp->name_length, vp->type, vp->val_len,
+            (unsigned char*)vp->val.string, &len);
         if (cp == NULL)
         {
             snmp_free_pdu(pdu);
@@ -167,8 +164,8 @@ int Vbx::to_asn1(Vbx* vbs, int sz, unsigned char*& buf, int& length)
     return SNMP_CLASS_SUCCESS;
 }
 
-unsigned char* Vbx::asn_build_long_len_sequence(unsigned char* data,
-    int* datalength, unsigned char type, int length, int lengthOfLength)
+unsigned char* Vbx::asn_build_long_len_sequence(
+    unsigned char* data, int* datalength, unsigned char type, int length, int lengthOfLength)
 {
     unsigned char* data_with_length = nullptr;
 
@@ -180,8 +177,7 @@ unsigned char* Vbx::asn_build_long_len_sequence(unsigned char* data,
     *data++ = type;
     (*datalength)--;
 
-    data_with_length =
-        asn_build_long_length(data, datalength, length, lengthOfLength);
+    data_with_length = asn_build_long_length(data, datalength, length, lengthOfLength);
     if (data_with_length == NULL)
     {
         (*datalength)++;
@@ -266,10 +262,9 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
     unsigned char         type      = 0;
     struct variable_list* vp        = 0;
     int                   seqLength = length;
-    data = asn_parse_header(data, &seqLength, &type);
+    data                            = asn_parse_header(data, &seqLength, &type);
     if ((data == NULL) || (seqLength > length)) return SNMP_CLASS_ERROR;
-    if (type != (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR))
-        return SNMP_CLASS_ERROR;
+    if (type != (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR)) return SNMP_CLASS_ERROR;
     snmp_pdu* pdu = snmp_pdu_create(0);
     sz            = 0;
     length -= seqLength + 4;
@@ -278,24 +273,22 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
         sz++;
         if (pdu->variables == NULL)
         {
-            pdu->variables = vp =
-                (struct variable_list*)malloc(sizeof(struct variable_list));
+            pdu->variables = vp = (struct variable_list*)malloc(sizeof(struct variable_list));
         }
         else
         {
             assert(vp != nullptr);
 
             // NOLINTNEXTLINE(clang-analyzer-core.NullDereference)
-            vp->next_variable =
-                (struct variable_list*)malloc(sizeof(struct variable_list));
-            vp = vp->next_variable;
+            vp->next_variable = (struct variable_list*)malloc(sizeof(struct variable_list));
+            vp                = vp->next_variable;
         }
         vp->next_variable = NULL;
         vp->val.string    = NULL;
         vp->name          = NULL;
         vp->name_length   = ASN_MAX_NAME_LEN;
-        data = snmp_parse_var_op(data, objid, &vp->name_length, &vp->type,
-            &vp->val_len, &var_val, (int*)&seqLength);
+        data              = snmp_parse_var_op(
+            data, objid, &vp->name_length, &vp->type, &vp->val_len, &var_val, (int*)&seqLength);
         if (data == NULL)
         {
             snmp_free_pdu(pdu);
@@ -329,11 +322,9 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
             break;
 
         case SMI_COUNTER64:
-            vp->val.counter64 =
-                (struct counter64*)malloc(sizeof(struct counter64));
-            vp->val_len = sizeof(struct counter64);
-            asn_parse_unsigned_int64(
-                var_val, &len, &vp->type, vp->val.counter64);
+            vp->val.counter64 = (struct counter64*)malloc(sizeof(struct counter64));
+            vp->val_len       = sizeof(struct counter64);
+            asn_parse_unsigned_int64(var_val, &len, &vp->type, vp->val.counter64);
             break;
 
         case ASN_OCTET_STR:
@@ -341,8 +332,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
         case SMI_OPAQUE:
         case SMI_NSAP:
             vp->val.string = (unsigned char*)malloc((unsigned)vp->val_len);
-            asn_parse_string(
-                var_val, &len, &vp->type, vp->val.string, &vp->val_len);
+            asn_parse_string(var_val, &len, &vp->type, vp->val.string, &vp->val_len);
             break;
 
         case ASN_OBJECT_ID:
@@ -351,8 +341,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
             // vp->val_len *= sizeof(oid);
             vp->val.objid = (oid*)malloc((unsigned)vp->val_len * sizeof(oid));
             // fixed
-            memcpy(
-                (char*)vp->val.objid, (char*)objid, vp->val_len * sizeof(oid));
+            memcpy((char*)vp->val.objid, (char*)objid, vp->val_len * sizeof(oid));
             break;
 
         case SNMP_NOSUCHOBJECT:
@@ -385,14 +374,12 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
 
             // octet string
         case sNMP_SYNTAX_OPAQUE: {
-            OpaqueStr octets(
-                (unsigned char*)vp->val.string, (uint32_t)vp->val_len);
+            OpaqueStr octets((unsigned char*)vp->val.string, (uint32_t)vp->val_len);
             vbs[i].set_value(octets);
         }
         break;
         case sNMP_SYNTAX_OCTETS: {
-            OctetStr octets(
-                (unsigned char*)vp->val.string, (uint32_t)vp->val_len);
+            OctetStr octets((unsigned char*)vp->val.string, (uint32_t)vp->val_len);
             vbs[i].set_value(octets);
         }
         break;
@@ -430,8 +417,8 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
         case sNMP_SYNTAX_IPADDR: {
             char buffer[20] {};
             // FIXME: Warning C6011 Dereferencing NULL pointer! CK
-            snprintf(buffer, sizeof(buffer), "%d.%d.%d.%d", vp->val.string[0],
-                vp->val.string[1], vp->val.string[2], vp->val.string[3]);
+            snprintf(buffer, sizeof(buffer), "%d.%d.%d.%d", vp->val.string[0], vp->val.string[1],
+                vp->val.string[2], vp->val.string[3]);
             IpAddress ipaddress(buffer);
             vbs[i].set_value(ipaddress);
         }
@@ -447,8 +434,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
             // v2 counter 64's
         case sNMP_SYNTAX_CNTR64: { // Frank Fock (was empty before)
             // FIXME: Warning C6011 Dereferencing NULL pointer! CK
-            Counter64 c64(((counter64*)vp->val.counter64)->high,
-                ((counter64*)vp->val.counter64)->low);
+            Counter64 c64(((counter64*)vp->val.counter64)->high, ((counter64*)vp->val.counter64)->low);
             vbs[i].set_value(c64);
             break;
         }
@@ -557,25 +543,13 @@ bool OidxRange::operator==(const OidxRange& other) const
     return ((lower == other.lower) && (upper == other.upper));
 }
 
-bool OidxRange::operator<(const OidxRange& other) const
-{
-    return (upper <= other.lower);
-}
+bool OidxRange::operator<(const OidxRange& other) const { return (upper <= other.lower); }
 
-bool OidxRange::operator>(const OidxRange& other) const
-{
-    return (lower >= other.upper);
-}
+bool OidxRange::operator>(const OidxRange& other) const { return (lower >= other.upper); }
 
-bool OidxRange::includes(const Oidx& o) const
-{
-    return ((lower <= o) && (o <= upper));
-}
+bool OidxRange::includes(const Oidx& o) const { return ((lower <= o) && (o <= upper)); }
 
-bool OidxRange::includes_excl(const Oidx& o) const
-{
-    return ((lower <= o) && (o < upper));
-}
+bool OidxRange::includes_excl(const Oidx& o) const { return ((lower <= o) && (o < upper)); }
 
 bool OidxRange::covers(const OidxRange& other) const
 {
@@ -620,7 +594,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
 #    ifdef HAVE_POLL_SYSCALL
     int           nfds = 0;
     struct pollfd readfds[2];
-    int timeout = tvptr ? (tvptr->tv_sec * 1000 + tvptr->tv_usec / 1000) : -1;
+    int           timeout = tvptr ? (tvptr->tv_sec * 1000 + tvptr->tv_usec / 1000) : -1;
 
     memset(readfds, 0, 2 * sizeof(struct pollfd));
     if (iv_snmp_session != INVALID_SOCKET)
@@ -656,9 +630,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
         if (max_fd == -1)
             max_fd = iv_snmp_session_ipv6;
         else
-            max_fd = iv_snmp_session > iv_snmp_session_ipv6
-                ? iv_snmp_session
-                : iv_snmp_session_ipv6;
+            max_fd = iv_snmp_session > iv_snmp_session_ipv6 ? iv_snmp_session : iv_snmp_session_ipv6;
     }
 #        endif
 #    endif // HAVE_POLL_SYSCALL
@@ -675,12 +647,10 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
         else if (nfound <= 0)
             return SNMP_CLASS_TL_FAILED;
 
-        if ((iv_snmp_session != INVALID_SOCKET)
-            && (readfds[0].revents & POLLIN))
+        if ((iv_snmp_session != INVALID_SOCKET) && (readfds[0].revents & POLLIN))
             can_receive_ipv4 = true;
 #        ifdef SNMP_PP_IPv6
-        if ((iv_snmp_session_ipv6 != INVALID_SOCKET)
-            && (readfds[nfds - 1].revents & POLLIN))
+        if ((iv_snmp_session_ipv6 != INVALID_SOCKET) && (readfds[nfds - 1].revents & POLLIN))
             can_receive_ipv6 = true;
 #        endif // SNMP_PP_IPv6
 
@@ -695,12 +665,10 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
         else if (nfound <= 0)
             return SNMP_CLASS_TL_FAILED;
 
-        if ((iv_snmp_session != INVALID_SOCKET)
-            && (FD_ISSET(iv_snmp_session, &readfds)))
+        if ((iv_snmp_session != INVALID_SOCKET) && (FD_ISSET(iv_snmp_session, &readfds)))
             can_receive_ipv4 = true;
 #        ifdef SNMP_PP_IPv6
-        if ((iv_snmp_session_ipv6 != INVALID_SOCKET)
-            && (FD_ISSET(iv_snmp_session_ipv6, &readfds)))
+        if ((iv_snmp_session_ipv6 != INVALID_SOCKET) && (FD_ISSET(iv_snmp_session_ipv6, &readfds)))
             can_receive_ipv6 = true;
 #        endif // SNMP_PP_IPv6
 #    endif     // HAVE_POLL_SYSCALL
@@ -709,26 +677,22 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
         {
             fromlen = sizeof(from_addr);
             do {
-                receive_buffer_len = (long)recvfrom(iv_snmp_session,
-                    (char*)receive_buffer, MAX_SNMP_PACKET, 0,
-                    (struct sockaddr*)&from_addr, &fromlen);
+                receive_buffer_len = (long)recvfrom(iv_snmp_session, (char*)receive_buffer,
+                    MAX_SNMP_PACKET, 0, (struct sockaddr*)&from_addr, &fromlen);
             } while (receive_buffer_len < 0 && EINTR == errno);
 
             if (receive_buffer_len <= 0) // error or no data pending
                 return SNMP_CLASS_TL_FAILED;
 
-            if (receive_buffer_len >= MAX_SNMP_PACKET)
-                return SNMP_ERROR_TOO_BIG;
+            if (receive_buffer_len >= MAX_SNMP_PACKET) return SNMP_ERROR_TOO_BIG;
 
             // copy fromaddress and remote port
-            char*    addr = inet_ntoa(((sockaddr_in&)from_addr)
-                                       .sin_addr); // TODO: use inet_ntop()! CK
+            char*    addr = inet_ntoa(((sockaddr_in&)from_addr).sin_addr); // TODO: use inet_ntop()! CK
             uint16_t port = ntohs(((sockaddr_in&)from_addr).sin_port);
             fromaddr      = addr;
             fromaddr.set_port(port);
 
-            debugprintf(
-                1, "++ AGENT++: data received from %s port %d.", addr, port);
+            debugprintf(1, "++ AGENT++: data received from %s port %d.", addr, port);
             debughexprintf(5, receive_buffer, receive_buffer_len);
 
             OctetStr engine_id;
@@ -740,11 +704,9 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
 
             if (snmpmsg.is_v3_message() == true)
             {
-                status = snmpmsg.unloadv3(pdu, version, engine_id,
-                    security_name, security_model, fromaddr, *this);
-                if ((status != SNMP_CLASS_SUCCESS)
-                    && (status != SNMP_ERROR_TOO_BIG))
-                    return status;
+                status = snmpmsg.unloadv3(
+                    pdu, version, engine_id, security_name, security_model, fromaddr, *this);
+                if ((status != SNMP_CLASS_SUCCESS) && (status != SNMP_ERROR_TOO_BIG)) return status;
 
                 target.set_security_name(security_name);
                 target.set_engine_id(engine_id);
@@ -752,9 +714,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             else
             {
                 status = snmpmsg.unload(pdu, community, version);
-                if ((status != SNMP_CLASS_SUCCESS)
-                    && (status != SNMP_ERROR_TOO_BIG))
-                    return status;
+                if ((status != SNMP_CLASS_SUCCESS) && (status != SNMP_ERROR_TOO_BIG)) return status;
                 target.set_security_name(community);
                 if (version == version1)
                     security_model = SNMP_SECURITY_MODEL_V1;
@@ -775,10 +735,10 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
                 debugprintf(2,
                     " engine_id: (%s), security_name: (%s),\n"
                     " security_model: (%li) security_level (%i)",
-                    engine_id.get_printable(), security_name.get_printable(),
-                    security_model, pdu.get_security_level());
-                debugprintf(2, " Addr = %s, port = %i\n",
-                    fromaddr.get_printable(), fromaddr.get_port());
+                    engine_id.get_printable(), security_name.get_printable(), security_model,
+                    pdu.get_security_level());
+                debugprintf(
+                    2, " Addr = %s, port = %i\n", fromaddr.get_printable(), fromaddr.get_port());
             }
             return status; // Success! return
         }
@@ -787,16 +747,14 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
         {
             fromlen = sizeof((from_addr));
             do {
-                receive_buffer_len = (long)recvfrom(iv_snmp_session_ipv6,
-                    (char*)receive_buffer, MAX_SNMP_PACKET, 0,
-                    (struct sockaddr*)&from_addr, &fromlen);
+                receive_buffer_len = (long)recvfrom(iv_snmp_session_ipv6, (char*)receive_buffer,
+                    MAX_SNMP_PACKET, 0, (struct sockaddr*)&from_addr, &fromlen);
             } while (receive_buffer_len < 0 && EINTR == errno);
 
             if (receive_buffer_len <= 0) // error or no data pending
                 return SNMP_CLASS_TL_FAILED;
 
-            if (receive_buffer_len >= MAX_SNMP_PACKET)
-                return SNMP_ERROR_TOO_BIG;
+            if (receive_buffer_len >= MAX_SNMP_PACKET) return SNMP_ERROR_TOO_BIG;
 
             OctetStr engine_id;
             OctetStr security_name;
@@ -804,13 +762,12 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             char     addr[INET6_ADDRSTRLEN + 1];
 
             // copy fromaddress and remote port
-            inet_ntop(AF_INET6, &((sockaddr_in6&)from_addr).sin6_addr, addr,
-                INET6_ADDRSTRLEN);
+            inet_ntop(AF_INET6, &((sockaddr_in6&)from_addr).sin6_addr, addr, INET6_ADDRSTRLEN);
             fromaddr = addr;
             fromaddr.set_port(ntohs(((sockaddr_in6&)from_addr).sin6_port));
 
-            debugprintf(1, "++ AGENT++: ipv6 data received from %s port %d.",
-                fromaddr.get_printable(), fromaddr.get_port());
+            debugprintf(1, "++ AGENT++: ipv6 data received from %s port %d.", fromaddr.get_printable(),
+                fromaddr.get_port());
             debughexprintf(5, receive_buffer, receive_buffer_len);
 
             int status = snmpmsg.load(receive_buffer, receive_buffer_len);
@@ -819,8 +776,8 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             static_assert(SNMP_CLASS_SUCCESS == SNMP_ERROR_SUCCESS);
             if (snmpmsg.is_v3_message() == true)
             {
-                status = snmpmsg.unloadv3(pdu, version, engine_id,
-                    security_name, security_model, fromaddr, *this);
+                status = snmpmsg.unloadv3(
+                    pdu, version, engine_id, security_name, security_model, fromaddr, *this);
                 if (status != SNMP_CLASS_SUCCESS) return status;
 
                 target.set_security_name(security_name);
@@ -850,8 +807,8 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
                 debugprintf(2,
                     " engine_id: (%s), security_name: (%s),\n"
                     " security_model: (%li) security_level (%i)",
-                    engine_id.get_printable(), security_name.get_printable(),
-                    security_model, pdu.get_security_level());
+                    engine_id.get_printable(), security_name.get_printable(), security_model,
+                    pdu.get_security_level());
             }
             return status; // Success! return
         }
@@ -861,8 +818,8 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
 
 #else // _SNMPv3 is not defined
 
-int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UdpAddress& fromaddr,
-    snmp_version& version, OctetStr& community)
+int Snmpx::receive(
+    struct timeval* tvptr, Pdux& pdu, UdpAddress& fromaddr, snmp_version& version, OctetStr& community)
 {
 #    ifndef MAX_SNMP_PACKET
 #        define MAX_SNMP_PACKET 2048
@@ -921,9 +878,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UdpAddress& fromaddr,
         if (max_fd == -1)
             max_fd = iv_snmp_session_ipv6;
         else
-            max_fd = iv_snmp_session > iv_snmp_session_ipv6
-                ? iv_snmp_session
-                : iv_snmp_session_ipv6;
+            max_fd = iv_snmp_session > iv_snmp_session_ipv6 ? iv_snmp_session : iv_snmp_session_ipv6;
     }
 #        endif
 #    endif // HAVE_POLL_SYSCALL
@@ -940,12 +895,10 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UdpAddress& fromaddr,
         else if (nfound <= 0)
             return SNMP_CLASS_TL_FAILED;
 
-        if ((iv_snmp_session != INVALID_SOCKET)
-            && (readfds[0].revents & POLLIN))
+        if ((iv_snmp_session != INVALID_SOCKET) && (readfds[0].revents & POLLIN))
             can_receive_ipv4 = true;
 #        ifdef SNMP_PP_IPv6
-        if ((iv_snmp_session_ipv6 != INVALID_SOCKET)
-            && (readfds[nfds - 1].revents & POLLIN))
+        if ((iv_snmp_session_ipv6 != INVALID_SOCKET) && (readfds[nfds - 1].revents & POLLIN))
             can_receive_ipv6 = true;
 #        endif // SNMP_PP_IPv6
 
@@ -960,12 +913,10 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UdpAddress& fromaddr,
         else if (nfound <= 0)
             return SNMP_CLASS_TL_FAILED;
 
-        if ((iv_snmp_session != INVALID_SOCKET)
-            && (FD_ISSET(iv_snmp_session, &readfds)))
+        if ((iv_snmp_session != INVALID_SOCKET) && (FD_ISSET(iv_snmp_session, &readfds)))
             can_receive_ipv4 = true;
 #        ifdef SNMP_PP_IPv6
-        if ((iv_snmp_session_ipv6 != INVALID_SOCKET)
-            && (FD_ISSET(iv_snmp_session_ipv6, &readfds)))
+        if ((iv_snmp_session_ipv6 != INVALID_SOCKET) && (FD_ISSET(iv_snmp_session_ipv6, &readfds)))
             can_receive_ipv6 = true;
 #        endif // SNMP_PP_IPv6
 #    endif     // HAVE_POLL_SYSCALL
@@ -974,24 +925,21 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UdpAddress& fromaddr,
         {
             fromlen = sizeof(from_addr);
             do {
-                receive_buffer_len = (long)recvfrom(iv_snmp_session,
-                    (char*)receive_buffer, MAX_SNMP_PACKET, 0,
-                    (struct sockaddr*)&from_addr, &fromlen);
+                receive_buffer_len = (long)recvfrom(iv_snmp_session, (char*)receive_buffer,
+                    MAX_SNMP_PACKET, 0, (struct sockaddr*)&from_addr, &fromlen);
             } while (receive_buffer_len < 0 && EINTR == errno);
 
             if (receive_buffer_len <= 0) // error or no data pending
                 return SNMP_CLASS_TL_FAILED;
 
-            if (receive_buffer_len >= MAX_SNMP_PACKET)
-                return SNMP_ERROR_TOO_BIG;
+            if (receive_buffer_len >= MAX_SNMP_PACKET) return SNMP_ERROR_TOO_BIG;
 
             // copy fromaddress and remote port
             char* addr = inet_ntoa(((sockaddr_in&)from_addr).sin_addr);
             fromaddr = addr;
             fromaddr.set_port(ntohs(((sockaddr_in&)from_addr).sin_port));
 
-            debugprintf(1, "++ AGENT++: data received from %s.",
-                fromaddr.get_printable());
+            debugprintf(1, "++ AGENT++: data received from %s.", fromaddr.get_printable());
             debughexprintf(5, receive_buffer, receive_buffer_len);
 
             snmpmsg.load(receive_buffer, receive_buffer_len);
@@ -1004,27 +952,23 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UdpAddress& fromaddr,
         {
             fromlen = sizeof(from_addr);
             do {
-                receive_buffer_len = (long)recvfrom(iv_snmp_session_ipv6,
-                    (char*)receive_buffer, MAX_SNMP_PACKET, 0,
-                    (struct sockaddr*)&from_addr, &fromlen);
+                receive_buffer_len = (long)recvfrom(iv_snmp_session_ipv6, (char*)receive_buffer,
+                    MAX_SNMP_PACKET, 0, (struct sockaddr*)&from_addr, &fromlen);
             } while (receive_buffer_len < 0 && EINTR == errno);
 
             if (receive_buffer_len <= 0) // error or no data pending
                 return SNMP_CLASS_TL_FAILED;
 
-            if (receive_buffer_len >= MAX_SNMP_PACKET)
-                return SNMP_ERROR_TOO_BIG;
+            if (receive_buffer_len >= MAX_SNMP_PACKET) return SNMP_ERROR_TOO_BIG;
 
             char addr[INET6_ADDRSTRLEN + 1];
 
             // copy fromaddress and remote port
-            inet_ntop(AF_INET6, &((sockaddr_in6&)from_addr).sin6_addr, addr,
-                INET6_ADDRSTRLEN);
+            inet_ntop(AF_INET6, &((sockaddr_in6&)from_addr).sin6_addr, addr, INET6_ADDRSTRLEN);
             fromaddr = addr;
             fromaddr.set_port(ntohs(((sockaddr_in6&)from_addr).sin6_port));
 
-            debugprintf(1, "++ AGENT++: data received from %s.",
-                fromaddr.get_printable());
+            debugprintf(1, "++ AGENT++: data received from %s.", fromaddr.get_printable());
             debughexprintf(5, receive_buffer, receive_buffer_len);
 
             snmpmsg.load(receive_buffer, receive_buffer_len);
@@ -1117,11 +1061,11 @@ int Snmpx::send(Pdux const& pdu, SnmpTarget* target)
         debugprintf(2,
             " engine_id (%s), security_name (%s),\n"
             "security_model (%i) security_level (%i)",
-            engine_id.get_printable(), security_name.get_printable(),
-            security_model, pdu.get_security_level());
+            engine_id.get_printable(), security_name.get_printable(), security_model,
+            pdu.get_security_level());
         debugprintf(2, " Addr/Port = %s\n", udp_address.get_printable());
-        status = snmpmsg.loadv3(Snmp::get_mpv3(), pdu, engine_id,
-            security_name, security_model, version);
+        status =
+            snmpmsg.loadv3(Snmp::get_mpv3(), pdu, engine_id, security_name, security_model, version);
     }
     else
         status = snmpmsg.load(pdu, community, version);
@@ -1133,12 +1077,12 @@ int Snmpx::send(Pdux const& pdu, SnmpTarget* target)
 
 #    ifdef SNMP_PP_IPv6
     if (udp_address.get_ip_version() == Address::version_ipv6)
-        status = send_snmp_request(iv_snmp_session_ipv6, snmpmsg.data(),
-            (size_t)snmpmsg.len(), udp_address);
+        status = send_snmp_request(
+            iv_snmp_session_ipv6, snmpmsg.data(), (size_t)snmpmsg.len(), udp_address);
     else
 #    endif
-        status = send_snmp_request(iv_snmp_session, snmpmsg.data(),
-            (size_t)snmpmsg.len(), udp_address);
+        status =
+            send_snmp_request(iv_snmp_session, snmpmsg.data(), (size_t)snmpmsg.len(), udp_address);
 #    ifdef _THREADS
     smutex.end_synch();
 #    endif
@@ -1150,8 +1094,8 @@ int Snmpx::send(Pdux const& pdu, SnmpTarget* target)
 
 #else // _SNMPv3 is not defined
 
-int Snmpx::send(Pdux const& pdu, UdpAddress const& udp_address,
-    snmp_version version, OctetStr const& community)
+int Snmpx::send(
+    Pdux const& pdu, UdpAddress const& udp_address, snmp_version version, OctetStr const& community)
 
 {
 #    ifdef _THREADS
@@ -1168,12 +1112,12 @@ int Snmpx::send(Pdux const& pdu, UdpAddress const& udp_address,
 
 #    ifdef SNMP_PP_IPv6
     if (udp_address.get_ip_version() == Address::version_ipv6)
-        status = send_snmp_request(iv_snmp_session_ipv6, snmpmsg.data(),
-            (size_t)snmpmsg.len(), udp_address);
+        status = send_snmp_request(
+            iv_snmp_session_ipv6, snmpmsg.data(), (size_t)snmpmsg.len(), udp_address);
     else
 #    endif
-        status = send_snmp_request(iv_snmp_session, snmpmsg.data(),
-            (size_t)snmpmsg.len(), udp_address);
+        status =
+            send_snmp_request(iv_snmp_session, snmpmsg.data(), (size_t)snmpmsg.len(), udp_address);
 #    ifdef _THREADS
     smutex.end_synch();
 #    endif

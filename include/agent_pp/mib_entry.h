@@ -168,10 +168,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and
      *         SNMP_ERROR_COMITFAIL on failure.
      */
-    virtual int commit_set_request(Request*, int)
-    {
-        return SNMP_ERROR_COMMITFAIL;
-    }
+    virtual int commit_set_request(Request*, int) { return SNMP_ERROR_COMMITFAIL; }
 
     /**
      * Let the receiver prepare a SNMP SET subrequest
@@ -182,10 +179,7 @@ public:
      *         SNMP_ERROR_WRONG_TYPE, or
      *         SNMP_ERROR_NOT_WRITEABLE on failure.
      */
-    virtual int prepare_set_request(Request*, int&)
-    {
-        return SNMP_ERROR_NO_SUCH_NAME;
-    }
+    virtual int prepare_set_request(Request*, int&) { return SNMP_ERROR_NO_SUCH_NAME; }
 
     /**
      * Clean up resources used for performing (or undoing) set requests.
@@ -274,10 +268,7 @@ public:
      * Wrapper function for register_for_notifications.
      * @depricated
      */
-    virtual void add_change_notification(MibEntry* e)
-    {
-        register_for_notifications(e);
-    }
+    virtual void add_change_notification(MibEntry* e) { register_for_notifications(e); }
     /**
      * Receive a notification about changes to a managed object. This
      * method will be called for all registered objects of an object

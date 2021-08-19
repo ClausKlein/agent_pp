@@ -38,8 +38,7 @@ using namespace Snmp_pp;
 struct table_size_def {
     Oidx         tableID;
     unsigned int sizeLimit;
-    table_size_def(const Oidx& o, unsigned int i)
-        : tableID(o), sizeLimit(i) { }
+    table_size_def(const Oidx& o, unsigned int i) : tableID(o), sizeLimit(i) { }
 };
 
 /*----------------------- class MibTablePolicy -------------------------*/
@@ -81,8 +80,7 @@ public:
 
     virtual ~MibTableSizePolicy() { }
 
-    int is_transition_ok(
-        MibTable*, MibTableRow*, const Oidx&, int, int) override;
+    int is_transition_ok(MibTable*, MibTableRow*, const Oidx&, int, int) override;
 
     /**
      * Set a MibTable size policy.

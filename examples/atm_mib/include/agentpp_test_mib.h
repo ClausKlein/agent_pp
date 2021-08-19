@@ -149,8 +149,7 @@ public:
  * "The date and time when this row has been created."
  */
 
-class AGENTPP_TEST_MIB_DECL agentppTestSharedTableCreationTime
-    : public DateAndTime {
+class AGENTPP_TEST_MIB_DECL agentppTestSharedTableCreationTime : public DateAndTime {
 
 public:
     agentppTestSharedTableCreationTime(const Oidx&);
@@ -206,8 +205,7 @@ public:
  * "The row status of the row."
  */
 
-class AGENTPP_TEST_MIB_DECL agentppTestSharedTableRowStatus
-    : public snmpRowStatus {
+class AGENTPP_TEST_MIB_DECL agentppTestSharedTableRowStatus : public snmpRowStatus {
 
 public:
     agentppTestSharedTableRowStatus(const Oidx&);

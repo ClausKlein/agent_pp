@@ -1701,9 +1701,8 @@ public:
 
     static atmInterfaceConfEntry* instance;
 
-    virtual void set_row(MibTableRow* r, int p0, int p1, int p2, int p3,
-        int p4, int p5, int p6, int p7, int p8, char* p9, char* p10, char* p11,
-        int p12, int p13, char* p14);
+    virtual void set_row(MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5, int p6,
+        int p7, int p8, char* p9, char* p10, char* p11, int p12, int p13, char* p14);
 };
 
 /**
@@ -1759,8 +1758,8 @@ public:
 
     static atmTrafficDescrParamEntry* instance;
 
-    virtual void set_row(MibTableRow* r, char* p0, int p1, int p2, int p3,
-        int p4, int p5, int p6, int p7, int p8, int p9);
+    virtual void set_row(MibTableRow* r, char* p0, int p1, int p2, int p3, int p4, int p5, int p6,
+        int p7, int p8, int p9);
 };
 
 /**
@@ -1851,8 +1850,8 @@ public:
 
     static atmVplEntry* instance;
 
-    virtual void set_row(MibTableRow* r, int p0, int p1, int p2, int p3,
-        int p4, int p5, int p6, int p7, int p8);
+    virtual void set_row(
+        MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8);
 };
 
 /**
@@ -1943,9 +1942,8 @@ public:
 
     static atmVclEntry* instance;
 
-    virtual void set_row(MibTableRow* r, int p0, int p1, int p2, int p3,
-        int p4, int p5, int p6, int p7, int p8, int p9, int p10, int p11,
-        int p12);
+    virtual void set_row(MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5, int p6,
+        int p7, int p8, int p9, int p10, int p11, int p12);
 };
 
 /**
@@ -2082,8 +2080,7 @@ public:
 
     static atmVpCrossConnectEntry* instance;
 
-    virtual void set_row(
-        MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5);
+    virtual void set_row(MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5);
 };
 
 /**
@@ -2220,8 +2217,7 @@ public:
 
     static atmVcCrossConnectEntry* instance;
 
-    virtual void set_row(
-        MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5);
+    virtual void set_row(MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5);
 };
 
 /**

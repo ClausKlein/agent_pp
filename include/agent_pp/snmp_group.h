@@ -88,8 +88,7 @@ public:
 class AGENTPP_DECL snmpInBadCommunityNames : public Counter32MibLeaf {
 
 public:
-    snmpInBadCommunityNames()
-        : Counter32MibLeaf(oidSnmpInBadCommunityNames) { }
+    snmpInBadCommunityNames() : Counter32MibLeaf(oidSnmpInBadCommunityNames) { }
 };
 
 class AGENTPP_DECL snmpInBadCommunityUses : public Counter32MibLeaf {

@@ -47,8 +47,7 @@ MibProxy::MibProxy(const MibProxy& other)
     access = other.access;
 
     ListCursor<MibEntry> cur;
-    for (cur.init(&other.notifies); cur.get(); cur.next())
-        notifies.add(cur.get());
+    for (cur.init(&other.notifies); cur.get(); cur.next()) notifies.add(cur.get());
 
     source      = other.source;
     translation = other.translation;
@@ -67,8 +66,7 @@ MibProxy::MibProxy(const Oidx& o, mib_access a, const UdpAddress& src)
     determineDefaultRange(o);
 }
 
-MibProxy::MibProxy(
-    const Oidx& o, mib_access a, const Oidx& trans, const UdpAddress& src)
+MibProxy::MibProxy(const Oidx& o, mib_access a, const Oidx& trans, const UdpAddress& src)
     : MibEntry(o, a), source(src), translation(trans), translating(true)
 {
     community[READING] = "public";
@@ -90,10 +88,7 @@ Oidx MibProxy::translate(const Oidx& o)
     if (translating)
     {
         Oidx retval(translation);
-        for (unsigned int i = translation.len(); i < o.len(); i++)
-        {
-            retval += o[i];
-        }
+        for (unsigned int i = translation.len(); i < o.len(); i++) { retval += o[i]; }
         return retval;
     }
     return o;
@@ -104,10 +99,7 @@ Oidx MibProxy::backward_translate(const Oidx& o)
     if (translating)
     {
         Oidx retval(oid);
-        for (unsigned int i = translation.len(); i < o.len(); i++)
-        {
-            retval += o[i];
-        }
+        for (unsigned int i = translation.len(); i < o.len(); i++) { retval += o[i]; }
         return retval;
     }
     return o;
@@ -147,8 +139,7 @@ void MibProxy::get_request(Request* req, int reqind)
             Mib::requestList->error(req->get_transaction_id(), reqind, status);
     }
     else
-        Mib::requestList->error(
-            req->get_transaction_id(), reqind, SNMP_ERROR_NO_ACCESS);
+        Mib::requestList->error(req->get_transaction_id(), reqind, SNMP_ERROR_NO_ACCESS);
 }
 
 /**
@@ -186,8 +177,7 @@ Oidx MibProxy::find_succ(const Oidx& id, Request*)
         LOG(lastNext.get_printable_oid());
         LOG_END;
 
-        status = SnmpRequest::next(
-            source, &lastNext, 1, errind, community[READING]);
+        status = SnmpRequest::next(source, &lastNext, 1, errind, community[READING]);
 
         LOG_BEGIN(loggerModuleName, INFO_LOG | 3);
         LOG("MibProxy: agent contacted: source, oid, value, status");
@@ -199,8 +189,7 @@ Oidx MibProxy::find_succ(const Oidx& id, Request*)
 
         lastNextStatus = status;
         if ((status == SNMP_ERROR_SUCCESS)
-            && (lastNext.get_oid().in_subtree_of(
-                ((translating) ? translation : oid))))
+            && (lastNext.get_oid().in_subtree_of(((translating) ? translation : oid))))
         {
             return backward_translate(lastNext.get_oid());
         }
@@ -221,15 +210,12 @@ void MibProxy::get_next_request(Request* req, int reqind)
         LOG(lastNextStatus);
         LOG_END;
         if (lastNextStatus != SNMP_ERROR_SUCCESS)
-            Mib::requestList->error(
-                req->get_transaction_id(), reqind, lastNextStatus);
+            Mib::requestList->error(req->get_transaction_id(), reqind, lastNextStatus);
         else
-            Mib::requestList->done(
-                req->get_transaction_id(), reqind, lastNext);
+            Mib::requestList->done(req->get_transaction_id(), reqind, lastNext);
     }
     else
-        Mib::requestList->error(
-            req->get_transaction_id(), reqind, SNMP_ERROR_NO_ACCESS);
+        Mib::requestList->error(req->get_transaction_id(), reqind, SNMP_ERROR_NO_ACCESS);
 }
 
 int MibProxy::prepare_set_request(Request*, int&)
@@ -287,14 +273,12 @@ MibProxyV3::MibProxyV3(const MibProxyV3& other)
     access = other.access;
 
     ListCursor<MibEntry> cur;
-    for (cur.init(&other.notifies); cur.get(); cur.next())
-        notifies.add(cur.get());
+    for (cur.init(&other.notifies); cur.get(); cur.next()) notifies.add(cur.get());
     range       = other.range;
     myProxyInfo = other.myProxyInfo;
 }
 
-MibProxyV3::MibProxyV3(snmpProxyEntry* proxyInfo, const Oidx& o, mib_access a)
-    : MibEntry(o, a)
+MibProxyV3::MibProxyV3(snmpProxyEntry* proxyInfo, const Oidx& o, mib_access a) : MibEntry(o, a)
 {
     determineDefaultRange(o);
     myProxyInfo = proxyInfo;
@@ -303,8 +287,7 @@ MibProxyV3::MibProxyV3(snmpProxyEntry* proxyInfo, const Oidx& o, mib_access a)
 
 void MibProxyV3::check_references()
 {
-    if ((!myProxyInfo) || (!snmpTargetParamsEntry::instance)
-        || (!snmpTargetAddrEntry::instance))
+    if ((!myProxyInfo) || (!snmpTargetParamsEntry::instance) || (!snmpTargetAddrEntry::instance))
     {
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 0);
         LOG("MibProxyV3: internal error: need SNMP-PROXY- and "
@@ -334,12 +317,10 @@ OidList<MibTableRow>* MibProxyV3::get_matches(Request* req)
 
         OctetStr contextID, contextName, paramsIn;
 
-        if ((!(((type == sNMP_PDU_GET) || (type == sNMP_PDU_GETNEXT)
-                   || (type == sNMP_PDU_GETBULK))
+        if ((!(((type == sNMP_PDU_GET) || (type == sNMP_PDU_GETNEXT) || (type == sNMP_PDU_GETBULK))
                 && (state == 1)))
             && (!((type == sNMP_PDU_SET) && (state == 2)))
-            && (!(((type == sNMP_PDU_TRAP) || (type == sNMP_PDU_V1TRAP))
-                && (state == 3)))
+            && (!(((type == sNMP_PDU_TRAP) || (type == sNMP_PDU_V1TRAP)) && (state == 3)))
             && (!((type == sNMP_PDU_INFORM) && (state == 4))))
             continue;
 
@@ -386,8 +367,8 @@ OidList<MibTableRow>* MibProxyV3::get_matches(Request* req)
 bool MibProxyV3::match_target_params(Request* req, const OctetStr& paramsIn)
 {
     snmpTargetParamsEntry::instance->start_synch();
-    MibTableRow* paramsRow = snmpTargetParamsEntry::instance->find_index(
-        Oidx::from_string(paramsIn, false));
+    MibTableRow* paramsRow =
+        snmpTargetParamsEntry::instance->find_index(Oidx::from_string(paramsIn, false));
 
     if ((!paramsRow) || (paramsRow->get_row_status()->get() != rowActive))
     {
@@ -423,12 +404,9 @@ bool MibProxyV3::match_target_params(Request* req, const OctetStr& paramsIn)
     LOG(secLevel);
     LOG_END;
 
-    if ((req->get_address()->get_version() == version1) && (mpModel != 0))
-        return false;
-    if ((req->get_address()->get_version() == version2c) && (mpModel != 1))
-        return false;
-    if ((req->get_address()->get_version() == version3) && (mpModel != 3))
-        return false;
+    if ((req->get_address()->get_version() == version1) && (mpModel != 0)) return false;
+    if ((req->get_address()->get_version() == version2c) && (mpModel != 1)) return false;
+    if ((req->get_address()->get_version() == version3) && (mpModel != 3)) return false;
 
     OctetStr sname;
     req->get_address()->get_security_name(sname);
@@ -440,9 +418,7 @@ bool MibProxyV3::match_target_params(Request* req, const OctetStr& paramsIn)
     LOG_END;
 
     if (sname != secName) return false;
-    if ((secModel != 0)
-        && (req->get_address()->get_security_model() != secModel))
-        return false;
+    if ((secModel != 0) && (req->get_address()->get_security_model() != secModel)) return false;
     if (req->get_pdu()->get_security_level() != secLevel) return false;
     return true;
 }
@@ -477,8 +453,7 @@ void MibProxyV3::get_request(Request* req, int reqind)
             Mib::requestList->error(req->get_transaction_id(), reqind, status);
     }
     else
-        Mib::requestList->error(
-            req->get_transaction_id(), reqind, SNMP_ERROR_NO_ACCESS);
+        Mib::requestList->error(req->get_transaction_id(), reqind, SNMP_ERROR_NO_ACCESS);
 }
 
 /**
@@ -519,8 +494,7 @@ Oidx MibProxyV3::find_succ(const Oidx& id, Request* req)
         pdu.get_vb(lastNext, 0);
 
         lastNextStatus = status;
-        if ((status == SNMP_ERROR_SUCCESS)
-            && (lastNext.get_oid().in_subtree_of(oid)))
+        if ((status == SNMP_ERROR_SUCCESS) && (lastNext.get_oid().in_subtree_of(oid)))
         {
             return lastNext.get_oid();
         }
@@ -540,15 +514,12 @@ void MibProxyV3::get_next_request(Request* req, int reqind)
         LOG(lastNextStatus);
         LOG_END;
         if (lastNextStatus != SNMP_ERROR_SUCCESS)
-            Mib::requestList->error(
-                req->get_transaction_id(), reqind, lastNextStatus);
+            Mib::requestList->error(req->get_transaction_id(), reqind, lastNextStatus);
         else
-            Mib::requestList->done(
-                req->get_transaction_id(), reqind, lastNext);
+            Mib::requestList->done(req->get_transaction_id(), reqind, lastNext);
     }
     else
-        Mib::requestList->error(
-            req->get_transaction_id(), reqind, SNMP_ERROR_NO_ACCESS);
+        Mib::requestList->error(req->get_transaction_id(), reqind, SNMP_ERROR_NO_ACCESS);
 }
 
 int MibProxyV3::prepare_set_request(Request*, int&)
@@ -599,8 +570,8 @@ int MibProxyV3::process_single(Pdux& pdu, Request* req)
     match->get_nth(4)->get_value(out);
 
     int      secLevel = 0;
-    UTarget* target   = snmpTargetAddrEntry::instance->get_target(
-        out, snmpTargetParamsEntry::instance, secLevel);
+    UTarget* target =
+        snmpTargetAddrEntry::instance->get_target(out, snmpTargetParamsEntry::instance, secLevel);
     if (!target)
     {
         LOG_BEGIN(loggerModuleName, INFO_LOG | 3);

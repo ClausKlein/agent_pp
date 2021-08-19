@@ -57,8 +57,7 @@ int main(int argc, char** argv)
     if (argc < 3)
     {
         cout << "Usage:\n";
-        cout
-            << "agent_copy sourceAddress destAddress [subtreeOid] [options]\n";
+        cout << "agent_copy sourceAddress destAddress [subtreeOid] [options]\n";
         cout << "options: prefix - applies to sourceAddress\n";
         cout << "                + applies to destAddress\n\n";
         cout << "         -x    cross subtree upper bound\n";
@@ -74,9 +73,7 @@ int main(int argc, char** argv)
                 "1 second\n";
 #ifdef _SNMPv3
         cout << "         -snSecurityName, " << endl;
-        cout
-            << "         -slN , securityLevel to use, default N = 3 = authPriv"
-            << endl;
+        cout << "         -slN , securityLevel to use, default N = 3 = authPriv" << endl;
         cout << "         -smN , securityModel to use, only default N = 3 = "
                 "USM possible\n";
         cout << "         -cnContextName, default "
@@ -433,8 +430,7 @@ int main(int argc, char** argv)
     Snmp snmp(status); // check construction status
     if (status != SNMP_CLASS_SUCCESS)
     {
-        cout << "SNMP++ Session Create Fail, " << snmp.error_msg(status)
-             << "\n";
+        cout << "SNMP++ Session Create Fail, " << snmp.error_msg(status) << "\n";
         return -3;
     }
 
@@ -452,8 +448,7 @@ int main(int argc, char** argv)
         status = getBootCounter(filename, engineId, snmpEngineBoots);
         if ((status != SNMPv3_OK) && (status < SNMPv3_FILEOPEN_ERROR))
         {
-            cout << "Error loading snmpEngineBoots counter: " << status
-                 << endl;
+            cout << "Error loading snmpEngineBoots counter: " << status << endl;
             return 1;
         }
         snmpEngineBoots++;
@@ -471,13 +466,13 @@ int main(int argc, char** argv)
     }
     if (srcVersion == version3)
     {
-        usm->add_usm_user(srcSecurityName, srcSecurityName, srcAuthProtocol,
-            srcPrivProtocol, srcAuthPassword, srcPrivPassword);
+        usm->add_usm_user(srcSecurityName, srcSecurityName, srcAuthProtocol, srcPrivProtocol,
+            srcAuthPassword, srcPrivPassword);
     }
     if (destVersion == version3)
     {
-        usm->add_usm_user(srcSecurityName, destSecurityName, destAuthProtocol,
-            destPrivProtocol, destAuthPassword, destPrivPassword);
+        usm->add_usm_user(srcSecurityName, destSecurityName, destAuthProtocol, destPrivProtocol,
+            destAuthPassword, destPrivPassword);
     }
 #endif
     //--------[ build up SNMP++ object needed ]-------------------------------
@@ -491,8 +486,7 @@ int main(int argc, char** argv)
 
     if (srcVersion == version3)
     {
-        utargetSrc.set_version(
-            srcVersion); // set the SNMP version SNMPV1 or V2 or V3
+        utargetSrc.set_version(srcVersion); // set the SNMP version SNMPV1 or V2 or V3
         utargetSrc.set_retry(srcRetries);   // set the number of auto retries
         utargetSrc.set_timeout(srcTimeout); // set timeout
         utargetSrc.set_security_model(srcSecurityModel);
@@ -505,19 +499,16 @@ int main(int argc, char** argv)
     else
     {
 #endif
-        ctargetSrc.set_version(
-            srcVersion); // set the SNMP version SNMPV1 or V2 or V3
-        ctargetSrc.set_retry(srcRetries);   // set the number of auto retries
-        ctargetSrc.set_timeout(srcTimeout); // set timeout
-        ctargetSrc.set_readcommunity(
-            srcCommunity); // set the read community to use
+        ctargetSrc.set_version(srcVersion);         // set the SNMP version SNMPV1 or V2 or V3
+        ctargetSrc.set_retry(srcRetries);           // set the number of auto retries
+        ctargetSrc.set_timeout(srcTimeout);         // set timeout
+        ctargetSrc.set_readcommunity(srcCommunity); // set the read community to use
         ctargetSrc.set_writecommunity(srcCommunity);
 #ifdef _SNMPv3
     }
     if (destVersion == version3)
     {
-        utargetDest.set_version(
-            destVersion); // set the SNMP version SNMPV1 or V2 or V3
+        utargetDest.set_version(destVersion); // set the SNMP version SNMPV1 or V2 or V3
         utargetDest.set_retry(destRetries);   // set the number of auto retries
         utargetDest.set_timeout(destTimeout); // set timeout
         utargetDest.set_security_model(destSecurityModel);
@@ -530,12 +521,10 @@ int main(int argc, char** argv)
     else
     {
 #endif
-        ctargetDest.set_version(
-            destVersion); // set the SNMP version SNMPV1 or V2 or V3
-        ctargetDest.set_retry(destRetries);   // set the number of auto retries
-        ctargetDest.set_timeout(destTimeout); // set timeout
-        ctargetDest.set_readcommunity(
-            destCommunity); // set the read community to use
+        ctargetDest.set_version(destVersion);         // set the SNMP version SNMPV1 or V2 or V3
+        ctargetDest.set_retry(destRetries);           // set the number of auto retries
+        ctargetDest.set_timeout(destTimeout);         // set timeout
+        ctargetDest.set_readcommunity(destCommunity); // set the read community to use
         ctargetDest.set_writecommunity(destCommunity);
 #ifdef _SNMPv3
     }
@@ -573,8 +562,7 @@ int main(int argc, char** argv)
             Oid tmp;
             vbConfig.get_oid(tmp);
             cout << "Received a reportPdu: " << snmp.error_msg(tmp) << endl
-                 << vbConfig.get_printable_oid() << " = "
-                 << vbConfig.get_printable_value() << endl;
+                 << vbConfig.get_printable_oid() << " = " << vbConfig.get_printable_value() << endl;
             return -5;
         }
 #endif
@@ -585,8 +573,7 @@ int main(int argc, char** argv)
     vb.set_oid(oid);           // set the Oid portion of the Vb
     srcPdu.set_vblist(&vb, 1); // add the vb to the Pdu
 
-    while ((status = snmp.get_bulk(srcPdu, *targetSrc, 0, BULK_MAX))
-        == SNMP_CLASS_SUCCESS)
+    while ((status = snmp.get_bulk(srcPdu, *targetSrc, 0, BULK_MAX)) == SNMP_CLASS_SUCCESS)
     {
 
         requests++;
@@ -596,8 +583,7 @@ int main(int argc, char** argv)
             Oid tmp;
             vb.get_oid(tmp);
             cout << "Received a reportPdu: " << snmp.error_msg(tmp) << endl
-                 << vb.get_printable_oid() << " = " << vb.get_printable_value()
-                 << endl;
+                 << vb.get_printable_oid() << " = " << vb.get_printable_value() << endl;
             return -5;
         }
 #endif
@@ -636,8 +622,7 @@ int main(int argc, char** argv)
                     cout << "NOK: ";
                 cout << vb.get_printable_oid() << " = ";
                 cout << vb.get_printable_value();
-                if (status != SNMP_ERROR_SUCCESS)
-                    cout << ", reason: " << snmp.error_msg(status);
+                if (status != SNMP_ERROR_SUCCESS) cout << ", reason: " << snmp.error_msg(status);
                 cout << endl;
             }
             else

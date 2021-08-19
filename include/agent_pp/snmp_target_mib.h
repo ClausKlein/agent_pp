@@ -270,8 +270,7 @@ public:
      * @return
      *    true if the entry has been found, false otherwise.
      */
-    virtual bool get_target_params(
-        const NS_SNMP OctetStr&, NS_SNMP UTarget&, int&);
+    virtual bool get_target_params(const NS_SNMP OctetStr&, NS_SNMP UTarget&, int&);
 #endif
     /**
      * Add a new SNMP parameter set to the receiver.
@@ -298,8 +297,8 @@ public:
      *    the newly created row or 0 if an entry with name already
      *    exists.
      */
-    MibTableRow* add_entry(const NS_SNMP OctetStr&, const int, const int,
-        const NS_SNMP                    OctetStr&, const int);
+    MibTableRow* add_entry(
+        const NS_SNMP OctetStr&, const int, const int, const NS_SNMP OctetStr&, const int);
 };
 
 /**
@@ -369,8 +368,7 @@ public:
      *    a pointer to an UTarget instance or 0 if the
      *    address name is not valid.
      */
-    virtual NS_SNMP UTarget* get_target(
-        const NS_SNMP OctetStr&, snmpTargetParamsEntry*, int&);
+    virtual NS_SNMP UTarget* get_target(const NS_SNMP OctetStr&, snmpTargetParamsEntry*, int&);
 #endif
     /**
      * Return the rows that match a given tag. The rows are cloned
@@ -384,8 +382,8 @@ public:
      */
     List<MibTableRow>* get_rows_cloned_for_tag(const NS_SNMP OctetStr&);
 
-    void set_row(MibTableRow* r, const Oidx&, const NS_SNMP OctetStr&, int,
-        int, const NS_SNMP OctetStr&, const NS_SNMP OctetStr&, int, int);
+    void set_row(MibTableRow* r, const Oidx&, const NS_SNMP OctetStr&, int, int,
+        const NS_SNMP OctetStr&, const NS_SNMP OctetStr&, int, int);
 
     /**
      * Add a new target entry to the receiver.
@@ -413,9 +411,8 @@ public:
      * @return
      *    the created row or 0 if a row with name already exists.
      */
-    MibTableRow* add_entry(const NS_SNMP OctetStr&, const Oidx&,
-        const NS_SNMP OctetStr&, const NS_SNMP OctetStr&,
-        const NS_SNMP OctetStr&);
+    MibTableRow* add_entry(const NS_SNMP OctetStr&, const Oidx&, const NS_SNMP OctetStr&,
+        const NS_SNMP OctetStr&, const NS_SNMP OctetStr&);
 
     /**
      * Check if row can be set active.

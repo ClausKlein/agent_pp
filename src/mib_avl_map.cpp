@@ -54,20 +54,14 @@ namespace Agentpp
 #define LTHREADBIT 4
 #define RTHREADBIT 8
 
-static inline int bf(OidxPtrMibEntryPtrAVLNode* t)
-{
-    return t->stat & AVLBALANCEMASK;
-}
+static inline int bf(OidxPtrMibEntryPtrAVLNode* t) { return t->stat & AVLBALANCEMASK; }
 
 static inline void set_bf(OidxPtrMibEntryPtrAVLNode* t, int b)
 {
     t->stat = (t->stat & ~AVLBALANCEMASK) | (b & AVLBALANCEMASK);
 }
 
-static inline int rthread(OidxPtrMibEntryPtrAVLNode* t)
-{
-    return t->stat & RTHREADBIT;
-}
+static inline int rthread(OidxPtrMibEntryPtrAVLNode* t) { return t->stat & RTHREADBIT; }
 
 static inline void set_rthread(OidxPtrMibEntryPtrAVLNode* t, int b)
 {
@@ -77,10 +71,7 @@ static inline void set_rthread(OidxPtrMibEntryPtrAVLNode* t, int b)
         t->stat &= ~RTHREADBIT;
 }
 
-static inline int lthread(OidxPtrMibEntryPtrAVLNode* t)
-{
-    return t->stat & LTHREADBIT;
-}
+static inline int lthread(OidxPtrMibEntryPtrAVLNode* t) { return t->stat & LTHREADBIT; }
 
 static inline void set_lthread(OidxPtrMibEntryPtrAVLNode* t, int b)
 {
@@ -110,8 +101,7 @@ OidxPtrMibEntryPtrAVLNode* OidxPtrMibEntryPtrAVLMap::rightmost()
     return t;
 }
 
-OidxPtrMibEntryPtrAVLNode* OidxPtrMibEntryPtrAVLMap::succ(
-    OidxPtrMibEntryPtrAVLNode* t)
+OidxPtrMibEntryPtrAVLNode* OidxPtrMibEntryPtrAVLMap::succ(OidxPtrMibEntryPtrAVLNode* t)
 {
     OidxPtrMibEntryPtrAVLNode* r = t->rt;
     if (!rthread(t))
@@ -119,8 +109,7 @@ OidxPtrMibEntryPtrAVLNode* OidxPtrMibEntryPtrAVLMap::succ(
     return r;
 }
 
-OidxPtrMibEntryPtrAVLNode* OidxPtrMibEntryPtrAVLMap::pred(
-    OidxPtrMibEntryPtrAVLNode* t)
+OidxPtrMibEntryPtrAVLNode* OidxPtrMibEntryPtrAVLMap::pred(OidxPtrMibEntryPtrAVLNode* t)
 {
     OidxPtrMibEntryPtrAVLNode* l = t->lt;
     if (!lthread(t))
@@ -181,10 +170,10 @@ Pix OidxPtrMibEntryPtrAVLMap::seek_inexact(OidxPtr key)
  We use the following statics to avoid passing them around recursively
 */
 
-static int      _need_rebalancing; // to send back balance info from rec. calls
-static OidxPtr* _target_item;      // add/del_item target
-static OidxPtrMibEntryPtrAVLNode* _found_node; // returned added/deleted node
-static int                        _already_found; // for deletion subcases
+static int                        _need_rebalancing; // to send back balance info from rec. calls
+static OidxPtr*                   _target_item;      // add/del_item target
+static OidxPtrMibEntryPtrAVLNode* _found_node;       // returned added/deleted node
+static int                        _already_found;    // for deletion subcases
 
 void OidxPtrMibEntryPtrAVLMap::_add(OidxPtrMibEntryPtrAVLNode*& t)
 {
@@ -358,7 +347,7 @@ MibEntryPtr& OidxPtrMibEntryPtrAVLMap::operator[](OidxPtr item)
     }
     else
     {
-        _target_item = &item; // NOTE: This may be a dangling reference! CK
+        _target_item      = &item; // NOTE: This may be a dangling reference! CK
         _need_rebalancing = 0;
         _add(root);
         // NOLINTNEXTLINE(clang-analyzer-core.StackAddressEscape)
@@ -367,8 +356,7 @@ MibEntryPtr& OidxPtrMibEntryPtrAVLMap::operator[](OidxPtr item)
     // NOLINTNEXTLINE(clang-analyzer-core.StackAddressEscape)
 }
 
-void OidxPtrMibEntryPtrAVLMap::_del(
-    OidxPtrMibEntryPtrAVLNode* par, OidxPtrMibEntryPtrAVLNode*& t)
+void OidxPtrMibEntryPtrAVLMap::_del(OidxPtrMibEntryPtrAVLNode* par, OidxPtrMibEntryPtrAVLNode*& t)
 {
     int comp = 0;
     if (_already_found)
@@ -606,8 +594,7 @@ OidxPtrMibEntryPtrAVLMap::OidxPtrMibEntryPtrAVLMap(OidxPtrMibEntryPtrAVLMap& b)
 {
     root  = 0;
     count = 0;
-    for (Pix i = b.first(); i != 0; b.next(i))
-        (*this)[b.key(i)] = b.contents(i);
+    for (Pix i = b.first(); i != 0; b.next(i)) (*this)[b.key(i)] = b.contents(i);
 }
 
 int OidxPtrMibEntryPtrAVLMap::OK()

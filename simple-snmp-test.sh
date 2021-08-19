@@ -12,7 +12,7 @@ agent="$1"
 test_app="$2"
 
 # cleanup config files
-rm -f snmpv3_boot_counter
+find .. -name snmpv3_boot_counter -delete || echo OK
 rm -rf config
 
 mkdir -p config
@@ -23,7 +23,6 @@ pkill agent || echo OK
 # start agent as bg job
 ${agent} 4700 &
 sleep 1
-cat snmpv3_boot_counter
 
 snmpstatus -v3 -l noAuthNoPriv -u MD5DES -n "" localhost:4700
 
@@ -71,7 +70,6 @@ ls -lrta config
 # start agent as bg job
 ${agent} 4700 &
 sleep 1
-cat snmpv3_boot_counter
 
 snmpEngineBoots=`snmpget -v2c -c public -Onqv localhost:4700 snmpEngineBoots.0`
 test ${snmpEngineBoots} -eq 2 &&

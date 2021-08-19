@@ -73,10 +73,7 @@ void OidxPtrEntryPtrMap::clear()
     }
 }
 
-int OidxPtrEntryPtrMap::contains(OidxPtr item) const
-{
-    return seek(item) != 0;
-}
+int OidxPtrEntryPtrMap::contains(OidxPtr item) const { return seek(item) != 0; }
 
 void OidxPtrEntryPtrMap::error(const char* msg) const
 {

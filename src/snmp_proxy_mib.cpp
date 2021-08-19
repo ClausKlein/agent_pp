@@ -34,33 +34,26 @@ namespace Agentpp
 
 snmpProxyEntry* snmpProxyEntry::instance = 0;
 
-snmpProxyEntry::snmpProxyEntry()
-    : StorageTable(oidSnmpProxyEntry, iSnmpAdminString, 1)
+snmpProxyEntry::snmpProxyEntry() : StorageTable(oidSnmpProxyEntry, iSnmpAdminString, 1)
 {
     // This table object is a singleton. In order to access it use
     // the static pointer snmpProxyEntry::instance.
     instance = this;
 
-    add_col(new SnmpInt32MinMax(
-        "2", READCREATE, 1, VMODE_DEFAULT | VMODE_LOCKED, 1, 4));
-    add_col(new SnmpEngineID(
-        "3", READCREATE, new OctetStr(""), VMODE_DEFAULT | VMODE_LOCKED));
-    add_col(new SnmpAdminString(
-        "4", READCREATE, new OctetStr(""), VMODE_DEFAULT | VMODE_LOCKED));
-    add_col(new SnmpAdminString(
-        "5", READCREATE, new OctetStr(""), VMODE_DEFAULT | VMODE_LOCKED));
-    add_col(new SnmpAdminString(
-        "6", READCREATE, new OctetStr(""), VMODE_DEFAULT | VMODE_LOCKED));
-    add_col(new SnmpTagValue(
-        "7", READCREATE, new OctetStr(""), VMODE_DEFAULT | VMODE_LOCKED));
+    add_col(new SnmpInt32MinMax("2", READCREATE, 1, VMODE_DEFAULT | VMODE_LOCKED, 1, 4));
+    add_col(new SnmpEngineID("3", READCREATE, new OctetStr(""), VMODE_DEFAULT | VMODE_LOCKED));
+    add_col(new SnmpAdminString("4", READCREATE, new OctetStr(""), VMODE_DEFAULT | VMODE_LOCKED));
+    add_col(new SnmpAdminString("5", READCREATE, new OctetStr(""), VMODE_DEFAULT | VMODE_LOCKED));
+    add_col(new SnmpAdminString("6", READCREATE, new OctetStr(""), VMODE_DEFAULT | VMODE_LOCKED));
+    add_col(new SnmpTagValue("7", READCREATE, new OctetStr(""), VMODE_DEFAULT | VMODE_LOCKED));
     add_storage_col(new StorageType("8", 3));
     add_col(new snmpRowStatus("9", READCREATE));
 }
 
 snmpProxyEntry::~snmpProxyEntry() { instance = 0; }
 
-void snmpProxyEntry::set_row(MibTableRow* r, int p0, char* p1, char* p2,
-    char* p3, char* p4, char* p5, int p6, int p7)
+void snmpProxyEntry::set_row(
+    MibTableRow* r, int p0, char* p1, char* p2, char* p3, char* p4, char* p5, int p6, int p7)
 {
     r->get_nth(0)->replace_value(new SnmpInt32(p0));
     r->get_nth(1)->replace_value(new OctetStr(p1));

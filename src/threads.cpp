@@ -123,25 +123,23 @@ SingleThreadObject::~SingleThreadObject() { end_synch(); }
 unsigned int Synchronized::next_id = 0;
 #    endif
 
-#    define ERR_CHK_WITHOUT_EXCEPTIONS(x)                      \
-        do {                                                   \
-            int result = (x);                                  \
-            if (result)                                        \
-            {                                                  \
-                LOG_BEGIN(loggerModuleName, ERROR_LOG | 0);    \
-                LOG("Constructing Synchronized failed at '" #x \
-                    "' with (result)");                        \
-                LOG(result);                                   \
-                LOG_END;                                       \
-            }                                                  \
+#    define ERR_CHK_WITHOUT_EXCEPTIONS(x)                                          \
+        do {                                                                       \
+            int result = (x);                                                      \
+            if (result)                                                            \
+            {                                                                      \
+                LOG_BEGIN(loggerModuleName, ERROR_LOG | 0);                        \
+                LOG("Constructing Synchronized failed at '" #x "' with (result)"); \
+                LOG(result);                                                       \
+                LOG_END;                                                           \
+            }                                                                      \
         } while (0)
 
 Synchronized::Synchronized()
 {
 #    ifndef _NO_LOGGING
     id = next_id++;
-    if (id
-        > 1) // static initialization order fiasco: Do not log on first calls
+    if (id > 1) // static initialization order fiasco: Do not log on first calls
     {
         LOG_BEGIN(loggerModuleName, DEBUG_LOG | 9);
         LOG("Synchronized created (id)(ptr)");
@@ -154,11 +152,9 @@ Synchronized::Synchronized()
     pthread_mutexattr_t attr;
     ERR_CHK_WITHOUT_EXCEPTIONS(pthread_mutexattr_init(&attr));
 #        ifdef AGENTPP_PTHREAD_RECURSIVE
-    ERR_CHK_WITHOUT_EXCEPTIONS(
-        pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE));
+    ERR_CHK_WITHOUT_EXCEPTIONS(pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE));
 #        else
-    ERR_CHK_WITHOUT_EXCEPTIONS(
-        pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_ERRORCHECK));
+    ERR_CHK_WITHOUT_EXCEPTIONS(pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_ERRORCHECK));
 #        endif
 
     memset(&monitor, 0, sizeof(monitor));
@@ -198,14 +194,12 @@ Synchronized::~Synchronized()
     {
         // wait for other threads ...
         if (EBUSY == pthread_mutex_trylock(&monitor))
-            pthread_mutex_lock(
-                &monitor); // another thread owns the mutex, let's wait ...
+            pthread_mutex_lock(&monitor); // another thread owns the mutex, let's wait ...
         int retries = 0;
         do {
             pthread_mutex_unlock(&monitor);
             result = pthread_mutex_destroy(&monitor);
-        } while (EBUSY == result
-            && (retries++ < AGENTPP_SYNCHRONIZED_UNLOCK_RETRIES));
+        } while (EBUSY == result && (retries++ < AGENTPP_SYNCHRONIZED_UNLOCK_RETRIES));
     }
 #        endif
     isLocked = false;
@@ -846,18 +840,16 @@ void Thread::join()
         status = IDLE;
         LOG_BEGIN(loggerModuleName, DEBUG_LOG | 4);
         LOG("Thread: joined thread successfully (tid)");
-        LOG((AGENTPP_OPAQUE_PTHREAD_T)
-                tid); // FIXME: OSX error: cast from pointer to smaller type
-                      // 'int' loses information
+        LOG((AGENTPP_OPAQUE_PTHREAD_T)tid); // FIXME: OSX error: cast from pointer to smaller type
+                                            // 'int' loses information
         LOG_END;
     }
     else
     {
         LOG_BEGIN(loggerModuleName, WARNING_LOG | 1);
         LOG("Thread: thread not running (tid)");
-        LOG((AGENTPP_OPAQUE_PTHREAD_T)
-                tid); // FIXME: OSX error: cast from pointer to smaller type
-                      // 'int' loses information
+        LOG((AGENTPP_OPAQUE_PTHREAD_T)tid); // FIXME: OSX error: cast from pointer to smaller type
+                                            // 'int' loses information
         LOG_END;
     }
 #    else
@@ -1197,10 +1189,7 @@ ThreadPool::ThreadPool(int size) : oneTimeExecution(false)
 ThreadPool::ThreadPool(int size, int stack_size) : oneTimeExecution(false)
 {
     stackSize = stack_size;
-    for (int i = 0; i < size; i++)
-    {
-        taskList.add(new TaskManager(this, stackSize));
-    }
+    for (int i = 0; i < size; i++) { taskList.add(new TaskManager(this, stackSize)); }
 }
 
 ThreadPool::~ThreadPool()
@@ -1213,9 +1202,7 @@ ThreadPool::~ThreadPool()
 
 QueuedThreadPool::QueuedThreadPool(int size) : ThreadPool(size) { }
 
-QueuedThreadPool::QueuedThreadPool(int size, int stack_size)
-    : ThreadPool(size, stack_size)
-{ }
+QueuedThreadPool::QueuedThreadPool(int size, int stack_size) : ThreadPool(size, stack_size) { }
 
 QueuedThreadPool::~QueuedThreadPool()
 {
@@ -1386,9 +1373,7 @@ void LockQueue::run()
                 LOG("LockQueue: trylock (ptr)(pending)(result)");
                 LOG((long)r->target);
                 LOG(pending);
-                LOG(tryLockResult == LOCKED     ? "locked"
-                        : tryLockResult == BUSY ? "busy"
-                                                : "owned");
+                LOG(tryLockResult == LOCKED ? "locked" : tryLockResult == BUSY ? "busy" : "owned");
                 LOG_END;
                 r->tryLockResult = tryLockResult;
                 r->lock();

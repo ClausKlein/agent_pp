@@ -54,30 +54,24 @@ class AGENTPP_DECL SnmpRequest {
     friend class SnmpRequestV3;
 
 public:
-    static int process(int, const NS_SNMP UdpAddress&, Vbx*, int& sz, Vbx*,
-        int&, const NS_SNMP OctetStr&, const int = 0, const int = 0);
-    static int process_trap(NS_SNMP SnmpTarget&, Vbx*, int sz, const Oidx&,
-        const Oidx&, bool = false);
+    static int process(int, const NS_SNMP UdpAddress&, Vbx*, int& sz, Vbx*, int&,
+        const NS_SNMP OctetStr&, const int = 0, const int = 0);
+    static int process_trap(NS_SNMP SnmpTarget&, Vbx*, int sz, const Oidx&, const Oidx&, bool = false);
 
     static int get(const NS_SNMP UdpAddress&, Vbx*, int sz, int&);
     static int next(const NS_SNMP UdpAddress&, Vbx*, int sz, int&);
-    static int getbulk(const NS_SNMP UdpAddress&, Vbx*, int& sz, Vbx*, int&,
-        const int, const int);
+    static int getbulk(const NS_SNMP UdpAddress&, Vbx*, int& sz, Vbx*, int&, const int, const int);
     static int set(const NS_SNMP UdpAddress&, Vbx*, int sz, int&);
 
-    static int get(const NS_SNMP UdpAddress&, Vbx*, int sz, int&,
-        const NS_SNMP OctetStr&);
-    static int next(const NS_SNMP UdpAddress&, Vbx*, int sz, int&,
-        const NS_SNMP OctetStr&);
-    static int getbulk(const NS_SNMP UdpAddress&, Vbx*, int& sz, Vbx*, int&,
-        const NS_SNMP OctetStr&, const int, const int);
-    static int gettable(const NS_SNMP UdpAddress&, Vbx*, int sz, Vbx*, int&,
-        const NS_SNMP OctetStr&, const int);
-    static int set(const NS_SNMP UdpAddress&, Vbx*, int sz, int&,
-        const NS_SNMP OctetStr&);
+    static int get(const NS_SNMP UdpAddress&, Vbx*, int sz, int&, const NS_SNMP OctetStr&);
+    static int next(const NS_SNMP UdpAddress&, Vbx*, int sz, int&, const NS_SNMP OctetStr&);
+    static int getbulk(const NS_SNMP UdpAddress&, Vbx*, int& sz, Vbx*, int&, const NS_SNMP OctetStr&,
+        const int, const int);
+    static int gettable(
+        const NS_SNMP UdpAddress&, Vbx*, int sz, Vbx*, int&, const NS_SNMP OctetStr&, const int);
+    static int set(const NS_SNMP UdpAddress&, Vbx*, int sz, int&, const NS_SNMP OctetStr&);
 
-    static int trap(
-        NS_SNMP SnmpTarget&, Vbx*, int sz, const Oidx&, const Oidx&);
+    static int  trap(NS_SNMP SnmpTarget&, Vbx*, int sz, const Oidx&, const Oidx&);
     static void inform(NS_SNMP CTarget&, Vbx*, int sz, const Oidx&);
 
 protected:
@@ -171,8 +165,7 @@ public:
      * @return
      *    SNMP_ERROR_SUCCESS on success or any other SNMP error code on
      */
-    int send_request(NS_SNMP UTarget&, Pdux&, const int non_repeaters = 0,
-        const int repetitions = 0);
+    int send_request(NS_SNMP UTarget&, Pdux&, const int non_repeaters = 0, const int repetitions = 0);
 
 protected:
     Snmpx* snmp;

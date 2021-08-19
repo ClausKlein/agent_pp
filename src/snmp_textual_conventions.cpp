@@ -35,15 +35,13 @@ static const char* loggerModuleName = "agent++.snmp_textual_conventions";
 
 /*--------------------- class snmpDisplayString -------------------------*/
 
-SnmpDisplayString::SnmpDisplayString(const Oidx& id, mib_access a, OctetStr* s)
-    : MibLeaf(id, a, s)
+SnmpDisplayString::SnmpDisplayString(const Oidx& id, mib_access a, OctetStr* s) : MibLeaf(id, a, s)
 {
     min_size = 0;
     max_size = 255;
 }
 
-SnmpDisplayString::SnmpDisplayString(
-    const Oidx& id, mib_access a, OctetStr* s, bool d)
+SnmpDisplayString::SnmpDisplayString(const Oidx& id, mib_access a, OctetStr* s, bool d)
     : MibLeaf(id, a, s, (d ? VMODE_DEFAULT : VMODE_LOCKED))
 {
     min_size = 0;
@@ -62,8 +60,8 @@ SnmpDisplayString::~SnmpDisplayString() { }
 
 MibEntryPtr SnmpDisplayString::clone()
 {
-    MibEntryPtr other = new SnmpDisplayString(
-        oid, access, (OctetStr*)value->clone(), (value_mode == VMODE_DEFAULT));
+    MibEntryPtr other =
+        new SnmpDisplayString(oid, access, (OctetStr*)value->clone(), (value_mode == VMODE_DEFAULT));
     ((SnmpDisplayString*)other)->set_reference_to_table(my_table);
     return other;
 }
@@ -75,8 +73,7 @@ int SnmpDisplayString::prepare_set_request(Request* req, int& ind)
     OctetStr ostr;
     Vbx      vb(req->get_value(ind));
     if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
-    if ((ostr.len() < min_size) || (ostr.len() > max_size))
-        return SNMP_ERROR_WRONG_LENGTH;
+    if ((ostr.len() < min_size) || (ostr.len() > max_size)) return SNMP_ERROR_WRONG_LENGTH;
     return SNMP_ERROR_SUCCESS;
 }
 
@@ -103,8 +100,7 @@ SnmpAdminString::SnmpAdminString(const Oidx& id, mib_access a, OctetStr* s)
     : OctetStrMinMax(id, a, s, VMODE_NONE, 0, 255)
 { }
 
-SnmpAdminString::SnmpAdminString(
-    const Oidx& id, mib_access a, OctetStr* s, int m)
+SnmpAdminString::SnmpAdminString(const Oidx& id, mib_access a, OctetStr* s, int m)
     : OctetStrMinMax(id, a, s, m, 0, 255)
 { }
 
@@ -117,8 +113,8 @@ SnmpAdminString::~SnmpAdminString() { }
 
 MibEntryPtr SnmpAdminString::clone()
 {
-    MibEntryPtr other = new SnmpAdminString(
-        oid, access, (OctetStr*)value->clone(), value_mode, min, max);
+    MibEntryPtr other =
+        new SnmpAdminString(oid, access, (OctetStr*)value->clone(), value_mode, min, max);
     ((SnmpAdminString*)other)->set_reference_to_table(my_table);
     return other;
 }
@@ -127,20 +123,15 @@ OctetStr SnmpAdminString::get() { return *((OctetStr*)value); }
 
 /*--------------------- class SnmpEngineID -------------------------*/
 
-SnmpEngineID::SnmpEngineID(const Oidx& id, mib_access a, OctetStr* s)
-    : MibLeaf(id, a, s)
-{ }
+SnmpEngineID::SnmpEngineID(const Oidx& id, mib_access a, OctetStr* s) : MibLeaf(id, a, s) { }
 
-SnmpEngineID::SnmpEngineID(const Oidx& id, mib_access a, OctetStr* s, int d)
-    : MibLeaf(id, a, s, d)
-{ }
+SnmpEngineID::SnmpEngineID(const Oidx& id, mib_access a, OctetStr* s, int d) : MibLeaf(id, a, s, d) { }
 
 SnmpEngineID::~SnmpEngineID() { }
 
 MibEntryPtr SnmpEngineID::clone()
 {
-    MibEntryPtr other =
-        new SnmpEngineID(oid, access, (OctetStr*)value->clone(), value_mode);
+    MibEntryPtr other = new SnmpEngineID(oid, access, (OctetStr*)value->clone(), value_mode);
     ((SnmpEngineID*)other)->set_reference_to_table(my_table);
     return other;
 }
@@ -177,8 +168,7 @@ OctetStr SnmpEngineID::create_engine_id(unsigned short p)
     size_t len = 255;
     if (gethostname(hname, len) == 0)
     {
-        OctetStr host(
-            (unsigned char*)hname, (strlen(hname) > 23) ? 23 : strlen(hname));
+        OctetStr host((unsigned char*)hname, (strlen(hname) > 23) ? 23 : strlen(hname));
         engineID += OctetStr(host);
         engineID += OctetStr(port, 2);
     }
@@ -200,13 +190,10 @@ OctetStr SnmpEngineID::create_engine_id(unsigned short p)
  *
  */
 
-SnmpTagValue::SnmpTagValue(const Oidx& id)
-    : MibLeaf(id, READCREATE, new OctetStr(""), VMODE_DEFAULT)
+SnmpTagValue::SnmpTagValue(const Oidx& id) : MibLeaf(id, READCREATE, new OctetStr(""), VMODE_DEFAULT)
 { }
 
-SnmpTagValue::SnmpTagValue(const Oidx& id, mib_access a, OctetStr* v, int m)
-    : MibLeaf(id, a, v, m)
-{ }
+SnmpTagValue::SnmpTagValue(const Oidx& id, mib_access a, OctetStr* v, int m) : MibLeaf(id, a, v, m) { }
 
 SnmpTagValue::~SnmpTagValue() { }
 
@@ -233,10 +220,7 @@ bool SnmpTagValue::value_ok(const Vbx& vb)
     return true;
 }
 
-bool SnmpTagValue::is_delimiter(char c)
-{
-    return ((c == 32) || (c == 9) || (c == 13) || (c == 11));
-}
+bool SnmpTagValue::is_delimiter(char c) { return ((c == 32) || (c == 9) || (c == 13) || (c == 11)); }
 
 int SnmpTagValue::prepare_set_request(Request* req, int& ind)
 {
@@ -255,13 +239,9 @@ int SnmpTagValue::prepare_set_request(Request* req, int& ind)
  *
  */
 
-SnmpTagList::SnmpTagList(const Oidx& id, mib_access a, OctetStr* v, int m)
-    : MibLeaf(id, a, v, m)
-{ }
+SnmpTagList::SnmpTagList(const Oidx& id, mib_access a, OctetStr* v, int m) : MibLeaf(id, a, v, m) { }
 
-SnmpTagList::SnmpTagList(const Oidx& id)
-    : MibLeaf(id, READCREATE, new OctetStr(""), VMODE_DEFAULT)
-{ }
+SnmpTagList::SnmpTagList(const Oidx& id) : MibLeaf(id, READCREATE, new OctetStr(""), VMODE_DEFAULT) { }
 
 SnmpTagList::~SnmpTagList() { }
 
@@ -286,13 +266,11 @@ bool SnmpTagList::value_ok(const Vbx& vb)
         if (length > 255) return false;
 
         if ((length > 0) && (SnmpTagValue::is_delimiter(s[0]))) return false;
-        if ((length > 0) && (SnmpTagValue::is_delimiter(s[length - 1])))
-            return false;
+        if ((length > 0) && (SnmpTagValue::is_delimiter(s[length - 1]))) return false;
         for (int i = 0; i < length; i++)
         {
             if ((SnmpTagValue::is_delimiter(s[i]))
-                && ((i + 1 < length)
-                    && (SnmpTagValue::is_delimiter(s[i + 1]))))
+                && ((i + 1 < length) && (SnmpTagValue::is_delimiter(s[i + 1]))))
                 return false;
         }
     }
@@ -315,8 +293,7 @@ bool SnmpTagList::contains(const char* tag)
     LOG_END;
 
     char* start = l;
-    while ((l + strlen(l) - start >= (int)strlen(tag))
-        && (start = strstr(start, tag)))
+    while ((l + strlen(l) - start >= (int)strlen(tag)) && (start = strstr(start, tag)))
     {
 
         if (((start == l) || (SnmpTagValue::is_delimiter(*(start - 1))))
@@ -337,9 +314,7 @@ bool SnmpTagList::contains(const char* tag)
  *
  */
 
-TestAndIncr::TestAndIncr(const Oidx& o)
-    : MibLeaf(o, READWRITE, new SnmpInt32(0))
-{ }
+TestAndIncr::TestAndIncr(const Oidx& o) : MibLeaf(o, READWRITE, new SnmpInt32(0)) { }
 
 TestAndIncr::~TestAndIncr() { }
 
@@ -363,8 +338,7 @@ int TestAndIncr::set(const Vbx& vb)
 int TestAndIncr::prepare_set_request(Request* req, int& reqind)
 {
     int32_t v = 0;
-    if (req->get_value(reqind).get_value(v) != SNMP_CLASS_SUCCESS)
-        return SNMP_ERROR_WRONG_TYPE;
+    if (req->get_value(reqind).get_value(v) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
     if (v != get_state()) return SNMP_ERROR_INCONSIST_VAL;
     return SNMP_ERROR_SUCCESS;
 }
@@ -396,8 +370,7 @@ bool StorageType::value_ok(const Vbx& vb)
     int32_t v = 0;
     if (vb.get_value(v) != SNMP_CLASS_SUCCESS) return false;
     if ((v < 1) || (v > 5)) return false;
-    if ((valid()) && (get_state() < storageType_permanent)
-        && (v >= storageType_permanent))
+    if ((valid()) && (get_state() < storageType_permanent) && (v >= storageType_permanent))
         return false;
     if ((valid()) && (get_state() >= storageType_readOnly)) return false;
     return true;
@@ -419,8 +392,7 @@ int StorageTypeVoter::is_transition_ok(
 {
     int storageType = ((StorageTable*)t)->get_storage_type(row);
     if (storageType == 5) { return SNMP_ERROR_INCONSIST_VAL; }
-    if (((curState == rowNotInService) || (curState == rowActive))
-        && (newState == rowDestroy))
+    if (((curState == rowNotInService) || (curState == rowActive)) && (newState == rowDestroy))
     {
         if (storageType == 4) { return SNMP_ERROR_INCONSIST_VAL; }
     }
@@ -441,22 +413,19 @@ StorageTable::StorageTable(const Oidx& o) : MibTable(o)
     register_row_status_voting();
 }
 
-StorageTable::StorageTable(const Oidx& o, unsigned int ilen)
-    : MibTable(o, ilen)
+StorageTable::StorageTable(const Oidx& o, unsigned int ilen) : MibTable(o, ilen)
 {
     storage_type = 0;
     register_row_status_voting();
 }
 
-StorageTable::StorageTable(const Oidx& o, unsigned int ilen, bool a)
-    : MibTable(o, ilen, a)
+StorageTable::StorageTable(const Oidx& o, unsigned int ilen, bool a) : MibTable(o, ilen, a)
 {
     storage_type = 0;
     register_row_status_voting();
 }
 
-StorageTable::StorageTable(
-    const Oidx& o, const index_info* istruc, unsigned int ilen)
+StorageTable::StorageTable(const Oidx& o, const index_info* istruc, unsigned int ilen)
     : MibTable(o, istruc, ilen)
 {
     storage_type = 0;
@@ -478,10 +447,7 @@ bool StorageTable::is_persistent(MibTableRow* row)
 {
     if (row->get_nth(storage_type))
     {
-        if (((StorageType*)(row->get_nth(storage_type)))->row_is_volatile())
-        {
-            return false;
-        }
+        if (((StorageType*)(row->get_nth(storage_type)))->row_is_volatile()) { return false; }
     }
     return true;
 }
@@ -505,8 +471,7 @@ int StorageTable::get_storage_type(MibTableRow* row)
     int storageType = 0;
     if (row->get_nth(storage_type))
     {
-        storageType =
-            ((StorageType*)(row->get_nth(storage_type)))->get_state();
+        storageType = ((StorageType*)(row->get_nth(storage_type)))->get_state();
     }
     return storageType;
 }
@@ -516,8 +481,7 @@ void StorageTable::reset()
     OidListCursor<MibTableRow> cur;
     for (cur.init(&content); cur.get();)
     {
-        long type =
-            ((StorageType*)(cur.get()->get_nth(storage_type)))->get_state();
+        long type = ((StorageType*)(cur.get()->get_nth(storage_type)))->get_state();
         if ((type != storageType_permanent) && (type != storageType_readOnly))
         {
             MibTableRow* victim = cur.get();
@@ -537,26 +501,22 @@ int StorageTable::prepare_set_request(Request* req, int& ind)
     if ((o = MibTable::find(req->get_oid(ind))) != 0)
     {
         int storageType = get_storage_type(o->get_reference_to_row());
-        if (storageType == storageType_readOnly)
-        {
-            return SNMP_ERROR_INCONSIST_VAL;
-        }
+        if (storageType == storageType_readOnly) { return SNMP_ERROR_INCONSIST_VAL; }
     }
     return MibTable::prepare_set_request(req, ind);
 }
 
 /*------------------------- class SnmpInt32MinMax ------------------------*/
 
-SnmpInt32MinMax::SnmpInt32MinMax(const Oidx& o, mib_access _access,
-    const int def_val, int vmode, int _min, int _max)
+SnmpInt32MinMax::SnmpInt32MinMax(
+    const Oidx& o, mib_access _access, const int def_val, int vmode, int _min, int _max)
     : MibLeaf(o, _access, new SnmpInt32(def_val), vmode)
 {
     min = _min;
     max = _max;
 }
 
-SnmpInt32MinMax::SnmpInt32MinMax(
-    const Oidx& o, mib_access _access, int _min, int _max)
+SnmpInt32MinMax::SnmpInt32MinMax(const Oidx& o, mib_access _access, int _min, int _max)
     : MibLeaf(o, _access, new SnmpInt32(0), VMODE_NONE)
 {
     min = _min;
@@ -565,8 +525,7 @@ SnmpInt32MinMax::SnmpInt32MinMax(
 
 MibEntryPtr SnmpInt32MinMax::clone()
 {
-    MibEntryPtr other =
-        new SnmpInt32MinMax(oid, access, 0, get_value_mode(), min, max);
+    MibEntryPtr other = new SnmpInt32MinMax(oid, access, 0, get_value_mode(), min, max);
     ((SnmpInt32MinMax*)other)->replace_value(value->clone());
     ((SnmpInt32MinMax*)other)->set_reference_to_table(my_table);
     return other;
@@ -586,16 +545,15 @@ void SnmpInt32MinMax::set_state(int i) { *((SnmpInt32*)value) = i; }
 
 /*------------------------- class OctetStrMinMax ------------------------*/
 
-OctetStrMinMax::OctetStrMinMax(const Oidx& o, mib_access _access,
-    OctetStr* def_val, int vmode, unsigned int _min, unsigned int _max)
+OctetStrMinMax::OctetStrMinMax(const Oidx& o, mib_access _access, OctetStr* def_val, int vmode,
+    unsigned int _min, unsigned int _max)
     : MibLeaf(o, _access, def_val, vmode)
 {
     min = _min;
     max = _max;
 }
 
-OctetStrMinMax::OctetStrMinMax(
-    const Oidx& o, mib_access _access, unsigned int _min, unsigned int _max)
+OctetStrMinMax::OctetStrMinMax(const Oidx& o, mib_access _access, unsigned int _min, unsigned int _max)
     : MibLeaf(o, _access, new OctetStr(""), VMODE_NONE)
 {
     min = _min;
@@ -604,8 +562,7 @@ OctetStrMinMax::OctetStrMinMax(
 
 MibEntryPtr OctetStrMinMax::clone()
 {
-    MibEntryPtr other =
-        new OctetStrMinMax(oid, access, 0, get_value_mode(), min, max);
+    MibEntryPtr other = new OctetStrMinMax(oid, access, 0, get_value_mode(), min, max);
     ((OctetStrMinMax*)other)->replace_value(value->clone());
     ((OctetStrMinMax*)other)->set_reference_to_table(my_table);
     return other;
@@ -616,15 +573,13 @@ int OctetStrMinMax::prepare_set_request(Request* req, int& ind)
     OctetStr ostr;
     Vbx      vb(req->get_value(ind));
     if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
-    if ((ostr.len() < min) || (ostr.len() > max))
-        return SNMP_ERROR_WRONG_LENGTH;
+    if ((ostr.len() < min) || (ostr.len() > max)) return SNMP_ERROR_WRONG_LENGTH;
     return MibLeaf::prepare_set_request(req, ind);
 }
 
 /*----------------- class SnmpMessageProcessingModel -------------------*/
 
-SnmpMessageProcessingModel::SnmpMessageProcessingModel(
-    const Oidx& id, mib_access a, int i, int m)
+SnmpMessageProcessingModel::SnmpMessageProcessingModel(const Oidx& id, mib_access a, int i, int m)
     : SnmpInt32MinMax(id, a, i, m, 0, 3)
 { }
 
@@ -632,8 +587,7 @@ SnmpMessageProcessingModel::~SnmpMessageProcessingModel() { }
 
 MibEntryPtr SnmpMessageProcessingModel::clone()
 {
-    MibEntryPtr other =
-        new SnmpMessageProcessingModel(oid, access, 0, get_value_mode());
+    MibEntryPtr other = new SnmpMessageProcessingModel(oid, access, 0, get_value_mode());
     ((SnmpMessageProcessingModel*)other)->replace_value(value->clone());
     ((SnmpMessageProcessingModel*)other)->set_reference_to_table(my_table);
     return other;
@@ -641,8 +595,7 @@ MibEntryPtr SnmpMessageProcessingModel::clone()
 
 /*--------------------- class SnmpSecurityLevel ------------------------*/
 
-SnmpSecurityLevel::SnmpSecurityLevel(
-    const Oidx& id, mib_access a, int i, int m)
+SnmpSecurityLevel::SnmpSecurityLevel(const Oidx& id, mib_access a, int i, int m)
     : SnmpInt32MinMax(id, a, i, m, 1, 3)
 { }
 
@@ -650,8 +603,7 @@ SnmpSecurityLevel::~SnmpSecurityLevel() { }
 
 MibEntryPtr SnmpSecurityLevel::clone()
 {
-    MibEntryPtr other =
-        new SnmpSecurityLevel(oid, access, 0, get_value_mode());
+    MibEntryPtr other = new SnmpSecurityLevel(oid, access, 0, get_value_mode());
     ((SnmpSecurityLevel*)other)->replace_value(value->clone());
     ((SnmpSecurityLevel*)other)->set_reference_to_table(my_table);
     return other;
@@ -659,8 +611,7 @@ MibEntryPtr SnmpSecurityLevel::clone()
 
 /*--------------------- class SnmpSecurityModel ------------------------*/
 
-SnmpSecurityModel::SnmpSecurityModel(
-    const Oidx& id, mib_access a, int i, int m)
+SnmpSecurityModel::SnmpSecurityModel(const Oidx& id, mib_access a, int i, int m)
     : SnmpInt32MinMax(id, a, i, m, 0, 3)
 { }
 
@@ -668,8 +619,7 @@ SnmpSecurityModel::~SnmpSecurityModel() { }
 
 MibEntryPtr SnmpSecurityModel::clone()
 {
-    MibEntryPtr other =
-        new SnmpSecurityModel(oid, access, 0, get_value_mode());
+    MibEntryPtr other = new SnmpSecurityModel(oid, access, 0, get_value_mode());
     ((SnmpSecurityModel*)other)->replace_value(value->clone());
     ((SnmpSecurityModel*)other)->set_reference_to_table(my_table);
     return other;
@@ -677,16 +627,13 @@ MibEntryPtr SnmpSecurityModel::clone()
 
 /*------------------------ class TimeStamp -----------------------------*/
 
-TimeStamp::TimeStamp(const Oidx& id, mib_access a, int m)
-    : MibLeaf(id, a, new TimeTicks(0), m)
-{ }
+TimeStamp::TimeStamp(const Oidx& id, mib_access a, int m) : MibLeaf(id, a, new TimeTicks(0), m) { }
 
 TimeStamp::~TimeStamp() { }
 
-void TimeStamp::update()
-    TS_SYNCHRONIZED({ *((TimeTicks*)value) = sysUpTime::get(); })
+void TimeStamp::update() TS_SYNCHRONIZED({ *((TimeTicks*)value) = sysUpTime::get(); })
 
-        MibEntryPtr TimeStamp::clone()
+    MibEntryPtr TimeStamp::clone()
 {
     MibEntryPtr other = new TimeStamp(oid, access, value_mode);
     ((TimeStamp*)other)->replace_value(value->clone());
@@ -696,8 +643,7 @@ void TimeStamp::update()
 
 /*----------------------- class TimeStampTable --------------------------*/
 
-TimeStampTable::TimeStampTable(
-    const Oidx& o, const index_info* inf, unsigned int sz, TimeStamp* lc)
+TimeStampTable::TimeStampTable(const Oidx& o, const index_info* inf, unsigned int sz, TimeStamp* lc)
     : MibTable(o, inf, sz)
 {
     lastChange = lc;
@@ -705,22 +651,15 @@ TimeStampTable::TimeStampTable(
 
 TimeStampTable::~TimeStampTable() { lastChange = 0; }
 
-void TimeStampTable::row_added(MibTableRow*, const Oidx&, MibTable*)
-{
-    lastChange->update();
-}
+void TimeStampTable::row_added(MibTableRow*, const Oidx&, MibTable*) { lastChange->update(); }
 
-void TimeStampTable::row_delete(MibTableRow*, const Oidx&, MibTable*)
-{
-    lastChange->update();
-}
+void TimeStampTable::row_delete(MibTableRow*, const Oidx&, MibTable*) { lastChange->update(); }
 
 void TimeStampTable::updated() { lastChange->update(); }
 
 /*----------------------- class DateAndTime --------------------------*/
 
-DateAndTime::DateAndTime(const Oidx& id, mib_access a, int mode)
-    : MibLeaf(id, a, new OctetStr(), mode)
+DateAndTime::DateAndTime(const Oidx& id, mib_access a, int mode) : MibLeaf(id, a, new OctetStr(), mode)
 {
     update();
 }
@@ -746,8 +685,7 @@ void DateAndTime::update()
     struct tm* dt = nullptr;
 
 #ifdef HAVE_LOCALTIME_R
-    dt =
-        localtime_r(&c, &stm); // TODO: check if gmtime_r() would be better? CK
+    dt = localtime_r(&c, &stm); // TODO: check if gmtime_r() would be better? CK
 #else
     dt = localtime(&c); // TODO: use localtime_s()! CK
 #endif
@@ -784,8 +722,7 @@ void DateAndTime::update()
     unsigned int tz = std::abs(timezone);
 #endif
 
-    val += (unsigned char)((tz / 3600)
-        + ((dt->tm_isdst > 0) ? ((timezone > 0) ? -1 : 1) : 0));
+    val += (unsigned char)((tz / 3600) + ((dt->tm_isdst > 0) ? ((timezone > 0) ? -1 : 1) : 0));
     val += (unsigned char)((tz % 3600) / 60);
     set_state(val);
 }

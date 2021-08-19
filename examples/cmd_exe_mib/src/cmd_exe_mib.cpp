@@ -127,8 +127,7 @@ void CmdThread::run()
                 Oidx index(row->get_index());
                 index += i;
                 i++;
-                MibTableRow* r =
-                    cmdExecutionOutputEntry::instance->add_row(index);
+                MibTableRow* r = cmdExecutionOutputEntry::instance->add_row(index);
                 r->get_nth(0)->replace_value(line);
 
                 LOG_BEGIN(loggerModuleName, DEBUG_LOG | 9);
@@ -207,15 +206,9 @@ void cmdExecutionCmdNextIndex::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-int32_t cmdExecutionCmdNextIndex::get_state()
-{
-    return (int32_t) * ((SnmpInt32*)value);
-}
+int32_t cmdExecutionCmdNextIndex::get_state() { return (int32_t) * ((SnmpInt32*)value); }
 
-void cmdExecutionCmdNextIndex::set_state(int32_t l)
-{
-    *((SnmpInt32*)value) = l;
-}
+void cmdExecutionCmdNextIndex::set_state(int32_t l) { *((SnmpInt32*)value) = l; }
 
 /**
  *  cmdExecutionCmdName
@@ -223,8 +216,7 @@ void cmdExecutionCmdNextIndex::set_state(int32_t l)
  */
 
 cmdExecutionCmdName::cmdExecutionCmdName(const Oidx& id)
-    : MibLeaf(id, READCREATE, new OctetStr(""))
-{ }
+    : MibLeaf(id, READCREATE, new OctetStr("")) { }
 
 cmdExecutionCmdName::~cmdExecutionCmdName() { }
 
@@ -246,8 +238,7 @@ int cmdExecutionCmdName::set(const Vbx& vb)
 {
     OctetStr name;
     vb.get_value(name);
-    if (!cmdExecutionCmdConfigEntry::instance->contains(
-            Oidx::from_string(name)))
+    if (!cmdExecutionCmdConfigEntry::instance->contains(Oidx::from_string(name)))
         return SNMP_ERROR_INCONSIST_VAL;
     return MibLeaf::set(vb);
 }
@@ -259,8 +250,7 @@ bool cmdExecutionCmdName::value_ok(const Vbx& vb) { return true; }
  *
  */
 
-cmdExecutionCmdStatus::cmdExecutionCmdStatus(const Oidx& id)
-    : MibLeaf(id, READONLY, new SnmpInt32(1))
+cmdExecutionCmdStatus::cmdExecutionCmdStatus(const Oidx& id) : MibLeaf(id, READONLY, new SnmpInt32(1))
 { }
 
 cmdExecutionCmdStatus::~cmdExecutionCmdStatus() { }
@@ -279,10 +269,7 @@ void cmdExecutionCmdStatus::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-int32_t cmdExecutionCmdStatus::get_state()
-{
-    return (int32_t) * ((SnmpInt32*)value);
-}
+int32_t cmdExecutionCmdStatus::get_state() { return (int32_t) * ((SnmpInt32*)value); }
 
 void cmdExecutionCmdStatus::set_state(int32_t l) { *((SnmpInt32*)value) = l; }
 
@@ -319,10 +306,7 @@ void cmdExecutionCmdRunTime::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-int32_t cmdExecutionCmdRunTime::get_state()
-{
-    return (int32_t) * ((TimeTicks*)value);
-}
+int32_t cmdExecutionCmdRunTime::get_state() { return (int32_t) * ((TimeTicks*)value); }
 
 void cmdExecutionCmdRunTime::set_state(int32_t l) { *((TimeTicks*)value) = l; }
 
@@ -339,9 +323,7 @@ void cmdExecutionCmdRunTime::end() { end_time = sysUpTime::get_currentTime(); }
  *
  */
 
-cmdExecutionCmdRowStatus::cmdExecutionCmdRowStatus(const Oidx& id)
-    : snmpRowStatus(id, READCREATE)
-{ }
+cmdExecutionCmdRowStatus::cmdExecutionCmdRowStatus(const Oidx& id) : snmpRowStatus(id, READCREATE) { }
 
 cmdExecutionCmdRowStatus::~cmdExecutionCmdRowStatus() { }
 
@@ -353,15 +335,9 @@ MibEntryPtr cmdExecutionCmdRowStatus::clone()
     return other;
 }
 
-int32_t cmdExecutionCmdRowStatus::get_state()
-{
-    return (int32_t) * ((SnmpInt32*)value);
-}
+int32_t cmdExecutionCmdRowStatus::get_state() { return (int32_t) * ((SnmpInt32*)value); }
 
-void cmdExecutionCmdRowStatus::set_state(int32_t l)
-{
-    *((SnmpInt32*)value) = l;
-}
+void cmdExecutionCmdRowStatus::set_state(int32_t l) { *((SnmpInt32*)value) = l; }
 
 int cmdExecutionCmdRowStatus::prepare_set_request(Request* req, int& ind)
 {
@@ -418,8 +394,7 @@ int cmdExecutionCmdRowStatus::set(const Vbx& vb)
  *
  */
 
-cmdExecutionOutputLine::cmdExecutionOutputLine(const Oidx& id)
-    : MibLeaf(id, READONLY, new OctetStr())
+cmdExecutionOutputLine::cmdExecutionOutputLine(const Oidx& id) : MibLeaf(id, READONLY, new OctetStr())
 { }
 
 cmdExecutionOutputLine::~cmdExecutionOutputLine() { }
@@ -470,22 +445,19 @@ bool cmdExecutionCmdConfigEntry::deserialize(char* buf, int& sz)
     return b;
 }
 
-void cmdExecutionCmdConfigEntry::row_added(
-    MibTableRow* row, const Oidx& index, MibTable* t)
+void cmdExecutionCmdConfigEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* t)
 {
     // The row 'row' with 'index' has been added to the table.
     // Place any necessary actions here.
 }
 
-void cmdExecutionCmdConfigEntry::row_delete(
-    MibTableRow* row, const Oidx& index, MibTable* t)
+void cmdExecutionCmdConfigEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable* t)
 {
     // The row 'row' with 'index' will be deleted.
     // Place any necessary actions here.
 }
 
-void cmdExecutionCmdConfigEntry::set_row(
-    int index, const char* p0, int p1, int p2)
+void cmdExecutionCmdConfigEntry::set_row(int index, const char* p0, int p1, int p2)
 {
     get(0, index)->replace_value(new OctetStr(p0));
     get(1, index)->replace_value(new SnmpInt32(p1));
@@ -497,9 +469,7 @@ bool cmdExecutionCmdConfigEntry::contains(const Oidx& index)
     OidListCursor<MibTableRow> cur;
     for (cur.init(&content); cur.get(); cur.next())
     {
-        if (strcmp(
-                cur.get()->get_index().get_printable(), index.get_printable())
-            == 0)
+        if (strcmp(cur.get()->get_index().get_printable(), index.get_printable()) == 0)
         {
             return true;
         }
@@ -516,9 +486,7 @@ OctetStr cmdExecutionCmdConfigEntry::get_command_line(const OctetStr& command)
     {
         if (((snmpRowStatus*)cur.get()->get_nth(2))->get() == rowActive)
         {
-            if (strcmp(cur.get()->get_index().get_printable(),
-                    index.get_printable())
-                == 0)
+            if (strcmp(cur.get()->get_index().get_printable(), index.get_printable()) == 0)
             {
 
                 cur.get()->get_nth(0)->get_value(cmdline);
@@ -536,8 +504,7 @@ OctetStr cmdExecutionCmdConfigEntry::get_command_line(const OctetStr& command)
 
 cmdExecutionCmdEntry* cmdExecutionCmdEntry::instance = 0;
 
-cmdExecutionCmdEntry::cmdExecutionCmdEntry()
-    : MibTable("1.3.6.1.4.1.4976.6.1.2.2.2.1", 1, false)
+cmdExecutionCmdEntry::cmdExecutionCmdEntry() : MibTable("1.3.6.1.4.1.4976.6.1.2.2.2.1", 1, false)
 {
     // This table object is a singleton. In order to access it use
     // the static pointer cmdExecutionCmdEntry::instance.
@@ -553,15 +520,13 @@ cmdExecutionCmdEntry::cmdExecutionCmdEntry()
 
 cmdExecutionCmdEntry::~cmdExecutionCmdEntry() { delete threadPool; }
 
-void cmdExecutionCmdEntry::row_added(
-    MibTableRow* row, const Oidx& index, MibTable* t)
+void cmdExecutionCmdEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* t)
 {
     // The row 'row' with 'index' has been added to the table.
     // Place any necessary actions here.
 }
 
-void cmdExecutionCmdEntry::row_delete(
-    MibTableRow* row, const Oidx& index, MibTable* t)
+void cmdExecutionCmdEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable* t)
 {
     // The row 'row' with 'index' will be deleted.
     // Place any necessary actions here.
@@ -574,8 +539,7 @@ void cmdExecutionCmdEntry::row_delete(
 
 cmdExecutionOutputEntry* cmdExecutionOutputEntry::instance = 0;
 
-cmdExecutionOutputEntry::cmdExecutionOutputEntry()
-    : MibTable("1.3.6.1.4.1.4976.6.1.2.3.1.1", 0, false)
+cmdExecutionOutputEntry::cmdExecutionOutputEntry() : MibTable("1.3.6.1.4.1.4976.6.1.2.3.1.1", 0, false)
 {
     // This table object is a singleton. In order to access it use
     // the static pointer cmdExecutionOutputEntry::instance.
@@ -586,15 +550,13 @@ cmdExecutionOutputEntry::cmdExecutionOutputEntry()
 
 cmdExecutionOutputEntry::~cmdExecutionOutputEntry() { }
 
-void cmdExecutionOutputEntry::row_added(
-    MibTableRow* row, const Oidx& index, MibTable* t)
+void cmdExecutionOutputEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* t)
 {
     // The row 'row' with 'index' has been added to the table.
     // Place any necessary actions here.
 }
 
-void cmdExecutionOutputEntry::row_delete(
-    MibTableRow* row, const Oidx& index, MibTable* t)
+void cmdExecutionOutputEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable* t)
 {
     // The row 'row' with 'index' will be deleted.
     // Place any necessary actions here.
@@ -623,8 +585,7 @@ void cmdExecutionOutputEntry::remove_all(const Oidx& index)
     }
 }
 
-command_execution_mib::command_execution_mib()
-    : MibGroup("1.3.6.1.4.1.4976.6.1.2", "cmdExecutionMIB")
+command_execution_mib::command_execution_mib() : MibGroup("1.3.6.1.4.1.4976.6.1.2", "cmdExecutionMIB")
 {
     add(new cmdExecutionCmdConfigEntry());
     add(new cmdExecutionCmdNextIndex());

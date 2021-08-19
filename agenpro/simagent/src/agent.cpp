@@ -115,8 +115,7 @@ static int usage()
            "mib-var. can be set\n");
     printf("Options:      -d <debug level>        (1..5),default is off \n");
     printf("Options:      -a <address>            default is 0.0.0.0/4700\n");
-    printf(
-        "Options:      -t <trap destination>   default is localhost/162 \n");
+    printf("Options:      -t <trap destination>   default is localhost/162 \n");
     printf("Options:      -v 			print version info\n");
     return 1;
 }
@@ -166,30 +165,26 @@ void init(Mib& mib, const NS_SNMP OctetStr& engineID)
 #ifdef _SNMPv3
     UsmUserTable* uut = new UsmUserTable();
 
-    uut->addNewRow("unsecureUser", SNMPv3_usmNoAuthProtocol,
-        SNMPv3_usmNoPrivProtocol, "", "", engineID, false);
+    uut->addNewRow(
+        "unsecureUser", SNMPv3_usmNoAuthProtocol, SNMPv3_usmNoPrivProtocol, "", "", engineID, false);
 
-    uut->addNewRow("MD5", SNMPv3_usmHMACMD5AuthProtocol,
-        SNMPv3_usmNoPrivProtocol, "MD5UserAuthPassword", "", engineID, false);
+    uut->addNewRow("MD5", SNMPv3_usmHMACMD5AuthProtocol, SNMPv3_usmNoPrivProtocol,
+        "MD5UserAuthPassword", "", engineID, false);
 
-    uut->addNewRow("SHA", SNMPv3_usmHMACSHAAuthProtocol,
-        SNMPv3_usmNoPrivProtocol, "SHAUserAuthPassword", "", engineID, false);
+    uut->addNewRow("SHA", SNMPv3_usmHMACSHAAuthProtocol, SNMPv3_usmNoPrivProtocol,
+        "SHAUserAuthPassword", "", engineID, false);
 
-    uut->addNewRow("MD5DES", SNMPv3_usmHMACMD5AuthProtocol,
-        SNMPv3_usmDESPrivProtocol, "MD5DESUserAuthPassword",
-        "MD5DESUserPrivPassword", engineID, false);
+    uut->addNewRow("MD5DES", SNMPv3_usmHMACMD5AuthProtocol, SNMPv3_usmDESPrivProtocol,
+        "MD5DESUserAuthPassword", "MD5DESUserPrivPassword", engineID, false);
 
-    uut->addNewRow("SHADES", SNMPv3_usmHMACSHAAuthProtocol,
-        SNMPv3_usmDESPrivProtocol, "SHADESUserAuthPassword",
-        "SHADESUserPrivPassword", engineID, false);
+    uut->addNewRow("SHADES", SNMPv3_usmHMACSHAAuthProtocol, SNMPv3_usmDESPrivProtocol,
+        "SHADESUserAuthPassword", "SHADESUserPrivPassword", engineID, false);
 
-    uut->addNewRow("MD5IDEA", SNMPv3_usmHMACMD5AuthProtocol,
-        SNMPv3_usmIDEAPrivProtocol, "MD5IDEAUserAuthPassword",
-        "MD5IDEAUserPrivPassword", engineID, false);
+    uut->addNewRow("MD5IDEA", SNMPv3_usmHMACMD5AuthProtocol, SNMPv3_usmIDEAPrivProtocol,
+        "MD5IDEAUserAuthPassword", "MD5IDEAUserPrivPassword", engineID, false);
 
-    uut->addNewRow("SHAIDEA", SNMPv3_usmHMACSHAAuthProtocol,
-        SNMPv3_usmIDEAPrivProtocol, "SHAIDEAUserAuthPassword",
-        "SHAIDEAUserPrivPassword", engineID, false);
+    uut->addNewRow("SHAIDEA", SNMPv3_usmHMACSHAAuthProtocol, SNMPv3_usmIDEAPrivProtocol,
+        "SHAIDEAUserAuthPassword", "SHAIDEAUserPrivPassword", engineID, false);
 
     // add non persistent USM statistics
     mib.add(new UsmStats());
@@ -233,8 +228,8 @@ int main(int argc, char* argv[])
         NEXTARG = 1;
     })
     CASE_ARG('v', {
-        printf("Version %d.%d.%d was generated:  %s,  %s.\n", VERSION, RELEASE,
-            REVISION, __DATE__, __TIME__);
+        printf("Version %d.%d.%d was generated:  %s,  %s.\n", VERSION, RELEASE, REVISION, __DATE__,
+            __TIME__);
         exit(0);
     })
     STOP_ARGS();
@@ -333,31 +328,19 @@ int main(int argc, char* argv[])
     // Used to determine the group a given SecurityName belongs to.
     // User "new" of the USM belongs to newGroup
 
-    vacm->addNewGroup(
-        SecurityModel_USM, "new", "newGroup", storageType_volatile);
+    vacm->addNewGroup(SecurityModel_USM, "new", "newGroup", storageType_volatile);
 
-    vacm->addNewGroup(
-        SecurityModel_USM, "test", "testGroup", storageType_volatile);
-    vacm->addNewGroup(
-        SecurityModel_v2, "public", "v1v2group", storageType_volatile);
-    vacm->addNewGroup(
-        SecurityModel_v1, "public", "v1v2group", storageType_volatile);
-    vacm->addNewGroup(
-        SecurityModel_USM, "initial", "initial", storageType_volatile);
-    vacm->addNewGroup(
-        SecurityModel_USM, "unsecureUser", "newGroup", storageType_volatile);
-    vacm->addNewGroup(
-        SecurityModel_USM, "MD5", "testNoPrivGroup", storageType_volatile);
-    vacm->addNewGroup(
-        SecurityModel_USM, "SHA", "testNoPrivGroup", storageType_volatile);
-    vacm->addNewGroup(
-        SecurityModel_USM, "MD5DES", "testGroup", storageType_volatile);
-    vacm->addNewGroup(
-        SecurityModel_USM, "SHADES", "testGroup", storageType_volatile);
-    vacm->addNewGroup(
-        SecurityModel_USM, "MD5IDEA", "testGroup", storageType_volatile);
-    vacm->addNewGroup(
-        SecurityModel_USM, "SHAIDEA", "testGroup", storageType_volatile);
+    vacm->addNewGroup(SecurityModel_USM, "test", "testGroup", storageType_volatile);
+    vacm->addNewGroup(SecurityModel_v2, "public", "v1v2group", storageType_volatile);
+    vacm->addNewGroup(SecurityModel_v1, "public", "v1v2group", storageType_volatile);
+    vacm->addNewGroup(SecurityModel_USM, "initial", "initial", storageType_volatile);
+    vacm->addNewGroup(SecurityModel_USM, "unsecureUser", "newGroup", storageType_volatile);
+    vacm->addNewGroup(SecurityModel_USM, "MD5", "testNoPrivGroup", storageType_volatile);
+    vacm->addNewGroup(SecurityModel_USM, "SHA", "testNoPrivGroup", storageType_volatile);
+    vacm->addNewGroup(SecurityModel_USM, "MD5DES", "testGroup", storageType_volatile);
+    vacm->addNewGroup(SecurityModel_USM, "SHADES", "testGroup", storageType_volatile);
+    vacm->addNewGroup(SecurityModel_USM, "MD5IDEA", "testGroup", storageType_volatile);
+    vacm->addNewGroup(SecurityModel_USM, "SHAIDEA", "testGroup", storageType_volatile);
 
     // remove a group with:
     // vacm->deleteGroup(SecurityModel_USM, "neu");
@@ -375,30 +358,22 @@ int main(int argc, char* argv[])
         "newView", // writeView
         "newView", // notifyView
         storageType_nonVolatile);
-    vacm->addNewAccessEntry("testGroup", "", SecurityModel_USM,
-        SecurityLevel_authPriv, match_prefix, "testView", "testView",
-        "testView", storageType_nonVolatile);
-    vacm->addNewAccessEntry("testNoPrivGroup", "", SecurityModel_USM,
-        SecurityLevel_authNoPriv, match_prefix, "testView", "testView",
-        "testView", storageType_nonVolatile);
-    vacm->addNewAccessEntry("testGroup", "", SecurityModel_USM,
-        SecurityLevel_noAuthNoPriv, match_prefix, "testView", "testView",
-        "testView", storageType_nonVolatile);
-    vacm->addNewAccessEntry("v1v2group", "", SecurityModel_v2,
-        SecurityLevel_noAuthNoPriv, match_exact, "v1ReadView", "v1WriteView",
-        "v1NotifyView", storageType_nonVolatile);
-    vacm->addNewAccessEntry("v1v2group", "", SecurityModel_v1,
-        SecurityLevel_noAuthNoPriv, match_exact, "v1ReadView", "v1WriteView",
-        "v1NotifyView", storageType_nonVolatile);
-    vacm->addNewAccessEntry("initial", "", SecurityModel_USM,
-        SecurityLevel_noAuthNoPriv, match_exact, "restricted", "",
-        "restricted", storageType_nonVolatile);
-    vacm->addNewAccessEntry("initial", "", SecurityModel_USM,
-        SecurityLevel_authNoPriv, match_exact, "internet", "internet",
-        "internet", storageType_nonVolatile);
-    vacm->addNewAccessEntry("initial", "", SecurityModel_USM,
-        SecurityLevel_authPriv, match_exact, "internet", "internet",
-        "internet", storageType_nonVolatile);
+    vacm->addNewAccessEntry("testGroup", "", SecurityModel_USM, SecurityLevel_authPriv, match_prefix,
+        "testView", "testView", "testView", storageType_nonVolatile);
+    vacm->addNewAccessEntry("testNoPrivGroup", "", SecurityModel_USM, SecurityLevel_authNoPriv,
+        match_prefix, "testView", "testView", "testView", storageType_nonVolatile);
+    vacm->addNewAccessEntry("testGroup", "", SecurityModel_USM, SecurityLevel_noAuthNoPriv,
+        match_prefix, "testView", "testView", "testView", storageType_nonVolatile);
+    vacm->addNewAccessEntry("v1v2group", "", SecurityModel_v2, SecurityLevel_noAuthNoPriv, match_exact,
+        "v1ReadView", "v1WriteView", "v1NotifyView", storageType_nonVolatile);
+    vacm->addNewAccessEntry("v1v2group", "", SecurityModel_v1, SecurityLevel_noAuthNoPriv, match_exact,
+        "v1ReadView", "v1WriteView", "v1NotifyView", storageType_nonVolatile);
+    vacm->addNewAccessEntry("initial", "", SecurityModel_USM, SecurityLevel_noAuthNoPriv, match_exact,
+        "restricted", "", "restricted", storageType_nonVolatile);
+    vacm->addNewAccessEntry("initial", "", SecurityModel_USM, SecurityLevel_authNoPriv, match_exact,
+        "internet", "internet", "internet", storageType_nonVolatile);
+    vacm->addNewAccessEntry("initial", "", SecurityModel_USM, SecurityLevel_authPriv, match_exact,
+        "internet", "internet", "internet", storageType_nonVolatile);
 
     // remove an AccessEntry with:
     // vacm->deleteAccessEntry("newGroup",
@@ -431,22 +406,14 @@ int main(int argc, char* argv[])
         view_included, // alternatively: view_excluded
         storageType_nonVolatile);
 
-    vacm->addNewView(
-        "newView", "1.3", "", view_included, storageType_nonVolatile);
-    vacm->addNewView(
-        "testView", "1.3.6", "", view_included, storageType_nonVolatile);
-    vacm->addNewView(
-        "internet", "1.3.6.1", "", view_included, storageType_nonVolatile);
-    vacm->addNewView("restricted", "1.3.6.1.2.1.1", "", view_included,
-        storageType_nonVolatile);
-    vacm->addNewView("restricted", "1.3.6.1.2.1.11", "", view_included,
-        storageType_nonVolatile);
-    vacm->addNewView("restricted", "1.3.6.1.6.3.10.2.1", "", view_included,
-        storageType_nonVolatile);
-    vacm->addNewView("restricted", "1.3.6.1.6.3.11.2.1", "", view_included,
-        storageType_nonVolatile);
-    vacm->addNewView("restricted", "1.3.6.1.6.3.15.1.1", "", view_included,
-        storageType_nonVolatile);
+    vacm->addNewView("newView", "1.3", "", view_included, storageType_nonVolatile);
+    vacm->addNewView("testView", "1.3.6", "", view_included, storageType_nonVolatile);
+    vacm->addNewView("internet", "1.3.6.1", "", view_included, storageType_nonVolatile);
+    vacm->addNewView("restricted", "1.3.6.1.2.1.1", "", view_included, storageType_nonVolatile);
+    vacm->addNewView("restricted", "1.3.6.1.2.1.11", "", view_included, storageType_nonVolatile);
+    vacm->addNewView("restricted", "1.3.6.1.6.3.10.2.1", "", view_included, storageType_nonVolatile);
+    vacm->addNewView("restricted", "1.3.6.1.6.3.11.2.1", "", view_included, storageType_nonVolatile);
+    vacm->addNewView("restricted", "1.3.6.1.6.3.15.1.1", "", view_included, storageType_nonVolatile);
 
 #endif
     if (configFlag == 2)

@@ -165,8 +165,7 @@ public:
      */
     virtual bool is_empty()
     {
-        return ((find_succ(*key()).len() == 0)
-            || (lastNext.get_oid() >= *max_key()));
+        return ((find_succ(*key()).len() == 0) || (lastNext.get_oid() >= *max_key()));
     }
 
     virtual void get_request(Request*, int);
@@ -184,10 +183,7 @@ public:
      * @param community
      *    the community to be used for the specified access type
      */
-    void set_community(access_types a, const NS_SNMP OctetStr& c)
-    {
-        community[a] = c;
-    }
+    void set_community(access_types a, const NS_SNMP OctetStr& c) { community[a] = c; }
 
 protected:
     virtual Oidx translate(const Oidx&);
@@ -321,8 +317,8 @@ public:
 
 protected:
     OidList<MibTableRow>* get_matches(Request*);
-    bool match_target_params(Request*, const NS_SNMP OctetStr&);
-    int  process_single(Pdux&, Request*);
+    bool                  match_target_params(Request*, const NS_SNMP OctetStr&);
+    int                   process_single(Pdux&, Request*);
 
     void check_references();
     void determineDefaultRange(const Oidx&);

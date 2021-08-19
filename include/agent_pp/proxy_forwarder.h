@@ -104,11 +104,11 @@ protected:
     void initialize(Mib* mib);
 
     OidList<MibTableRow>* get_matches(Request*);
-    bool match_target_params(Request*, const NS_SNMP OctetStr&);
-    bool process_single(Pdux&, Request*);
-    bool process_multiple(Pdux&, Request*);
-    void check_references(Mib* mib);
-    void transform_pdu(const Pdux&, Pdux&);
+    bool                  match_target_params(Request*, const NS_SNMP OctetStr&);
+    bool                  process_single(Pdux&, Request*);
+    bool                  process_multiple(Pdux&, Request*);
+    void                  check_references(Mib* mib);
+    void                  transform_pdu(const Pdux&, Pdux&);
 
     Oidx                   regKey;
     SnmpRequestV3*         snmp;

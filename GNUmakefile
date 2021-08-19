@@ -48,6 +48,7 @@ distclean: clean
 format: distclean
 	find . -name CMakeLists.txt | xargs cmake-format -i
 	find . -type f -name '*.cmake' | xargs cmake-format -i
-	find . -name '*.cpp' | xargs clang-format -i
-	find . -name '*.h' | xargs clang-format -i
+	find . -type f -name '*.cpp' | xargs clang-format -i
+	find . -type f -name '*.h' | xargs clang-format -i
+	find . -type f \( -name '*.cpp' -o -name '*.h' \) | xargs grep  --color '\/\/ BEGIN=' || echo OK
 

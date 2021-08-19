@@ -50,8 +50,8 @@ static void* inform_caller(void* ptr)
     LOG("SnmpRequest: inform thread started");
     LOG_END;
     int status = 0;
-    status     = SnmpRequest::process_trap(callInfo->target, callInfo->vbs,
-        callInfo->sz, callInfo->oid, "", true);
+    status     = SnmpRequest::process_trap(
+        callInfo->target, callInfo->vbs, callInfo->sz, callInfo->oid, "", true);
 #    ifdef _NO_LOGGING
     (void)status;
 #    endif
@@ -81,9 +81,8 @@ InformInfo::InformInfo(CTarget& t, Vbx* v, int s, const Oidx& o)
 
 InformInfo::~InformInfo() { delete[] vbs; }
 
-int SnmpRequest::process(int rtype, const UdpAddress& address, Vbx* vbs,
-    int& sz, Vbx* out, int& errindex, const OctetStr& community,
-    const int non_repeaters, const int max_reps)
+int SnmpRequest::process(int rtype, const UdpAddress& address, Vbx* vbs, int& sz, Vbx* out,
+    int& errindex, const OctetStr& community, const int non_repeaters, const int max_reps)
 {
     if (!address.valid()) { return SNMP_CLASS_INVALID_ADDRESS; }
     CTarget target(address);
@@ -102,8 +101,7 @@ int SnmpRequest::process(int rtype, const UdpAddress& address, Vbx* vbs,
 
     int status = 0;
 
-    Snmpx* snmp =
-        get_new_snmp(Mib::instance->get_request_list()->get_snmp(), status);
+    Snmpx* snmp = get_new_snmp(Mib::instance->get_request_list()->get_snmp(), status);
     if (status != SNMP_CLASS_SUCCESS)
     {
         if (snmp) delete snmp;
@@ -134,8 +132,7 @@ int SnmpRequest::process(int rtype, const UdpAddress& address, Vbx* vbs,
     }
 
     Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpOutPkts);
-    if (status != SNMP_CLASS_TIMEOUT)
-        Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpInPkts);
+    if (status != SNMP_CLASS_TIMEOUT) Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpInPkts);
 
     switch (pdu.get_error_status())
     {
@@ -165,13 +162,12 @@ int SnmpRequest::process(int rtype, const UdpAddress& address, Vbx* vbs,
     return status;
 }
 
-int SnmpRequest::process_trap(SnmpTarget& target, Vbx* vbs, int sz,
-    const Oidx& oid, const Oidx& enterprise, bool ack)
+int SnmpRequest::process_trap(
+    SnmpTarget& target, Vbx* vbs, int sz, const Oidx& oid, const Oidx& enterprise, bool ack)
 {
     int status = 0;
 
-    Snmpx* snmp =
-        get_new_snmp(Mib::instance->get_request_list()->get_snmp(), status);
+    Snmpx* snmp = get_new_snmp(Mib::instance->get_request_list()->get_snmp(), status);
     // check construction status
 
     if (status != SNMP_CLASS_SUCCESS)
@@ -215,12 +211,11 @@ int SnmpRequest::next(const UdpAddress& address, Vbx* vbs, int sz, int& errind)
     return process(sNMP_PDU_GETNEXT, address, vbs, sz, vbs, errind, "public");
 }
 
-int SnmpRequest::getbulk(const UdpAddress& address, Vbx* vbs, int& sz,
-    Vbx* out, int& errind, const int non_repeater, const int max_reps)
+int SnmpRequest::getbulk(const UdpAddress& address, Vbx* vbs, int& sz, Vbx* out, int& errind,
+    const int non_repeater, const int max_reps)
 {
     Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpOutGetNexts);
-    return process(sNMP_PDU_GETBULK, address, vbs, sz, out, errind, "public",
-        non_repeater, max_reps);
+    return process(sNMP_PDU_GETBULK, address, vbs, sz, out, errind, "public", non_repeater, max_reps);
 }
 
 int SnmpRequest::set(const UdpAddress& address, Vbx* vbs, int sz, int& errind)
@@ -229,38 +224,35 @@ int SnmpRequest::set(const UdpAddress& address, Vbx* vbs, int sz, int& errind)
     return process(sNMP_PDU_SET, address, vbs, sz, vbs, errind, "public");
 }
 
-int SnmpRequest::get(const UdpAddress& address, Vbx* vbs, int sz, int& errind,
-    const OctetStr& community)
+int SnmpRequest::get(
+    const UdpAddress& address, Vbx* vbs, int sz, int& errind, const OctetStr& community)
 {
     Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpOutGetRequests);
     return process(sNMP_PDU_GET, address, vbs, sz, vbs, errind, community);
 }
 
-int SnmpRequest::next(const UdpAddress& address, Vbx* vbs, int sz, int& errind,
-    const OctetStr& community)
+int SnmpRequest::next(
+    const UdpAddress& address, Vbx* vbs, int sz, int& errind, const OctetStr& community)
 {
     Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpOutGetNexts);
     return process(sNMP_PDU_GETNEXT, address, vbs, sz, vbs, errind, community);
 }
 
-int SnmpRequest::getbulk(const UdpAddress& address, Vbx* vbs, int& sz,
-    Vbx* out, int& errind, const OctetStr& community, const int non_repeater,
-    const int max_reps)
+int SnmpRequest::getbulk(const UdpAddress& address, Vbx* vbs, int& sz, Vbx* out, int& errind,
+    const OctetStr& community, const int non_repeater, const int max_reps)
 {
     Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpOutGetNexts);
-    return process(sNMP_PDU_GETBULK, address, vbs, sz, out, errind, community,
-        non_repeater, max_reps);
+    return process(sNMP_PDU_GETBULK, address, vbs, sz, out, errind, community, non_repeater, max_reps);
 }
 
-int SnmpRequest::set(const UdpAddress& address, Vbx* vbs, int sz, int& errind,
-    const OctetStr& community)
+int SnmpRequest::set(
+    const UdpAddress& address, Vbx* vbs, int sz, int& errind, const OctetStr& community)
 {
     Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpOutSetRequests);
     return process(sNMP_PDU_SET, address, vbs, sz, vbs, errind, community);
 }
 
-int SnmpRequest::trap(SnmpTarget& target, Vbx* vbs, int sz, const Oidx& oid,
-    const Oidx& enterprise)
+int SnmpRequest::trap(SnmpTarget& target, Vbx* vbs, int sz, const Oidx& oid, const Oidx& enterprise)
 {
     return process_trap(target, vbs, sz, oid, enterprise);
 }
@@ -291,8 +283,8 @@ void SnmpRequest::inform(CTarget& target, Vbx* vbs, int sz, const Oidx& oid)
 #endif
 }
 
-int SnmpRequest::gettable(const UdpAddress& address, Vbx* vbs, int sz,
-    Vbx* buf, int& bufsz, const OctetStr& community, const int max_reps)
+int SnmpRequest::gettable(const UdpAddress& address, Vbx* vbs, int sz, Vbx* buf, int& bufsz,
+    const OctetStr& community, const int max_reps)
 {
     Vbx* out = new Vbx[max_reps * sz];
     Vbx* in  = new Vbx[sz];
@@ -308,8 +300,7 @@ int SnmpRequest::gettable(const UdpAddress& address, Vbx* vbs, int sz,
     {
         Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpOutGetNexts);
         osz = sz;
-        err = process(sNMP_PDU_GETBULK, address, in, osz, out, errind,
-            community, 0, max_reps);
+        err = process(sNMP_PDU_GETBULK, address, in, osz, out, errind, community, 0, max_reps);
 
         if (err == SNMP_ERROR_SUCCESS)
         {
@@ -317,8 +308,7 @@ int SnmpRequest::gettable(const UdpAddress& address, Vbx* vbs, int sz,
             for (i = 0; i < osz; i++, bufptr++)
             {
 
-                if (!out[i].get_oid().in_subtree_of(vbs[i % sz].get_oid()))
-                    break;
+                if (!out[i].get_oid().in_subtree_of(vbs[i % sz].get_oid())) break;
 
                 buf[bufptr] = out[i];
 
@@ -371,8 +361,7 @@ SnmpRequestV3::SnmpRequestV3() : SnmpRequestV3(Mib::instance) { }
 SnmpRequestV3::SnmpRequestV3(Mib* mib) : mib(mib)
 {
     int status = 0;
-    snmp =
-        SnmpRequest::get_new_snmp(mib->get_request_list()->get_snmp(), status);
+    snmp       = SnmpRequest::get_new_snmp(mib->get_request_list()->get_snmp(), status);
     if (status != 0)
     {
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 0);
@@ -387,16 +376,12 @@ SnmpRequestV3::~SnmpRequestV3()
     if (snmp) delete snmp;
 }
 
-int SnmpRequestV3::send(UTarget& target, Pdux& pdu)
-{
-    return send(Mib::instance, target, pdu);
-}
+int SnmpRequestV3::send(UTarget& target, Pdux& pdu) { return send(Mib::instance, target, pdu); }
 int SnmpRequestV3::send(Mib* mib, UTarget& target, Pdux& pdu)
 {
     int status = 0;
 
-    Snmpx* snmp =
-        SnmpRequest::get_new_snmp(mib->get_request_list()->get_snmp(), status);
+    Snmpx* snmp = SnmpRequest::get_new_snmp(mib->get_request_list()->get_snmp(), status);
     if (status != SNMP_CLASS_SUCCESS)
     {
         if (snmp) delete snmp;
@@ -406,8 +391,7 @@ int SnmpRequestV3::send(Mib* mib, UTarget& target, Pdux& pdu)
     switch (pdu.get_type())
     {
     case sNMP_PDU_GET: {
-        Counter32MibLeaf::incrementScalar(
-            Mib::instance, oidSnmpOutGetRequests);
+        Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpOutGetRequests);
         status = snmp->get(pdu, target);
         break;
     }
@@ -434,10 +418,7 @@ int SnmpRequestV3::send(Mib* mib, UTarget& target, Pdux& pdu)
         break;
     }
     }
-    if (status == SNMP_CLASS_SUCCESS)
-    {
-        Counter32MibLeaf::incrementScalar(mib, oidSnmpOutPkts);
-    }
+    if (status == SNMP_CLASS_SUCCESS) { Counter32MibLeaf::incrementScalar(mib, oidSnmpOutPkts); }
     delete snmp;
 
     return status;
@@ -484,10 +465,7 @@ int SnmpRequestV3::send_request(
         break;
     }
     }
-    if (status == SNMP_CLASS_SUCCESS)
-    {
-        Counter32MibLeaf::incrementScalar(mib, oidSnmpOutPkts);
-    }
+    if (status == SNMP_CLASS_SUCCESS) { Counter32MibLeaf::incrementScalar(mib, oidSnmpOutPkts); }
     return status;
 }
 

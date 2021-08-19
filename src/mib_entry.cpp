@@ -88,20 +88,11 @@ mib_type MibEntry::type() const { return AGENTPP_NONE; }
  */
 OidxPtr MibEntry::key() { return &oid; }
 
-int MibEntry::operator<(const MibEntry& other) const
-{
-    return (oid < other.oid);
-}
+int MibEntry::operator<(const MibEntry& other) const { return (oid < other.oid); }
 
-int MibEntry::operator>(const MibEntry& other) const
-{
-    return (oid > other.oid);
-}
+int MibEntry::operator>(const MibEntry& other) const { return (oid > other.oid); }
 
-int MibEntry::operator==(const MibEntry& other) const
-{
-    return (oid == other.oid);
-}
+int MibEntry::operator==(const MibEntry& other) const { return (oid == other.oid); }
 
 /**
  * Return a clone of the receiver.
@@ -112,8 +103,7 @@ MibEntryPtr MibEntry::clone()
 {
     MibEntryPtr          aClone = new MibEntry(oid, access);
     ListCursor<MibEntry> cur;
-    for (cur.init(&notifies); cur.get(); cur.next())
-        aClone->notifies.add(cur.get());
+    for (cur.init(&notifies); cur.get(); cur.next()) aClone->notifies.add(cur.get());
     return aClone;
 }
 
@@ -146,10 +136,7 @@ void MibEntry::set_oid(const Oidx& o) { oid = o; }
  *
  * @param entry - A MibEntry to receive notifications.
  */
-void MibEntry::register_for_notifications(MibEntry* entry)
-{
-    notifies.add(entry);
-}
+void MibEntry::register_for_notifications(MibEntry* entry) { notifies.add(entry); }
 
 /**
  * Notify all registered nodes of changes to an object
@@ -163,8 +150,7 @@ void MibEntry::notify_change(const Oidx& o, mib_change change)
 {
     if (notifies.empty()) return;
     ListCursor<MibEntry> cur;
-    for (cur.init(&notifies); cur.get(); cur.next())
-        cur.get()->change_notification(o, change);
+    for (cur.init(&notifies); cur.get(); cur.next()) cur.get()->change_notification(o, change);
 }
 
 void MibEntry::load_from_file(const char* fname)

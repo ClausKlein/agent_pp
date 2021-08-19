@@ -67,37 +67,36 @@ NotificationOriginator::~NotificationOriginator()
     mib = 0;
 }
 
-void NotificationOriginator::generate(Vbx* vbs, int size, const Oidx& id,
-    const Oidx& enterprise, const OctetStr& contextName)
+void NotificationOriginator::generate(
+    Vbx* vbs, int size, const Oidx& id, const Oidx& enterprise, const OctetStr& contextName)
 {
     generate(vbs, size, id, sysUpTime::get(), enterprise, contextName);
 }
 
-void NotificationOriginator::generate(Vbx* vbs, int size, const Oidx& id,
-    unsigned int timestamp, const OctetStr& contextName)
+void NotificationOriginator::generate(
+    Vbx* vbs, int size, const Oidx& id, unsigned int timestamp, const OctetStr& contextName)
 {
     generate(vbs, size, id, timestamp, "", contextName);
 }
 
-int NotificationOriginator::notify(const OctetStr& context, const Oidx& oid,
-    Vbx* vbs, int sz, unsigned int timestamp)
+int NotificationOriginator::notify(
+    const OctetStr& context, const Oidx& oid, Vbx* vbs, int sz, unsigned int timestamp)
 {
     if (timestamp == 0) timestamp = sysUpTime::get();
     return generate(vbs, sz, oid, timestamp, Oidx(), context);
 }
 
-int NotificationOriginator::generate(Vbx* vbs, int size, const Oidx& id,
-    unsigned int timestamp, const Oidx& enterprise,
-    const OctetStr& contextName)
+int NotificationOriginator::generate(Vbx* vbs, int size, const Oidx& id, unsigned int timestamp,
+    const Oidx& enterprise, const OctetStr& contextName)
 {
     // We have to be careful here about synchronization because,
     // we may be called after an interrupt
     // Therefore synch everything or use synch methods like
     // MibTable::get_rows_cloned();
-    List<MibTableRow>* typeList = get_snmp_notify_entry()->get_rows_cloned();
+    List<MibTableRow>*      typeList = get_snmp_notify_entry()->get_rows_cloned();
     ListCursor<MibTableRow> typeCur;
 
-    List<MibTableRow>* list = get_snmp_target_addr_entry()->get_rows_cloned();
+    List<MibTableRow>*      list = get_snmp_target_addr_entry()->get_rows_cloned();
     ListCursor<MibTableRow> cur;
 
 #ifdef _SNMPv3
@@ -120,14 +119,12 @@ int NotificationOriginator::generate(Vbx* vbs, int size, const Oidx& id,
 
     int totalStatus = SNMP_ERROR_SUCCESS;
 
-    NotificationOriginatorParams nop(
-        vbs, size, id, timestamp, enterprise, contextName);
+    NotificationOriginatorParams nop(vbs, size, id, timestamp, enterprise, contextName);
 #ifdef _SNMPv3
     nlmLogEntry* logEntry = get_nlm_log_entry();
     if (logEntry)
     {
-        logEntry->add_notification(
-            NULL, id, vbs, size, contextName, *localEngineID, *localEngineID);
+        logEntry->add_notification(NULL, id, vbs, size, contextName, *localEngineID, *localEngineID);
     }
 #endif
     for (cur.init(list); cur.get(); cur.next())
@@ -183,8 +180,7 @@ snmpTargetAddrEntry* NotificationOriginator::get_snmp_target_addr_entry()
     {
         if (!targetAddrEntry)
         {
-            targetAddrEntry =
-                (snmpTargetAddrEntry*)mib->get(oidSnmpTargetAddrEntry);
+            targetAddrEntry = (snmpTargetAddrEntry*)mib->get(oidSnmpTargetAddrEntry);
         }
         return targetAddrEntry;
     }
@@ -197,8 +193,7 @@ snmpTargetParamsEntry* NotificationOriginator::get_snmp_target_params_entry()
     {
         if (!targetParamsEntry)
         {
-            targetParamsEntry =
-                (snmpTargetParamsEntry*)mib->get(oidSnmpTargetParamsEntry);
+            targetParamsEntry = (snmpTargetParamsEntry*)mib->get(oidSnmpTargetParamsEntry);
         }
         return targetParamsEntry;
     }
@@ -209,10 +204,7 @@ snmpNotifyEntry* NotificationOriginator::get_snmp_notify_entry()
 {
     if (mib || notifyEntry)
     {
-        if (!notifyEntry)
-        {
-            notifyEntry = (snmpNotifyEntry*)mib->get(oidSnmpNotifyEntry);
-        }
+        if (!notifyEntry) { notifyEntry = (snmpNotifyEntry*)mib->get(oidSnmpNotifyEntry); }
         return notifyEntry;
     }
     return snmpNotifyEntry::instance;
@@ -224,8 +216,7 @@ snmpNotifyFilterEntry* NotificationOriginator::get_snmp_notify_filter_entry()
     {
         if (!notifyFilterEntry)
         {
-            notifyFilterEntry =
-                (snmpNotifyFilterEntry*)mib->get(oidSnmpNotifyFilterEntry);
+            notifyFilterEntry = (snmpNotifyFilterEntry*)mib->get(oidSnmpNotifyFilterEntry);
         }
         return notifyFilterEntry;
     }
@@ -237,11 +228,7 @@ snmpCommunityEntry* NotificationOriginator::get_snmp_community_entry()
 {
     if (mib || communityEntry)
     {
-        if (!communityEntry)
-        {
-            communityEntry =
-                (snmpCommunityEntry*)mib->get(oidSnmpCommunityEntry);
-        }
+        if (!communityEntry) { communityEntry = (snmpCommunityEntry*)mib->get(oidSnmpCommunityEntry); }
         return communityEntry;
     }
     return snmpCommunityEntry::instance;
@@ -251,10 +238,7 @@ nlmLogEntry* NotificationOriginator::get_nlm_log_entry()
 {
     if (mib || _nlmLogEntry)
     {
-        if (!_nlmLogEntry)
-        {
-            _nlmLogEntry = (nlmLogEntry*)mib->get(oidNlmLogEntry);
-        }
+        if (!_nlmLogEntry) { _nlmLogEntry = (nlmLogEntry*)mib->get(oidNlmLogEntry); }
         return _nlmLogEntry;
     }
     return nlmLogEntry::instance;
@@ -287,16 +271,14 @@ bool NotificationOriginator::check_access(
     CTarget*& target = nop.target;
 #endif
 
-    snmpTargetAddrParams* paramsPtr =
-        (snmpTargetAddrParams*)cur.get()->get_nth(5);
-    OctetStr paramsStr;
+    snmpTargetAddrParams* paramsPtr = (snmpTargetAddrParams*)cur.get()->get_nth(5);
+    OctetStr              paramsStr;
     paramsPtr->get_value(paramsStr);
 
     // Check whether trap oid passes filter
     Oidx                   targetOid(Oidx::from_string(paramsStr, false));
     snmpNotifyFilterEntry* notifyFilterEntry = get_snmp_notify_filter_entry();
-    if (!notifyFilterEntry
-        || !notifyFilterEntry->passes_filter(targetOid, id, vbs, size))
+    if (!notifyFilterEntry || !notifyFilterEntry->passes_filter(targetOid, id, vbs, size))
     {
 
         LOG_BEGIN(loggerModuleName, INFO_LOG | 2);
@@ -314,8 +296,7 @@ bool NotificationOriginator::check_access(
     snmpTargetParamsEntry* targetParamsEntry = get_snmp_target_params_entry();
     if (!targetParamsEntry) { return false; }
     targetParamsEntry->start_synch();
-    MibTableRow* paramsRow =
-        targetParamsEntry->find_index(Oidx::from_string(paramsStr, false));
+    MibTableRow* paramsRow = targetParamsEntry->find_index(Oidx::from_string(paramsStr, false));
 
     if ((!paramsRow) || (paramsRow->get_row_status()->get() != rowActive))
     {
@@ -339,8 +320,7 @@ bool NotificationOriginator::check_access(
 
     bool accessAllowed = true;
 #ifdef _SNMPv3
-    if ((!mib) || (!mib->get_request_list())
-        || (!mib->get_request_list()->get_vacm()))
+    if ((!mib) || (!mib->get_request_list()) || (!mib->get_request_list()->get_vacm()))
     {
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 0);
         LOG("NotificationOriginator: Mib or its requestList are not "
@@ -353,8 +333,8 @@ bool NotificationOriginator::check_access(
     for (int i = 0; i < size; i++)
     {
 
-        if (vacm->isAccessAllowed(securityModel, securityName, securityLevel,
-                mibView_notify, contextName, vbs[i].get_oid())
+        if (vacm->isAccessAllowed(securityModel, securityName, securityLevel, mibView_notify,
+                contextName, vbs[i].get_oid())
             != VACM_accessAllowed)
         {
             accessAllowed = false;
@@ -364,8 +344,8 @@ bool NotificationOriginator::check_access(
 
     if (accessAllowed)
     {
-        accessAllowed = (vacm->isAccessAllowed(securityModel, securityName,
-                             securityLevel, mibView_notify, contextName, id)
+        accessAllowed = (vacm->isAccessAllowed(securityModel, securityName, securityLevel,
+                             mibView_notify, contextName, id)
             == VACM_accessAllowed);
     }
 #endif
@@ -404,8 +384,8 @@ bool NotificationOriginator::check_access(
     return true;
 }
 
-int NotificationOriginator::send_notify(ListCursor<MibTableRow>& cur,
-    NotificationOriginatorParams& nop, int notify)
+int NotificationOriginator::send_notify(
+    ListCursor<MibTableRow>& cur, NotificationOriginatorParams& nop, int notify)
 {
     Vbx*&       vbs          = nop.vbs;
     int&        size         = nop.size;
@@ -442,8 +422,7 @@ int NotificationOriginator::send_notify(ListCursor<MibTableRow>& cur,
     // get community info from SNMP-COMMUNITY-MIB
     if (((mpModel == mpV1) || (mpModel == mpV2c)) && (communityEntry))
     {
-        if (communityEntry->get_community(
-                securityName, *localEngineID, contextName))
+        if (communityEntry->get_community(securityName, *localEngineID, contextName))
         {
             target->set_security_name(securityName);
         }
@@ -473,12 +452,11 @@ int NotificationOriginator::send_notify(ListCursor<MibTableRow>& cur,
         nlmLogEntry* logEntry = get_nlm_log_entry();
         if (logEntry)
         {
-            logEntry->add_notification(target, id, vbs, size, contextName,
-                *localEngineID, *localEngineID);
+            logEntry->add_notification(
+                target, id, vbs, size, contextName, *localEngineID, *localEngineID);
         }
 #else
-        status = SnmpRequest::process_trap(
-            *target, vbs, size, id, enterprise, (notify != TRAP));
+        status = SnmpRequest::process_trap(*target, vbs, size, id, enterprise, (notify != TRAP));
 #endif
 
         GenAddress address;
@@ -505,10 +483,8 @@ int NotificationOriginator::send_notify(ListCursor<MibTableRow>& cur,
 
         if (notify != TRAP)
         {
-            target->set_retry(
-                ((SnmpInt32MinMax*)cur.get()->get_nth(3))->get_state());
-            target->set_timeout(
-                ((SnmpInt32MinMax*)cur.get()->get_nth(2))->get_state());
+            target->set_retry(((SnmpInt32MinMax*)cur.get()->get_nth(3))->get_state());
+            target->set_timeout(((SnmpInt32MinMax*)cur.get()->get_nth(2))->get_state());
         }
 
 #ifdef _SNMPv3
@@ -517,12 +493,10 @@ int NotificationOriginator::send_notify(ListCursor<MibTableRow>& cur,
         if (logEntry)
         {
             OctetStr ceid;
-            logEntry->add_notification(
-                target, trapoid, vbs, size, contextName, ceid, *localEngineID);
+            logEntry->add_notification(target, trapoid, vbs, size, contextName, ceid, *localEngineID);
         }
 #else
-        status = SnmpRequest::process_trap(
-            *target, vbs, size, id, enterprise, (notify != TRAP));
+        status = SnmpRequest::process_trap(*target, vbs, size, id, enterprise, (notify != TRAP));
 #endif
 
         GenAddress address;
@@ -547,22 +521,16 @@ int NotificationOriginator::send_notify(ListCursor<MibTableRow>& cur,
     return status;
 }
 
-bool NotificationOriginator::add_v1_trap_destination(const UdpAddress& addr,
-    const OctetStr& name, const OctetStr& tag, const OctetStr& community)
+bool NotificationOriginator::add_v1_trap_destination(
+    const UdpAddress& addr, const OctetStr& name, const OctetStr& tag, const OctetStr& community)
 {
     OctetStr  address;
     IpAddress ip(addr);
-    for (int i = 0; i < addr.get_length() - 2; i++)
-    {
-        address += (unsigned char)ip[i];
-    }
+    for (int i = 0; i < addr.get_length() - 2; i++) { address += (unsigned char)ip[i]; }
     address += (addr.get_port() >> 8);
     address += (addr.get_port() & 0x00FF);
 
-    if (!get_snmp_target_addr_entry() || !get_snmp_target_params_entry())
-    {
-        return false;
-    }
+    if (!get_snmp_target_addr_entry() || !get_snmp_target_params_entry()) { return false; }
     if (get_snmp_target_params_entry()->add_entry(name, // row index
             mpV1,                                       // mpModel
             SNMP_SECURITY_MODEL_V1,
@@ -573,11 +541,10 @@ bool NotificationOriginator::add_v1_trap_destination(const UdpAddress& addr,
             tag,                                 // tag
             TRAP);                               // type (trap)
     }
-    if (get_snmp_target_addr_entry()->add_entry(
-            UdpAddress(addr).get_printable(), // row index
-            Oidx("1.3.6.1.6.1.1"),            // UDP domain
-            address,                          // target address
-            tag,                              // tag
+    if (get_snmp_target_addr_entry()->add_entry(UdpAddress(addr).get_printable(), // row index
+            Oidx("1.3.6.1.6.1.1"),                                                // UDP domain
+            address,                                                              // target address
+            tag,                                                                  // tag
             name))
     { // params entry
         return true;
@@ -585,22 +552,16 @@ bool NotificationOriginator::add_v1_trap_destination(const UdpAddress& addr,
     return false;
 }
 
-bool NotificationOriginator::add_v2_trap_destination(const UdpAddress& addr,
-    const OctetStr& name, const OctetStr& tag, const OctetStr& community)
+bool NotificationOriginator::add_v2_trap_destination(
+    const UdpAddress& addr, const OctetStr& name, const OctetStr& tag, const OctetStr& community)
 {
     OctetStr  address;
     IpAddress ip(addr);
-    for (int i = 0; i < addr.get_length() - 2; i++)
-    {
-        address += (unsigned char)ip[i];
-    }
+    for (int i = 0; i < addr.get_length() - 2; i++) { address += (unsigned char)ip[i]; }
     address += (addr.get_port() >> 8);
     address += (addr.get_port() & 0x00FF);
 
-    if (!get_snmp_target_addr_entry() || !get_snmp_target_params_entry())
-    {
-        return false;
-    }
+    if (!get_snmp_target_addr_entry() || !get_snmp_target_params_entry()) { return false; }
     if (get_snmp_target_params_entry()->add_entry(name, // row index
             mpV2c,                                      // mpModel
             SNMP_SECURITY_MODEL_V2,
@@ -611,31 +572,25 @@ bool NotificationOriginator::add_v2_trap_destination(const UdpAddress& addr,
             tag,                                 // tag
             TRAP);                               // type (trap)
     }
-    if (get_snmp_target_addr_entry()->add_entry(
-            UdpAddress(addr).get_printable(), // row index
-            Oidx("1.3.6.1.6.1.1"),            // UDP domain
-            address,                          // target address
-            tag,                              // tag
-            name))                            // params entry
+    if (get_snmp_target_addr_entry()->add_entry(UdpAddress(addr).get_printable(), // row index
+            Oidx("1.3.6.1.6.1.1"),                                                // UDP domain
+            address,                                                              // target address
+            tag,                                                                  // tag
+            name))                                                                // params entry
         return true;
     return false;
 }
 
-bool NotificationOriginator::add_v3_trap_destination(const UdpAddress& addr,
-    const OctetStr& name, const OctetStr& tag, const OctetStr& secName,
-    const int secLevel)
+bool NotificationOriginator::add_v3_trap_destination(const UdpAddress& addr, const OctetStr& name,
+    const OctetStr& tag, const OctetStr& secName, const int secLevel)
 {
     OctetStr  address;
     IpAddress ip(addr);
-    for (int i = 0; i < addr.get_length() - 2; i++)
-    {
-        address += (unsigned char)ip[i];
-    }
+    for (int i = 0; i < addr.get_length() - 2; i++) { address += (unsigned char)ip[i]; }
     address += (addr.get_port() >> 8);
     address += (addr.get_port() & 0x00FF);
 
-    if (!get_snmp_target_addr_entry() || !get_snmp_target_params_entry()
-        || !get_snmp_notify_entry())
+    if (!get_snmp_target_addr_entry() || !get_snmp_target_params_entry() || !get_snmp_notify_entry())
         return false;
 
     if (get_snmp_target_params_entry()->add_entry(name, // row index
@@ -646,12 +601,11 @@ bool NotificationOriginator::add_v3_trap_destination(const UdpAddress& addr,
             tag,                     // tag
             TRAP);                   // type (trap)
     }
-    if (targetAddrEntry->add_entry(
-            UdpAddress(addr).get_printable(), // row index
-            Oidx("1.3.6.1.6.1.1"),            // UDP domain
-            address,                          // target address
-            tag,                              // tag
-            name))                            // params entry
+    if (targetAddrEntry->add_entry(UdpAddress(addr).get_printable(), // row index
+            Oidx("1.3.6.1.6.1.1"),                                   // UDP domain
+            address,                                                 // target address
+            tag,                                                     // tag
+            name))                                                   // params entry
         return true;
     return false;
 }

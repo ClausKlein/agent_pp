@@ -138,8 +138,8 @@ public:
     virtual ~snmpProxyEntry();
 
     static snmpProxyEntry* instance;
-    virtual void set_row(MibTableRow* r, int p0, char* p1, char* p2, char* p3,
-        char* p4, char* p5, int p6, int p7);
+    virtual void           set_row(
+                  MibTableRow* r, int p0, char* p1, char* p2, char* p3, char* p4, char* p5, int p6, int p7);
 };
 
 class AGENTPP_DECL snmp_proxy_mib : public MibGroup {

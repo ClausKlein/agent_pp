@@ -231,11 +231,11 @@ public:
 
     static cmdExecutionCmdConfigEntry* instance;
 
-    bool deserialize(char*, int&) override;
-    void row_added(MibTableRow*, const Oidx&, MibTable* t = 0) override;
-    void row_delete(MibTableRow*, const Oidx&, MibTable* t = 0) override;
-    virtual void set_row(int index, const char* p0, int p1, int p2);
-    virtual bool contains(const Oidx&);
+    bool                     deserialize(char*, int&) override;
+    void                     row_added(MibTableRow*, const Oidx&, MibTable* t = 0) override;
+    void                     row_delete(MibTableRow*, const Oidx&, MibTable* t = 0) override;
+    virtual void             set_row(int index, const char* p0, int p1, int p2);
+    virtual bool             contains(const Oidx&);
     virtual NS_SNMP OctetStr get_command_line(const NS_SNMP OctetStr&);
 };
 
@@ -280,8 +280,8 @@ public:
 
     static cmdExecutionOutputEntry* instance;
 
-    void row_added(MibTableRow*, const Oidx&, MibTable* t = 0) override;
-    void row_delete(MibTableRow*, const Oidx&, MibTable* t = 0) override;
+    void         row_added(MibTableRow*, const Oidx&, MibTable* t = 0) override;
+    void         row_delete(MibTableRow*, const Oidx&, MibTable* t = 0) override;
     virtual void set_row(int index, char* p0);
     virtual void remove_all(const Oidx&);
 };

@@ -68,10 +68,7 @@ public:
      * @param mibRef a pointer to the Mib instance.
      * @since 4.3.0.
      */
-    NotificationOriginator(Mib* mibRef) : NotificationOriginator()
-    {
-        mib = mibRef;
-    }
+    NotificationOriginator(Mib* mibRef) : NotificationOriginator() { mib = mibRef; }
 
     /**
      * Destructor.
@@ -93,8 +90,7 @@ public:
      * @param contextName
      *    the context in which the trap occurred.
      */
-    void generate(
-        Vbx*, int, const Oidx&, const Oidx&, const NS_SNMP OctetStr&);
+    void generate(Vbx*, int, const Oidx&, const Oidx&, const NS_SNMP OctetStr&);
 
     /**
      * Generate a notification message.
@@ -110,8 +106,7 @@ public:
      * @param contextName
      *    the context in which the trap occured.
      */
-    void generate(
-        Vbx*, int, const Oidx&, unsigned int, const NS_SNMP OctetStr&);
+    void generate(Vbx*, int, const Oidx&, unsigned int, const NS_SNMP OctetStr&);
 
     /**
      * Send a notification. This implements the NotificationSender
@@ -133,8 +128,7 @@ public:
      *    successfully, otherwise an appropriate SNMP error is
      *    returned.
      */
-    int notify(const NS_SNMP OctetStr&, const Oidx&, Vbx*, int,
-        unsigned int = 0) override;
+    int notify(const NS_SNMP OctetStr&, const Oidx&, Vbx*, int, unsigned int = 0) override;
 
     /**
      * Make all necessary entries in snmpTargetAddressTable,
@@ -155,15 +149,12 @@ public:
      *    true if the operation has been successful, false otherwise.
      */
     /**@{ */
-    virtual bool add_v1_trap_destination(const NS_SNMP UdpAddress& addr,
-        const NS_SNMP OctetStr& name, const NS_SNMP OctetStr& tag,
-        const NS_SNMP OctetStr& community);
-    virtual bool add_v2_trap_destination(const NS_SNMP UdpAddress& addr,
-        const NS_SNMP OctetStr& name, const NS_SNMP OctetStr& tag,
-        const NS_SNMP OctetStr& community);
-    virtual bool add_v3_trap_destination(const NS_SNMP UdpAddress& addr,
-        const NS_SNMP OctetStr& name, const NS_SNMP OctetStr& tag,
-        const NS_SNMP OctetStr& secName, const int secLevel);
+    virtual bool add_v1_trap_destination(const NS_SNMP UdpAddress& addr, const NS_SNMP OctetStr& name,
+        const NS_SNMP OctetStr& tag, const NS_SNMP OctetStr& community);
+    virtual bool add_v2_trap_destination(const NS_SNMP UdpAddress& addr, const NS_SNMP OctetStr& name,
+        const NS_SNMP OctetStr& tag, const NS_SNMP OctetStr& community);
+    virtual bool add_v3_trap_destination(const NS_SNMP UdpAddress& addr, const NS_SNMP OctetStr& name,
+        const NS_SNMP OctetStr& tag, const NS_SNMP OctetStr& secName, const int secLevel);
     /**@} */
 
 #ifdef _SNMPv3
@@ -255,10 +246,7 @@ public:
      * @param communityEntryRef
      * @since 4.3.0
      */
-    void set_snmp_notify_entry(snmpNotifyEntry* notifyEntryRef)
-    {
-        notifyEntry = notifyEntryRef;
-    }
+    void set_snmp_notify_entry(snmpNotifyEntry* notifyEntryRef) { notifyEntry = notifyEntryRef; }
 
     /**
      * Gets the reference for the snmpNotifyEntry instance associated
@@ -277,8 +265,7 @@ public:
      * @param notifyFilterEntryRef
      * @since 4.3.0
      */
-    void set_snmp_notify_filter_entry(
-        snmpNotifyFilterEntry* notifyFilterEntryRef)
+    void set_snmp_notify_filter_entry(snmpNotifyFilterEntry* notifyFilterEntryRef)
     {
         notifyFilterEntry = notifyFilterEntryRef;
     }
@@ -301,10 +288,7 @@ public:
      * @param nlmLogyEntryRef
      * @since 4.3.0
      */
-    void set_nlm_log_entry(nlmLogEntry* nlmLogEntryRef)
-    {
-        _nlmLogEntry = nlmLogEntryRef;
-    }
+    void set_nlm_log_entry(nlmLogEntry* nlmLogEntryRef) { _nlmLogEntry = nlmLogEntryRef; }
 
     /**
      * Gets the reference for the nlmLogEntry instance associated
@@ -334,11 +318,10 @@ protected:
 
     class NotificationOriginatorParams {
     public:
-        NotificationOriginatorParams(Vbx* _vbs, int _size, const Oidx& _id,
-            unsigned int _timestamp, const Oidx& _enterprise,
-            const NS_SNMP OctetStr& _contextName)
-            : vbs(_vbs), size(_size), id(_id), timestamp(_timestamp),
-              enterprise(_enterprise), contextName(_contextName)
+        NotificationOriginatorParams(Vbx* _vbs, int _size, const Oidx& _id, unsigned int _timestamp,
+            const Oidx& _enterprise, const NS_SNMP OctetStr& _contextName)
+            : vbs(_vbs), size(_size), id(_id), timestamp(_timestamp), enterprise(_enterprise),
+              contextName(_contextName)
         {
             target        = 0;
             securityModel = 0;
@@ -383,8 +366,7 @@ protected:
      * @param contextName
      *    the context in which the trap occured.
      */
-    int generate(Vbx*, int, const Oidx&, unsigned int, const Oidx&,
-        const NS_SNMP OctetStr&);
+    int generate(Vbx*, int, const Oidx&, unsigned int, const Oidx&, const NS_SNMP OctetStr&);
 
     /**
      * Check notification access for a management target.
@@ -403,8 +385,7 @@ protected:
      * @return
      *    true if access is okay, false otherwise
      */
-    bool check_access(
-        ListCursor<MibTableRow>& cur, NotificationOriginatorParams& nop);
+    bool check_access(ListCursor<MibTableRow>& cur, NotificationOriginatorParams& nop);
 
     /**
      * Send a notification to a valid target.
@@ -423,8 +404,7 @@ protected:
      *    The result from calling SnmpRequestV3::send or
      *    SnmpRequest::process_trap
      */
-    int send_notify(ListCursor<MibTableRow>& cur,
-        NotificationOriginatorParams& nop, int notify);
+    int send_notify(ListCursor<MibTableRow>& cur, NotificationOriginatorParams& nop, int notify);
 
 #ifdef _SNMPv3
     NS_SNMP OctetStr* localEngineID;

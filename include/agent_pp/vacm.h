@@ -50,7 +50,7 @@ using namespace Snmp_pp;
 #define oidVacmSecurityToGroupStatus      "1.3.6.1.6.3.16.1.2.1.5"
 
 #define oidVacmAccessTable          "1.3.6.1.6.3.16.1.4"
-#define oidVacmAccessEntry          "1.3.6.1.6.3.16.1.4.1" // groupName 1. index
+#define oidVacmAccessEntry          "1.3.6.1.6.3.16.1.4.1"   // groupName 1. index
 #define oidVacmAccessContextPrefix  "1.3.6.1.6.3.16.1.4.1.1" // 2. index
 #define oidVacmAccessSecurityModel  "1.3.6.1.6.3.16.1.4.1.2" // 3. index
 #define oidVacmAccessSecurityLevel  "1.3.6.1.6.3.16.1.4.1.3" // 4. index
@@ -164,9 +164,8 @@ public:
      *
      * @return true if access is allowed
      */
-    virtual int isAccessAllowed(const int securityModel,
-        const NS_SNMP OctetStr& securityName, const int securityLevel,
-        const int viewType, const NS_SNMP OctetStr& context, const Oidx& o);
+    virtual int isAccessAllowed(const int securityModel, const NS_SNMP OctetStr& securityName,
+        const int securityLevel, const int viewType, const NS_SNMP OctetStr& context, const Oidx& o);
 
     /**
      * Is the oid within the view.
@@ -178,8 +177,7 @@ public:
      *
      * @return true if the oid is within the view
      */
-    virtual int isAccessAllowed(
-        const NS_SNMP OctetStr& viewName, const Oidx& o);
+    virtual int isAccessAllowed(const NS_SNMP OctetStr& viewName, const Oidx& o);
 
     /**
      * Get the view name for the given params
@@ -193,9 +191,8 @@ public:
      *
      * @return VACM_viewFound on success, error codes on failure
      */
-    virtual int getViewName(const int securityModel,
-        const NS_SNMP OctetStr& securityName, const int securityLevel,
-        const int viewType, const NS_SNMP OctetStr& context,
+    virtual int getViewName(const int securityModel, const NS_SNMP OctetStr& securityName,
+        const int securityLevel, const int viewType, const NS_SNMP OctetStr& context,
         NS_SNMP OctetStr& viewName);
 
     void               incUnknownContexts();
@@ -228,15 +225,13 @@ public:
      * @param[in] groupName       vacmGroupName
      * @param[in] storageType     vacmSecurityToGroupStorageType
      */
-    bool addNewGroup(const int securityModel,
-        const NS_SNMP OctetStr& securityName,
+    bool addNewGroup(const int securityModel, const NS_SNMP OctetStr& securityName,
         const NS_SNMP OctetStr& groupName, const int storageType);
 
     /**
      * Delete the given securityName from the VacmSecurityToGroupTable.
      */
-    void deleteGroup(
-        const int securityModel, const NS_SNMP OctetStr& securityName);
+    void deleteGroup(const int securityModel, const NS_SNMP OctetStr& securityName);
 
     /**
      * Add a new entry to the VacmAccessTable.
@@ -252,9 +247,8 @@ public:
      * @param[in] storageType   vacmAccessStorageType (storageType_volatile,
      * ...)
      */
-    bool addNewAccessEntry(const NS_SNMP OctetStr& groupName,
-        const NS_SNMP OctetStr& prefix, const int securityModel,
-        const int securityLevel, const int match,
+    bool addNewAccessEntry(const NS_SNMP OctetStr& groupName, const NS_SNMP OctetStr& prefix,
+        const int securityModel, const int securityLevel, const int match,
         const NS_SNMP OctetStr& readView, const NS_SNMP OctetStr& writeView,
         const NS_SNMP OctetStr& notifyView, const int storageType);
 
@@ -267,9 +261,8 @@ public:
      * @param[in] securityLevel vacmAccessSecurityLevel
      *
      */
-    void deleteAccessEntry(const NS_SNMP OctetStr& groupName,
-        const NS_SNMP OctetStr& prefix, const int securityModel,
-        const int securityLevel);
+    void deleteAccessEntry(const NS_SNMP OctetStr& groupName, const NS_SNMP OctetStr& prefix,
+        const int securityModel, const int securityLevel);
 
     /**
      * Add a new view to the VacmViewTreeFamilyTable.
@@ -382,14 +375,12 @@ public:
     bool ready_for_service(Vbx*, int) override;
     bool could_ever_be_managed(const Oidx&, int&) override;
     void row_added(MibTableRow*, const Oidx&, MibTable*) override;
-    bool getGroupName(const int& securiyModel,
-        const NS_SNMP OctetStr& securityName, NS_SNMP OctetStr& groupName);
+    bool getGroupName(
+        const int& securiyModel, const NS_SNMP OctetStr& securityName, NS_SNMP OctetStr& groupName);
     bool isGroupNameOK(const NS_SNMP OctetStr&);
-    bool addNewRow(const int securityModel,
-        const NS_SNMP OctetStr& securityName,
+    bool addNewRow(const int securityModel, const NS_SNMP OctetStr& securityName,
         const NS_SNMP OctetStr& groupName, const int storageType);
-    void deleteRow(
-        const int securityModel, const NS_SNMP OctetStr& securityName);
+    void deleteRow(const int securityModel, const NS_SNMP OctetStr& securityName);
 };
 
 /*********************************************************************
@@ -406,19 +397,16 @@ public:
     bool ready_for_service(Vbx*, int) override;
     bool could_ever_be_managed(const Oidx&, int&) override;
     void row_added(MibTableRow*, const Oidx&, MibTable*) override;
-    bool getViewName(const NS_SNMP OctetStr& group,
-        const NS_SNMP OctetStr& context, const int securityModel,
-        const int securityLevel, const int viewType,
+    bool getViewName(const NS_SNMP OctetStr& group, const NS_SNMP OctetStr& context,
+        const int securityModel, const int securityLevel, const int viewType,
         NS_SNMP OctetStr& viewName);
 
-    bool addNewRow(const NS_SNMP OctetStr& groupName,
-        const NS_SNMP OctetStr& prefix, const int securityModel,
-        const int securityLevel, const int match,
+    bool addNewRow(const NS_SNMP OctetStr& groupName, const NS_SNMP OctetStr& prefix,
+        const int securityModel, const int securityLevel, const int match,
         const NS_SNMP OctetStr& readView, const NS_SNMP OctetStr& writeView,
         const NS_SNMP OctetStr& notifyView, const int storageType);
-    void deleteRow(const NS_SNMP OctetStr& groupName,
-        const NS_SNMP OctetStr& prefix, const int securityModel,
-        const int securityLevel);
+    void deleteRow(const NS_SNMP OctetStr& groupName, const NS_SNMP OctetStr& prefix,
+        const int securityModel, const int securityLevel);
 
 protected:
     VacmSecurityToGroupTable* securityToGroupTable;
@@ -477,8 +465,8 @@ public:
     void row_delete(MibTableRow*, const Oidx&, MibTable*) override;
     void row_init(MibTableRow*, const Oidx&, MibTable* t = 0) override;
     int  isInMibView(const NS_SNMP OctetStr&, const Oidx&);
-    bool addNewRow(const NS_SNMP OctetStr& viewName, const Oidx& subtree,
-        const NS_SNMP OctetStr& mask, const int type, const int storageType);
+    bool addNewRow(const NS_SNMP OctetStr& viewName, const Oidx& subtree, const NS_SNMP OctetStr& mask,
+        const int type, const int storageType);
     void deleteRow(const NS_SNMP OctetStr& viewName, const Oidx& subtree);
     void clear() override
     {

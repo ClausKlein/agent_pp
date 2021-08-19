@@ -33,8 +33,7 @@ MibComplexEntry::MibComplexEntry(const Oidx& o, mib_access a) : MibEntry(o, a)
     upperBound = o.next_peer();
 }
 
-MibComplexEntry::MibComplexEntry(const MibComplexEntry& other)
-    : MibEntry(other)
+MibComplexEntry::MibComplexEntry(const MibComplexEntry& other) : MibEntry(other)
 {
     upperBound = other.upperBound;
 }
@@ -45,8 +44,7 @@ MibComplexEntry::~MibComplexEntry() { }
 
 /*------------------------ class MibStaticTable ------------------------*/
 
-MibStaticTable::MibStaticTable(const Oidx& o)
-    : MibComplexEntry(o, NOACCESS) { }
+MibStaticTable::MibStaticTable(const Oidx& o) : MibComplexEntry(o, NOACCESS) { }
 
 MibStaticTable::MibStaticTable(MibStaticTable& other) : MibComplexEntry(other)
 {
@@ -116,10 +114,7 @@ Oidx MibStaticTable::find_succ(const Oidx& o, Request*)
         return retval;
     }
     MibStaticEntry* ptr = contents.find_upper(&tmpoid);
-    if ((ptr) && (*ptr->key() == tmpoid))
-    {
-        ptr = contents.find_next(&tmpoid);
-    }
+    if ((ptr) && (*ptr->key() == tmpoid)) { ptr = contents.find_next(&tmpoid); }
     if (ptr)
     {
         retval = oid;

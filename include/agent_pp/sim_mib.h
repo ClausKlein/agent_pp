@@ -167,9 +167,7 @@ protected:
 
 class AGENTPP_DECL SimMibTable : public MibTable {
 public:
-    SimMibTable(const Oidx& o, const index_info* i, unsigned int n)
-        : MibTable(o, i, n)
-    { }
+    SimMibTable(const Oidx& o, const index_info* i, unsigned int n) : MibTable(o, i, n) { }
     virtual ~SimMibTable() { }
 
     int check_creation(Request*, int&) override;

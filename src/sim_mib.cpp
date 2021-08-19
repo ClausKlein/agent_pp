@@ -36,17 +36,11 @@ SimMib::~SimMib() { }
 
 SimMibLeaf::SimMibLeaf() : MibLeaf() { }
 
-SimMibLeaf::SimMibLeaf(const Oidx& o, mib_access a, SmiUINT32 s)
-    : MibLeaf(o, a, s)
-{ }
+SimMibLeaf::SimMibLeaf(const Oidx& o, mib_access a, SmiUINT32 s) : MibLeaf(o, a, s) { }
 
-SimMibLeaf::SimMibLeaf(const Oidx& o, mib_access a, SnmpSyntax* s)
-    : MibLeaf(o, a, s)
-{ }
+SimMibLeaf::SimMibLeaf(const Oidx& o, mib_access a, SnmpSyntax* s) : MibLeaf(o, a, s) { }
 
-SimMibLeaf::SimMibLeaf(const Oidx& o, mib_access a, SnmpSyntax* s, bool d)
-    : MibLeaf(o, a, s, d)
-{ }
+SimMibLeaf::SimMibLeaf(const Oidx& o, mib_access a, SnmpSyntax* s, bool d) : MibLeaf(o, a, s, d) { }
 
 SimMibLeaf::SimMibLeaf(const SimMibLeaf& other) : MibLeaf(other) { }
 
@@ -110,8 +104,7 @@ mib_access SimRowStatus::get_access()
 
 time_t simSysUpTime::start = 0;
 
-simSysUpTime::simSysUpTime()
-    : SimMibLeaf(oidSysUpTime, READONLY, new TimeTicks(0))
+simSysUpTime::simSysUpTime() : SimMibLeaf(oidSysUpTime, READONLY, new TimeTicks(0))
 {
     start = get_currentTime();
 }
@@ -134,17 +127,12 @@ void simSysUpTime::get_request(Request* req, int ind)
 simSysGroup::simSysGroup() : MibGroup("1.3.6.1.2.1.1", "simSysGroup")
 {
     add(new simSysUpTime());
-    add(new SimMibLeaf(
-        "1.3.6.1.2.1.1.1.0", READONLY, new OctetStr(""), false));
+    add(new SimMibLeaf("1.3.6.1.2.1.1.1.0", READONLY, new OctetStr(""), false));
     add(new SimMibLeaf("1.3.6.1.2.1.1.2.0", READONLY, new Oid(""), false));
-    add(new SimMibLeaf(
-        "1.3.6.1.2.1.1.4.0", READWRITE, new OctetStr(""), false));
-    add(new SimMibLeaf(
-        "1.3.6.1.2.1.1.5.0", READWRITE, new OctetStr(""), false));
-    add(new SimMibLeaf(
-        "1.3.6.1.2.1.1.6.0", READWRITE, new OctetStr(""), false));
-    add(new SimMibLeaf(
-        "1.3.6.1.2.1.1.7.0", READONLY, new SnmpInt32(0), false));
+    add(new SimMibLeaf("1.3.6.1.2.1.1.4.0", READWRITE, new OctetStr(""), false));
+    add(new SimMibLeaf("1.3.6.1.2.1.1.5.0", READWRITE, new OctetStr(""), false));
+    add(new SimMibLeaf("1.3.6.1.2.1.1.6.0", READWRITE, new OctetStr(""), false));
+    add(new SimMibLeaf("1.3.6.1.2.1.1.7.0", READONLY, new SnmpInt32(0), false));
 }
 
 #ifdef AGENTPP_NAMESPACE

@@ -55,8 +55,7 @@ MibEntryPtr snmpTargetAddrTMask::clone()
 
 UdpAddress* snmpTargetAddrTMask::getUdpAddress()
 {
-    snmpTargetAddrEntry* snmpTargetAddrEntry =
-        ((snmpTargetAddrExtEntry*)my_table)->baseTable;
+    snmpTargetAddrEntry* snmpTargetAddrEntry = ((snmpTargetAddrExtEntry*)my_table)->baseTable;
     if (snmpTargetAddrEntry)
     {
         snmpTargetAddrEntry->start_synch();
@@ -89,22 +88,15 @@ int snmpTargetAddrTMask::prepare_set_request(Request* req, int& ind)
     if (!(v.len() <= 255)) return SNMP_ERROR_WRONG_LENGTH;
     // check if snmpTargetAddrTMask has same length as
     // snmp anmpTargetAddrTAddress
-    snmpTargetAddrEntry* snmpTargetAddrEntry =
-        ((snmpTargetAddrExtEntry*)my_table)->baseTable;
+    snmpTargetAddrEntry* snmpTargetAddrEntry = ((snmpTargetAddrExtEntry*)my_table)->baseTable;
     if (snmpTargetAddrEntry)
     {
-        if (req->lock_index(snmpTargetAddrEntry) < 0)
-        {
-            snmpTargetAddrEntry->start_synch();
-        }
+        if (req->lock_index(snmpTargetAddrEntry) < 0) { snmpTargetAddrEntry->start_synch(); }
         MibTableRow* r = snmpTargetAddrEntry->find_index(my_row->get_index());
         OctetStr     addr;
         int32_t      status = ((snmpRowStatus*)r->get_nth(7))->get();
         r->get_nth(1)->get_value(addr);
-        if (req->lock_index(snmpTargetAddrEntry) < 0)
-        {
-            snmpTargetAddrEntry->end_synch();
-        }
+        if (req->lock_index(snmpTargetAddrEntry) < 0) { snmpTargetAddrEntry->end_synch(); }
         if ((status == 1) || ((v.len() != 0) && (addr.len() != v.len())))
         {
             LOG_BEGIN(loggerModuleName, DEBUG_LOG | 7);
@@ -127,8 +119,7 @@ int snmpTargetAddrTMask::prepare_set_request(Request* req, int& ind)
 
 snmpCommunityEntry* snmpCommunityEntry::instance = 0;
 
-const index_info iSnmpCommunityEntry[1] = { { sNMP_SYNTAX_OCTETS, true, 1,
-    32 } };
+const index_info iSnmpCommunityEntry[1] = { { sNMP_SYNTAX_OCTETS, true, 1, 32 } };
 
 snmpCommunityEntry::snmpCommunityEntry(Mib* mib)
     : StorageTable(oidSnmpCommunityEntry, iSnmpCommunityEntry, 1)
@@ -146,14 +137,10 @@ snmpCommunityEntry::snmpCommunityEntry(Mib* mib)
     }
 
     add_col(new MibLeaf("2", READCREATE, new OctetStr(""), false));
-    add_col(
-        new SnmpAdminString("3", READCREATE, new OctetStr(""), false, 1, 32));
+    add_col(new SnmpAdminString("3", READCREATE, new OctetStr(""), false, 1, 32));
     add_col(new SnmpEngineID("4", READCREATE,
-        new OctetStr(
-            mib->get_request_list()->get_v3mp()->get_local_engine_id()),
-        VMODE_DEFAULT));
-    add_col(
-        new SnmpAdminString("5", READCREATE, new OctetStr(""), true, 1, 32));
+        new OctetStr(mib->get_request_list()->get_v3mp()->get_local_engine_id()), VMODE_DEFAULT));
+    add_col(new SnmpAdminString("5", READCREATE, new OctetStr(""), true, 1, 32));
     add_col(new SnmpTagValue("6"));
     add_storage_col(new StorageType("7", 3));
     add_col(new snmpRowStatus("8", READCREATE));
@@ -161,9 +148,8 @@ snmpCommunityEntry::snmpCommunityEntry(Mib* mib)
 
 snmpCommunityEntry::~snmpCommunityEntry() { instance = 0; }
 
-void snmpCommunityEntry::set_row(MibTableRow* r, const OctetStr& p0,
-    const OctetStr& p1, const OctetStr& p2, const OctetStr& p3,
-    const OctetStr& p4, int p5, int p6)
+void snmpCommunityEntry::set_row(MibTableRow* r, const OctetStr& p0, const OctetStr& p1,
+    const OctetStr& p2, const OctetStr& p3, const OctetStr& p4, int p5, int p6)
 {
     r->get_nth(0)->replace_value(new OctetStr(p0));
     r->get_nth(1)->replace_value(new OctetStr(p1));
@@ -174,9 +160,8 @@ void snmpCommunityEntry::set_row(MibTableRow* r, const OctetStr& p0,
     r->get_nth(6)->replace_value(new SnmpInt32(p6));
 }
 
-bool snmpCommunityEntry::get_v3_info(OctetStr& security_name,
-    OctetStr& context_engine_id, OctetStr& context_name,
-    OctetStr& transport_tag)
+bool snmpCommunityEntry::get_v3_info(OctetStr& security_name, OctetStr& context_engine_id,
+    OctetStr& context_name, OctetStr& transport_tag)
 {
     OctetStr                community(security_name);
     List<MibTableRow>*      list = get_rows_cloned(true);
@@ -208,8 +193,8 @@ bool snmpCommunityEntry::get_v3_info(OctetStr& security_name,
     return false;
 }
 
-bool snmpCommunityEntry::get_community(OctetStr& security_name,
-    const OctetStr& context_engine_id, const OctetStr& context_name)
+bool snmpCommunityEntry::get_community(
+    OctetStr& security_name, const OctetStr& context_engine_id, const OctetStr& context_name)
 {
     List<MibTableRow>*      list = get_rows_cloned(true);
     ListCursor<MibTableRow> cur;
@@ -221,8 +206,7 @@ bool snmpCommunityEntry::get_community(OctetStr& security_name,
         cur.get()->get_nth(2)->get_value(eid);
         OctetStr cname;
         cur.get()->get_nth(3)->get_value(cname);
-        if ((sname == security_name) && (eid == context_engine_id)
-            && (cname == context_name))
+        if ((sname == security_name) && (eid == context_engine_id) && (cname == context_name))
         {
 
             cur.get()->get_nth(0)->get_value(security_name);
@@ -252,8 +236,7 @@ snmpTargetAddrExtEntry::snmpTargetAddrExtEntry()
     : snmpTargetAddrExtEntry(snmpTargetAddrEntry::instance)
 { }
 
-snmpTargetAddrExtEntry::snmpTargetAddrExtEntry(
-    snmpTargetAddrEntry* parentTable)
+snmpTargetAddrExtEntry::snmpTargetAddrExtEntry(snmpTargetAddrEntry* parentTable)
     : MibTable(oidSnmpTargetAddrExtEntry, iSnmpAdminString, 1)
 {
     // This table object is a singleton. In order to access it use
@@ -262,8 +245,7 @@ snmpTargetAddrExtEntry::snmpTargetAddrExtEntry(
     baseTable = parentTable;
 
     add_col(new snmpTargetAddrTMask("1"));
-    add_col(new SnmpInt32MinMax(
-        "2", READCREATE, 484, VMODE_DEFAULT, 484, 2147483647));
+    add_col(new SnmpInt32MinMax("2", READCREATE, 484, VMODE_DEFAULT, 484, 2147483647));
 
     if (baseTable) { baseTable->add_listener(this); }
     else
@@ -299,14 +281,12 @@ snmpTargetAddrExtEntry* snmpTargetAddrExtEntry::get_instance(Mib* mib)
     return instance;
 }
 
-void snmpTargetAddrExtEntry::row_added(
-    MibTableRow* row, const Oidx& index, MibTable* source)
+void snmpTargetAddrExtEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* source)
 {
     if (source) add_row(index);
 }
 
-void snmpTargetAddrExtEntry::row_delete(
-    MibTableRow* row, const Oidx& index, MibTable* source)
+void snmpTargetAddrExtEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable* source)
 {
     if (source) remove_row(index);
 }
@@ -335,16 +315,14 @@ int snmpTargetAddrExtEntry::prepare_set_request(Request* req, int& ind)
     return MibTable::prepare_set_request(req, ind);
 }
 
-void snmpTargetAddrExtEntry::set_row(
-    MibTableRow* r, const OctetStr& p0, int p1)
+void snmpTargetAddrExtEntry::set_row(MibTableRow* r, const OctetStr& p0, int p1)
 {
     r->get_nth(0)->replace_value(new OctetStr(p0));
     r->get_nth(1)->replace_value(new SnmpInt32(p1));
 }
 
 #    ifdef _SNMPv3
-bool snmpTargetAddrExtEntry::passes_filter(
-    const OctetStr& tag, const UTarget& addr)
+bool snmpTargetAddrExtEntry::passes_filter(const OctetStr& tag, const UTarget& addr)
 {
     if (!baseTable) return true;
     if (tag.len() == 0) return true;
@@ -361,9 +339,7 @@ bool snmpTargetAddrExtEntry::passes_filter(
         MibTableRow* ext = find_index(cur.get()->get_index());
         if (ext)
         {
-            UdpAddress* address =
-                ((snmpTargetAddrTAddress*)cur.get()->get_nth(1))
-                    ->getUdpAddress();
+            UdpAddress* address = ((snmpTargetAddrTAddress*)cur.get()->get_nth(1))->getUdpAddress();
             if (!address)
             {
                 LOG_BEGIN(loggerModuleName, WARNING_LOG | 4);
@@ -372,9 +348,8 @@ bool snmpTargetAddrExtEntry::passes_filter(
                 LOG_END;
                 continue;
             }
-            UdpAddress* mask =
-                ((snmpTargetAddrTMask*)ext->get_nth(0))->getUdpAddress();
-            UdpAddress a(*address);
+            UdpAddress* mask = ((snmpTargetAddrTMask*)ext->get_nth(0))->getUdpAddress();
+            UdpAddress  a(*address);
             a.mask(*mask);
             UdpAddress b(u);
             b.mask(*mask);
@@ -402,8 +377,7 @@ bool snmpTargetAddrExtEntry::passes_filter(
 }
 #    endif
 
-bool snmpTargetAddrExtEntry::passes_filter(
-    const OctetStr& taddress, const OctetStr& tag)
+bool snmpTargetAddrExtEntry::passes_filter(const OctetStr& taddress, const OctetStr& tag)
 {
     if (!baseTable) return true;
     if (tag.len() == 0) return true;
@@ -418,16 +392,12 @@ bool snmpTargetAddrExtEntry::passes_filter(
         {
             OctetStr taddressRequested(taddress);
             OctetStr taddressAllowed;
-            ((snmpTargetAddrTAddress*)cur.get()->get_nth(1))
-                ->get_value(taddressAllowed);
+            ((snmpTargetAddrTAddress*)cur.get()->get_nth(1))->get_value(taddressAllowed);
             OctetStr mask;
             ((snmpTargetAddrTMask*)ext->get_nth(0))->get_value(mask);
             for (unsigned int i = 0; i < mask.len(); i++)
             {
-                if (i < taddressAllowed.len())
-                {
-                    taddressAllowed[i] = taddressAllowed[i] & mask[i];
-                }
+                if (i < taddressAllowed.len()) { taddressAllowed[i] = taddressAllowed[i] & mask[i]; }
                 if (i < taddressRequested.len())
                 {
                     taddressRequested[i] = taddressRequested[i] & mask[i];
@@ -456,15 +426,13 @@ bool snmpTargetAddrExtEntry::passes_filter(
     return false;
 }
 
-snmp_community_mib::snmp_community_mib()
-    : MibGroup("1.3.6.1.6.3.18.1", "snmpCommunityMIB")
+snmp_community_mib::snmp_community_mib() : MibGroup("1.3.6.1.6.3.18.1", "snmpCommunityMIB")
 {
     add(new snmpCommunityEntry(Mib::instance));
     add(new snmpTargetAddrExtEntry());
 }
 
-snmp_community_mib::snmp_community_mib(Mib* mib)
-    : MibGroup("1.3.6.1.6.3.18.1", "snmpCommunityMIB")
+snmp_community_mib::snmp_community_mib(Mib* mib) : MibGroup("1.3.6.1.6.3.18.1", "snmpCommunityMIB")
 {
     add(new snmpCommunityEntry(mib));
     add(new snmpTargetAddrExtEntry(snmpTargetAddrEntry::get_instance(mib)));
@@ -482,12 +450,9 @@ void snmp_community_mib::add_public(Mib* mib)
         return;
     }
 
-    snmpCommunityEntry* snmpCommunityEntry =
-        snmpCommunityEntry::get_instance(mib);
-    snmpTargetAddrEntry* snmpTargetAddrEntry =
-        snmpTargetAddrEntry::get_instance(mib);
-    snmpTargetAddrExtEntry* snmpTargetAddrExtEntry =
-        snmpTargetAddrExtEntry::get_instance(mib);
+    snmpCommunityEntry*     snmpCommunityEntry     = snmpCommunityEntry::get_instance(mib);
+    snmpTargetAddrEntry*    snmpTargetAddrEntry    = snmpTargetAddrEntry::get_instance(mib);
+    snmpTargetAddrExtEntry* snmpTargetAddrExtEntry = snmpTargetAddrExtEntry::get_instance(mib);
     if (!snmpCommunityEntry || !snmpTargetAddrEntry || !snmpTargetAddrExtEntry)
     {
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 0);
@@ -501,15 +466,14 @@ void snmp_community_mib::add_public(Mib* mib)
     MibTableRow* r   = snmpCommunityEntry->find_index(ind);
     if (!r) r = snmpCommunityEntry->add_row(ind);
     snmpCommunityEntry->set_row(r, OctetStr("public"), OctetStr("public"),
-        mib->get_request_list()->get_v3mp()->get_local_engine_id(),
-        OctetStr(""), OctetStr("access"), 3, 1);
+        mib->get_request_list()->get_v3mp()->get_local_engine_id(), OctetStr(""), OctetStr("access"),
+        3, 1);
 
     ind = Oidx::from_string("localAccess", false);
     r   = snmpTargetAddrEntry->find_index(ind);
     if (!r) r = snmpTargetAddrEntry->add_row(ind);
-    snmpTargetAddrEntry->set_row(r, "1.3.6.1.6.1.1",
-        OctetStr::from_hex_string("7F 00 00 01 00 A1"), 1500, 3, "access",
-        "localAccess", 3, 1);
+    snmpTargetAddrEntry->set_row(r, "1.3.6.1.6.1.1", OctetStr::from_hex_string("7F 00 00 01 00 A1"),
+        1500, 3, "access", "localAccess", 3, 1);
 
     ind = Oidx::from_string("localAccess", false);
     r   = snmpTargetAddrExtEntry->find_index(ind);

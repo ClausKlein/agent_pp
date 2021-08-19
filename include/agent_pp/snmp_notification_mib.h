@@ -199,8 +199,7 @@ public:
      *    a pointer to the newly created entry or 0 if
      *    a row with index name already exists.
      */
-    MibTableRow* add_entry(
-        const NS_SNMP OctetStr&, const NS_SNMP OctetStr&, const int);
+    MibTableRow* add_entry(const NS_SNMP OctetStr&, const NS_SNMP OctetStr&, const int);
 
     static snmpNotifyEntry* instance;
 };

@@ -117,10 +117,7 @@ void MibGroup::remove(const Oidx& o)
     }
 }
 
-ListCursor<MibEntry> MibGroup::get_content()
-{
-    return ListCursor<MibEntry>(&content);
-}
+ListCursor<MibEntry> MibGroup::get_content() { return ListCursor<MibEntry>(&content); }
 
 void MibGroup::clearAll() { content.clearAll(); }
 
@@ -175,8 +172,7 @@ void MibGroup::load_from_file(const char* fname)
             hlen = 0;
         unsigned char type = 0;
         asn_parse_header((unsigned char*)header, &sz, &type);
-        if ((bytes != hlen)
-            || (type != (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR)))
+        if ((bytes != hlen) || (type != (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR)))
         {
             LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
             LOG("MibGroup: loading from file failed "
@@ -210,10 +206,7 @@ void MibGroup::load_from_file(const char* fname)
             return;
         }
         int len = sz + 2 + hlen;
-        while ((cur.get()) && (!cur.get()->deserialize(buf, len)))
-        {
-            cur.next();
-        }
+        while ((cur.get()) && (!cur.get()->deserialize(buf, len))) { cur.next(); }
         delete[] buf;
     }
     fclose(f);
@@ -314,10 +307,7 @@ bool MibContext::load_from(const OctetStr& p)
             cur.get()->load_from_file(path.get_printable());
 
             entries = cur.get()->get_content();
-            for (; entries.get(); entries.next())
-            {
-                entries.get()->end_synch();
-            }
+            for (; entries.get(); entries.next()) { entries.get()->end_synch(); }
         }
     }
     return true;
@@ -355,8 +345,7 @@ int MibContext::find(const Oidx& oid, MibEntryPtr& entry) TS_SYNCHRONIZED({
         return content.seek(&tmpoid);
     })
 
-        int MibContext::find_lower(
-            const Oidx& oid, MibEntryPtr& entry) TS_SYNCHRONIZED({
+        int MibContext::find_lower(const Oidx& oid, MibEntryPtr& entry) TS_SYNCHRONIZED({
             Oidx      tmpoid(oid);
             MibEntry* e = content.find_lower(&tmpoid);
             if (!e) return sNMP_SYNTAX_NOSUCHOBJECT;
@@ -364,30 +353,25 @@ int MibContext::find(const Oidx& oid, MibEntryPtr& entry) TS_SYNCHRONIZED({
             return SNMP_ERROR_SUCCESS;
         })
 
-            int MibContext::find_upper(const Oidx& oid, MibEntryPtr& entry)
-                TS_SYNCHRONIZED({
-                    Oidx      tmpoid(oid);
-                    MibEntry* e = content.find_upper(&tmpoid);
-                    if (!e) return sNMP_SYNTAX_NOSUCHOBJECT;
-                    entry = e;
-                    return SNMP_ERROR_SUCCESS;
+            int MibContext::find_upper(const Oidx& oid, MibEntryPtr& entry) TS_SYNCHRONIZED({
+                Oidx      tmpoid(oid);
+                MibEntry* e = content.find_upper(&tmpoid);
+                if (!e) return sNMP_SYNTAX_NOSUCHOBJECT;
+                entry = e;
+                return SNMP_ERROR_SUCCESS;
+            })
+
+                MibEntry* MibContext::find_next(const Oidx& oid) TS_SYNCHRONIZED({
+                    Oidx tmpoid(oid);
+                    return content.find_next(&tmpoid);
                 })
 
-                    MibEntry* MibContext::find_next(const Oidx& oid)
-                        TS_SYNCHRONIZED({
-                            Oidx tmpoid(oid);
-                            return content.find_next(&tmpoid);
-                        })
-
-                            OidListCursor<MibEntry> MibContext::get_content()
+                    OidListCursor<MibEntry> MibContext::get_content()
 {
     return OidListCursor<MibEntry>(&content);
 }
 
-OidListCursor<MibGroup> MibContext::get_groups()
-{
-    return OidListCursor<MibGroup>(&groups);
-}
+OidListCursor<MibGroup> MibContext::get_groups() { return OidListCursor<MibGroup>(&groups); }
 
 MibEntry* MibContext::add(MibEntry* item)
 {

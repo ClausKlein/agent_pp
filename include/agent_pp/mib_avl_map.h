@@ -54,13 +54,13 @@ struct OidxPtrMibEntryPtrAVLNode {
     OidxPtr                    item;
     MibEntryPtr                cont;
     char                       stat;
-    OidxPtrMibEntryPtrAVLNode(OidxPtr h, MibEntryPtr c,
-        OidxPtrMibEntryPtrAVLNode* l = 0, OidxPtrMibEntryPtrAVLNode* r = 0);
+    OidxPtrMibEntryPtrAVLNode(
+        OidxPtr h, MibEntryPtr c, OidxPtrMibEntryPtrAVLNode* l = 0, OidxPtrMibEntryPtrAVLNode* r = 0);
     ~OidxPtrMibEntryPtrAVLNode() {};
 };
 
-inline OidxPtrMibEntryPtrAVLNode::OidxPtrMibEntryPtrAVLNode(OidxPtr h,
-    MibEntryPtr c, OidxPtrMibEntryPtrAVLNode* l, OidxPtrMibEntryPtrAVLNode* r)
+inline OidxPtrMibEntryPtrAVLNode::OidxPtrMibEntryPtrAVLNode(
+    OidxPtr h, MibEntryPtr c, OidxPtrMibEntryPtrAVLNode* l, OidxPtrMibEntryPtrAVLNode* r)
     : lt(l), rt(r), item(h), cont(c), stat(0)
 { }
 
@@ -76,7 +76,7 @@ protected:
     OidxPtrMibEntryPtrAVLNode* succ(OidxPtrMibEntryPtrAVLNode* t);
     void                       _kill(OidxPtrMibEntryPtrAVLNode* t);
     void                       _add(OidxPtrMibEntryPtrAVLNode*& t);
-    void _del(OidxPtrMibEntryPtrAVLNode* p, OidxPtrMibEntryPtrAVLNode*& t);
+    void                       _del(OidxPtrMibEntryPtrAVLNode* p, OidxPtrMibEntryPtrAVLNode*& t);
 
 public:
     OidxPtrMibEntryPtrAVLMap(MibEntryPtr deflt);
@@ -128,16 +128,14 @@ inline void OidxPtrMibEntryPtrAVLMap::prev(Pix& i)
 
 inline OidxPtr& OidxPtrMibEntryPtrAVLMap::key(Pix i)
 {
-    if (i == 0)
-        error("null Pix"); // FIXME: Warning C6011 Dereferencing NULL pointer
+    if (i == 0) error("null Pix"); // FIXME: Warning C6011 Dereferencing NULL pointer
 
     return ((OidxPtrMibEntryPtrAVLNode*)i)->item;
 }
 
 inline MibEntryPtr& OidxPtrMibEntryPtrAVLMap::contents(Pix i)
 {
-    if (i == 0)
-        error("null Pix"); // FIXME: Warning C6011 Dereferencing NULL pointer
+    if (i == 0) error("null Pix"); // FIXME: Warning C6011 Dereferencing NULL pointer
 
     return ((OidxPtrMibEntryPtrAVLNode*)i)->cont;
 }
@@ -149,10 +147,7 @@ inline void OidxPtrMibEntryPtrAVLMap::clear()
     root  = 0;
 }
 
-inline int OidxPtrMibEntryPtrAVLMap::contains(OidxPtr key_)
-{
-    return seek(key_) != 0;
-}
+inline int OidxPtrMibEntryPtrAVLMap::contains(OidxPtr key_) { return seek(key_) != 0; }
 
 #ifdef AGENTPP_NAMESPACE
 }

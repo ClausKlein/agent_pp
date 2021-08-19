@@ -59,14 +59,13 @@ void nlmConfigLogOperStatus::get_request(Request* req, int ind)
     uint32_t l = 1;
     if (((nlmConfigLogAdminStatus*)my_row->get_nth(2))->get_state() == 1)
     {
-        OctetStr f(((nlmConfigLogFilterName*)my_row->get_nth(0))->get_state());
-        Oidx     index(Oidx::from_string(f, true));
+        OctetStr               f(((nlmConfigLogFilterName*)my_row->get_nth(0))->get_state());
+        Oidx                   index(Oidx::from_string(f, true));
         snmpNotifyFilterEntry* snmpNotifyFilterEntry =
             snmpNotifyFilterEntry::get_instance(((nlmLogEntry*)my_table)->mib);
         if (snmpNotifyFilterEntry)
         {
-            List<MibTableRow>* r =
-                snmpNotifyFilterEntry->get_rows_cloned(&index, true);
+            List<MibTableRow>* r = snmpNotifyFilterEntry->get_rows_cloned(&index, true);
             if (r->size() > 0) { l = 2; }
             else
             {
@@ -96,8 +95,7 @@ MibEntryPtr nlmConfigLogOperStatus::clone()
 nlmConfigGlobalEntryLimit* nlmConfigGlobalEntryLimit::instance = 0;
 
 nlmConfigGlobalEntryLimit::nlmConfigGlobalEntryLimit()
-    : MibLeaf(
-        oidNlmConfigGlobalEntryLimit, READWRITE, new Gauge32(0), VMODE_DEFAULT)
+    : MibLeaf(oidNlmConfigGlobalEntryLimit, READWRITE, new Gauge32(0), VMODE_DEFAULT)
 {
     // This leaf object is a singleton. In order to access it use
     // the static pointer nlmConfigGlobalEntryLimit::instance.
@@ -122,10 +120,7 @@ void nlmConfigGlobalEntryLimit::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-uint32_t nlmConfigGlobalEntryLimit::get_state()
-{
-    return (uint32_t) * ((Gauge32*)value);
-}
+uint32_t nlmConfigGlobalEntryLimit::get_state() { return (uint32_t) * ((Gauge32*)value); }
 
 void nlmConfigGlobalEntryLimit::set_state(uint32_t l)
 {
@@ -154,9 +149,7 @@ bool nlmConfigGlobalEntryLimit::value_ok(const Vbx& vb)
 int nlmConfigGlobalEntryLimit::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = MibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
-        return status;
+    if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
 
     //--AgentGen BEGIN=nlmConfigGlobalEntryLimit::prepare_set_request
     //--AgentGen END
@@ -174,8 +167,7 @@ int nlmConfigGlobalEntryLimit::prepare_set_request(Request* req, int& ind)
 nlmConfigGlobalAgeOut* nlmConfigGlobalAgeOut::instance = 0;
 
 nlmConfigGlobalAgeOut::nlmConfigGlobalAgeOut()
-    : MibLeaf(
-        oidNlmConfigGlobalAgeOut, READWRITE, new Gauge32(1440), VMODE_DEFAULT)
+    : MibLeaf(oidNlmConfigGlobalAgeOut, READWRITE, new Gauge32(1440), VMODE_DEFAULT)
 {
     // This leaf object is a singleton. In order to access it use
     // the static pointer nlmConfigGlobalAgeOut::instance.
@@ -200,10 +192,7 @@ void nlmConfigGlobalAgeOut::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-uint32_t nlmConfigGlobalAgeOut::get_state()
-{
-    return (uint32_t) * ((Gauge32*)value);
-}
+uint32_t nlmConfigGlobalAgeOut::get_state() { return (uint32_t) * ((Gauge32*)value); }
 
 void nlmConfigGlobalAgeOut::set_state(uint32_t l)
 {
@@ -232,9 +221,7 @@ bool nlmConfigGlobalAgeOut::value_ok(const Vbx& vb)
 int nlmConfigGlobalAgeOut::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = MibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
-        return status;
+    if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
 
     //--AgentGen BEGIN=nlmConfigGlobalAgeOut::prepare_set_request
     //--AgentGen END
@@ -314,9 +301,7 @@ bool nlmConfigLogFilterName::value_ok(const Vbx& vb)
 int nlmConfigLogFilterName::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = MibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
-        return status;
+    if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
     Vb       vb(req->get_value(ind));
     OctetStr v;
     if (vb.get_value(v) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
@@ -369,10 +354,7 @@ void nlmConfigLogEntryLimit::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-uint32_t nlmConfigLogEntryLimit::get_state()
-{
-    return (uint32_t) * ((Gauge32*)value);
-}
+uint32_t nlmConfigLogEntryLimit::get_state() { return (uint32_t) * ((Gauge32*)value); }
 
 void nlmConfigLogEntryLimit::set_state(uint32_t l)
 {
@@ -401,9 +383,7 @@ bool nlmConfigLogEntryLimit::value_ok(const Vbx& vb)
 int nlmConfigLogEntryLimit::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = MibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
-        return status;
+    if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
 
     //--AgentGen BEGIN=nlmConfigLogEntryLimit::prepare_set_request
     //--AgentGen END
@@ -452,10 +432,7 @@ void nlmConfigLogAdminStatus::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-int32_t nlmConfigLogAdminStatus::get_state()
-{
-    return (int32_t) * ((SnmpInt32*)value);
-}
+int32_t nlmConfigLogAdminStatus::get_state() { return (int32_t) * ((SnmpInt32*)value); }
 
 void nlmConfigLogAdminStatus::set_state(int32_t l)
 {
@@ -487,9 +464,7 @@ bool nlmConfigLogAdminStatus::value_ok(const Vbx& vb)
 int nlmConfigLogAdminStatus::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = MibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
-        return status;
+    if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
 
     //--AgentGen BEGIN=nlmConfigLogAdminStatus::prepare_set_request
     //--AgentGen END
@@ -504,8 +479,7 @@ int nlmConfigLogAdminStatus::prepare_set_request(Request* req, int& ind)
  *
  */
 
-nlmConfigLogStorageType::nlmConfigLogStorageType(const Oidx& id)
-    : StorageType(id, 3)
+nlmConfigLogStorageType::nlmConfigLogStorageType(const Oidx& id) : StorageType(id, 3)
 {
 
     //--AgentGen BEGIN=nlmConfigLogStorageType::nlmConfigLogStorageType
@@ -538,10 +512,7 @@ void nlmConfigLogStorageType::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-int32_t nlmConfigLogStorageType::get_state()
-{
-    return (int32_t) * ((SnmpInt32*)value);
-}
+int32_t nlmConfigLogStorageType::get_state() { return (int32_t) * ((SnmpInt32*)value); }
 
 void nlmConfigLogStorageType::set_state(int32_t l)
 {
@@ -573,9 +544,7 @@ bool nlmConfigLogStorageType::value_ok(const Vbx& vb)
 int nlmConfigLogStorageType::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = StorageType::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
-        return status;
+    if ((status = StorageType::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
 
     //--AgentGen BEGIN=nlmConfigLogStorageType::prepare_set_request
     //--AgentGen END
@@ -590,8 +559,7 @@ int nlmConfigLogStorageType::prepare_set_request(Request* req, int& ind)
  *
  */
 
-nlmConfigLogEntryStatus::nlmConfigLogEntryStatus(const Oidx& id)
-    : snmpRowStatus(id, READCREATE)
+nlmConfigLogEntryStatus::nlmConfigLogEntryStatus(const Oidx& id) : snmpRowStatus(id, READCREATE)
 
 {
 
@@ -617,10 +585,7 @@ MibEntryPtr nlmConfigLogEntryStatus::clone()
     return other;
 }
 
-int32_t nlmConfigLogEntryStatus::get_state()
-{
-    return (int32_t) * ((SnmpInt32*)value);
-}
+int32_t nlmConfigLogEntryStatus::get_state() { return (int32_t) * ((SnmpInt32*)value); }
 
 void nlmConfigLogEntryStatus::set_state(int32_t l)
 {
@@ -641,9 +606,7 @@ int nlmConfigLogEntryStatus::set(const Vbx& vb)
 int nlmConfigLogEntryStatus::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = snmpRowStatus::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
-        return status;
+    if ((status = snmpRowStatus::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
 
     //--AgentGen BEGIN=nlmConfigLogEntryStatus::prepare_set_request
     Vbx     vb(req->get_value(ind));
@@ -658,9 +621,8 @@ int nlmConfigLogEntryStatus::prepare_set_request(Request* req, int& ind)
             ((nlmConfigLogEntry*)my_table)
                 ->mib->get_request_list()
                 ->get_vacm()
-                ->getViewName(req->get_security_model(), secName,
-                    req->get_pdu()->get_security_level(), mibView_notify,
-                    req->get_context(), viewName);
+                ->getViewName(req->get_security_model(), secName, req->get_pdu()->get_security_level(),
+                    mibView_notify, req->get_context(), viewName);
         if (vacmErrorCode != VACM_viewFound) return SNMP_ERROR_NO_ACCESS;
     }
     //--AgentGen END
@@ -672,9 +634,7 @@ int nlmConfigLogEntryStatus::prepare_set_request(Request* req, int& ind)
 int nlmConfigLogEntryStatus::commit_set_request(Request* req, int ind)
 {
     int status = 0;
-    if ((status = snmpRowStatus::commit_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
-        return status;
+    if ((status = snmpRowStatus::commit_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
 
     // save security info for further reference
     Vbx     vb(req->get_value(ind));
@@ -689,9 +649,8 @@ int nlmConfigLogEntryStatus::commit_set_request(Request* req, int ind)
             ((nlmConfigLogEntry*)my_table)
                 ->mib->get_request_list()
                 ->get_vacm()
-                ->getViewName(req->get_security_model(), secName,
-                    req->get_pdu()->get_security_level(), mibView_notify,
-                    req->get_context(), viewName);
+                ->getViewName(req->get_security_model(), secName, req->get_pdu()->get_security_level(),
+                    mibView_notify, req->get_context(), viewName);
         if (vacmErrorCode != VACM_viewFound) return SNMP_ERROR_COMMITFAIL;
 
         my_row->get_nth(nNlmConfigLogEntryStatus + 1)->set_value(viewName);
@@ -706,8 +665,7 @@ int nlmConfigLogEntryStatus::commit_set_request(Request* req, int ind)
  *
  */
 
-nlmStatsGlobalNotificationsLogged*
-    nlmStatsGlobalNotificationsLogged::instance = 0;
+nlmStatsGlobalNotificationsLogged* nlmStatsGlobalNotificationsLogged::instance = 0;
 
 nlmStatsGlobalNotificationsLogged::nlmStatsGlobalNotificationsLogged()
     : Counter32MibLeaf(oidNlmStatsGlobalNotificationsLogged)
@@ -716,16 +674,14 @@ nlmStatsGlobalNotificationsLogged::nlmStatsGlobalNotificationsLogged()
     // the static pointer nlmStatsGlobalNotificationsLogged::instance.
     instance = this;
 
-    //--AgentGen
-    // BEGIN=nlmStatsGlobalNotificationsLogged::nlmStatsGlobalNotificationsLogged
+    //--AgentGen BEGIN=nlmStatsGlobalNotificationsLogged::nlmStatsGlobalNotificationsLogged
     //--AgentGen END
 }
 
 nlmStatsGlobalNotificationsLogged::~nlmStatsGlobalNotificationsLogged()
 {
 
-    //--AgentGen
-    // BEGIN=nlmStatsGlobalNotificationsLogged::~nlmStatsGlobalNotificationsLogged
+    //--AgentGen BEGIN=nlmStatsGlobalNotificationsLogged::~nlmStatsGlobalNotificationsLogged
     //--AgentGen END
 }
 
@@ -737,10 +693,7 @@ void nlmStatsGlobalNotificationsLogged::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-uint32_t nlmStatsGlobalNotificationsLogged::get_state()
-{
-    return (uint32_t) * ((Counter32*)value);
-}
+uint32_t nlmStatsGlobalNotificationsLogged::get_state() { return (uint32_t) * ((Counter32*)value); }
 
 void nlmStatsGlobalNotificationsLogged::set_state(uint32_t l)
 {
@@ -768,8 +721,7 @@ uint32_t nlmStatsGlobalNotificationsLogged::inc()
  *
  */
 
-nlmStatsGlobalNotificationsBumped*
-    nlmStatsGlobalNotificationsBumped::instance = 0;
+nlmStatsGlobalNotificationsBumped* nlmStatsGlobalNotificationsBumped::instance = 0;
 
 nlmStatsGlobalNotificationsBumped::nlmStatsGlobalNotificationsBumped()
     : Counter32MibLeaf(oidNlmStatsGlobalNotificationsBumped)
@@ -778,16 +730,14 @@ nlmStatsGlobalNotificationsBumped::nlmStatsGlobalNotificationsBumped()
     // the static pointer nlmStatsGlobalNotificationsBumped::instance.
     instance = this;
 
-    //--AgentGen
-    // BEGIN=nlmStatsGlobalNotificationsBumped::nlmStatsGlobalNotificationsBumped
+    //--AgentGen BEGIN=nlmStatsGlobalNotificationsBumped::nlmStatsGlobalNotificationsBumped
     //--AgentGen END
 }
 
 nlmStatsGlobalNotificationsBumped::~nlmStatsGlobalNotificationsBumped()
 {
 
-    //--AgentGen
-    // BEGIN=nlmStatsGlobalNotificationsBumped::~nlmStatsGlobalNotificationsBumped
+    //--AgentGen BEGIN=nlmStatsGlobalNotificationsBumped::~nlmStatsGlobalNotificationsBumped
     //--AgentGen END
 }
 
@@ -799,10 +749,7 @@ void nlmStatsGlobalNotificationsBumped::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-uint32_t nlmStatsGlobalNotificationsBumped::get_state()
-{
-    return (uint32_t) * ((Counter32*)value);
-}
+uint32_t nlmStatsGlobalNotificationsBumped::get_state() { return (uint32_t) * ((Counter32*)value); }
 
 void nlmStatsGlobalNotificationsBumped::set_state(uint32_t l)
 {
@@ -832,8 +779,7 @@ uint32_t nlmStatsGlobalNotificationsBumped::inc()
 
 nlmConfigLogEntry* nlmConfigLogEntry::instance = 0;
 
-const index_info indNlmConfigLogEntry[1] = { { sNMP_SYNTAX_OCTETS, false, 0,
-    255 } };
+const index_info indNlmConfigLogEntry[1] = { { sNMP_SYNTAX_OCTETS, false, 0, 255 } };
 
 nlmConfigLogEntry::nlmConfigLogEntry(Mib* mib)
     : StorageTable(oidNlmConfigLogEntry, indNlmConfigLogEntry, 1), mib(mib)
@@ -862,8 +808,7 @@ nlmConfigLogEntry::~nlmConfigLogEntry()
     //--AgentGen END
 }
 
-void nlmConfigLogEntry::row_added(
-    MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmConfigLogEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* src)
 {
     // The row 'row' with 'index' has been added to the table.
 
@@ -871,8 +816,7 @@ void nlmConfigLogEntry::row_added(
     //--AgentGen END
 }
 
-void nlmConfigLogEntry::row_delete(
-    MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmConfigLogEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable* src)
 {
     // The row 'row' with 'index' will be deleted.
 
@@ -880,8 +824,7 @@ void nlmConfigLogEntry::row_delete(
     //--AgentGen END
 }
 
-void nlmConfigLogEntry::row_init(
-    MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmConfigLogEntry::row_init(MibTableRow* row, const Oidx& index, MibTable* src)
 {
     // The row 'row' with 'index' has been initialized.
 
@@ -889,8 +832,8 @@ void nlmConfigLogEntry::row_init(
     //--AgentGen END
 }
 
-void nlmConfigLogEntry::set_row(MibTableRow* r, const OctetStr& p0,
-    uint32_t p1, int32_t p2, int32_t p3, int32_t p4, int32_t p5)
+void nlmConfigLogEntry::set_row(
+    MibTableRow* r, const OctetStr& p0, uint32_t p1, int32_t p2, int32_t p3, int32_t p4, int32_t p5)
 {
     r->get_nth(0)->replace_value(new OctetStr(p0));
     r->get_nth(1)->replace_value(new Gauge32(p1));
@@ -910,21 +853,17 @@ void nlmConfigLogEntry::set_row(MibTableRow* r, const OctetStr& p0,
 
 nlmStatsLogEntry* nlmStatsLogEntry::instance = 0;
 
-const index_info indNlmStatsLogEntry[1] = { { sNMP_SYNTAX_OCTETS, false, 0,
-    255 } };
+const index_info indNlmStatsLogEntry[1] = { { sNMP_SYNTAX_OCTETS, false, 0, 255 } };
 
 nlmStatsLogEntry::nlmStatsLogEntry(nlmConfigLogEntry* configLogEntry)
-    : MibTable(oidNlmStatsLogEntry, indNlmStatsLogEntry, 1),
-      configLogEntry(configLogEntry)
+    : MibTable(oidNlmStatsLogEntry, indNlmStatsLogEntry, 1), configLogEntry(configLogEntry)
 {
     // This table object is a singleton. In order to access it use
     // the static pointer nlmStatsLogEntry::instance.
     instance = this;
 
-    add_col(new MibLeaf(
-        colNlmStatsLogNotificationsLogged, READONLY, new Counter32()));
-    add_col(new MibLeaf(
-        colNlmStatsLogNotificationsBumped, READONLY, new Counter32()));
+    add_col(new MibLeaf(colNlmStatsLogNotificationsLogged, READONLY, new Counter32()));
+    add_col(new MibLeaf(colNlmStatsLogNotificationsBumped, READONLY, new Counter32()));
 
     //--AgentGen BEGIN=nlmStatsLogEntry::nlmStatsLogEntry
     configLogEntry->add_listener(this);
@@ -943,8 +882,7 @@ nlmStatsLogEntry::~nlmStatsLogEntry()
     //--AgentGen END
 }
 
-void nlmStatsLogEntry::row_added(
-    MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmStatsLogEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* src)
 {
     // The row 'row' with 'index' has been added to the table.
 
@@ -953,8 +891,7 @@ void nlmStatsLogEntry::row_added(
     //--AgentGen END
 }
 
-void nlmStatsLogEntry::row_delete(
-    MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmStatsLogEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable* src)
 {
     // The row 'row' with 'index' will be deleted.
 
@@ -963,8 +900,7 @@ void nlmStatsLogEntry::row_delete(
     //--AgentGen END
 }
 
-void nlmStatsLogEntry::row_init(
-    MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmStatsLogEntry::row_init(MibTableRow* row, const Oidx& index, MibTable* src)
 {
     // The row 'row' with 'index' has been intialized.
 
@@ -992,15 +928,12 @@ nlmLogEntry* nlmLogEntry::instance = 0;
 const index_info indNlmLogEntry[2] = { { sNMP_SYNTAX_OCTETS, false, 0, 255 },
     { sNMP_SYNTAX_INT, false, 1, 1 } };
 
-nlmLogEntry::nlmLogEntry(Mib* mib, nlmConfigLogEntry* configLogEntry,
-    nlmStatsLogEntry* statsLogEntry, nlmLogVariableEntry* logVariableEntry,
-    nlmConfigGlobalEntryLimit* configGlobalEntryLimit,
-    nlmConfigGlobalAgeOut*     configGlobalAgeOut)
-    : MibTable(oidNlmLogEntry, indNlmLogEntry, 2), mib(mib),
-      configLogEntry(configLogEntry), statsLogEntry(statsLogEntry),
-      logVariableEntry(logVariableEntry),
-      configGlobalEntryLimit(configGlobalEntryLimit),
-      configGlobalAgeOut(configGlobalAgeOut)
+nlmLogEntry::nlmLogEntry(Mib* mib, nlmConfigLogEntry* configLogEntry, nlmStatsLogEntry* statsLogEntry,
+    nlmLogVariableEntry* logVariableEntry, nlmConfigGlobalEntryLimit* configGlobalEntryLimit,
+    nlmConfigGlobalAgeOut* configGlobalAgeOut)
+    : MibTable(oidNlmLogEntry, indNlmLogEntry, 2), mib(mib), configLogEntry(configLogEntry),
+      statsLogEntry(statsLogEntry), logVariableEntry(logVariableEntry),
+      configGlobalEntryLimit(configGlobalEntryLimit), configGlobalAgeOut(configGlobalAgeOut)
 {
     // This table object is a singleton. In order to access it use
     // the static pointer nlmLogEntry::instance.
@@ -1016,8 +949,7 @@ nlmLogEntry::nlmLogEntry(Mib* mib, nlmConfigLogEntry* configLogEntry,
     add_col(new MibLeaf(colNlmLogNotificationID, READONLY, new Oid()));
 
     //--AgentGen BEGIN=nlmLogEntry::nlmLogEntry
-    replace_col(nNlmLogDateAndTime,
-        new DateAndTime(colNlmLogDateAndTime, READONLY, VMODE_DEFAULT));
+    replace_col(nNlmLogDateAndTime, new DateAndTime(colNlmLogDateAndTime, READONLY, VMODE_DEFAULT));
     if (configLogEntry) { configLogEntry->add_listener(this); }
     add_listener(logVariableEntry);
     //--AgentGen END
@@ -1057,8 +989,7 @@ void nlmLogEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* src)
     //--AgentGen END
 }
 
-void nlmLogEntry::row_delete(
-    MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmLogEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable* src)
 {
     // The row 'row' with 'index' will be deleted.
 
@@ -1089,9 +1020,8 @@ void nlmLogEntry::row_init(MibTableRow* row, const Oidx& index, MibTable* src)
     //--AgentGen END
 }
 
-void nlmLogEntry::set_row(MibTableRow* r, uint32_t p0, const OctetStr& p1,
-    const OctetStr& p2, const OctetStr& p3, const char* p4, const OctetStr& p5,
-    const OctetStr& p6, const char* p7)
+void nlmLogEntry::set_row(MibTableRow* r, uint32_t p0, const OctetStr& p1, const OctetStr& p2,
+    const OctetStr& p3, const char* p4, const OctetStr& p5, const OctetStr& p6, const char* p7)
 {
     r->get_nth(0)->replace_value(new TimeTicks(p0));
     r->get_nth(1)->replace_value(new OctetStr(p1));
@@ -1105,8 +1035,7 @@ void nlmLogEntry::set_row(MibTableRow* r, uint32_t p0, const OctetStr& p1,
 
 //--AgentGen BEGIN=nlmLogEntry
 
-bool nlmLogEntry::check_access(
-    const Vbx* vbs, const int size, const Oid& nid, MibTableRow* profile)
+bool nlmLogEntry::check_access(const Vbx* vbs, const int size, const Oid& nid, MibTableRow* profile)
 {
     OctetStr viewName;
 
@@ -1119,8 +1048,7 @@ bool nlmLogEntry::check_access(
     for (int i = 0; i < size; i++)
     {
 
-        if (mib->get_request_list()->get_vacm()->isAccessAllowed(
-                viewName, vbs[i].get_oid())
+        if (mib->get_request_list()->get_vacm()->isAccessAllowed(viewName, vbs[i].get_oid())
             != VACM_accessAllowed)
         {
             accessAllowed = false;
@@ -1130,8 +1058,7 @@ bool nlmLogEntry::check_access(
 
     if (accessAllowed)
     {
-        accessAllowed = (mib->get_request_list()->get_vacm()->isAccessAllowed(
-                             viewName, nid)
+        accessAllowed = (mib->get_request_list()->get_vacm()->isAccessAllowed(viewName, nid)
             == VACM_accessAllowed);
     }
     if (!accessAllowed)
@@ -1145,9 +1072,8 @@ bool nlmLogEntry::check_access(
     return accessAllowed;
 }
 
-void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid,
-    const Vbx* vbs, const int vbcount, const OctetStr& context,
-    const OctetStr& ceid, const OctetStr& engineID)
+void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, const Vbx* vbs,
+    const int vbcount, const OctetStr& context, const OctetStr& ceid, const OctetStr& engineID)
 {
     OctetStr address;
     if (target)
@@ -1166,10 +1092,7 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid,
         target->get_address(addr);
         UdpAddress* udpAddress = new UdpAddress(addr);
         IpAddress   ip(*udpAddress);
-        for (int i = 0; i < ip.get_length(); i++)
-        {
-            address += (unsigned char)ip[i];
-        }
+        for (int i = 0; i < ip.get_length(); i++) { address += (unsigned char)ip[i]; }
         address += (udpAddress->get_port() >> 8);
         address += (udpAddress->get_port() & 0x00FF);
         delete udpAddress;
@@ -1188,21 +1111,15 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid,
     for (cur.init(logs); cur.get(); cur.next())
     {
         // ignore disabled log entries
-        if (((nlmConfigLogAdminStatus*)cur.get()->get_nth(
-                 nNlmConfigLogAdminStatus))
-                ->get_state()
+        if (((nlmConfigLogAdminStatus*)cur.get()->get_nth(nNlmConfigLogAdminStatus))->get_state()
             == nlmConfigLogAdminStatus::e_disabled)
             continue;
-        OctetStr profileName = ((nlmConfigLogFilterName*)cur.get()->get_nth(
-                                    nNlmConfigLogFilterName))
-                                   ->get_state();
+        OctetStr profileName =
+            ((nlmConfigLogFilterName*)cur.get()->get_nth(nNlmConfigLogFilterName))->get_state();
         // check access
-        if ((profileName.len() > 0)
-            && (!check_access(vbs, vbcount, nid, cur.get())))
-            continue;
+        if ((profileName.len() > 0) && (!check_access(vbs, vbcount, nid, cur.get()))) continue;
         // check filter
-        snmpNotifyFilterEntry* snmpNotifyFilterEntry =
-            snmpNotifyFilterEntry::get_instance(mib);
+        snmpNotifyFilterEntry* snmpNotifyFilterEntry = snmpNotifyFilterEntry::get_instance(mib);
         if ((profileName.len() == 0)
             || ((snmpNotifyFilterEntry)
                 && (!snmpNotifyFilterEntry->passes_filter(
@@ -1220,15 +1137,11 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid,
         vb->set_value(l);
 
         MibTableRow* r = add_row(newIndex);
-        set_row(r, sysUpTime::get(),
-            ((DateAndTime*)r->get_nth(1))->get_state(), engineID, address,
+        set_row(r, sysUpTime::get(), ((DateAndTime*)r->get_nth(1))->get_state(), engineID, address,
             "1.3.6.1.6.1.1", ceid, context, nid.get_printable());
 
         logVariableEntry->start_synch();
-        for (int i = 0; i < vbcount; i++)
-        {
-            logVariableEntry->add_variable(newIndex, i, vbs[i]);
-        }
+        for (int i = 0; i < vbcount; i++) { logVariableEntry->add_variable(newIndex, i, vbs[i]); }
         logVariableEntry->end_synch();
         MibTableRow* s  = statsLogEntry->find_index(cur.get()->get_index());
         Counter32    ll = 0;
@@ -1237,8 +1150,7 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid,
             s->get_nth(nNlmStatsLogNotificationsLogged)->get_value(ll);
             ll = (uint32_t)ll + 1ul;
             s->get_nth(nNlmStatsLogNotificationsLogged)->set_value(ll);
-            Counter32MibLeaf::incrementScalar(
-                mib, oidNlmStatsGlobalNotificationsLogged);
+            Counter32MibLeaf::incrementScalar(mib, oidNlmStatsGlobalNotificationsLogged);
         }
     }
     check_limits(logs);
@@ -1263,8 +1175,7 @@ void nlmLogEntry::check_limits(List<MibTableRow>* logs)
                 cur.next();
                 remove_row(victim->get_index());
                 i++;
-                Counter32MibLeaf::incrementScalar(
-                    mib, oidNlmStatsGlobalNotificationsBumped);
+                Counter32MibLeaf::incrementScalar(mib, oidNlmStatsGlobalNotificationsBumped);
             }
         }
     }
@@ -1325,12 +1236,10 @@ void nlmLogEntry::check_limits(List<MibTableRow>* logs)
                     c.next();
                     continue;
                 }
-                Counter32MibLeaf::incrementScalar(
-                    mib, oidNlmStatsGlobalNotificationsBumped);
+                Counter32MibLeaf::incrementScalar(mib, oidNlmStatsGlobalNotificationsBumped);
 
                 Counter32    ll;
-                MibTableRow* r =
-                    statsLogEntry->find_index(cur.get()->get_index());
+                MibTableRow* r = statsLogEntry->find_index(cur.get()->get_index());
                 if (r)
                 {
                     MibLeaf* l = r->get_nth(nNlmStatsLogNotificationsBumped);
@@ -1355,8 +1264,7 @@ void nlmLogEntry::check_limits(List<MibTableRow>* logs)
 
 nlmLogVariableEntry* nlmLogVariableEntry::instance = 0;
 
-const index_info indNlmLogVariableEntry[3] = { { sNMP_SYNTAX_OCTETS, false, 0,
-                                                   255 },
+const index_info indNlmLogVariableEntry[3] = { { sNMP_SYNTAX_OCTETS, false, 0, 255 },
     { sNMP_SYNTAX_INT, false, 1, 1 }, { sNMP_SYNTAX_INT, false, 1, 1 } };
 
 nlmLogVariableEntry::nlmLogVariableEntry()
@@ -1367,25 +1275,16 @@ nlmLogVariableEntry::nlmLogVariableEntry()
     instance = this;
 
     add_col(new MibLeaf(colNlmLogVariableID, READONLY, new Oid()));
-    add_col(
-        new MibLeaf(colNlmLogVariableValueType, READONLY, new SnmpInt32()));
-    add_col(
-        new MibLeaf(colNlmLogVariableCounter32Val, READONLY, new Counter32()));
-    add_col(
-        new MibLeaf(colNlmLogVariableUnsigned32Val, READONLY, new Gauge32()));
-    add_col(
-        new MibLeaf(colNlmLogVariableTimeTicksVal, READONLY, new TimeTicks()));
-    add_col(
-        new MibLeaf(colNlmLogVariableInteger32Val, READONLY, new SnmpInt32()));
-    add_col(new MibLeaf(
-        colNlmLogVariableOctetStringVal, READONLY, new OctetStr()));
-    add_col(new MibLeaf(
-        colNlmLogVariableIpAddressVal, READONLY, new IpAddress("0.0.0.0")));
+    add_col(new MibLeaf(colNlmLogVariableValueType, READONLY, new SnmpInt32()));
+    add_col(new MibLeaf(colNlmLogVariableCounter32Val, READONLY, new Counter32()));
+    add_col(new MibLeaf(colNlmLogVariableUnsigned32Val, READONLY, new Gauge32()));
+    add_col(new MibLeaf(colNlmLogVariableTimeTicksVal, READONLY, new TimeTicks()));
+    add_col(new MibLeaf(colNlmLogVariableInteger32Val, READONLY, new SnmpInt32()));
+    add_col(new MibLeaf(colNlmLogVariableOctetStringVal, READONLY, new OctetStr()));
+    add_col(new MibLeaf(colNlmLogVariableIpAddressVal, READONLY, new IpAddress("0.0.0.0")));
     add_col(new MibLeaf(colNlmLogVariableOidVal, READONLY, new Oid()));
-    add_col(
-        new MibLeaf(colNlmLogVariableCounter64Val, READONLY, new Counter64()));
-    add_col(
-        new MibLeaf(colNlmLogVariableOpaqueVal, READONLY, new OpaqueStr()));
+    add_col(new MibLeaf(colNlmLogVariableCounter64Val, READONLY, new Counter64()));
+    add_col(new MibLeaf(colNlmLogVariableOpaqueVal, READONLY, new OpaqueStr()));
 
     //--AgentGen BEGIN=nlmLogVariableEntry::nlmLogVariableEntry
     //--AgentGen END
@@ -1398,8 +1297,7 @@ nlmLogVariableEntry::~nlmLogVariableEntry()
     //--AgentGen END
 }
 
-void nlmLogVariableEntry::row_added(
-    MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmLogVariableEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* src)
 {
     // The row 'row' with 'index' has been added to the table.
 
@@ -1407,8 +1305,7 @@ void nlmLogVariableEntry::row_added(
     //--AgentGen END
 }
 
-void nlmLogVariableEntry::row_delete(
-    MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmLogVariableEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable* src)
 {
     // The row 'row' with 'index' will be deleted.
 
@@ -1417,8 +1314,7 @@ void nlmLogVariableEntry::row_delete(
     {
         OidListCursor<MibTableRow> cur(&content);
         Oidx                       ind(index);
-        for (cur.lookup(&ind);
-             ((cur.get()) && (cur.get()->get_index().cut_right(1) == index));)
+        for (cur.lookup(&ind); ((cur.get()) && (cur.get()->get_index().cut_right(1) == index));)
         {
             MibTableRow* victim = cur.get();
             cur.next();
@@ -1428,8 +1324,7 @@ void nlmLogVariableEntry::row_delete(
     //--AgentGen END
 }
 
-void nlmLogVariableEntry::row_init(
-    MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmLogVariableEntry::row_init(MibTableRow* row, const Oidx& index, MibTable* src)
 {
     // The row 'row' with 'index' has been initialized.
 
@@ -1437,10 +1332,9 @@ void nlmLogVariableEntry::row_init(
     //--AgentGen END
 }
 
-void nlmLogVariableEntry::set_row(MibTableRow* r, const char* p0, int32_t p1,
-    uint32_t p2, uint32_t p3, uint32_t p4, int32_t p5, const OctetStr& p6,
-    const char* p7, const char* p8, uint32_t p9hi, uint32_t p9lo,
-    const OctetStr& p10)
+void nlmLogVariableEntry::set_row(MibTableRow* r, const char* p0, int32_t p1, uint32_t p2, uint32_t p3,
+    uint32_t p4, int32_t p5, const OctetStr& p6, const char* p7, const char* p8, uint32_t p9hi,
+    uint32_t p9lo, const OctetStr& p10)
 {
     r->get_nth(0)->replace_value(new Oid(p0));
     r->get_nth(1)->replace_value(new SnmpInt32(p1));
@@ -1456,8 +1350,7 @@ void nlmLogVariableEntry::set_row(MibTableRow* r, const char* p0, int32_t p1,
 }
 
 //--AgentGen BEGIN=nlmLogVariableEntry
-void nlmLogVariableEntry::add_variable(
-    const Oidx& index, unsigned int i, const Vbx& vb)
+void nlmLogVariableEntry::add_variable(const Oidx& index, unsigned int i, const Vbx& vb)
 {
     Oidx newIndex(index);
     newIndex += (uint32_t)i;
@@ -1471,39 +1364,33 @@ void nlmLogVariableEntry::add_variable(
     switch (vb.get_syntax())
     {
     case sNMP_SYNTAX_INT32:
-        r->get_nth(nNlmLogVariableInteger32Val)
-            ->replace_value(vb.clone_value());
+        r->get_nth(nNlmLogVariableInteger32Val)->replace_value(vb.clone_value());
         r->get_nth(nNlmLogVariableInteger32Val)->set_access(READONLY);
         r->get_nth(nNlmLogVariableValueType)->set_value(4);
         break;
     case sNMP_SYNTAX_TIMETICKS:
-        r->get_nth(nNlmLogVariableTimeTicksVal)
-            ->replace_value(vb.clone_value());
+        r->get_nth(nNlmLogVariableTimeTicksVal)->replace_value(vb.clone_value());
         r->get_nth(nNlmLogVariableTimeTicksVal)->set_access(READONLY);
         r->get_nth(nNlmLogVariableValueType)->set_value(3);
         break;
     case sNMP_SYNTAX_CNTR32:
-        r->get_nth(nNlmLogVariableCounter32Val)
-            ->replace_value(vb.clone_value());
+        r->get_nth(nNlmLogVariableCounter32Val)->replace_value(vb.clone_value());
         r->get_nth(nNlmLogVariableCounter32Val)->set_access(READONLY);
         r->get_nth(nNlmLogVariableValueType)->set_value(1);
         break;
     case sNMP_SYNTAX_GAUGE32:
-        r->get_nth(nNlmLogVariableUnsigned32Val)
-            ->replace_value(vb.clone_value());
+        r->get_nth(nNlmLogVariableUnsigned32Val)->replace_value(vb.clone_value());
         r->get_nth(nNlmLogVariableUnsigned32Val)->set_access(READONLY);
         r->get_nth(nNlmLogVariableValueType)->set_value(2);
         break;
     case sNMP_SYNTAX_CNTR64:
-        r->get_nth(nNlmLogVariableCounter64Val)
-            ->replace_value(vb.clone_value());
+        r->get_nth(nNlmLogVariableCounter64Val)->replace_value(vb.clone_value());
         r->get_nth(nNlmLogVariableCounter64Val)->set_access(READONLY);
         r->get_nth(nNlmLogVariableValueType)->set_value(8);
         break;
     case sNMP_SYNTAX_OCTETS:
     case sNMP_SYNTAX_BITS:
-        r->get_nth(nNlmLogVariableOctetStringVal)
-            ->replace_value(vb.clone_value());
+        r->get_nth(nNlmLogVariableOctetStringVal)->replace_value(vb.clone_value());
         r->get_nth(nNlmLogVariableOctetStringVal)->set_access(READONLY);
         r->get_nth(nNlmLogVariableValueType)->set_value(6);
         break;
@@ -1516,8 +1403,7 @@ void nlmLogVariableEntry::add_variable(
         break;
     }
     case sNMP_SYNTAX_IPADDR:
-        r->get_nth(nNlmLogVariableIpAddressVal)
-            ->replace_value(vb.clone_value());
+        r->get_nth(nNlmLogVariableIpAddressVal)->replace_value(vb.clone_value());
         r->get_nth(nNlmLogVariableIpAddressVal)->set_access(READONLY);
         r->get_nth(nNlmLogVariableValueType)->set_value(5);
         break;
@@ -1531,9 +1417,7 @@ void nlmLogVariableEntry::add_variable(
 }
 //--AgentGen END
 
-notification_log_mib::notification_log_mib()
-    : notification_log_mib(Mib::instance)
-{ }
+notification_log_mib::notification_log_mib() : notification_log_mib(Mib::instance) { }
 
 notification_log_mib::notification_log_mib(Mib* mib)
     : MibGroup("1.3.6.1.2.1.92", "notificationLogMIB"), mib(mib)
@@ -1541,12 +1425,10 @@ notification_log_mib::notification_log_mib(Mib* mib)
 
     //--AgentGen BEGIN=notification_log_mib::notification_log_mib
     //--AgentGen END
-    nlmConfigGlobalEntryLimit* _nlmConfigGlobalEntryLimit =
-        new nlmConfigGlobalEntryLimit();
+    nlmConfigGlobalEntryLimit* _nlmConfigGlobalEntryLimit = new nlmConfigGlobalEntryLimit();
     add(_nlmConfigGlobalEntryLimit);
 
-    nlmConfigGlobalAgeOut* _nlmConfigGlobalAgeOut =
-        new nlmConfigGlobalAgeOut();
+    nlmConfigGlobalAgeOut* _nlmConfigGlobalAgeOut = new nlmConfigGlobalAgeOut();
     add(_nlmConfigGlobalAgeOut);
 
     nlmConfigLogEntry* configLogEntry = new nlmConfigLogEntry(mib);

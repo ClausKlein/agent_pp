@@ -94,8 +94,7 @@ public:
      * @param max_size
      *    the maximum size of the DisplayString.
      */
-    SnmpDisplayString(
-        const Oidx&, mib_access, NS_SNMP OctetStr*, bool, int, int);
+    SnmpDisplayString(const Oidx&, mib_access, NS_SNMP OctetStr*, bool, int, int);
     virtual ~SnmpDisplayString();
 
     MibEntryPtr clone() override;
@@ -524,8 +523,7 @@ public:
 
     virtual ~StorageTypeVoter() { }
 
-    int is_transition_ok(
-        MibTable*, MibTableRow*, const Oidx&, int, int) override;
+    int is_transition_ok(MibTable*, MibTableRow*, const Oidx&, int, int) override;
 };
 
 /*--------------------------- class StorageTable ------------------------*/
@@ -764,8 +762,7 @@ public:
      * @param max
      *    the maximum length of the receiver's value.
      */
-    OctetStrMinMax(const Oidx&, mib_access, NS_SNMP OctetStr*, int,
-        unsigned int, unsigned int);
+    OctetStrMinMax(const Oidx&, mib_access, NS_SNMP OctetStr*, int, unsigned int, unsigned int);
     /**
      * Construct a SnmpIn32MinMax without initial value (will be 0).
      *
