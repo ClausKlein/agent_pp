@@ -217,12 +217,6 @@ CPMAddPackage(
   OPTIONS "SNMP_PP_LOGGING NO" "SNMP_PP_EXAMPLES YES"
 )
 
-CPMAddPackage(
-  NAME minijson_reader
-  GIT_TAG 949a9fc651c91f06da0b4fcdd97a8dc2b2f85816 # v1.0.0
-  GITHUB_REPOSITORY ClausKlein/minijson_reader
-)
-
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake_config.h.in config.h)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake_libagent.h.in libagent.h)
 configure_file(
