@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14...3.21)
+cmake_minimum_required(VERSION 3.16...3.21)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -193,7 +193,7 @@ if(USE_OUTPUT_PATH)
   # Where to put all the LIBRARY targets when built. This variable is used to initialize the
   # LIBRARY_OUTPUT_DIRECTORY property on all the targets.
   # -----------------------------------------------------------------------
-  set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
   # -----------------------------------------------------------------------
   # Where to put all the RUNTIME targets when built. This variable is used to initialize the
@@ -212,9 +212,15 @@ set(SNMP_PP_VERSION 3.4.7)
 # see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.12
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG v${SNMP_PP_VERSION}.12
+  GIT_TAG 2797b8ac32048ce2a4e340817e543a9d8ed7ad33 # v${SNMP_PP_VERSION}.12
   GITHUB_REPOSITORY ClausKlein/snmp_pp
   OPTIONS "SNMP_PP_LOGGING NO" "SNMP_PP_EXAMPLES YES"
+)
+
+CPMAddPackage(
+  NAME minijson_reader
+  GIT_TAG 949a9fc651c91f06da0b4fcdd97a8dc2b2f85816 # v1.0.0
+  GITHUB_REPOSITORY ClausKlein/minijson_reader
 )
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake_config.h.in config.h)
@@ -302,6 +308,9 @@ set(MY_SRC_FILES
 option(BUILD_SHARED_LIBS "Global flag to cause add_library() to create shared libraries if on." ON)
 add_library(${PROJECT_NAME} ${MY_HEADER_FILES} ${MY_HEADER_LIB_FILES} ${CMAKE_CURRENT_BINARY_DIR}/config.h ${MY_SRC_FILES})
 
+option(ENABLE_UNITY "Enable Unity builds of projects" ON)
+set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ${ENABLE_UNITY})
+
 if(MSVC)
   # FIXME: should be warning level 4 (and all warnings as errors! /WX)
   target_compile_options(${PROJECT_NAME} PRIVATE /W3 /wd4251)
@@ -312,10 +321,9 @@ else()
 endif()
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE 1)
-# Set .so version as autoconf does: agent++ version 1.2.3 will go to .so.12.0.3!
 set_target_properties(
-  ${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}.0.${PROJECT_VERSION_PATCH}
-                             SOVERSION ${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}
+  ${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
+                             SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD ${CMAKE_CXX_STANDARD})
 target_link_libraries(${PROJECT_NAME} PUBLIC snmp_pp::snmp_pp)
