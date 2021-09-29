@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 3.14...3.21)
+cmake_minimum_required(VERSION 3.16...3.21)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # NOTE: We need LANGUAGE C too for libdes. It may be required to build at Windows! CK
 project(
   agent_pp
-  VERSION 4.5.1.11
+  VERSION 4.5.1.12
   LANGUAGES CXX C
 )
 
@@ -193,7 +193,7 @@ if(USE_OUTPUT_PATH)
   # Where to put all the LIBRARY targets when built. This variable is used to initialize the
   # LIBRARY_OUTPUT_DIRECTORY property on all the targets.
   # -----------------------------------------------------------------------
-  set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
   # -----------------------------------------------------------------------
   # Where to put all the RUNTIME targets when built. This variable is used to initialize the
@@ -209,10 +209,10 @@ include(CPM)
 
 set(SNMP_PP_VERSION 3.4.7)
 # XXX find_package(snmp_pp CONFIG ${SNMP_PP_VERSION} REQUIRED)
-# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.12
+# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.13.beta
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG v${SNMP_PP_VERSION}.12
+  GIT_TAG 829b79c65b521dcacc609ea595dbccffdcddbc05 # v${SNMP_PP_VERSION}.13
   GITHUB_REPOSITORY ClausKlein/snmp_pp
   OPTIONS "SNMP_PP_LOGGING NO" "SNMP_PP_EXAMPLES YES"
 )
@@ -302,6 +302,9 @@ set(MY_SRC_FILES
 option(BUILD_SHARED_LIBS "Global flag to cause add_library() to create shared libraries if on." ON)
 add_library(${PROJECT_NAME} ${MY_HEADER_FILES} ${MY_HEADER_LIB_FILES} ${CMAKE_CURRENT_BINARY_DIR}/config.h ${MY_SRC_FILES})
 
+option(ENABLE_UNITY "Enable Unity builds of projects" ON)
+set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ${ENABLE_UNITY})
+
 if(MSVC)
   # FIXME: should be warning level 4 (and all warnings as errors! /WX)
   target_compile_options(${PROJECT_NAME} PRIVATE /W3 /wd4251)
@@ -312,10 +315,9 @@ else()
 endif()
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE 1)
-# Set .so version as autoconf does: agent++ version 1.2.3 will go to .so.12.0.3!
 set_target_properties(
-  ${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}.0.${PROJECT_VERSION_PATCH}
-                             SOVERSION ${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}
+  ${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
+                             SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD ${CMAKE_CXX_STANDARD})
 target_link_libraries(${PROJECT_NAME} PUBLIC snmp_pp::snmp_pp)
