@@ -78,7 +78,7 @@ public:
      */
     MibTableSizePolicy(const table_size_def*, unsigned int, unsigned int);
 
-    virtual ~MibTableSizePolicy() { }
+    ~MibTableSizePolicy() override { }
 
     int is_transition_ok(MibTable*, MibTableRow*, const Oidx&, int, int) override;
 

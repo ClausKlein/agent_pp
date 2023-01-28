@@ -163,7 +163,7 @@ public:
     /**
      * Destructor.
      */
-    virtual ~MibLeaf();
+    ~MibLeaf() override;
 
     /**
      * Initialize a MibLeaf object. This method is typically called either
@@ -674,7 +674,7 @@ public:
     /**
      * Destructor
      */
-    virtual ~snmpRowStatus();
+    ~snmpRowStatus() override;
 
     /**
      * Check whether the receiver's value may be set to
@@ -1311,7 +1311,7 @@ public:
     /**
      * Destructor.
      */
-    virtual ~MibTable();
+    ~MibTable() override;
 
     /**
      * Return the type of the receiver.

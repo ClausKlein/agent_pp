@@ -375,7 +375,7 @@ OidListCursor<MibGroup> MibContext::get_groups() { return OidListCursor<MibGroup
 
 MibEntry* MibContext::add(MibEntry* item)
 {
-    ThreadSynchronize _ts_synchronize(*this);
+    ThreadSynchronize const _ts_synchronize(*this);
     if ((item->type() == AGENTPP_LEAF) && (item->get_access() == NOACCESS))
     {
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
@@ -419,10 +419,7 @@ MibEntry* MibContext::add(MibEntry* item)
         for (; cur.get(); cur.next()) content.add(cur.get());
         groups.add(mg);
     }
-    else
-    {
-        return content.add(item);
-    }
+    else { return content.add(item); }
     return item;
 }
 

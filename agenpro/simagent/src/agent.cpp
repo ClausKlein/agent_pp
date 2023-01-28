@@ -438,10 +438,7 @@ int main(int argc, char* argv[])
         req = reqList->receive(2);
 
         if (req) { mib->process_request(req); }
-        else
-        {
-            mib->cleanup();
-        }
+        else { mib->cleanup(); }
     }
     delete reqList;
     delete mib;

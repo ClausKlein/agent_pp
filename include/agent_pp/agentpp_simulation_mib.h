@@ -50,7 +50,7 @@ class AGENTPP_DECL agentppSimMode : public MibLeaf {
 
 public:
     agentppSimMode();
-    virtual ~agentppSimMode();
+    ~agentppSimMode() override;
 
     static agentppSimMode* instance;
 
@@ -80,7 +80,7 @@ class AGENTPP_DECL agentppSimDeleteRow : public MibLeaf {
 
 public:
     agentppSimDeleteRow(Mib*);
-    virtual ~agentppSimDeleteRow();
+    ~agentppSimDeleteRow() override;
 
     static agentppSimDeleteRow* instance;
 
@@ -105,7 +105,7 @@ class AGENTPP_DECL agentppSimDeleteTableContents : public MibLeaf {
 
 public:
     agentppSimDeleteTableContents(Mib*);
-    virtual ~agentppSimDeleteTableContents();
+    ~agentppSimDeleteTableContents() override;
 
     static agentppSimDeleteTableContents* instance;
 
@@ -120,7 +120,7 @@ class AGENTPP_DECL agentpp_simulation_mib : public MibGroup {
 public:
     agentpp_simulation_mib(Mib*);
     agentpp_simulation_mib();
-    virtual ~agentpp_simulation_mib() { }
+    ~agentpp_simulation_mib() override { }
 };
 
 #ifdef AGENTPP_NAMESPACE

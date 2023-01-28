@@ -34,19 +34,19 @@ static const char* loggerModuleName = "agent++.vacm";
 #endif
 
 const index_info   iVacmSecurityToGroupTable[2] = { { sNMP_SYNTAX_INT, false, 1, 1 },
-    { sNMP_SYNTAX_OCTETS, false, 1, 32 } };
+      { sNMP_SYNTAX_OCTETS, false, 1, 32 } };
 const unsigned int lVacmSecurityToGroupTable    = 2;
 
 const index_info   iVacmContextTable[1] = { { sNMP_SYNTAX_OCTETS, false, 0, 32 } };
 const unsigned int lVacmContextTable    = 1;
 
 const index_info   iVacmAccessTable[4] = { { sNMP_SYNTAX_OCTETS, false, 1, 32 },
-    { sNMP_SYNTAX_OCTETS, false, 0, 32 }, { sNMP_SYNTAX_INT, false, 1, 1 },
-    { sNMP_SYNTAX_INT, false, 1, 1 } };
+      { sNMP_SYNTAX_OCTETS, false, 0, 32 }, { sNMP_SYNTAX_INT, false, 1, 1 },
+      { sNMP_SYNTAX_INT, false, 1, 1 } };
 const unsigned int lVacmAccessTable    = 4;
 
 const index_info   iVacmViewTreeFamilyTable[2] = { { sNMP_SYNTAX_OCTETS, false, 1, 32 },
-    { sNMP_SYNTAX_OID, false, 0, 95 } };
+      { sNMP_SYNTAX_OID, false, 0, 95 } };
 const unsigned int lVacmViewTreeFamilyTable    = 2;
 
 SnmpUnavailableContexts::SnmpUnavailableContexts()
@@ -83,7 +83,7 @@ VacmContextTable::~VacmContextTable() { }
 
 bool VacmContextTable::addNewRow(const OctetStr& context)
 {
-    Oidx newIndex = Oidx::from_string(context, true);
+    Oidx const newIndex = Oidx::from_string(context, true);
 
     if (find_index(newIndex))
         return false;
@@ -105,8 +105,8 @@ bool VacmContextTable::isContextSupported(const OctetStr& context)
     OidListCursor<MibTableRow> cur;
     for (cur.init(&content); cur.get(); cur.next())
     {
-        Vbx      v = cur.get()->get_nth(0)->get_value();
-        OctetStr os;
+        Vbx const v = cur.get()->get_nth(0)->get_value();
+        OctetStr  os;
         v.get_value(os);
         if ((os.len() == context.len()) && (os == context)) return true;
     }
@@ -121,7 +121,7 @@ bool VacmContextTable::isContextSupported(const OctetStr& context)
 VacmSecurityToGroupTable::VacmSecurityToGroupTable()
     : StorageTable(oidVacmSecurityToGroupEntry, iVacmSecurityToGroupTable, lVacmSecurityToGroupTable)
 {
-    Oidx tmpoid = Oidx(oidVacmSecurityToGroupEntry);
+    Oidx const tmpoid = Oidx(oidVacmSecurityToGroupEntry);
 
     // vacmSecurityModel
     add_col(new SnmpInt32MinMax("1", NOACCESS, 0, VMODE_NONE, 1, 3));
@@ -271,7 +271,7 @@ VacmAccessTable::VacmAccessTable(VacmSecurityToGroupTable* stogt)
 {
     securityToGroupTable = stogt;
 
-    Oidx tmpoid = Oidx(oidVacmSecurityToGroupEntry);
+    Oidx const tmpoid = Oidx(oidVacmSecurityToGroupEntry);
 
     // vacmAccessContextPrefix
     add_col(new SnmpAdminString("1", NOACCESS, new OctetStr(""), VMODE_DEFAULT, 0, 32));
@@ -357,8 +357,8 @@ bool VacmAccessTable::getViewName(const OctetStr& group, const OctetStr& context
     unsigned int foundSecurityLevel       = 0;
     MibTableRow* foundRow                 = NULL;
 
-    unsigned int groupLen = group.len();
-    Oidx         ind;
+    unsigned int const groupLen = group.len();
+    Oidx               ind;
 
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 7);
     LOG("Vacm: getViewName: (group) (context) (model) (level) (type)");
@@ -399,8 +399,8 @@ bool VacmAccessTable::getViewName(const OctetStr& group, const OctetStr& context
                             )
                     && ((int)ind[ind.len() - 1] <= securityLevel))
                 {
-                    OctetStr pref       = OctetStr(ind.cut_left(ind[0] + 2).cut_right(2).as_string());
-                    int      exactMatch = 0;
+                    OctetStr const pref = OctetStr(ind.cut_left(ind[0] + 2).cut_right(2).as_string());
+                    int            exactMatch = 0;
                     cur.get()->get_nth(3)->get_value(exactMatch);
 
                     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 8);
@@ -545,7 +545,7 @@ int VacmViewTreeFamilyTableStatus::set(const Vbx& vb)
     switch (rs)
     {
     case rowNotInService: {
-        OctetStr       viewName = ((SnmpAdminString*)my_row->first())->get();
+        OctetStr const viewName = ((SnmpAdminString*)my_row->first())->get();
         ViewNameIndex* views    = ((VacmViewTreeFamilyTable*)my_table)->viewsOf(viewName);
         if (!views)
         {
@@ -567,7 +567,7 @@ int VacmViewTreeFamilyTableStatus::set(const Vbx& vb)
         break;
     }
     case rowActive: {
-        OctetStr       viewName = ((SnmpAdminString*)my_row->first())->get();
+        OctetStr const viewName = ((SnmpAdminString*)my_row->first())->get();
         ViewNameIndex* views    = ((VacmViewTreeFamilyTable*)my_table)->viewsOf(viewName);
         if (!views)
         {
@@ -605,7 +605,7 @@ MibEntryPtr VacmViewTreeFamilyTableStatus::clone()
 VacmViewTreeFamilyTable::VacmViewTreeFamilyTable()
     : StorageTable(oidVacmViewTreeFamilyEntry, iVacmViewTreeFamilyTable, lVacmViewTreeFamilyTable)
 {
-    Oidx tmpoid = Oidx(oidVacmViewTreeFamilyEntry);
+    Oidx const tmpoid = Oidx(oidVacmViewTreeFamilyEntry);
 
     // VacmViewTreeFamilyViewName
     add_col(new SnmpAdminString("1", NOACCESS, new OctetStr(""), VMODE_DEFAULT, 1, 32));
@@ -646,7 +646,7 @@ void VacmViewTreeFamilyTable::row_added(MibTableRow* new_row, const Oidx& ind, M
 void VacmViewTreeFamilyTable::row_activated(MibTableRow* row, const Oidx& ind, MibTable*)
 {
     // add row to the index
-    OctetStr viewName = ((SnmpAdminString*)row->first())->get();
+    OctetStr const viewName = ((SnmpAdminString*)row->first())->get();
 
     ViewNameIndex* views = viewsOf(viewName);
     if (views)
@@ -820,7 +820,7 @@ void VacmViewTreeFamilyTable::row_init(MibTableRow* newRow, const Oidx& ind, Mib
         Oidx o(ind);
         o.trim(o.len() - (ind[0] + 1)); // cut off subtree
         o = o.cut_left(1);              // cut off length
-        OctetStr viewName(o.as_string());
+        OctetStr const viewName(o.as_string());
 
         ViewNameIndex* views = viewsOf(viewName);
         if (views)

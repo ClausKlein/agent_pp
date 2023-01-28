@@ -339,7 +339,7 @@ public:
      * Destroy thread. If thread is running or has been finished but
      * not joined yet, then join it.
      */
-    virtual ~Thread();
+    ~Thread() override;
 
     /**
      * Causes the currently executing thread to sleep (temporarily
@@ -660,7 +660,7 @@ public:
     /**
      * Destructor will wait for termination of all threads.
      */
-    virtual ~QueuedThreadPool();
+    ~QueuedThreadPool() override;
 
     /**
      * Execute a task. The task will be deleted after call of
@@ -738,7 +738,7 @@ public:
     /**
      * Destructor will wait for thread to terminate.
      */
-    virtual ~TaskManager();
+    ~TaskManager() override;
 
     /**
      * Check whether this thread is idle or not.
@@ -821,7 +821,7 @@ protected:
 class AGENTPP_DECL MibTask : public Runnable {
 public:
     MibTask(MibMethodCall* call) { task = call; }
-    virtual ~MibTask() { delete task; }
+    ~MibTask() override { delete task; }
 
     void run() override;
 
@@ -884,7 +884,7 @@ AGENTPP_DECL_TEMPL template class AGENTPP_DECL List<LockRequest>;
 class AGENTPP_DECL LockQueue : public Thread {
 public:
     LockQueue();
-    virtual ~LockQueue();
+    ~LockQueue() override;
     void run() override;
 
     /**
@@ -977,7 +977,7 @@ protected:
 class AGENTPP_DECL SingleThreadObject : public ThreadManager {
 public:
     SingleThreadObject();
-    virtual ~SingleThreadObject();
+    ~SingleThreadObject() override;
 };
 
 #ifdef AGENTPP_NAMESPACE

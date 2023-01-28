@@ -164,10 +164,7 @@ Oidx MibProxy::find_succ(const Oidx& id, Request*)
         Oidx tmpoid;
         // skip oids less than this proxied subtree
         if (id < oid) { tmpoid = oid; }
-        else
-        {
-            tmpoid = id;
-        }
+        else { tmpoid = id; }
         lastNext.set_oid(translate(tmpoid));
 
         LOG_BEGIN(loggerModuleName, INFO_LOG | 3);
@@ -483,10 +480,7 @@ Oidx MibProxyV3::find_succ(const Oidx& id, Request* req)
         Oidx tmpoid;
         // skip oids less than this proxied subtree
         if (id < oid) { tmpoid = oid; }
-        else
-        {
-            tmpoid = id;
-        }
+        else { tmpoid = id; }
         lastNext.set_oid(tmpoid);
 
         pdu += lastNext;

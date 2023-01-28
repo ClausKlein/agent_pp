@@ -93,7 +93,7 @@ public:
         operation = op;
         initiator = source;
     }
-    virtual ~OperationTask() { }
+    ~OperationTask() override { }
     void run() override;
 
 private:
@@ -140,7 +140,7 @@ public:
         mibReference = mibRef;
     }
 
-    virtual ~agentppCfgSecSrcAddrValidation();
+    ~agentppCfgSecSrcAddrValidation() override;
 
     static agentppCfgSecSrcAddrValidation* instance;
 
@@ -174,7 +174,7 @@ public:
      * Default constructor without agentppCfgStorageEntry.
      */
     agentpp_config_mib();
-    virtual ~agentpp_config_mib() { }
+    ~agentpp_config_mib() override { }
 //--AgentGen BEGIN=agentpp_config_mib
 #    ifndef _NO_THREADS
     /**
@@ -192,7 +192,7 @@ class AGENTPP_DECL agentppCfgLogLevel : public MibLeaf {
 
 public:
     agentppCfgLogLevel(int, const Oidx&);
-    virtual ~agentppCfgLogLevel();
+    ~agentppCfgLogLevel() override;
 
     virtual int32_t get_state();
     virtual void    set_state(int32_t);
@@ -220,7 +220,7 @@ class AGENTPP_DECL agentppCfgStoragePath : public SnmpDisplayString {
 
 public:
     agentppCfgStoragePath(const Oidx&);
-    virtual ~agentppCfgStoragePath();
+    ~agentppCfgStoragePath() override;
 
     MibEntryPtr              clone() override;
     void                     get_request(Request*, int) override;
@@ -246,7 +246,7 @@ class AGENTPP_DECL agentppCfgStorageFormat : public MibLeaf {
 
 public:
     agentppCfgStorageFormat(const Oidx&);
-    virtual ~agentppCfgStorageFormat();
+    ~agentppCfgStorageFormat() override;
 
     MibEntryPtr     clone() override;
     void            get_request(Request*, int) override;
@@ -285,7 +285,7 @@ class AGENTPP_DECL agentppCfgStorageOperation : public MibLeaf {
 
 public:
     agentppCfgStorageOperation(const Oidx&);
-    virtual ~agentppCfgStorageOperation();
+    ~agentppCfgStorageOperation() override;
 
     MibEntryPtr     clone() override;
     void            get_request(Request*, int) override;
@@ -316,7 +316,7 @@ class AGENTPP_DECL agentppCfgStorageStorageType : public StorageType {
 
 public:
     agentppCfgStorageStorageType(const Oidx&);
-    virtual ~agentppCfgStorageStorageType();
+    ~agentppCfgStorageStorageType() override;
 
     MibEntryPtr clone() override;
     void        get_request(Request*, int) override;
@@ -341,7 +341,7 @@ class AGENTPP_DECL agentppCfgStorageStatus : public snmpRowStatus {
 
 public:
     agentppCfgStorageStatus(const Oidx&);
-    virtual ~agentppCfgStorageStatus();
+    ~agentppCfgStorageStatus() override;
 
     MibEntryPtr     clone() override;
     virtual int32_t get_state();
@@ -374,7 +374,7 @@ class AGENTPP_DECL agentppCfgStorageEntry : public StorageTable {
 
 public:
     agentppCfgStorageEntry();
-    virtual ~agentppCfgStorageEntry();
+    ~agentppCfgStorageEntry() override;
 
     static agentppCfgStorageEntry* instance;
 

@@ -345,7 +345,7 @@ class AGENTPP_DECL VacmContextTable : public MibTable {
 
 public:
     VacmContextTable();
-    ~VacmContextTable();
+    ~VacmContextTable() override;
 
     bool isContextSupported(const NS_SNMP OctetStr& context);
     bool addNewRow(const NS_SNMP OctetStr& context);
@@ -370,7 +370,7 @@ class AGENTPP_DECL VacmSecurityToGroupTable : public StorageTable {
 
 public:
     VacmSecurityToGroupTable();
-    virtual ~VacmSecurityToGroupTable();
+    ~VacmSecurityToGroupTable() override;
 
     bool ready_for_service(Vbx*, int) override;
     bool could_ever_be_managed(const Oidx&, int&) override;
@@ -392,7 +392,7 @@ class AGENTPP_DECL VacmAccessTable : public StorageTable {
 
 public:
     VacmAccessTable(VacmSecurityToGroupTable*);
-    virtual ~VacmAccessTable();
+    ~VacmAccessTable() override;
 
     bool ready_for_service(Vbx*, int) override;
     bool could_ever_be_managed(const Oidx&, int&) override;
@@ -415,7 +415,7 @@ protected:
 class AGENTPP_DECL VacmAccessTableStatus : public snmpRowStatus {
 public:
     VacmAccessTableStatus(const Oidx&, int);
-    virtual ~VacmAccessTableStatus() {};
+    ~VacmAccessTableStatus() override {};
 
     MibEntryPtr clone() override;
 
@@ -455,7 +455,7 @@ class AGENTPP_DECL VacmViewTreeFamilyTable : public StorageTable {
 
 public:
     VacmViewTreeFamilyTable();
-    virtual ~VacmViewTreeFamilyTable();
+    ~VacmViewTreeFamilyTable() override;
 
     bool ready_for_service(Vbx*, int) override;
     bool could_ever_be_managed(const Oidx&, int&) override;
@@ -490,7 +490,7 @@ protected:
 class AGENTPP_DECL VacmViewTreeFamilyTableStatus : public snmpRowStatus {
 public:
     VacmViewTreeFamilyTableStatus(const Oidx&, int);
-    virtual ~VacmViewTreeFamilyTableStatus() { }
+    ~VacmViewTreeFamilyTableStatus() override { }
     int         set(const Vbx&) override;
     MibEntryPtr clone() override;
 

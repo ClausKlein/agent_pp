@@ -245,7 +245,7 @@ bool MibLeaf::deserialize(char* buf, int& sz)
     Vbx*           vbs    = nullptr;
     int            size   = 0;
     unsigned char* data   = (unsigned char*)buf;
-    int            status = Vbx::from_asn1(vbs, size, data, sz);
+    int const      status = Vbx::from_asn1(vbs, size, data, sz);
     if (status == SNMP_CLASS_SUCCESS)
     {
         if (size > 0)
@@ -274,15 +274,9 @@ void MibLeaf::get_request(Request* req, int ind)
             vb.set_syntax(sNMP_SYNTAX_NOSUCHINSTANCE);
             req->finish(ind, vb);
         }
-        else
-        {
-            req->finish(ind, get_value());
-        }
+        else { req->finish(ind, get_value()); }
     }
-    else
-    {
-        req->error(ind, SNMP_ERROR_NO_ACCESS);
-    }
+    else { req->error(ind, SNMP_ERROR_NO_ACCESS); }
 }
 
 void MibLeaf::get_next_request(Request* req, int ind)
@@ -297,7 +291,7 @@ int MibLeaf::commit_set_request(Request* req, int ind)
 {
     // set the value. set is a wrapper for set_value unless
     // set is overwritten by subclasses
-    int status = set(req->get_value(ind));
+    int const status = set(req->get_value(ind));
     if (status != SNMP_ERROR_SUCCESS) { return SNMP_ERROR_COMMITFAIL; }
     // do not send answer until cleanup finished
     req->finish(ind, req->get_value(ind));
@@ -563,15 +557,15 @@ bool snmpRowStatus::check_state_change(const Vbx& v, Request* req)
                 // this row
                 for (int i = 0; i < req->subrequests(); i++)
                 {
-                    Oidx id(req->get_oid(i));
+                    Oidx const id(req->get_oid(i));
                     if ((my_table->base(id) == *my_table->key())
                         && (my_table->index(id) == my_row->get_index()))
                     {
-                        int col   = my_row->index_of(id);
-                        pvbs[col] = req->get_value(i);
+                        int const col = my_row->index_of(id);
+                        pvbs[col]     = req->get_value(i);
                     }
                 }
-                bool ok = my_table->ready(pvbs, my_row->size(), my_row);
+                bool const ok = my_table->ready(pvbs, my_row->size(), my_row);
                 delete[] pvbs;
 
                 LOG_BEGIN(loggerModuleName, DEBUG_LOG | 4);
@@ -1209,25 +1203,25 @@ bool MibTable::serialize(char*& buf, int& sz)
         // check if row should be made persistent
         if (!is_persistent(cur.get())) continue;
 
-        int  vbsz = cur.get()->size();
-        Vbx* vbs  = new Vbx[vbsz];
+        int const vbsz = cur.get()->size();
+        Vbx*      vbs  = new Vbx[vbsz];
         cur.get()->get_vblist(vbs, vbsz);
 
         // set volatile values to Null
 
         unsigned char* b      = 0;
         int            buflen = 0;
-        int            status = Vbx::to_asn1(vbs, vbsz, b, buflen);
+        int const      status = Vbx::to_asn1(vbs, vbsz, b, buflen);
         delete[] vbs;
         if (b)
         {
-            OctetStr add(b, buflen);
+            OctetStr const add(b, buflen);
             delete[] b;
             stream += add;
         }
         if (status != SNMP_CLASS_SUCCESS) return false;
     }
-    int size           = stream.len();
+    int const size     = stream.len();
     buf                = new char[size + 10];
     int            len = size + 10;
     unsigned char* cp  = asn_build_header(
@@ -1270,7 +1264,7 @@ bool MibTable::deserialize(char* buf, int& sz)
         unsigned char* data   = (unsigned char*)buf;
         Vbx*           vbs    = 0;
         int            vbsz   = 0;
-        int            status = Vbx::from_asn1(vbs, vbsz, data, size);
+        int const      status = Vbx::from_asn1(vbs, vbsz, data, size);
         buf                   = (char*)data;
         if ((status != SNMP_CLASS_SUCCESS) || (vbsz == 0) || (vbsz != generator.size()))
         {
@@ -1288,7 +1282,7 @@ bool MibTable::deserialize(char* buf, int& sz)
             return false;
         }
 
-        Oidx ind(index(vbs[0].get_oid()));
+        Oidx const ind(index(vbs[0].get_oid()));
 
         LOG_BEGIN(loggerModuleName, EVENT_LOG | 4);
         LOG("MibTable: deserialize: loading row (table)(index)(bytes "
@@ -1315,9 +1309,9 @@ bool MibTable::deserialize(char* buf, int& sz)
 
 int MibTable::set_value(Request* req, int reqind)
 {
-    int      status = SNMP_ERROR_SUCCESS;
-    Oidx     tmpoid(req->get_oid(reqind));
-    MibLeaf* o = nullptr;
+    int        status = SNMP_ERROR_SUCCESS;
+    Oidx const tmpoid(req->get_oid(reqind));
+    MibLeaf*   o = nullptr;
 
     if ((o = find(tmpoid)) != 0)
     {
@@ -1325,7 +1319,7 @@ int MibTable::set_value(Request* req, int reqind)
         if ((row_status) && (get_generator(tmpoid) == row_status))
         {
 
-            Vbx vb(req->get_value(reqind));
+            Vbx const vb(req->get_value(reqind));
 
             int new_value = 1;
             int rs        = 0;
@@ -1341,7 +1335,7 @@ int MibTable::set_value(Request* req, int reqind)
             if (new_value == rowDestroy)
             {
 
-                Oidx ind(index(tmpoid));
+                Oidx const ind(index(tmpoid));
                 // call RowStatus set method to trigger
                 // userdefined actions
                 status = set_row_status(find_index(ind), rowDestroy);
@@ -1358,7 +1352,7 @@ int MibTable::set_value(Request* req, int reqind)
         // check whether row can now be set active
         if (row_status)
         {
-            Oidx         ind(index(tmpoid));
+            Oidx const   ind(index(tmpoid));
             MibTableRow* row = find_index(ind);
             // check for status upgrade only if it is nessesary
             if (get_row_status(row) == rowNotReady)
@@ -1386,7 +1380,7 @@ int MibTable::set_value(Request* req, int reqind)
         for (int i = 0; i < req->subrequests(); i++)
         {
 
-            Oidx id(req->get_oid(i));
+            Oidx const id(req->get_oid(i));
             if ((base(id) == oid) && (index(id) == ind))
             {
                 MibLeaf* gen = get_generator(id);
@@ -1422,7 +1416,7 @@ int MibTable::set_value(Request* req, int reqind)
         // check whether row can now be set active
         if (row_status)
         {
-            Oidx         ind(index(tmpoid));
+            Oidx const   ind(index(tmpoid));
             MibTableRow* row = find_index(ind);
             // check for status upgrade only if it is nessesary
             if (get_row_status(row) == rowNotReady)
@@ -1507,7 +1501,7 @@ Oidx MibTable::base(const Oidx& entry_oid)
 int MibTable::perform_voting(MibTableRow* row, int curState, int reqState)
 {
     ListCursor<MibTableVoter> cur;
-    Oidx                      ind(row->get_index());
+    Oidx const                ind(row->get_index());
     int                       vote = is_transition_ok(0, row, ind, curState, reqState);
     for (cur.init(&voters); ((cur.get()) && (vote == SNMP_ERROR_SUCCESS)); cur.next())
     {
@@ -1662,7 +1656,7 @@ MibLeaf* MibTable::find_next(const Oidx& o)
 
 Oidx MibTable::find_succ(const Oidx& o, Request*)
 {
-    ThreadSynchronize s(*this);
+    ThreadSynchronize const s(*this);
     {
         MibLeaf* l = find_next(o);
         while ((l) && ((l->get_access() == NOACCESS) || (!l->valid())))
@@ -2029,7 +2023,7 @@ int MibTable::check_creation(Request* req, int& ind)
     bool wait   = false;
     bool ignore = false;
 
-    int rowsize = generator.size();
+    int const rowsize = generator.size();
 
     bool* fulfilled = new bool[rowsize];
     bool* required  = new bool[rowsize];
@@ -2040,9 +2034,9 @@ int MibTable::check_creation(Request* req, int& ind)
 
     get_required_columns(required, pvbs);
 
-    Oidx new_index = index(req->get_oid(ind));
-    int  i         = 0;
-    int  rsIndex   = 0;
+    Oidx const new_index = index(req->get_oid(ind));
+    int        i         = 0;
+    int        rsIndex   = 0;
 
     for (i = 0; i < req->subrequests(); i++)
     {
@@ -2102,8 +2096,8 @@ int MibTable::check_creation(Request* req, int& ind)
         return SNMP_ERROR_INCONSIS_NAME;
     }
     // collect all set requests for the row to be created
-    Pdux pdu;
-    int  col = 0;
+    Pdux const pdu;
+    int        col = 0;
 
     for (i = 0; i < req->subrequests(); i++)
     {
@@ -2152,7 +2146,7 @@ int MibTable::check_creation(Request* req, int& ind)
         {
             MibLeaf* l = new_row->get_element(req->get_oid(i));
             if (!l) continue; // does this really happen?
-            int result = l->prepare_set_request(req, i);
+            int const result = l->prepare_set_request(req, i);
             if (result != SNMP_ERROR_SUCCESS)
             {
                 // objects < i are already cleaned up
@@ -2239,7 +2233,7 @@ int MibTable::prepare_set_request(Request* req, int& ind)
 
                     if ((row_status) && (get_generator(req->get_oid(ind)) == row_status))
                     {
-                        Vbx vb(req->get_value(ind));
+                        Vbx const vb(req->get_value(ind));
                         if (!(((snmpRowStatus*)o)->value_ok(vb))) return SNMP_ERROR_WRONG_VALUE;
                         if ((((snmpRowStatus*)o)->transition_ok(vb))
                             && (((snmpRowStatus*)o)->check_state_change(vb, req)))
@@ -2295,7 +2289,7 @@ int MibTable::undo_set_request(Request* req, int& ind)
     {
         if ((o = find(req->get_oid(i))) != 0)
         {
-            int status = o->undo_set_request(req, i);
+            int const status = o->undo_set_request(req, i);
             if ((!result) && (status != SNMP_ERROR_SUCCESS)) result = status;
         }
     }
@@ -3060,10 +3054,7 @@ int Mib::next_access_control(Request* req, MibEntry* entry, Oidx& oid, const Oid
     case AGENTPP_PROXY: {
         // reuse provided OID for the first iteration (if not empty)
         if (nextOid.len() > 0) { oid = nextOid; }
-        else
-        {
-            oid = entry->find_succ(oid, req);
-        }
+        else { oid = entry->find_succ(oid, req); }
         do {
             if (oid.len() <= 0)
             {
@@ -3114,7 +3105,7 @@ bool Mib::process_request(Request* req, int reqind)
         LOG_END;
 
         MibEntryPtr entry = nullptr;
-        Oidx        tmpoid(req->get_oid(reqind));
+        Oidx const  tmpoid(req->get_oid(reqind));
         int         err = 0;
 
         lock_mib();
@@ -3131,7 +3122,7 @@ bool Mib::process_request(Request* req, int reqind)
         }
 #ifdef _SNMPv3
         // access control
-        int vacmErrorCode = requestList->get_vacm()->isAccessAllowed(req->viewName, tmpoid);
+        int const vacmErrorCode = requestList->get_vacm()->isAccessAllowed(req->viewName, tmpoid);
         if (vacmErrorCode == VACM_notInView)
         {
             unlock_mib();
@@ -3203,10 +3194,7 @@ bool Mib::process_request(Request* req, int reqind)
             Oidx nextoid;
             nextoid = entry->find_succ(tmpoid, req);
             if (!nextoid.valid()) { goto reprocess; }
-            else
-            {
-                tmpoid = nextoid;
-            }
+            else { tmpoid = nextoid; }
             break;
         }
         case AGENTPP_PROXY: {
@@ -3339,16 +3327,13 @@ void Mib::proxy_request(Request* req)
     }
     if ((!proxy) || ((proxy) && (!proxy->process_request(req))))
     {
-        uint32_t proxyDrops = snmpProxyDrops::incrementScalar(this, oidSnmpProxyDrops);
-        Vbx      vb(oidSnmpProxyDrops);
+        uint32_t const proxyDrops = snmpProxyDrops::incrementScalar(this, oidSnmpProxyDrops);
+        Vbx            vb(oidSnmpProxyDrops);
         vb.set_value(proxyDrops);
         req->get_pdu()->set_vblist(&vb, 1);
         if (requestList != nullptr) requestList->report(req);
     }
-    else if (requestList != nullptr)
-    {
-        requestList->answer(req);
-    }
+    else if (requestList != nullptr) { requestList->answer(req); }
     delete_request(req);
 }
 #    endif
@@ -3387,7 +3372,7 @@ void Mib::do_process_request(Request* req)
     }
 #    endif
 #endif
-    int n = req->subrequests();
+    int const n = req->subrequests();
     if (n > 0)
     {
         int i = 0;
@@ -3450,7 +3435,7 @@ void Mib::delete_request(Request* req)
 
 void Mib::process_set_request(Request* req)
 {
-    int n = req->subrequests();
+    int const n = req->subrequests();
 
     LOG_BEGIN(loggerModuleName, EVENT_LOG | 2);
     LOG("Mib: process request: set request (tid)(oid)");
@@ -3497,7 +3482,7 @@ int Mib::process_prepare_set_request(Request* req)
         if (!req->is_ready(i))
         {
 
-            Oidx tmpoid(req->get_oid(i));
+            Oidx const tmpoid(req->get_oid(i));
             // entry not available
 #ifdef _SNMPv3
             if ((err = find_managing_object(get_context(req->get_context()), tmpoid, entry, req)) !=
@@ -3514,7 +3499,7 @@ int Mib::process_prepare_set_request(Request* req)
             }
 #ifdef _SNMPv3
             // access control
-            int vacmErrorCode = requestList->get_vacm()->isAccessAllowed(req->viewName, tmpoid);
+            int const vacmErrorCode = requestList->get_vacm()->isAccessAllowed(req->viewName, tmpoid);
             if (vacmErrorCode != VACM_accessAllowed)
             {
                 unlock_mib();
@@ -3656,10 +3641,10 @@ void Mib::process_get_bulk_request(Request* req)
     LOG(req->get_max_rep());
     LOG_END;
 
-    int id     = 0;
-    int subreq = req->subrequests();
-    int nonrep = req->get_non_rep();
-    int maxrep = req->get_max_rep();
+    int       id     = 0;
+    int const subreq = req->subrequests();
+    int const nonrep = req->get_non_rep();
+    int       maxrep = req->get_max_rep();
 
     if ((AGENTPP_MAX_GETBULK_REPETITIONS > 0) && (maxrep > AGENTPP_MAX_GETBULK_REPETITIONS))
     {
@@ -3729,10 +3714,7 @@ void Mib::process_get_bulk_request(Request* req)
             Oidx nextoid;
             nextoid = entry->find_succ(tmpoid, req);
             if (!nextoid.valid()) { goto reprocess; }
-            else
-            {
-                tmpoid = nextoid;
-            }
+            else { tmpoid = nextoid; }
             break;
         }
         case AGENTPP_PROXY: {
@@ -3777,7 +3759,7 @@ void Mib::process_get_bulk_request(Request* req)
 
         bool all_endofview = true;
 
-        int endofNextRow = nonrep + req->get_rep() * (j + 1);
+        int const endofNextRow = nonrep + req->get_rep() * (j + 1);
         for (; (id < req->subrequests()) && (id < endofNextRow); id++)
         {
 
@@ -3868,10 +3850,7 @@ void Mib::process_get_bulk_request(Request* req)
                     Oidx nextoid;
                     nextoid = entry->find_succ(tmpoid);
                     if (nextoid.valid()) { tmpoid = nextoid; }
-                    else
-                    {
-                        goto repeating;
-                    }
+                    else { goto repeating; }
                     break;
                 }
                 case AGENTPP_PROXY: {
@@ -3902,7 +3881,7 @@ void Mib::process_get_bulk_request(Request* req)
             }
             else
             {
-                Vbx vb(req->get_value(id));
+                Vbx const vb(req->get_value(id));
                 if (vb.get_exception_status() != sNMP_SYNTAX_ENDOFMIBVIEW) all_endofview = false;
             }
 

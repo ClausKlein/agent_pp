@@ -53,7 +53,7 @@ MibEntryPtr snmpTargetAddrTDomain::clone()
 
 int snmpTargetAddrTDomain::get_state()
 {
-    uint32_t len = ((Oid*)value)->len();
+    uint32_t const len = ((Oid*)value)->len();
     if ((len != 7) && (len != 9)) return 0;
     if (len == 7) return (*(Oid*)value)[6];
     return 100 + (*(Oid*)value)[8];
@@ -116,11 +116,11 @@ int snmpTargetAddrTAddress::prepare_set_request(Request* req, int& ind)
             break;
         }
     }
-    uint32_t state = 0;
-    Vbx      vb(req->get_value(ind));
-    OctetStr val;
+    uint32_t  state = 0;
+    Vbx const vb(req->get_value(ind));
+    OctetStr  val;
     if (vb.get_value(val) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
-    int length = val.len();
+    int const length = val.len();
 
     Oidx o;
     if (domain.get_value(o) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
@@ -164,7 +164,7 @@ int snmpTargetAddrTAddress::prepare_set_request(Request* req, int& ind)
 
 UdpAddress* snmpTargetAddrTAddress::getUdpAddress()
 {
-    int tdomain = ((snmpTargetAddrTDomain*)my_row->get_nth(0))->get_state();
+    int const tdomain = ((snmpTargetAddrTDomain*)my_row->get_nth(0))->get_state();
     switch (tdomain)
     {
     case 1:
@@ -209,11 +209,11 @@ MibEntryPtr snmpTargetAddrParams::clone()
 int snmpTargetAddrParams::prepare_set_request(Request* req, int& ind)
 {
     // place instrumentation code (manipulating "value") here
-    int status = MibLeaf::prepare_set_request(req, ind);
+    int const status = MibLeaf::prepare_set_request(req, ind);
     if (status == SNMP_ERROR_SUCCESS)
     {
-        OctetStr newAdminString;
-        Vbx      vb(req->get_value(ind));
+        OctetStr  newAdminString;
+        Vbx const vb(req->get_value(ind));
         if (vb.get_value(newAdminString) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
         if (newAdminString.len() == 0) return SNMP_ERROR_WRONG_LENGTH;
         if (!snmpTargetParamsEntry::instance->contains(newAdminString))
@@ -300,7 +300,7 @@ void snmpTargetAddrEntry::set_row(MibTableRow* r, const Oidx& p0, const OctetStr
 MibTableRow* snmpTargetAddrEntry::add_entry(const OctetStr& name, const Oidx& tdomain,
     const OctetStr& taddress, const OctetStr& taglist, const OctetStr& params)
 {
-    Oidx index = Oidx::from_string(name, false);
+    Oidx const index = Oidx::from_string(name, false);
     start_synch();
     MibTableRow* r = find_index(index);
     if (r)
@@ -348,7 +348,7 @@ Address* snmpTargetAddrEntry::get_address(MibTableRow* row)
     Oidx     domain;
     row->get_nth(0)->get_value(domain);
     row->get_nth(1)->get_value(addrStr);
-    uint32_t targetDomain = domain.last();
+    uint32_t const targetDomain = domain.last();
     switch (targetDomain)
     {
     case 1:
@@ -463,9 +463,9 @@ bool snmpTargetParamsEntry::contains(const OctetStr& name)
     OidListCursor<MibTableRow> cur;
     for (cur.init(&content); cur.get(); cur.next())
     {
-        Oidx index = cur.get()->get_index();
+        Oidx const index = cur.get()->get_index();
         // cut length off
-        OctetStr adminString(index.as_string());
+        OctetStr const adminString(index.as_string());
 
         LOG_BEGIN(loggerModuleName, DEBUG_LOG | 9);
         LOG("snmpTargetParamsEntry: contains ");
@@ -480,7 +480,7 @@ bool snmpTargetParamsEntry::contains(const OctetStr& name)
 MibTableRow* snmpTargetParamsEntry::add_entry(const OctetStr& name, const int mpModel,
     const int secModel, const OctetStr& secName, const int secLevel)
 {
-    Oidx index = Oidx::from_string(name, false);
+    Oidx const index = Oidx::from_string(name, false);
     start_synch();
     MibTableRow* r = find_index(index);
     if (r)

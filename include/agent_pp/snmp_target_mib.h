@@ -44,7 +44,7 @@ class AGENTPP_DECL snmpTargetAddrTDomain : public MibLeaf {
 
 public:
     snmpTargetAddrTDomain(const Oidx&);
-    virtual ~snmpTargetAddrTDomain();
+    ~snmpTargetAddrTDomain() override;
 
     MibEntryPtr clone() override;
     bool        value_ok(const Vbx&) override;
@@ -64,7 +64,7 @@ class AGENTPP_DECL snmpTargetAddrTAddress : public MibLeaf {
 public:
     snmpTargetAddrTAddress(const Oidx&);
     snmpTargetAddrTAddress(const Oidx&, mib_access, NS_SNMP OctetStr*, int);
-    virtual ~snmpTargetAddrTAddress();
+    ~snmpTargetAddrTAddress() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -122,7 +122,7 @@ class AGENTPP_DECL snmpTargetAddrParams : public MibLeaf {
 
 public:
     snmpTargetAddrParams(const Oidx&);
-    virtual ~snmpTargetAddrParams();
+    ~snmpTargetAddrParams() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -234,7 +234,7 @@ class AGENTPP_DECL snmpTargetParamsEntry : public StorageTable {
 
 public:
     snmpTargetParamsEntry();
-    virtual ~snmpTargetParamsEntry();
+    ~snmpTargetParamsEntry() override;
 
     /**
      * Get the pointer to the snmpTargetParamsEntry associated with the
@@ -247,7 +247,7 @@ public:
      */
     static snmpTargetParamsEntry* get_instance(Mib* mib)
     {
-        Oidx                   oid(oidSnmpTargetParamsEntry);
+        Oidx const             oid(oidSnmpTargetParamsEntry);
         snmpTargetParamsEntry* entry = (snmpTargetParamsEntry*)mib->get(oid);
         return (entry) ? entry : instance;
     }
@@ -317,7 +317,7 @@ class AGENTPP_DECL snmpTargetAddrEntry : public StorageTable {
 
 public:
     snmpTargetAddrEntry();
-    virtual ~snmpTargetAddrEntry();
+    ~snmpTargetAddrEntry() override;
 
     static snmpTargetAddrEntry* instance;
     /**
@@ -331,7 +331,7 @@ public:
      */
     static snmpTargetAddrEntry* get_instance(Mib* mib)
     {
-        Oidx                 oid(oidSnmpTargetAddrEntry);
+        Oidx const           oid(oidSnmpTargetAddrEntry);
         snmpTargetAddrEntry* entry = (snmpTargetAddrEntry*)mib->get(oid);
         return (entry) ? entry : instance;
     }
@@ -423,7 +423,7 @@ public:
 class AGENTPP_DECL snmp_target_mib : public MibGroup {
 public:
     snmp_target_mib();
-    virtual ~snmp_target_mib() { }
+    ~snmp_target_mib() override { }
 };
 
 #ifdef AGENTPP_NAMESPACE

@@ -37,7 +37,7 @@ Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #include <libagent.h>
 
 #ifndef WIN32
-//#include <stream.h>
+// #include <stream.h>
 #endif
 #include <agent_pp/avl_map.h>
 
@@ -127,7 +127,7 @@ Pix OidxPtrEntryPtrAVLMap::seek(OidxPtr key) const
     if (t == 0) return 0;
     for (;;)
     {
-        int cmp = OidxPtrCMP(key, t->item);
+        int const cmp = OidxPtrCMP(key, t->item);
         if (cmp == 0)
             return Pix(t);
         else if (cmp < 0)
@@ -150,7 +150,7 @@ Pix OidxPtrEntryPtrAVLMap::seek_inexact(OidxPtr key) const
     if (t == 0) return 0;
     for (;;)
     {
-        int cmp = OidxPtrCMP(key, t->item);
+        int const cmp = OidxPtrCMP(key, t->item);
         if (cmp == 0)
             return Pix(t);
         else if (cmp < 0)
@@ -174,7 +174,7 @@ Pix OidxPtrEntryPtrAVLMap::seek_inexact(OidxPtr key) const
 
 void OidxPtrEntryPtrAVLMap::_add(OidxPtrEntryPtrAVLNode*& t)
 {
-    int cmp = OidxPtrCMP(*_target_item, t->item);
+    int const cmp = OidxPtrCMP(*_target_item, t->item);
     if (cmp == 0)
     {
         _found_node = t;

@@ -132,7 +132,7 @@ class AGENTPP_DECL sysORLastChange : public MibLeaf {
 
 public:
     sysORLastChange();
-    virtual ~sysORLastChange() {};
+    ~sysORLastChange() override {};
 
     static sysORLastChange* instance;
 
@@ -150,7 +150,7 @@ class AGENTPP_DECL sysOREntry : public TimeStampTable {
 
 public:
     sysOREntry(TimeStamp*);
-    virtual ~sysOREntry();
+    ~sysOREntry() override;
 
     static sysOREntry* instance;
 

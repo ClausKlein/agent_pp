@@ -92,7 +92,7 @@ public:
     /**
      * Destructor
      */
-    virtual ~Oidx() { }
+    ~Oidx() override { }
 
     /**
      * Return a copy of the receiver oid without the n leftmost
@@ -129,7 +129,7 @@ public:
     {
         for (unsigned int i = 0; (i < len()) && (i < mask.len() * 8); i++)
         {
-            char m = 0x80 >> (i % 8);
+            char const m = 0x80 >> (i % 8);
             if (!(mask[i / 8] & m)) { (*this)[i] = 0ul; }
         }
         return *this;
@@ -148,7 +148,7 @@ public:
         if (oid.valid())
         {
             // constructor can handle negative length
-            Oidx retval(oid.smival.value.oid.ptr + index, oid.smival.value.oid.len - index);
+            Oidx const retval(oid.smival.value.oid.ptr + index, oid.smival.value.oid.len - index);
             return retval;
         }
         else
@@ -167,8 +167,9 @@ public:
     {
         if (oid.valid())
         {
-            unsigned int l = oid.smival.value.oid.len >= index ? oid.smival.value.oid.len - index : 0;
-            Oidx         retval(oid.smival.value.oid.ptr, l);
+            unsigned int const l =
+                oid.smival.value.oid.len >= index ? oid.smival.value.oid.len - index : 0;
+            Oidx const retval(oid.smival.value.oid.ptr, l);
             return retval;
         }
         else
@@ -644,7 +645,7 @@ public:
     Pdux(const Pdu& pdu) : Pdu(pdu) { }
     Pdux(const Pdux& pdu) : Pdu(pdu) { }
 
-    virtual ~Pdux() { }
+    ~Pdux() override { }
 
     /**
      * Clear the Pdu contents (destruct and construct in one go)

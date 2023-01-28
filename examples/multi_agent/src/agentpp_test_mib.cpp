@@ -542,7 +542,7 @@ int agentppTestSparseCol3::prepare_set_request(Request* req, int& ind)
     int status = 0;
     if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
 
-    Vb       vb(req->get_value(ind));
+    Vb const vb(req->get_value(ind));
     OctetStr v;
     vb.get_value(v);
     if (!((v.len() <= 255))) return SNMP_ERROR_WRONG_LENGTH;

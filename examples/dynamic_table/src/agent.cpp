@@ -72,7 +72,7 @@ public:
         currentRequest = req->get_request_id();
 
         start_synch();
-        int r = rand();
+        int const r = rand();
         if (r >= RAND_MAX / 2)
         {
             MibTableRow* row = add_row(get_next_avail_index());
@@ -221,9 +221,9 @@ int main(int argc, char* argv[])
         exit(1);
     }
 #ifdef _SNMPv3
-    const char*  filename        = "snmpv3_boot_counter";
-    unsigned int snmpEngineBoots = 0;
-    OctetStr     engineId(SnmpEngineID::create_engine_id(port));
+    const char*    filename        = "snmpv3_boot_counter";
+    unsigned int   snmpEngineBoots = 0;
+    OctetStr const engineId(SnmpEngineID::create_engine_id(port));
 
     // you may use your own methods to load/store this counter
     status = getBootCounter(filename, engineId, snmpEngineBoots);
@@ -377,9 +377,9 @@ int main(int argc, char* argv[])
 
 #endif
     Vbx*                   vbs = 0;
-    coldStartOid           coldOid;
+    coldStartOid const     coldOid;
     NotificationOriginator no;
-    UdpAddress             dest("127.0.0.1/162");
+    UdpAddress const       dest("127.0.0.1/162");
     no.add_v1_trap_destination(dest, "defaultV1Trap", "v1trap", "public");
     no.generate(vbs, 0, coldOid, "", "");
 
@@ -390,10 +390,7 @@ int main(int argc, char* argv[])
         req = reqList->receive(2);
 
         if (req) { mib->process_request(req); }
-        else
-        {
-            mib->cleanup();
-        }
+        else { mib->cleanup(); }
     }
     delete mib;
     Snmp::socket_cleanup(); // Shut down socket subsystem

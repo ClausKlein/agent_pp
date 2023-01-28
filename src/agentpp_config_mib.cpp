@@ -68,7 +68,7 @@ void OperationTask::run()
         return;
     }
     MibTableRow* row = initiator->my_row;
-    int format       = ((agentppCfgStorageFormat*)row->get_nth(nAgentppCfgStorageFormat))->get_state();
+    int const format = ((agentppCfgStorageFormat*)row->get_nth(nAgentppCfgStorageFormat))->get_state();
     NS_SNMP OctetStr path =
         ((agentppCfgStoragePath*)row->get_nth(nAgentppCfgStoragePath))->get_state();
     switch (operation)
@@ -147,14 +147,8 @@ void agentppCfgSecSrcAddrValidation::get_request(Request* req, int ind)
     snmpCommunityEntry* _snmpCommunityEntry =
         (snmpCommunityEntry*)mibReference->get(req->get_context(), oidSnmpCommunityEntry);
     if (!_snmpCommunityEntry) { set_state(3); }
-    else if (mibReference->get_request_list()->get_address_validation())
-    {
-        set_state(1);
-    }
-    else
-    {
-        set_state(2);
-    }
+    else if (mibReference->get_request_list()->get_address_validation()) { set_state(1); }
+    else { set_state(2); }
     //--AgentGen END
     MibLeaf::get_request(req, ind);
 }
@@ -260,7 +254,7 @@ int agentppCfgStoragePath::prepare_set_request(Request* req, int& ind)
     if ((status = SnmpDisplayString::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
         return status;
 
-    Vb               vb(req->get_value(ind));
+    Vb const         vb(req->get_value(ind));
     NS_SNMP OctetStr v;
     if (vb.get_value(v) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
     if (!((v.len() <= 255))) return SNMP_ERROR_WRONG_LENGTH;
@@ -277,10 +271,7 @@ int agentppCfgStoragePath::prepare_set_request(Request* req, int& ind)
 #        ifndef WIN32
     status = mkdir(v.get_printable(), 700);
     if ((status == -1) && (errno != EEXIST)) { return SNMP_ERROR_BAD_VALUE; }
-    else if (status != -1)
-    {
-        rmdir(v.get_printable());
-    }
+    else if (status != -1) { rmdir(v.get_printable()); }
 #        endif
     //--AgentGen END
     return SNMP_ERROR_SUCCESS;
@@ -290,10 +281,10 @@ int agentppCfgStoragePath::prepare_set_request(Request* req, int& ind)
 int agentppCfgStoragePath::commit_set_request(Request* req, int ind)
 {
 #        ifndef WIN32
-    Vb               vb(req->get_value(ind));
+    Vb const         vb(req->get_value(ind));
     NS_SNMP OctetStr v;
     vb.get_value(v);
-    int status = mkdir(v.get_printable(), S_IRWXU);
+    int const status = mkdir(v.get_printable(), S_IRWXU);
     if ((status == -1) && (errno != EEXIST)) { return SNMP_ERROR_COMMITFAIL; }
 #        endif
     return SnmpDisplayString::commit_set_request(req, ind);
@@ -472,10 +463,7 @@ int agentppCfgStorageOperation::set(const Vbx& vb)
         set_state(agentppCfgStorageOperation::e_inProgress);
         return SNMP_ERROR_SUCCESS;
     }
-    else
-    {
-        return SNMP_ERROR_COMMITFAIL;
-    }
+    else { return SNMP_ERROR_COMMITFAIL; }
 #        endif
     //--AgentGen END
     return MibLeaf::set(vb);
@@ -737,7 +725,7 @@ void agentppCfgStorageEntry::set_mib(Mib* m)
     mib = m;
     // init first row
     NS_SNMP OctetStr primaryRow("primary");
-    Oidx             primaryRowIndex(Oidx::from_string(primaryRow));
+    Oidx const       primaryRowIndex(Oidx::from_string(primaryRow));
     MibTableRow*     primary = find_index(primaryRowIndex);
     if (!primary) { primary = add_row(primaryRowIndex); }
     set_row(primary, mib->get_persistent_objects_path(), agentppCfgStorageFormat::e_agentppBER, 0, 0,
@@ -804,14 +792,14 @@ void agentppCfgLogLevel::set_state(int32_t l) { *((SnmpInt32*)value) = l; }
 
 int agentppCfgLogLevel::commit_set_request(Request* req, int ind)
 {
-    int status = MibLeaf::commit_set_request(req, ind);
+    int const status = MibLeaf::commit_set_request(req, ind);
     if (DefaultLog::log()) DefaultLog::log()->set_filter(logClass, get_state() % 255);
     return status;
 }
 
 int agentppCfgLogLevel::undo_set_request(Request* req, int& ind)
 {
-    int32_t undoValue = *((SnmpInt32*)undo);
+    int32_t const undoValue = *((SnmpInt32*)undo);
     if (DefaultLog::log()) DefaultLog::log()->set_filter(logClass, undoValue);
     return MibLeaf::undo_set_request(req, ind);
 }

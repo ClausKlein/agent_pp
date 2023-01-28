@@ -259,7 +259,7 @@ class AGENTPP_DECL snmpEnableAuthenTraps : public MibLeaf {
 
 public:
     snmpEnableAuthenTraps();
-    virtual ~snmpEnableAuthenTraps();
+    ~snmpEnableAuthenTraps() override;
 
     static snmpEnableAuthenTraps* instance;
     /**
@@ -273,7 +273,7 @@ public:
      */
     static snmpEnableAuthenTraps* get_instance(Mib* mib)
     {
-        Oidx                   oid(oidSnmpEnableAuthenTraps);
+        Oidx const             oid(oidSnmpEnableAuthenTraps);
         snmpEnableAuthenTraps* entry = (snmpEnableAuthenTraps*)mib->get(oid);
         return (entry) ? entry : instance;
     }

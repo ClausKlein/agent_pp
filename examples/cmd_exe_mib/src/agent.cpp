@@ -201,8 +201,8 @@ int main(int argc, char* argv[])
     mib = new Mib();
 
 #ifdef _SNMPv3
-    unsigned int snmpEngineBoots = 0;
-    OctetStr     engineId(SnmpEngineID::create_engine_id(port));
+    unsigned int   snmpEngineBoots = 0;
+    OctetStr const engineId(SnmpEngineID::create_engine_id(port));
 
     // you may use your own methods to load/store this counter
     status = mib->get_boot_counter(engineId, snmpEngineBoots);
@@ -365,7 +365,7 @@ int main(int argc, char* argv[])
     mib->init();
 
     Vbx*                   vbs = 0;
-    coldStartOid           coldOid;
+    coldStartOid const     coldOid;
     NotificationOriginator notification_originator;
     notification_originator.generate(vbs, 0, coldOid, "", "");
 
@@ -376,10 +376,7 @@ int main(int argc, char* argv[])
         req = reqList->receive(2);
 
         if (req) { mib->process_request(req); }
-        else
-        {
-            mib->cleanup();
-        }
+        else { mib->cleanup(); }
     }
     delete mib;
     Snmp::socket_cleanup(); // Shut down socket subsystem

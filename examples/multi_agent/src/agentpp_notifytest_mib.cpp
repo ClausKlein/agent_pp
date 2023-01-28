@@ -127,8 +127,8 @@ void agentppNotifyTest::send_agentppNotifyTestAllTypes()
     vbs[n].set_oid("1.3.6.1.2.1.92.1.3.2.1.7.0.1");
     vbs[n++].set_value(SnmpInt32(rand()));
     vbs[n].set_oid("1.3.6.1.2.1.92.1.3.2.1.8.0.1");
-    OctetStr s;
-    int      length = rand() / (RAND_MAX / 5);
+    OctetStr  s;
+    int const length = rand() / (RAND_MAX / 5);
     for (int i = 0; i < length; i++) { s += (unsigned char)(rand() / (RAND_MAX / 128) + 64); }
     vbs[n++].set_value(s);
     vbs[n].set_oid("1.3.6.1.2.1.92.1.3.2.1.9.0.1");
@@ -139,11 +139,11 @@ void agentppNotifyTest::send_agentppNotifyTestAllTypes()
     vbs[n].set_oid("1.3.6.1.2.1.92.1.3.2.1.10.0.1");
     vbs[n++].set_value(Oid("1.3.6.1.2.1.340775556.0"));
     vbs[n].set_oid("1.3.6.1.2.1.92.1.3.2.1.11.0.1");
-    uint32_t low  = rand();
-    uint32_t high = rand();
+    uint32_t const low  = rand();
+    uint32_t const high = rand();
     vbs[n++].set_value(Counter64(high, low));
     vbs[n].set_oid("1.3.6.1.2.1.92.1.3.2.1.12.0.1");
-    OpaqueStr op(s);
+    OpaqueStr const op(s);
     vbs[n++].set_value(op);
     agentppNotifyTestAllTypes no(mib);
     no.generate(vbs, 9, "");

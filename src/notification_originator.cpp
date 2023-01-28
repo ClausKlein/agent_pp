@@ -150,7 +150,7 @@ int NotificationOriginator::generate(Vbx* vbs, int size, const Oidx& id, unsigne
                 nop.target = 0;
                 if (check_access(cur, nop))
                 {
-                    int status = send_notify(cur, nop, notify);
+                    int const status = send_notify(cur, nop, notify);
                     if (status != SNMP_ERROR_SUCCESS) totalStatus = status;
                     delete nop.target;
                 }
@@ -247,10 +247,7 @@ nlmLogEntry* NotificationOriginator::get_nlm_log_entry()
 v3MP* NotificationOriginator::get_v3mp()
 {
     if (mib) { return mib->get_request_list()->get_v3mp(); }
-    else
-    {
-        return v3MP::instance;
-    }
+    else { return v3MP::instance; }
 }
 #endif
 
@@ -258,7 +255,7 @@ bool NotificationOriginator::check_access(
     ListCursor<MibTableRow>& cur, NotificationOriginatorParams& nop)
 {
     Vbx*&       vbs           = nop.vbs;
-    int&        size          = nop.size;
+    int const&  size          = nop.size;
     const Oidx& id            = nop.id;
     OctetStr&   securityName  = nop.securityName;
     int&        securityModel = nop.securityModel;
@@ -276,7 +273,7 @@ bool NotificationOriginator::check_access(
     paramsPtr->get_value(paramsStr);
 
     // Check whether trap oid passes filter
-    Oidx                   targetOid(Oidx::from_string(paramsStr, false));
+    Oidx const             targetOid(Oidx::from_string(paramsStr, false));
     snmpNotifyFilterEntry* notifyFilterEntry = get_snmp_notify_filter_entry();
     if (!notifyFilterEntry || !notifyFilterEntry->passes_filter(targetOid, id, vbs, size))
     {
@@ -388,16 +385,16 @@ int NotificationOriginator::send_notify(
     ListCursor<MibTableRow>& cur, NotificationOriginatorParams& nop, int notify)
 {
     Vbx*&       vbs          = nop.vbs;
-    int&        size         = nop.size;
+    int const&  size         = nop.size;
     const Oidx& id           = nop.id;
     const Oidx& enterprise   = nop.enterprise;
     OctetStr&   securityName = nop.securityName;
-    int&        mpModel      = nop.mpModel;
+    int const&  mpModel      = nop.mpModel;
 #ifdef _SNMPv3
-    int&            securityLevel = nop.securityLevel;
-    const OctetStr& contextName   = nop.contextName;
-    unsigned int&   timestamp     = nop.timestamp;
-    UTarget*&       target        = nop.target;
+    int const&          securityLevel = nop.securityLevel;
+    const OctetStr&     contextName   = nop.contextName;
+    unsigned int const& timestamp     = nop.timestamp;
+    UTarget*&           target        = nop.target;
 #else
     CTarget*& target = nop.target;
 #endif
@@ -492,7 +489,7 @@ int NotificationOriginator::send_notify(
         nlmLogEntry* logEntry = get_nlm_log_entry();
         if (logEntry)
         {
-            OctetStr ceid;
+            OctetStr const ceid;
             logEntry->add_notification(target, trapoid, vbs, size, contextName, ceid, *localEngineID);
         }
 #else

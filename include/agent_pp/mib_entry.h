@@ -99,7 +99,7 @@ public:
     /**
      * Destructor
      */
-    virtual ~MibEntry();
+    ~MibEntry() override;
 
     /**
      * Return the type of the receiver MIB node.

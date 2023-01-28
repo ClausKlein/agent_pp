@@ -123,7 +123,7 @@ Pix OidxPtrMibEntryPtrAVLMap::seek(OidxPtr key)
     if (t == 0) return 0;
     for (;;)
     {
-        int cmp = OidxPtrCMP(key, t->item);
+        int const cmp = OidxPtrCMP(key, t->item);
         if (cmp == 0)
             return Pix(t);
         else if (cmp < 0)
@@ -146,7 +146,7 @@ Pix OidxPtrMibEntryPtrAVLMap::seek_inexact(OidxPtr key)
     if (t == 0) return 0;
     for (;;)
     {
-        int cmp = OidxPtrCMP(key, t->item);
+        int const cmp = OidxPtrCMP(key, t->item);
         if (cmp == 0)
             return Pix(t);
         else if (cmp < 0)
@@ -177,7 +177,7 @@ static int                        _already_found;    // for deletion subcases
 
 void OidxPtrMibEntryPtrAVLMap::_add(OidxPtrMibEntryPtrAVLNode*& t)
 {
-    int cmp = OidxPtrCMP(*_target_item, t->item);
+    int const cmp = OidxPtrCMP(*_target_item, t->item);
     if (cmp == 0)
     {
         _found_node = t;

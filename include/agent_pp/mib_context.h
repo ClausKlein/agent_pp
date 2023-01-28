@@ -101,7 +101,7 @@ public:
     /**
      * Destructor (does not delete contained MibEntry instances)
      */
-    virtual ~MibGroup();
+    ~MibGroup() override;
 
     /**
      * Return the type of the receiver.
@@ -198,7 +198,7 @@ public:
     unsigned int get_timeout() { return timeout; }
 
 protected:
-    List<MibEntry> content;
+    List<MibEntry>    content;
     NS_SNMP OctetStr* persistencyName;
     unsigned int      timeout;
 };
@@ -245,7 +245,7 @@ public:
     /**
      * Destructor.
      */
-    virtual ~MibContext();
+    ~MibContext() override;
 
     /**
      * Initialize context, thus load initialize groups with data

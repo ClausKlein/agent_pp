@@ -253,7 +253,7 @@ bool Synchronized::wait(long timeout)
 #        ifdef HAVE_CLOCK_GETTIME
     clock_gettime(CLOCK_REALTIME, &ts);
     ts.tv_sec += (time_t)timeout / 1000;
-    int millis = ts.tv_nsec / 1000000 + (timeout % 1000);
+    int const millis = ts.tv_nsec / 1000000 + (timeout % 1000);
     if (millis >= 1000) { ts.tv_sec += 1; }
     ts.tv_nsec = (millis % 1000) * 1000000;
 #        else
@@ -375,7 +375,7 @@ void Synchronized::notify_all()
 bool Synchronized::lock()
 {
 #    ifdef POSIX_THREADS
-    int err = pthread_mutex_lock(&monitor);
+    int const err = pthread_mutex_lock(&monitor);
 #        ifndef AGENTPP_PTHREAD_RECURSIVE
     if (!err)
     {
@@ -473,7 +473,7 @@ bool Synchronized::lock(long timeout)
 #        ifdef HAVE_CLOCK_GETTIME
     clock_gettime(CLOCK_REALTIME, &ts);
     ts.tv_sec += (time_t)timeout / 1000;
-    int millis = ts.tv_nsec / 1000000 + (timeout % 1000);
+    int const millis = ts.tv_nsec / 1000000 + (timeout % 1000);
     if (millis >= 1000) { ts.tv_sec += 1; }
     ts.tv_nsec = (millis % 1000) * 1000000;
 #        else
@@ -578,10 +578,10 @@ bool Synchronized::lock(long timeout)
 
 bool Synchronized::unlock()
 {
-    bool wasLocked = isLocked;
-    isLocked       = false;
+    bool const wasLocked = isLocked;
+    isLocked             = false;
 #    ifdef POSIX_THREADS
-    int err = pthread_mutex_unlock(&monitor);
+    int const err = pthread_mutex_unlock(&monitor);
     if (err != 0)
     {
         LOG_BEGIN(loggerModuleName, WARNING_LOG | 1);
@@ -615,7 +615,7 @@ Synchronized::TryLockResult Synchronized::trylock()
 {
 #    ifdef POSIX_THREADS
 #        ifndef AGENTPP_PTHREAD_RECURSIVE
-    int err = pthread_mutex_trylock(&monitor);
+    int const err = pthread_mutex_trylock(&monitor);
     if (!err)
     {
         isLocked = true;
@@ -828,8 +828,8 @@ void Thread::join()
 #    ifdef POSIX_THREADS
     if (status)
     {
-        void* retstat = nullptr;
-        int   err     = pthread_join(tid, &retstat);
+        void*     retstat = nullptr;
+        int const err     = pthread_join(tid, &retstat);
         if (err)
         {
             LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
@@ -885,7 +885,7 @@ void Thread::start()
         pthread_attr_t attr;
         pthread_attr_init(&attr);
         pthread_attr_setstacksize(&attr, stackSize);
-        int err = pthread_create(&tid, &attr, thread_starter, this);
+        int const err = pthread_create(&tid, &attr, thread_starter, this);
         if (err)
         {
             LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
@@ -927,10 +927,7 @@ void Thread::start()
             LOG_END;
             status = IDLE;
         }
-        else
-        {
-            status = RUNNING;
-        }
+        else { status = RUNNING; }
     }
     else
     {
@@ -966,8 +963,8 @@ void Thread::nsleep(int secs, long nanos)
     DWORD millis = secs * 1000 + nanos / 1000000;
     Sleep(millis);
 #    else
-    long s = secs + nanos / 1000000000;
-    long n = nanos % 1000000000;
+    long const s = secs + nanos / 1000000000;
+    long const n = nanos % 1000000000;
 
 #        ifdef _POSIX_TIMERS
     struct timespec interval = {}, remainder = {};
@@ -1046,10 +1043,7 @@ void TaskManager::run()
             threadPool->idle_notification();
             lock();
         }
-        else
-        {
-            wait();
-        }
+        else { wait(); }
     }
     if (task)
     {
@@ -1250,10 +1244,7 @@ void QueuedThreadPool::execute(Runnable* t)
 {
     Thread::lock();
     if (queue.empty()) { assign(t); }
-    else
-    {
-        queue.add(t);
-    }
+    else { queue.add(t); }
     Thread::unlock();
 }
 
@@ -1273,7 +1264,7 @@ void QueuedThreadPool::run()
 unsigned int QueuedThreadPool::queue_length()
 {
     Thread::lock();
-    int length = queue.size();
+    int const length = queue.size();
     Thread::unlock();
     return length;
 }
@@ -1346,8 +1337,8 @@ void LockQueue::run()
             LOG((long)r->target);
             LOG_END;
         }
-        int pl      = pendingLock.size();
-        int pending = pl;
+        int const pl      = pendingLock.size();
+        int       pending = pl;
         for (int i = 0; i < pl; i++)
         {
             LockRequest* r = pendingLock.removeFirst();
@@ -1381,10 +1372,7 @@ void LockQueue::run()
                 r->unlock();
                 pending--;
             }
-            else
-            {
-                pendingLock.addLast(r);
-            }
+            else { pendingLock.addLast(r); }
         }
         LOG_BEGIN(loggerModuleName, DEBUG_LOG | 9);
         LOG("LockQueue: waiting for next event (pending)");

@@ -127,7 +127,7 @@ class AGENTPP_TEST_MIB_DECL agentppTestTimeout : public MibLeaf {
 
 public:
     agentppTestTimeout();
-    virtual ~agentppTestTimeout();
+    ~agentppTestTimeout() override;
 
     static agentppTestTimeout* instance;
 
@@ -153,7 +153,7 @@ class AGENTPP_TEST_MIB_DECL agentppTestSharedTableCreationTime : public DateAndT
 
 public:
     agentppTestSharedTableCreationTime(const Oidx&);
-    virtual ~agentppTestSharedTableCreationTime();
+    ~agentppTestSharedTableCreationTime() override;
 
     MibEntryPtr clone() override;
 
@@ -172,7 +172,7 @@ class AGENTPP_TEST_MIB_DECL agentppTestSharedTableDelay : public MibLeaf {
 
 public:
     agentppTestSharedTableDelay(const Oidx&);
-    virtual ~agentppTestSharedTableDelay();
+    ~agentppTestSharedTableDelay() override;
 
     MibEntryPtr clone() override;
 
@@ -191,7 +191,7 @@ class AGENTPP_TEST_MIB_DECL agentppTestSharedTableSession : public MibLeaf {
 
 public:
     agentppTestSharedTableSession(const Oidx&);
-    virtual ~agentppTestSharedTableSession();
+    ~agentppTestSharedTableSession() override;
 
     MibEntryPtr clone() override;
 
@@ -209,7 +209,7 @@ class AGENTPP_TEST_MIB_DECL agentppTestSharedTableRowStatus : public snmpRowStat
 
 public:
     agentppTestSharedTableRowStatus(const Oidx&);
-    virtual ~agentppTestSharedTableRowStatus();
+    ~agentppTestSharedTableRowStatus() override;
 
     MibEntryPtr clone() override;
     enum labels {
@@ -238,7 +238,7 @@ class AGENTPP_TEST_MIB_DECL agentppTestRowCreation : public MibLeaf {
 
 public:
     agentppTestRowCreation(const Oidx&);
-    virtual ~agentppTestRowCreation();
+    ~agentppTestRowCreation() override;
 
     MibEntryPtr clone() override;
 
@@ -258,7 +258,7 @@ class AGENTPP_TEST_MIB_DECL agentppTestSparseCol1 : public MibLeaf {
 
 public:
     agentppTestSparseCol1(const Oidx&);
-    virtual ~agentppTestSparseCol1();
+    ~agentppTestSparseCol1() override;
 
     MibEntryPtr     clone() override;
     void            get_request(Request*, int) override;
@@ -284,7 +284,7 @@ class AGENTPP_TEST_MIB_DECL agentppTestSparseCol2 : public MibLeaf {
 
 public:
     agentppTestSparseCol2(const Oidx&);
-    virtual ~agentppTestSparseCol2();
+    ~agentppTestSparseCol2() override;
 
     MibEntryPtr      clone() override;
     void             get_request(Request*, int) override;
@@ -310,7 +310,7 @@ class AGENTPP_TEST_MIB_DECL agentppTestSparseCol3 : public MibLeaf {
 
 public:
     agentppTestSparseCol3(const Oidx&);
-    virtual ~agentppTestSparseCol3();
+    ~agentppTestSparseCol3() override;
 
     MibEntryPtr              clone() override;
     void                     get_request(Request*, int) override;
@@ -334,7 +334,7 @@ class AGENTPP_TEST_MIB_DECL agentppTestSparseRowStatus : public snmpRowStatus {
 
 public:
     agentppTestSparseRowStatus(const Oidx&);
-    virtual ~agentppTestSparseRowStatus();
+    ~agentppTestSparseRowStatus() override;
 
     MibEntryPtr     clone() override;
     virtual int32_t get_state();
@@ -367,7 +367,7 @@ class AGENTPP_TEST_MIB_DECL agentppTestSharedEntry : public MibTable {
 
 public:
     agentppTestSharedEntry();
-    virtual ~agentppTestSharedEntry();
+    ~agentppTestSharedEntry() override;
 
     static agentppTestSharedEntry* instance;
 
@@ -386,7 +386,7 @@ class AGENTPP_TEST_MIB_DECL agentppTestSessionsEntry : public MibTable {
 
 public:
     agentppTestSessionsEntry();
-    virtual ~agentppTestSessionsEntry();
+    ~agentppTestSessionsEntry() override;
 
     static agentppTestSessionsEntry* instance;
 
@@ -405,7 +405,7 @@ class AGENTPP_TEST_MIB_DECL agentppTestSparseEntry : public MibTable {
 
 public:
     agentppTestSparseEntry();
-    virtual ~agentppTestSparseEntry();
+    ~agentppTestSparseEntry() override;
 
     static agentppTestSparseEntry* instance;
 
@@ -424,7 +424,7 @@ public:
 class AGENTPP_TEST_MIB_DECL agentpp_test_mib : public MibGroup {
 public:
     agentpp_test_mib();
-    virtual ~agentpp_test_mib() { }
+    ~agentpp_test_mib() override { }
     //--AgentGen BEGIN=agentpp_test_mib
     //--AgentGen END
 };

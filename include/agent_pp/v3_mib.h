@@ -87,7 +87,7 @@ public:
 class AGENTPP_DECL UsmUserTableStatus : public snmpRowStatus {
 public:
     UsmUserTableStatus(const Oidx&, int _base_len, NS_SNMP USM* usm);
-    virtual ~UsmUserTableStatus();
+    ~UsmUserTableStatus() override;
 
     MibEntryPtr clone() override;
     int         set(const Vbx& vb) override;
@@ -97,7 +97,7 @@ public:
     void addUsmUser();
 
 private:
-    int     base_len;
+    int          base_len;
     NS_SNMP USM* usm;
 };
 
@@ -128,7 +128,7 @@ class AGENTPP_DECL UsmUserTable : public StorageTable {
 public:
     UsmUserTable();
     UsmUserTable(v3MP*);
-    virtual ~UsmUserTable();
+    ~UsmUserTable() override;
 
     bool ready(Vbx*, int, MibTableRow*) override;
     void row_added(MibTableRow* new_row, const Oidx& ind, MibTable*) override;
@@ -271,7 +271,7 @@ private:
 class AGENTPP_DECL UsmCloneFrom : public MibLeaf {
 public:
     UsmCloneFrom(const Oidx& o, NS_SNMP USM* u);
-    virtual ~UsmCloneFrom() {};
+    ~UsmCloneFrom() override {};
     int         prepare_set_request(Request* req, int& ind) override;
     void        get_request(Request* req, int ind) override;
     int         set(const Vbx& vb) override;
@@ -287,7 +287,7 @@ public:
     UsmKeyChange(
         const Oidx& o, int keylen, int hashfunction, int typeOfKey, UsmKeyChange* ukc, NS_SNMP USM* u);
     UsmKeyChange(const Oidx& o, NS_SNMP USM* u);
-    virtual ~UsmKeyChange();
+    ~UsmKeyChange() override;
 
     int         unset() override;
     void        initialize(int keylen, int hashfunction, int typeOfKey, UsmKeyChange* ukc);
@@ -304,7 +304,7 @@ protected:
     int           key_len;
     int           hash_function;
     UsmKeyChange* otherKeyChangeObject;
-    NS_SNMP USM* usm;
+    NS_SNMP USM*  usm;
 };
 
 class AGENTPP_DECL UsmOwnKeyChange : public UsmKeyChange {
@@ -313,7 +313,7 @@ public:
     UsmOwnKeyChange(
         const Oidx& o, int keylen, int hashfunction, int typeOfKey, UsmKeyChange* ukc, NS_SNMP USM* u)
         : UsmKeyChange(o, keylen, hashfunction, typeOfKey, ukc, u) {};
-    virtual ~UsmOwnKeyChange();
+    ~UsmOwnKeyChange() override;
 
     int         prepare_set_request(Request* req, int& ind) override;
     MibEntryPtr clone() override;

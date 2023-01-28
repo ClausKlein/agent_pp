@@ -123,7 +123,7 @@ void init(Mib& mib, const NS_SNMP OctetStr& engineID)
 #    endif
     mib.add(new notification_log_mib());
 
-    OctetStr nonDefaultContext("other");
+    OctetStr const nonDefaultContext("other");
     mib.add(nonDefaultContext, new atm_mib());
 
     UsmUserTable* uut = new UsmUserTable();
@@ -247,8 +247,8 @@ int main(int argc, char* argv[])
     mib = new Mib();
 
 #ifdef _SNMPv3
-    unsigned int snmpEngineBoots = 0;
-    OctetStr     engineId(SnmpEngineID::create_engine_id(port));
+    unsigned int   snmpEngineBoots = 0;
+    OctetStr const engineId(SnmpEngineID::create_engine_id(port));
 
     // you may use your own methods to load/store this counter
     status = mib->get_boot_counter(engineId, snmpEngineBoots);
@@ -409,9 +409,9 @@ int main(int argc, char* argv[])
     vacm->addNewView("restricted", "1.3.6.1.6.3.15.1.1", "", view_included, storageType_nonVolatile);
 
     // add SNMPv1/v2c community to v3 security name mapping
-    OctetStr     co("public");
-    MibTableRow* row = snmpCommunityEntry::instance->add_row(Oidx::from_string(co, false));
-    OctetStr     tag("v1v2cPermittedManagers");
+    OctetStr const co("public");
+    MibTableRow*   row = snmpCommunityEntry::instance->add_row(Oidx::from_string(co, false));
+    OctetStr const tag("v1v2cPermittedManagers");
     snmpCommunityEntry::instance->set_row(
         row, co, co, reqList->get_v3mp()->get_local_engine_id(), "", tag, 3, 1);
 
@@ -425,10 +425,10 @@ int main(int argc, char* argv[])
     mib->init();
 
     Vbx*                   vbs = 0;
-    coldStartOid           coldOid;
+    coldStartOid const     coldOid;
     NotificationOriginator no;
     // add an example destination
-    UdpAddress dest("127.0.0.1/162");
+    UdpAddress const dest("127.0.0.1/162");
     no.add_v1_trap_destination(dest, "defaultV1Trap", "v1trap", "public");
     // send the notification
     mib->notify("", coldOid, vbs, 0);
@@ -440,10 +440,7 @@ int main(int argc, char* argv[])
         req = reqList->receive(2);
 
         if (req) { mib->process_request(req); }
-        else
-        {
-            mib->cleanup();
-        }
+        else { mib->cleanup(); }
     }
     delete reqList;
     delete mib;

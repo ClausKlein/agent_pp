@@ -92,7 +92,7 @@ snmpNotifyEntry::~snmpNotifyEntry() { }
 MibTableRow* snmpNotifyEntry::add_entry(const OctetStr& name, const OctetStr& tag, const int type)
 {
     start_synch();
-    Oidx         index = Oidx::from_string(name, false);
+    Oidx const   index = Oidx::from_string(name, false);
     MibTableRow* r     = find_index(index);
     if (r)
     {

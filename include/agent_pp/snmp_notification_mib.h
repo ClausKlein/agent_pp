@@ -180,7 +180,7 @@ class AGENTPP_DECL snmpNotifyEntry : public StorageTable {
 
 public:
     snmpNotifyEntry();
-    virtual ~snmpNotifyEntry();
+    ~snmpNotifyEntry() override;
 
     /**
      * Add a new entry to the receiver. The new entry is
@@ -220,7 +220,7 @@ class AGENTPP_DECL snmpNotifyFilterProfileEntry : public StorageTable {
 
 public:
     snmpNotifyFilterProfileEntry();
-    virtual ~snmpNotifyFilterProfileEntry();
+    ~snmpNotifyFilterProfileEntry() override;
 
     static snmpNotifyFilterProfileEntry* instance;
 };
@@ -239,7 +239,7 @@ class AGENTPP_DECL snmpNotifyFilterEntry : public StorageTable {
 public:
     snmpNotifyFilterEntry();
     snmpNotifyFilterEntry(snmpNotifyFilterProfileEntry* profileEntry);
-    virtual ~snmpNotifyFilterEntry();
+    ~snmpNotifyFilterEntry() override;
 
     /**
      * Get the pointer to the snmpNotifyFilterEntry associated with the
@@ -252,7 +252,7 @@ public:
      */
     static snmpNotifyFilterEntry* get_instance(Mib* mib)
     {
-        Oidx                   oid(oidSnmpNotifyFilterEntry);
+        Oidx const             oid(oidSnmpNotifyFilterEntry);
         snmpNotifyFilterEntry* entry = (snmpNotifyFilterEntry*)mib->get(oid);
         return (entry) ? entry : instance;
     }
@@ -285,7 +285,7 @@ protected:
 class AGENTPP_DECL snmp_notification_mib : public MibGroup {
 public:
     snmp_notification_mib();
-    virtual ~snmp_notification_mib() { }
+    ~snmp_notification_mib() override { }
 };
 
 #ifdef AGENTPP_NAMESPACE

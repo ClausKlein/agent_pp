@@ -40,7 +40,7 @@ namespace Agentpp
 static const char* loggerModuleName = "agent++.v3_mib";
 #    endif
 const index_info   iUsmUserTable[2] = { { sNMP_SYNTAX_OCTETS, false, 5, 32 },
-    { sNMP_SYNTAX_OCTETS, false, 1, 32 } };
+      { sNMP_SYNTAX_OCTETS, false, 1, 32 } };
 const unsigned int lUsmUserTable    = 2;
 
 /**********************************************************************
@@ -314,7 +314,7 @@ UsmUserTable::UsmUserTable(v3MP* v3mp) : StorageTable(oidUsmUserEntry, iUsmUserT
         LOG_END;
     }
 
-    Oidx tmpoid = Oidx(oidUsmUserEntry);
+    Oidx const tmpoid = Oidx(oidUsmUserEntry);
 
     // usmUserEngineID
     add_col(new SnmpAdminString("1", NOACCESS, new OctetStr(""), VMODE_DEFAULT, 0, 32));
@@ -348,7 +348,7 @@ UsmUserTable::UsmUserTable(v3MP* v3mp) : StorageTable(oidUsmUserEntry, iUsmUserT
 
     usm->lock_user_table(); // lock table
 
-    int users = usm->get_user_count();
+    int const users = usm->get_user_count();
     for (int i = 1; i <= users; i++)
     {
         Oidx o;
@@ -457,7 +457,7 @@ void UsmUserTable::removeAllUsers()
 
 bool UsmUserTable::ready(Vbx* pvbs, int sz, MibTableRow* row)
 {
-    bool ready = MibTable::ready(pvbs, sz, row);
+    bool const ready = MibTable::ready(pvbs, sz, row);
     if (ready)
     {
         if (row->get_row_status()->get() != rowNotInService)
@@ -491,7 +491,7 @@ void UsmUserTable::initialize_key_change(MibTableRow* row)
     }
     else
     {
-        uint32_t auth_prot = o.last();
+        uint32_t const auth_prot = o.last();
 
         Auth* auth       = usm->get_auth_priv()->get_auth(auth_prot);
         int   hashlength = 0;
@@ -517,7 +517,7 @@ void UsmUserTable::initialize_key_change(MibTableRow* row)
         }
         else
         {
-            uint32_t priv_prot = op.last();
+            uint32_t const priv_prot = op.last();
 
             Priv* priv       = usm->get_auth_priv()->get_priv(priv_prot);
             int   hashlength = 0;
@@ -553,8 +553,8 @@ void UsmUserTable::row_init(MibTableRow* new_row, const Oidx& ind, MibTable*)
     new_row->get_nth(7)->get_value(privProtocol);
     new_row->get_nth(8)->get_value(privKey);
     new_row->get_nth(12)->get_value(rowStatus);
-    long int auth = authProtocol.last();
-    long int priv = privProtocol.last();
+    long int const auth = authProtocol.last();
+    long int const priv = privProtocol.last();
     if (rowStatus == rowActive)
     {
         usm->add_localized_user(engineID, userName, secName, auth, authKey, priv, privKey);
@@ -596,8 +596,8 @@ void UsmUserTable::row_deactivated(MibTableRow* row, const Oidx& ind, MibTable*)
     LOG("UsmUserTable: deactivated row with index");
     LOG(ind.get_printable());
     LOG_END;
-    Oidx     zeroDotZero = "0.0";
-    OctetStr emptyString;
+    Oidx const     zeroDotZero = "0.0";
+    OctetStr const emptyString;
     row->get_nth(3)->set_value(zeroDotZero);
 }
 
@@ -605,7 +605,7 @@ MibTableRow* UsmUserTable::addNewRow(const OctetStr& userName, const OctetStr& s
     int authProtocol, int privProtocol, const OctetStr& authPassword, const OctetStr& privPassword,
     const bool addPassWordsToUSM)
 {
-    OctetStr engineID(usm->get_local_engine_id());
+    OctetStr const engineID(usm->get_local_engine_id());
     return addNewRow(userName, securityName, authProtocol, privProtocol, authPassword, privPassword,
         engineID, addPassWordsToUSM);
 }
@@ -850,8 +850,8 @@ UsmCloneFrom::UsmCloneFrom(const Oidx& o, USM* u)
 void UsmCloneFrom::get_request(Request* req, int ind)
 {
     // getRequest to this object returns 0.0
-    Vbx vb(req->get_oid(ind));
-    Oid o("0.0");
+    Vbx       vb(req->get_oid(ind));
+    Oid const o("0.0");
     vb.set_value(o);
 
     if (get_access() >= READONLY)
@@ -967,7 +967,7 @@ int UsmCloneFrom::set(const Vbx& vb)
             }
             else
             {
-                uint32_t auth_prot = auth_oid.last();
+                uint32_t const auth_prot = auth_oid.last();
 
                 Auth* auth       = usm->get_auth_priv()->get_auth(auth_prot);
                 int   hashlength = 0;
@@ -994,7 +994,7 @@ int UsmCloneFrom::set(const Vbx& vb)
                 }
                 else
                 {
-                    uint32_t priv_prot = priv_oid.last();
+                    uint32_t const priv_prot = priv_oid.last();
 
                     Priv* priv    = usm->get_auth_priv()->get_priv(priv_prot);
                     int   hashlen = 0;
@@ -1030,12 +1030,12 @@ int UsmCloneFrom::set(const Vbx& vb)
 bool UsmCloneFrom::value_ok(const Vbx& vb)
 {
     // check if row exists
-    Oidx o;
-    Oidx base = oidUsmUserEntry;
+    Oidx       o;
+    Oidx const base = oidUsmUserEntry;
 
     if (vb.get_value(o) != SNMP_CLASS_SUCCESS) return false;
 
-    Oidx n("0.0");
+    Oidx const n("0.0");
     if (o == n) return true;
 
     if ((o.len() < base.len() + 3) || (o.cut_right(o.len() - base.len()) != base))
@@ -1136,8 +1136,8 @@ int UsmKeyChange::prepare_set_request(Request* req, int& ind)
             else
             {
                 // check key length
-                OctetStr os;
-                Vbx      vb(req->get_value(ind));
+                OctetStr  os;
+                Vbx const vb(req->get_value(ind));
                 if (vb.get_value(os) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
                 if ((int)os.len() != 2 * key_len)
                 { // Fixed key_len
@@ -1339,7 +1339,7 @@ bool UsmKeyChange::process_key_change(OctetStr& os)
   ((OctetStr*)value)->set_data(digest, key_len);
 
 #    else
-    int iterations = (key_len - 1) / auth->get_hash_len(); /*integer division*/
+    int const iterations = (key_len - 1) / auth->get_hash_len(); /*integer division*/
 
     OctetStr temp = old_key;
     OctetStr newKey;
@@ -1614,8 +1614,8 @@ usmUserPrivProtocol::usmUserPrivProtocol(const Oidx& o, USM* u)
 
 int usmUserPrivProtocol::prepare_set_request(Request* req, int& ind)
 {
-    Vbx  vb(req->get_value(ind));
-    Oidx o;
+    Vbx const vb(req->get_value(ind));
+    Oidx      o;
     if (vb.get_value(o) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
 
     if (o != oidUsmNoPrivProtocol)

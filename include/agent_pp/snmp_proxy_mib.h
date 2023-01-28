@@ -135,7 +135,7 @@ class AGENTPP_DECL snmpProxyEntry : public StorageTable {
 
 public:
     snmpProxyEntry();
-    virtual ~snmpProxyEntry();
+    ~snmpProxyEntry() override;
 
     static snmpProxyEntry* instance;
     virtual void           set_row(
@@ -145,7 +145,7 @@ public:
 class AGENTPP_DECL snmp_proxy_mib : public MibGroup {
 public:
     snmp_proxy_mib();
-    virtual ~snmp_proxy_mib() { }
+    ~snmp_proxy_mib() override { }
 };
 
 #ifdef AGENTPP_NAMESPACE

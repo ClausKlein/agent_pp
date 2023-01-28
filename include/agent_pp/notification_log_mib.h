@@ -169,7 +169,7 @@ class AGENTPP_DECL nlmConfigLogOperStatus : public MibLeaf {
 
 public:
     nlmConfigLogOperStatus(const Oidx&);
-    virtual ~nlmConfigLogOperStatus();
+    ~nlmConfigLogOperStatus() override;
 
     MibEntryPtr clone() override;
     void        get_request(Request*, int) override;
@@ -205,7 +205,7 @@ class AGENTPP_DECL nlmConfigGlobalEntryLimit : public MibLeaf {
 
 public:
     nlmConfigGlobalEntryLimit();
-    virtual ~nlmConfigGlobalEntryLimit();
+    ~nlmConfigGlobalEntryLimit() override;
 
     static nlmConfigGlobalEntryLimit* instance;
 
@@ -241,7 +241,7 @@ class AGENTPP_DECL nlmConfigGlobalAgeOut : public MibLeaf {
 
 public:
     nlmConfigGlobalAgeOut();
-    virtual ~nlmConfigGlobalAgeOut();
+    ~nlmConfigGlobalAgeOut() override;
 
     static nlmConfigGlobalAgeOut* instance;
 
@@ -273,7 +273,7 @@ class AGENTPP_DECL nlmConfigLogFilterName : public MibLeaf {
 
 public:
     nlmConfigLogFilterName(const Oidx&);
-    virtual ~nlmConfigLogFilterName();
+    ~nlmConfigLogFilterName() override;
 
     MibEntryPtr              clone() override;
     void                     get_request(Request*, int) override;
@@ -308,7 +308,7 @@ class AGENTPP_DECL nlmConfigLogEntryLimit : public MibLeaf {
 
 public:
     nlmConfigLogEntryLimit(const Oidx&);
-    virtual ~nlmConfigLogEntryLimit();
+    ~nlmConfigLogEntryLimit() override;
 
     MibEntryPtr      clone() override;
     void             get_request(Request*, int) override;
@@ -337,7 +337,7 @@ class AGENTPP_DECL nlmConfigLogAdminStatus : public MibLeaf {
 
 public:
     nlmConfigLogAdminStatus(const Oidx&);
-    virtual ~nlmConfigLogAdminStatus();
+    ~nlmConfigLogAdminStatus() override;
 
     MibEntryPtr     clone() override;
     void            get_request(Request*, int) override;
@@ -362,7 +362,7 @@ class AGENTPP_DECL nlmConfigLogStorageType : public StorageType {
 
 public:
     nlmConfigLogStorageType(const Oidx&);
-    virtual ~nlmConfigLogStorageType();
+    ~nlmConfigLogStorageType() override;
 
     MibEntryPtr clone() override;
     void        get_request(Request*, int) override;
@@ -394,7 +394,7 @@ class AGENTPP_DECL nlmConfigLogEntryStatus : public snmpRowStatus {
 
 public:
     nlmConfigLogEntryStatus(const Oidx&);
-    virtual ~nlmConfigLogEntryStatus();
+    ~nlmConfigLogEntryStatus() override;
 
     MibEntryPtr     clone() override;
     virtual int32_t get_state();
@@ -427,7 +427,7 @@ class AGENTPP_DECL nlmStatsGlobalNotificationsLogged : public Counter32MibLeaf {
 
 public:
     nlmStatsGlobalNotificationsLogged();
-    virtual ~nlmStatsGlobalNotificationsLogged();
+    ~nlmStatsGlobalNotificationsLogged() override;
 
     static nlmStatsGlobalNotificationsLogged* instance;
 
@@ -453,7 +453,7 @@ class AGENTPP_DECL nlmStatsGlobalNotificationsBumped : public Counter32MibLeaf {
 
 public:
     nlmStatsGlobalNotificationsBumped();
-    virtual ~nlmStatsGlobalNotificationsBumped();
+    ~nlmStatsGlobalNotificationsBumped() override;
 
     static nlmStatsGlobalNotificationsBumped* instance;
 
@@ -479,7 +479,7 @@ class AGENTPP_DECL nlmConfigLogEntry : public StorageTable {
 
 public:
     nlmConfigLogEntry(Mib* mib);
-    virtual ~nlmConfigLogEntry();
+    ~nlmConfigLogEntry() override;
 
     static nlmConfigLogEntry* instance;
 
@@ -505,7 +505,7 @@ class AGENTPP_DECL nlmStatsLogEntry : public MibTable {
 
 public:
     nlmStatsLogEntry(nlmConfigLogEntry*);
-    virtual ~nlmStatsLogEntry();
+    ~nlmStatsLogEntry() override;
 
     static nlmStatsLogEntry* instance;
 
@@ -555,7 +555,7 @@ class AGENTPP_DECL nlmLogEntry : public MibTable {
 public:
     nlmLogEntry(Mib*, nlmConfigLogEntry*, nlmStatsLogEntry*, nlmLogVariableEntry*,
         nlmConfigGlobalEntryLimit*, nlmConfigGlobalAgeOut*);
-    virtual ~nlmLogEntry();
+    ~nlmLogEntry() override;
 
     static nlmLogEntry* instance;
 
@@ -600,7 +600,7 @@ class AGENTPP_DECL nlmLogVariableEntry : public MibTable {
 
 public:
     nlmLogVariableEntry();
-    virtual ~nlmLogVariableEntry();
+    ~nlmLogVariableEntry() override;
 
     static nlmLogVariableEntry* instance;
 
@@ -621,7 +621,7 @@ class AGENTPP_DECL notification_log_mib : public MibGroup {
 public:
     notification_log_mib();
     notification_log_mib(Mib* mib);
-    virtual ~notification_log_mib() { }
+    ~notification_log_mib() override { }
 
     //--AgentGen BEGIN=notification_log_mib
 protected:

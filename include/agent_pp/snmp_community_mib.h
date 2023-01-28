@@ -164,7 +164,7 @@ class AGENTPP_DECL snmpTargetAddrTMask : public snmpTargetAddrTAddress {
 
 public:
     snmpTargetAddrTMask(const Oidx&);
-    virtual ~snmpTargetAddrTMask();
+    ~snmpTargetAddrTMask() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -191,7 +191,7 @@ class AGENTPP_DECL snmpCommunityEntry : public StorageTable {
 
 public:
     snmpCommunityEntry(Mib* mib);
-    virtual ~snmpCommunityEntry();
+    ~snmpCommunityEntry() override;
 
     static snmpCommunityEntry* instance;
 
@@ -206,7 +206,7 @@ public:
      */
     static snmpCommunityEntry* get_instance(Mib* mib)
     {
-        Oidx                oid(oidSnmpCommunityEntry);
+        Oidx const          oid(oidSnmpCommunityEntry);
         snmpCommunityEntry* entry = (snmpCommunityEntry*)mib->get(oid);
         return (entry) ? entry : instance;
     }
@@ -275,7 +275,7 @@ public:
      * @since 4.3.0
      */
     snmpTargetAddrExtEntry(snmpTargetAddrEntry* parentTable);
-    virtual ~snmpTargetAddrExtEntry();
+    ~snmpTargetAddrExtEntry() override;
 
     static snmpTargetAddrExtEntry* instance;
     /**
@@ -321,7 +321,7 @@ public:
      */
     snmp_community_mib(Mib* mib);
 
-    virtual ~snmp_community_mib() { }
+    ~snmp_community_mib() override { }
     static void add_public();
     static void add_public(Mib* mib);
 };

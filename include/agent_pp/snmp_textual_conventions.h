@@ -95,7 +95,7 @@ public:
      *    the maximum size of the DisplayString.
      */
     SnmpDisplayString(const Oidx&, mib_access, NS_SNMP OctetStr*, bool, int, int);
-    virtual ~SnmpDisplayString();
+    ~SnmpDisplayString() override;
 
     MibEntryPtr clone() override;
     bool        value_ok(const Vbx&) override;
@@ -254,7 +254,7 @@ public:
     /**
      * Destructor
      */
-    virtual ~SnmpEngineID();
+    ~SnmpEngineID() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -320,7 +320,7 @@ public:
     SnmpTagValue(const Oidx&, mib_access, NS_SNMP OctetStr*, int);
 
     SnmpTagValue(const Oidx&);
-    virtual ~SnmpTagValue();
+    ~SnmpTagValue() override;
 
     MibEntryPtr clone() override;
     bool        value_ok(const Vbx&) override;
@@ -366,7 +366,7 @@ public:
     SnmpTagList(const Oidx&, mib_access, NS_SNMP OctetStr*, int);
 
     SnmpTagList(const Oidx&);
-    virtual ~SnmpTagList();
+    ~SnmpTagList() override;
 
     MibEntryPtr  clone() override;
     bool         value_ok(const Vbx&) override;
@@ -429,7 +429,7 @@ class AGENTPP_DECL TestAndIncr : public MibLeaf {
 
 public:
     TestAndIncr(const Oidx&);
-    virtual ~TestAndIncr();
+    ~TestAndIncr() override;
 
     virtual int32_t get_state();
     virtual void    set_state(int32_t);
@@ -521,7 +521,7 @@ public:
      */
     StorageTypeVoter() { }
 
-    virtual ~StorageTypeVoter() { }
+    ~StorageTypeVoter() override { }
 
     int is_transition_ok(MibTable*, MibTableRow*, const Oidx&, int, int) override;
 };
@@ -608,7 +608,7 @@ public:
     /**
      * Destructor.
      */
-    virtual ~StorageTable();
+    ~StorageTable() override;
 
     /**
      * Add the StorageType column to the table.
@@ -870,7 +870,7 @@ class AGENTPP_DECL SnmpSecurityModel : public SnmpInt32MinMax {
 
 public:
     SnmpSecurityModel(const Oidx&, mib_access, int, int);
-    virtual ~SnmpSecurityModel();
+    ~SnmpSecurityModel() override;
 
     MibEntryPtr clone() override;
 };
@@ -903,7 +903,7 @@ class AGENTPP_DECL SnmpSecurityLevel : public SnmpInt32MinMax {
 
 public:
     SnmpSecurityLevel(const Oidx&, mib_access, int, int);
-    virtual ~SnmpSecurityLevel();
+    ~SnmpSecurityLevel() override;
 
     MibEntryPtr clone() override;
 };
@@ -986,7 +986,7 @@ class AGENTPP_DECL SnmpMessageProcessingModel : public SnmpInt32MinMax {
 
 public:
     SnmpMessageProcessingModel(const Oidx&, mib_access, int, int);
-    virtual ~SnmpMessageProcessingModel();
+    ~SnmpMessageProcessingModel() override;
 
     MibEntryPtr clone() override;
 };
@@ -1117,7 +1117,7 @@ public:
      *    the maxmimum size of the SnmpAdminString.
      */
     SnmpAdminString(const Oidx&, mib_access, NS_SNMP OctetStr*, int, int, int);
-    virtual ~SnmpAdminString();
+    ~SnmpAdminString() override;
 
     MibEntryPtr clone() override;
 
@@ -1163,7 +1163,7 @@ public:
      *                   snmpRowStatus.
      */
     TimeStamp(const Oidx&, mib_access, int);
-    virtual ~TimeStamp();
+    ~TimeStamp() override;
 
     bool is_volatile() override { return true; }
 
@@ -1204,7 +1204,7 @@ public:
      */
     TimeStampTable(const Oidx&, const index_info*, unsigned int, TimeStamp*);
 
-    virtual ~TimeStampTable();
+    ~TimeStampTable() override;
 
     void row_added(MibTableRow*, const Oidx&, MibTable*) override;
     void row_delete(MibTableRow*, const Oidx&, MibTable*) override;
@@ -1280,7 +1280,7 @@ public:
     /**
      * Destructor.
      */
-    virtual ~DateAndTime();
+    ~DateAndTime() override;
 
     MibEntryPtr              clone() override;
     virtual NS_SNMP OctetStr get_state();

@@ -73,7 +73,7 @@ public:
     /**
      * Destructor.
      */
-    virtual ~NotificationOriginator();
+    ~NotificationOriginator() override;
 
     /**
      * Generate a notification message.

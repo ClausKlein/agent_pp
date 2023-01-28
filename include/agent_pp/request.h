@@ -682,7 +682,7 @@ public:
      * Destructor
      * (SYNCHRONIZED)
      */
-    virtual ~RequestList();
+    ~RequestList() override;
 
     /**
      * Activate or deactivate source address
@@ -972,7 +972,7 @@ protected:
     List<Request>* requests;
     Snmpx*         snmp;
 #ifdef _SNMPv3
-    Vacm*   vacm;
+    Vacm*         vacm;
     NS_SNMP v3MP* v3mp;
 #endif
     NS_SNMP OctetStr* write_community;

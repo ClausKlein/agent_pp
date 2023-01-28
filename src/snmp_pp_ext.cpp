@@ -124,8 +124,8 @@ int Vbx::to_asn1(Vbx* vbs, int sz, unsigned char*& buf, int& length)
 
     for (int i = 0; i < sz; i++)
     {
-        SmiVALUE smival;
-        int      status = convertVbToSmival(vbs[i], &smival);
+        SmiVALUE  smival;
+        int const status = convertVbToSmival(vbs[i], &smival);
         if (status != SNMP_CLASS_SUCCESS)
         {
             freeSmivalDescriptor(&smival);
@@ -374,19 +374,19 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
 
             // octet string
         case sNMP_SYNTAX_OPAQUE: {
-            OpaqueStr octets((unsigned char*)vp->val.string, (uint32_t)vp->val_len);
+            OpaqueStr const octets((unsigned char*)vp->val.string, (uint32_t)vp->val_len);
             vbs[i].set_value(octets);
         }
         break;
         case sNMP_SYNTAX_OCTETS: {
-            OctetStr octets((unsigned char*)vp->val.string, (uint32_t)vp->val_len);
+            OctetStr const octets((unsigned char*)vp->val.string, (uint32_t)vp->val_len);
             vbs[i].set_value(octets);
         }
         break;
 
             // object id
         case sNMP_SYNTAX_OID: {
-            Oid oid((SmiLPUINT32)vp->val.objid, (int)vp->val_len);
+            Oid const oid((SmiLPUINT32)vp->val.objid, (int)vp->val_len);
             vbs[i].set_value(oid);
         }
         break;
@@ -394,21 +394,21 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
             // timeticks
         case sNMP_SYNTAX_TIMETICKS: {
             // FIXME: Warning C6011 Dereferencing NULL pointer! CK
-            TimeTicks timeticks((uint32_t) * (vp->val.integer));
+            TimeTicks const timeticks((uint32_t) * (vp->val.integer));
             vbs[i].set_value(timeticks);
         }
         break;
 
             // 32 bit counter
         case sNMP_SYNTAX_CNTR32: {
-            Counter32 counter32((uint32_t) * (vp->val.integer));
+            Counter32 const counter32((uint32_t) * (vp->val.integer));
             vbs[i].set_value(counter32);
         }
         break;
 
             // 32 bit gauge
         case sNMP_SYNTAX_GAUGE32: {
-            Gauge32 gauge32((uint32_t) * (vp->val.integer));
+            Gauge32 const gauge32((uint32_t) * (vp->val.integer));
             vbs[i].set_value(gauge32);
         }
         break;
@@ -419,14 +419,14 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
             // FIXME: Warning C6011 Dereferencing NULL pointer! CK
             snprintf(buffer, sizeof(buffer), "%d.%d.%d.%d", vp->val.string[0], vp->val.string[1],
                 vp->val.string[2], vp->val.string[3]);
-            IpAddress ipaddress(buffer);
+            IpAddress const ipaddress(buffer);
             vbs[i].set_value(ipaddress);
         }
         break;
 
             // 32 bit integer
         case sNMP_SYNTAX_INT: {
-            SnmpInt32 int32((long)*(vp->val.integer));
+            SnmpInt32 const int32((long)*(vp->val.integer));
             vbs[i].set_value(int32);
         }
         break;
@@ -434,7 +434,8 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
             // v2 counter 64's
         case sNMP_SYNTAX_CNTR64: { // Frank Fock (was empty before)
             // FIXME: Warning C6011 Dereferencing NULL pointer! CK
-            Counter64 c64(((counter64*)vp->val.counter64)->high, ((counter64*)vp->val.counter64)->low);
+            Counter64 const c64(
+                ((counter64*)vp->val.counter64)->high, ((counter64*)vp->val.counter64)->low);
             vbs[i].set_value(c64);
             break;
         }
@@ -687,9 +688,9 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             if (receive_buffer_len >= MAX_SNMP_PACKET) return SNMP_ERROR_TOO_BIG;
 
             // copy fromaddress and remote port
-            char*    addr = inet_ntoa(((sockaddr_in&)from_addr).sin_addr); // TODO: use inet_ntop()! CK
-            uint16_t port = ntohs(((sockaddr_in&)from_addr).sin_port);
-            fromaddr      = addr;
+            char* addr = inet_ntoa(((sockaddr_in&)from_addr).sin_addr); // TODO: use inet_ntop()! CK
+            uint16_t const port = ntohs(((sockaddr_in&)from_addr).sin_port);
+            fromaddr            = addr;
             fromaddr.set_port(port);
 
             debugprintf(1, "++ AGENT++: data received from %s port %d.", addr, port);
@@ -1003,7 +1004,7 @@ int Snmpx::send(Pdux const& pdu, SnmpTarget* target)
 
     version = target->get_version();
     target->get_address(gen_address);
-    UdpAddress udp_address(gen_address);
+    UdpAddress const udp_address(gen_address);
 
     switch (target->get_type())
     {

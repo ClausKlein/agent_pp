@@ -84,8 +84,8 @@ OidList<MibTableRow>* ProxyForwarder::get_matches(Request* req)
     ListCursor<MibTableRow> cur;
     for (cur.init(list); cur.get(); cur.next())
     {
-        int type  = req->get_type();
-        int state = 0;
+        int const type  = req->get_type();
+        int       state = 0;
         cur.get()->get_nth(0)->get_value(state);
 
         OctetStr contextID, contextName, paramsIn;
@@ -252,7 +252,7 @@ bool ProxyForwarder::process_multiple(Pdux& pdu, Request* req)
             LOG(pdu.get_context_engine_id().get_printable());
             LOG_END;
 
-            int status = snmp->send_request(*target, pdu);
+            int const status = snmp->send_request(*target, pdu);
             LOG_BEGIN(loggerModuleName, INFO_LOG | 3);
             LOG("ProxyForwarder: agent contacted: (status)");
             LOG(status);
@@ -309,7 +309,7 @@ bool ProxyForwarder::process_single(Pdux& pdu, Request* req)
     LOG(pdu.get_context_engine_id().get_printable());
     LOG_END;
 
-    int status = snmp->send_request(*target, pdu, req->get_non_rep(), req->get_max_rep());
+    int const status = snmp->send_request(*target, pdu, req->get_non_rep(), req->get_max_rep());
     if (status != SNMP_ERROR_SUCCESS)
     {
         pdu.set_error_status(SNMP_ERROR_GENERAL_VB_ERR);
@@ -341,7 +341,7 @@ bool ProxyForwarder::process_request(Request* req)
     case sNMP_PDU_GETNEXT:
     case sNMP_PDU_GETBULK:
     case sNMP_PDU_SET: {
-        bool success = process_single(pdu, req);
+        bool const success = process_single(pdu, req);
         transform_pdu(pdu, *req->get_pdu());
         return success;
     }

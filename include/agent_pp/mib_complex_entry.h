@@ -68,7 +68,7 @@ public:
     /**
      * Destructor
      */
-    virtual ~MibComplexEntry();
+    ~MibComplexEntry() override;
 
     /**
      * Return the type of the receiver MIB node.
@@ -279,7 +279,7 @@ public:
     /**
      * Destructor
      */
-    virtual ~MibStaticTable();
+    ~MibStaticTable() override;
 
     /**
      * Return a clone of the receiver.

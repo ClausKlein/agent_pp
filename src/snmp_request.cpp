@@ -87,8 +87,8 @@ int SnmpRequest::process(int rtype, const UdpAddress& address, Vbx* vbs, int& sz
     if (!address.valid()) { return SNMP_CLASS_INVALID_ADDRESS; }
     CTarget target(address);
 
-    int retries = DEFAULT_RETRIES;
-    int timeout = DEFAULT_TIMEOUT;
+    int const retries = DEFAULT_RETRIES;
+    int       timeout = DEFAULT_TIMEOUT;
 
     snmp_version version = version1;
     if (rtype == sNMP_PDU_GETBULK)

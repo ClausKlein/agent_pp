@@ -52,7 +52,7 @@ class agentppNotifyTest : public MibLeaf {
 
 public:
     agentppNotifyTest(Mib* mib);
-    virtual ~agentppNotifyTest();
+    ~agentppNotifyTest() override;
 
     static agentppNotifyTest* instance;
 
@@ -81,7 +81,7 @@ class agentppNotifyTestAllTypes : public NotificationOriginator {
 
 public:
     agentppNotifyTestAllTypes(Mib* mib);
-    virtual ~agentppNotifyTestAllTypes();
+    ~agentppNotifyTestAllTypes() override;
 
     virtual void generate(Vbx*, int, const NS_SNMP OctetStr&);
 
@@ -92,7 +92,7 @@ public:
 class agentpp_notifytest_mib : public MibGroup {
 public:
     agentpp_notifytest_mib(Mib* mib);
-    virtual ~agentpp_notifytest_mib() { }
+    ~agentpp_notifytest_mib() override { }
 
     //--AgentGen BEGIN=agentpp_notifytest_mib
     //--AgentGen END

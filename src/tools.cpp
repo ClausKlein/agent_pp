@@ -42,8 +42,8 @@ namespace Agentpp
  */
 char* AgentTools::make_concatenation(const char* prefix, const char* suffix)
 {
-    size_t len    = strlen(prefix) + strlen(suffix) + 1;
-    char*  retval = new char[len];
+    size_t const len    = strlen(prefix) + strlen(suffix) + 1;
+    char*        retval = new char[len];
     strlcpy(retval, prefix, len);
     strlcat(retval, suffix, len);
     return retval;
@@ -67,8 +67,8 @@ long AgentTools::file_size(FILE* stream)
 
 bool AgentTools::make_path(const std::string& path)
 {
-    bool result = true;
-    int  rc     = mkdir(path.c_str(), 0775);
+    bool      result = true;
+    int const rc     = mkdir(path.c_str(), 0775);
     if (rc == -1)
     {
         switch (errno)
@@ -78,10 +78,7 @@ bool AgentTools::make_path(const std::string& path)
             {
                 result = 0 == mkdir(path.c_str(), 0775);
             }
-            else
-            {
-                result = false;
-            }
+            else { result = false; }
             break;
         case EEXIST:
             // done

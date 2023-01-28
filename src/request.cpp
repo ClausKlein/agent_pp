@@ -509,7 +509,7 @@ void Request::set_oid(const Oidx& o, int i)
 bool Request::add_rep_row()
 {
     if (repeater == 0) return false;
-    int rows = (pdu->get_vb_count() - non_rep) / repeater;
+    int const rows = (pdu->get_vb_count() - non_rep) / repeater;
     if (rows == 0) return false;
 
     if (pdu->get_asn1_length() >= get_max_response_length()) return false;
@@ -555,8 +555,8 @@ bool Request::add_rep_row()
 
 bool Request::init_rep_row(int row)
 {
-    int start = non_rep + row * repeater;
-    int end   = start + repeater;
+    int const start = non_rep + row * repeater;
+    int const end   = start + repeater;
     if ((row < 1) || (end > size)) return false;
     for (int i = start; i < end; i++)
     {
@@ -694,11 +694,11 @@ void Request::set_unlocked(int i)
 void Request::trim_bulk_response()
 {
     if (get_type() != sNMP_PDU_GETBULK) return;
-    int nonrep = get_non_rep();
-    int maxrep = get_max_rep();
-    int rep    = get_rep();
-    int j      = 0;
-    int end    = 0;
+    int const nonrep = get_non_rep();
+    int const maxrep = get_max_rep();
+    int const rep    = get_rep();
+    int       j      = 0;
+    int       end    = 0;
     for (int i = nonrep; i < pdu->get_vb_count(); i++)
     {
         j = (i - nonrep) / rep;
@@ -711,10 +711,7 @@ void Request::trim_bulk_response()
         {
             end++;
             if ((j == 0) && (i < originalSize)) { (*pdu)[i].set_oid(originalVbs[i].get_oid()); }
-            else
-            {
-                (*pdu)[i].set_oid(Request::get_oid(i - rep));
-            }
+            else { (*pdu)[i].set_oid(Request::get_oid(i - rep)); }
         }
         if (end >= rep)
         {
@@ -758,7 +755,7 @@ RequestList::RequestList(Mib* mibRef) : RequestList() { mib = mibRef; }
 
 RequestList::~RequestList()
 {
-    ThreadSynchronize _ts_synchronize(*this);
+    ThreadSynchronize const _ts_synchronize(*this);
     delete requests;
     if (write_community) delete write_community;
     if (read_community) delete read_community;
@@ -873,7 +870,7 @@ uint32_t RequestList::get_request_id(const Vbx& vb) TS_SYNCHRONIZED({
 
 void RequestList::remove_request(Request* req)
 {
-    ThreadSynchronize _ts_synchronize(*this);
+    ThreadSynchronize const _ts_synchronize(*this);
 
     if (!req) return;
 
@@ -940,7 +937,7 @@ void RequestList::unlock_request(Request* req)
 #ifdef _SNMPv3
 void RequestList::report(Request* req)
 {
-    ThreadSynchronize sync(*this); // synchronize this method
+    ThreadSynchronize const sync(*this); // synchronize this method
 
     Pdux* pdu = req->get_pdu();
 
@@ -952,7 +949,7 @@ void RequestList::report(Request* req)
 
     requests->remove(req);
 
-    int status = snmp->report(*pdu, req->target);
+    int const status = snmp->report(*pdu, req->target);
 
 #    ifdef _NO_LOGGING
     (void)status;
@@ -983,7 +980,7 @@ void RequestList::null_vbs(Request* req)
 
 void RequestList::answer(Request* req)
 {
-    ThreadSynchronize sync(*this); // synchronize this method
+    ThreadSynchronize const sync(*this); // synchronize this method
 
     Pdux* pdu = req->get_pdu();
     // assure backward compatibility to SNMPv1
@@ -1007,7 +1004,7 @@ void RequestList::answer(Request* req)
     }
     for (int i = 0; ((i < req->subrequests()) && (i < pdu->get_vb_count())); i++)
     {
-        Vbx vb((*pdu)[i]);
+        Vbx const vb((*pdu)[i]);
         switch (vb.get_exception_status())
         {
         case sNMP_SYNTAX_NOSUCHOBJECT:
@@ -1128,7 +1125,7 @@ void RequestList::answer(Request* req)
     }
     }
 
-    int ptype = pdu->get_type();
+    int const ptype = pdu->get_type();
     pdu->set_type(sNMP_PDU_RESPONSE);
 
     requests->remove(req);
@@ -1221,8 +1218,8 @@ Request* RequestList::receive(int sec)
 
     Pdux pdu;
 #ifdef _SNMPv3
-    UTarget target;
-    int     status = snmp->receive(tvptr, pdu, target);
+    UTarget   target;
+    int const status = snmp->receive(tvptr, pdu, target);
 #else
     UdpAddress from;
     snmp_version version = version1;
@@ -1254,7 +1251,7 @@ Request* RequestList::receive(int sec)
 #endif
         version = target.get_version();
         target.get_address(tmp_addr);
-        UdpAddress from(tmp_addr);
+        UdpAddress const from(tmp_addr);
 
 #ifdef _SNMPv3
         target.get_security_name(security_name);
@@ -1323,8 +1320,8 @@ Request* RequestList::receive(int sec)
             if (communityEntry)
             {
 
-                OctetStr transport_tag;
-                bool     found = communityEntry->get_v3_info(
+                OctetStr   transport_tag;
+                bool const found = communityEntry->get_v3_info(
                     security_name, context_engine_id, context_name, transport_tag);
 
                 LOG_BEGIN(loggerModuleName, EVENT_LOG | 3);
@@ -1461,7 +1458,7 @@ Request* RequestList::receive(int sec)
         Vbx  v;
         Oidx o;
         // check first VB of PDU
-        int i = 0;
+        int const i = 0;
         pdu.get_vb(v, i);
         v.get_oid(o);
         // access control
@@ -1486,10 +1483,7 @@ Request* RequestList::receive(int sec)
                 Counter32MibLeaf::incrementScalar(mib, oidSnmpOutPkts);
                 snmp->send(pdu, &target);
             }
-            else
-            {
-                Counter32MibLeaf::incrementScalar(mib, oidSnmpInBadCommunityNames);
-            }
+            else { Counter32MibLeaf::incrementScalar(mib, oidSnmpInBadCommunityNames); }
 
             authenticationFailure(context_name, target.get_address(), vacmErrorCode);
 
@@ -1682,9 +1676,9 @@ void RequestList::authenticationFailure(
     snmpEnableAuthenTraps* snmpEnableAuthenTraps = snmpEnableAuthenTraps::get_instance(mib);
     if ((snmpEnableAuthenTraps) && (snmpEnableAuthenTraps->get_state() == 1))
     {
-        NotificationOriginator   no;
-        Vbx                      vbs[1];
-        authenticationFailureOid authOid;
+        NotificationOriginator         no;
+        Vbx                            vbs[1];
+        authenticationFailureOid const authOid;
         no.generate(vbs, 0, authOid, "", context);
     }
 }

@@ -237,7 +237,7 @@ class atmInterfaceMaxVpcs : public SimMibLeaf {
 
 public:
     atmInterfaceMaxVpcs(const Oidx&);
-    virtual ~atmInterfaceMaxVpcs();
+    ~atmInterfaceMaxVpcs() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -255,7 +255,7 @@ class atmInterfaceMaxVccs : public SimMibLeaf {
 
 public:
     atmInterfaceMaxVccs(const Oidx&);
-    virtual ~atmInterfaceMaxVccs();
+    ~atmInterfaceMaxVccs() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -281,7 +281,7 @@ class atmInterfaceConfVpcs : public SimMibLeaf {
 
 public:
     atmInterfaceConfVpcs(const Oidx&);
-    virtual ~atmInterfaceConfVpcs();
+    ~atmInterfaceConfVpcs() override;
 
     MibEntryPtr clone() override;
 };
@@ -301,7 +301,7 @@ class atmInterfaceConfVccs : public SimMibLeaf {
 
 public:
     atmInterfaceConfVccs(const Oidx&);
-    virtual ~atmInterfaceConfVccs();
+    ~atmInterfaceConfVccs() override;
 
     MibEntryPtr clone() override;
 };
@@ -320,7 +320,7 @@ class atmInterfaceMaxActiveVpiBits : public SimMibLeaf {
 
 public:
     atmInterfaceMaxActiveVpiBits(const Oidx&);
-    virtual ~atmInterfaceMaxActiveVpiBits();
+    ~atmInterfaceMaxActiveVpiBits() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -338,7 +338,7 @@ class atmInterfaceMaxActiveVciBits : public SimMibLeaf {
 
 public:
     atmInterfaceMaxActiveVciBits(const Oidx&);
-    virtual ~atmInterfaceMaxActiveVciBits();
+    ~atmInterfaceMaxActiveVciBits() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -359,7 +359,7 @@ class atmInterfaceIlmiVpi : public SimMibLeaf {
 
 public:
     atmInterfaceIlmiVpi(const Oidx&);
-    virtual ~atmInterfaceIlmiVpi();
+    ~atmInterfaceIlmiVpi() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -380,7 +380,7 @@ class atmInterfaceIlmiVci : public SimMibLeaf {
 
 public:
     atmInterfaceIlmiVci(const Oidx&);
-    virtual ~atmInterfaceIlmiVci();
+    ~atmInterfaceIlmiVci() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -398,7 +398,7 @@ class atmInterfaceAddressType : public SimMibLeaf {
 
 public:
     atmInterfaceAddressType(const Oidx&);
-    virtual ~atmInterfaceAddressType();
+    ~atmInterfaceAddressType() override;
 
     MibEntryPtr clone() override;
 };
@@ -422,7 +422,7 @@ class atmInterfaceAdminAddress : public SimMibLeaf {
 
 public:
     atmInterfaceAdminAddress(const Oidx&);
-    virtual ~atmInterfaceAdminAddress();
+    ~atmInterfaceAdminAddress() override;
 
     MibEntryPtr clone() override;
 };
@@ -445,7 +445,7 @@ class atmInterfaceMyNeighborIpAddress : public SimMibLeaf {
 
 public:
     atmInterfaceMyNeighborIpAddress(const Oidx&);
-    virtual ~atmInterfaceMyNeighborIpAddress();
+    ~atmInterfaceMyNeighborIpAddress() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -474,7 +474,7 @@ class atmInterfaceMyNeighborIfName : public SimMibLeaf {
 
 public:
     atmInterfaceMyNeighborIfName(const Oidx&);
-    virtual ~atmInterfaceMyNeighborIfName();
+    ~atmInterfaceMyNeighborIfName() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -502,7 +502,7 @@ class atmInterfaceCurrentMaxVpiBits : public SimMibLeaf {
 
 public:
     atmInterfaceCurrentMaxVpiBits(const Oidx&);
-    virtual ~atmInterfaceCurrentMaxVpiBits();
+    ~atmInterfaceCurrentMaxVpiBits() override;
 
     MibEntryPtr clone() override;
 };
@@ -528,7 +528,7 @@ class atmInterfaceCurrentMaxVciBits : public SimMibLeaf {
 
 public:
     atmInterfaceCurrentMaxVciBits(const Oidx&);
-    virtual ~atmInterfaceCurrentMaxVciBits();
+    ~atmInterfaceCurrentMaxVciBits() override;
 
     MibEntryPtr clone() override;
 };
@@ -547,7 +547,7 @@ class atmInterfaceSubscrAddress : public SimMibLeaf {
 
 public:
     atmInterfaceSubscrAddress(const Oidx&);
-    virtual ~atmInterfaceSubscrAddress();
+    ~atmInterfaceSubscrAddress() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -567,7 +567,7 @@ class atmInterfaceDs3PlcpSEFSs : public SimMibLeaf {
 
 public:
     atmInterfaceDs3PlcpSEFSs(const Oidx&);
-    virtual ~atmInterfaceDs3PlcpSEFSs();
+    ~atmInterfaceDs3PlcpSEFSs() override;
 
     MibEntryPtr clone() override;
 };
@@ -592,7 +592,7 @@ class atmInterfaceDs3PlcpAlarmState : public SimMibLeaf {
 
 public:
     atmInterfaceDs3PlcpAlarmState(const Oidx&);
-    virtual ~atmInterfaceDs3PlcpAlarmState();
+    ~atmInterfaceDs3PlcpAlarmState() override;
 
     MibEntryPtr clone() override;
 };
@@ -608,7 +608,7 @@ class atmInterfaceDs3PlcpUASs : public SimMibLeaf {
 
 public:
     atmInterfaceDs3PlcpUASs(const Oidx&);
-    virtual ~atmInterfaceDs3PlcpUASs();
+    ~atmInterfaceDs3PlcpUASs() override;
 
     MibEntryPtr clone() override;
 };
@@ -628,7 +628,7 @@ class atmInterfaceOCDEvents : public SimMibLeaf {
 
 public:
     atmInterfaceOCDEvents(const Oidx&);
-    virtual ~atmInterfaceOCDEvents();
+    ~atmInterfaceOCDEvents() override;
 
     MibEntryPtr clone() override;
 };
@@ -650,7 +650,7 @@ class atmInterfaceTCAlarmState : public SimMibLeaf {
 
 public:
     atmInterfaceTCAlarmState(const Oidx&);
-    virtual ~atmInterfaceTCAlarmState();
+    ~atmInterfaceTCAlarmState() override;
 
     MibEntryPtr clone() override;
 };
@@ -676,7 +676,7 @@ class atmTrafficDescrType : public SimMibLeaf {
 
 public:
     atmTrafficDescrType(const Oidx&);
-    virtual ~atmTrafficDescrType();
+    ~atmTrafficDescrType() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -695,7 +695,7 @@ class atmTrafficDescrParam1 : public SimMibLeaf {
 
 public:
     atmTrafficDescrParam1(const Oidx&);
-    virtual ~atmTrafficDescrParam1();
+    ~atmTrafficDescrParam1() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -714,7 +714,7 @@ class atmTrafficDescrParam2 : public SimMibLeaf {
 
 public:
     atmTrafficDescrParam2(const Oidx&);
-    virtual ~atmTrafficDescrParam2();
+    ~atmTrafficDescrParam2() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -733,7 +733,7 @@ class atmTrafficDescrParam3 : public SimMibLeaf {
 
 public:
     atmTrafficDescrParam3(const Oidx&);
-    virtual ~atmTrafficDescrParam3();
+    ~atmTrafficDescrParam3() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -752,7 +752,7 @@ class atmTrafficDescrParam4 : public SimMibLeaf {
 
 public:
     atmTrafficDescrParam4(const Oidx&);
-    virtual ~atmTrafficDescrParam4();
+    ~atmTrafficDescrParam4() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -771,7 +771,7 @@ class atmTrafficDescrParam5 : public SimMibLeaf {
 
 public:
     atmTrafficDescrParam5(const Oidx&);
-    virtual ~atmTrafficDescrParam5();
+    ~atmTrafficDescrParam5() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -800,7 +800,7 @@ class atmTrafficQoSClass : public SimMibLeaf {
 
 public:
     atmTrafficQoSClass(const Oidx&);
-    virtual ~atmTrafficQoSClass();
+    ~atmTrafficQoSClass() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -819,7 +819,7 @@ class atmTrafficDescrRowStatus : public snmpRowStatus {
 
 public:
     atmTrafficDescrRowStatus(const Oidx&);
-    virtual ~atmTrafficDescrRowStatus();
+    ~atmTrafficDescrRowStatus() override;
 
     MibEntryPtr clone() override;
 };
@@ -834,7 +834,7 @@ class atmServiceCategory : public SimMibLeaf {
 
 public:
     atmServiceCategory(const Oidx&);
-    virtual ~atmServiceCategory();
+    ~atmServiceCategory() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -857,7 +857,7 @@ class atmTrafficFrameDiscard : public SimMibLeaf {
 
 public:
     atmTrafficFrameDiscard(const Oidx&);
-    virtual ~atmTrafficFrameDiscard();
+    ~atmTrafficFrameDiscard() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -878,7 +878,7 @@ class atmVplAdminStatus : public SimMibLeaf {
 
 public:
     atmVplAdminStatus(const Oidx&);
-    virtual ~atmVplAdminStatus();
+    ~atmVplAdminStatus() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -895,7 +895,7 @@ class atmVplOperStatus : public SimMibLeaf {
 
 public:
     atmVplOperStatus(const Oidx&);
-    virtual ~atmVplOperStatus();
+    ~atmVplOperStatus() override;
 
     MibEntryPtr clone() override;
 };
@@ -911,7 +911,7 @@ class atmVplLastChange : public SimMibLeaf {
 
 public:
     atmVplLastChange(const Oidx&);
-    virtual ~atmVplLastChange();
+    ~atmVplLastChange() override;
 
     MibEntryPtr clone() override;
 };
@@ -928,7 +928,7 @@ class atmVplReceiveTrafficDescrIndex : public SimMibLeaf {
 
 public:
     atmVplReceiveTrafficDescrIndex(const Oidx&);
-    virtual ~atmVplReceiveTrafficDescrIndex();
+    ~atmVplReceiveTrafficDescrIndex() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -947,7 +947,7 @@ class atmVplTransmitTrafficDescrIndex : public SimMibLeaf {
 
 public:
     atmVplTransmitTrafficDescrIndex(const Oidx&);
-    virtual ~atmVplTransmitTrafficDescrIndex();
+    ~atmVplTransmitTrafficDescrIndex() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -980,7 +980,7 @@ class atmVplCrossConnectIdentifier : public SimMibLeaf {
 
 public:
     atmVplCrossConnectIdentifier(const Oidx&);
-    virtual ~atmVplCrossConnectIdentifier();
+    ~atmVplCrossConnectIdentifier() override;
 
     MibEntryPtr clone() override;
 };
@@ -1006,7 +1006,7 @@ class atmVplRowStatus : public snmpRowStatus {
 
 public:
     atmVplRowStatus(const Oidx&);
-    virtual ~atmVplRowStatus();
+    ~atmVplRowStatus() override;
 
     MibEntryPtr clone() override;
 };
@@ -1021,7 +1021,7 @@ class atmVplCastType : public SimMibLeaf {
 
 public:
     atmVplCastType(const Oidx&);
-    virtual ~atmVplCastType();
+    ~atmVplCastType() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -1038,7 +1038,7 @@ class atmVplConnKind : public SimMibLeaf {
 
 public:
     atmVplConnKind(const Oidx&);
-    virtual ~atmVplConnKind();
+    ~atmVplConnKind() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -1059,7 +1059,7 @@ class atmVclAdminStatus : public SimMibLeaf {
 
 public:
     atmVclAdminStatus(const Oidx&);
-    virtual ~atmVclAdminStatus();
+    ~atmVclAdminStatus() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -1076,7 +1076,7 @@ class atmVclOperStatus : public SimMibLeaf {
 
 public:
     atmVclOperStatus(const Oidx&);
-    virtual ~atmVclOperStatus();
+    ~atmVclOperStatus() override;
 
     MibEntryPtr clone() override;
 };
@@ -1092,7 +1092,7 @@ class atmVclLastChange : public SimMibLeaf {
 
 public:
     atmVclLastChange(const Oidx&);
-    virtual ~atmVclLastChange();
+    ~atmVclLastChange() override;
 
     MibEntryPtr clone() override;
 };
@@ -1109,7 +1109,7 @@ class atmVclReceiveTrafficDescrIndex : public SimMibLeaf {
 
 public:
     atmVclReceiveTrafficDescrIndex(const Oidx&);
-    virtual ~atmVclReceiveTrafficDescrIndex();
+    ~atmVclReceiveTrafficDescrIndex() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -1128,7 +1128,7 @@ class atmVclTransmitTrafficDescrIndex : public SimMibLeaf {
 
 public:
     atmVclTransmitTrafficDescrIndex(const Oidx&);
-    virtual ~atmVclTransmitTrafficDescrIndex();
+    ~atmVclTransmitTrafficDescrIndex() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -1152,7 +1152,7 @@ class atmVccAalType : public SimMibLeaf {
 
 public:
     atmVccAalType(const Oidx&);
-    virtual ~atmVccAalType();
+    ~atmVccAalType() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -1173,7 +1173,7 @@ class atmVccAal5CpcsTransmitSduSize : public SimMibLeaf {
 
 public:
     atmVccAal5CpcsTransmitSduSize(const Oidx&);
-    virtual ~atmVccAal5CpcsTransmitSduSize();
+    ~atmVccAal5CpcsTransmitSduSize() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -1194,7 +1194,7 @@ class atmVccAal5CpcsReceiveSduSize : public SimMibLeaf {
 
 public:
     atmVccAal5CpcsReceiveSduSize(const Oidx&);
-    virtual ~atmVccAal5CpcsReceiveSduSize();
+    ~atmVccAal5CpcsReceiveSduSize() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -1218,7 +1218,7 @@ class atmVccAal5EncapsType : public SimMibLeaf {
 
 public:
     atmVccAal5EncapsType(const Oidx&);
-    virtual ~atmVccAal5EncapsType();
+    ~atmVccAal5EncapsType() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -1252,7 +1252,7 @@ class atmVclCrossConnectIdentifier : public SimMibLeaf {
 
 public:
     atmVclCrossConnectIdentifier(const Oidx&);
-    virtual ~atmVclCrossConnectIdentifier();
+    ~atmVclCrossConnectIdentifier() override;
 
     MibEntryPtr clone() override;
 };
@@ -1286,7 +1286,7 @@ class atmVclRowStatus : public snmpRowStatus {
 
 public:
     atmVclRowStatus(const Oidx&);
-    virtual ~atmVclRowStatus();
+    ~atmVclRowStatus() override;
 
     MibEntryPtr clone() override;
 };
@@ -1301,7 +1301,7 @@ class atmVclCastType : public SimMibLeaf {
 
 public:
     atmVclCastType(const Oidx&);
-    virtual ~atmVclCastType();
+    ~atmVclCastType() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -1318,7 +1318,7 @@ class atmVclConnKind : public SimMibLeaf {
 
 public:
     atmVclConnKind(const Oidx&);
-    virtual ~atmVclConnKind();
+    ~atmVclConnKind() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -1347,7 +1347,7 @@ class atmVpCrossConnectIndexNext : public SimMibLeaf {
 
 public:
     atmVpCrossConnectIndexNext();
-    virtual ~atmVpCrossConnectIndexNext();
+    ~atmVpCrossConnectIndexNext() override;
 
     static atmVpCrossConnectIndexNext* instance;
 };
@@ -1363,7 +1363,7 @@ class atmVpCrossConnectAdminStatus : public SimMibLeaf {
 
 public:
     atmVpCrossConnectAdminStatus(const Oidx&);
-    virtual ~atmVpCrossConnectAdminStatus();
+    ~atmVpCrossConnectAdminStatus() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -1382,7 +1382,7 @@ class atmVpCrossConnectL2HOperStatus : public SimMibLeaf {
 
 public:
     atmVpCrossConnectL2HOperStatus(const Oidx&);
-    virtual ~atmVpCrossConnectL2HOperStatus();
+    ~atmVpCrossConnectL2HOperStatus() override;
 
     MibEntryPtr clone() override;
 };
@@ -1399,7 +1399,7 @@ class atmVpCrossConnectH2LOperStatus : public SimMibLeaf {
 
 public:
     atmVpCrossConnectH2LOperStatus(const Oidx&);
-    virtual ~atmVpCrossConnectH2LOperStatus();
+    ~atmVpCrossConnectH2LOperStatus() override;
 
     MibEntryPtr clone() override;
 };
@@ -1416,7 +1416,7 @@ class atmVpCrossConnectL2HLastChange : public SimMibLeaf {
 
 public:
     atmVpCrossConnectL2HLastChange(const Oidx&);
-    virtual ~atmVpCrossConnectL2HLastChange();
+    ~atmVpCrossConnectL2HLastChange() override;
 
     MibEntryPtr clone() override;
 };
@@ -1433,7 +1433,7 @@ class atmVpCrossConnectH2LLastChange : public SimMibLeaf {
 
 public:
     atmVpCrossConnectH2LLastChange(const Oidx&);
-    virtual ~atmVpCrossConnectH2LLastChange();
+    ~atmVpCrossConnectH2LLastChange() override;
 
     MibEntryPtr clone() override;
 };
@@ -1457,7 +1457,7 @@ class atmVpCrossConnectRowStatus : public snmpRowStatus {
 
 public:
     atmVpCrossConnectRowStatus(const Oidx&);
-    virtual ~atmVpCrossConnectRowStatus();
+    ~atmVpCrossConnectRowStatus() override;
 
     MibEntryPtr clone() override;
 };
@@ -1484,7 +1484,7 @@ class atmVcCrossConnectIndexNext : public SimMibLeaf {
 
 public:
     atmVcCrossConnectIndexNext();
-    virtual ~atmVcCrossConnectIndexNext();
+    ~atmVcCrossConnectIndexNext() override;
 
     static atmVcCrossConnectIndexNext* instance;
 };
@@ -1500,7 +1500,7 @@ class atmVcCrossConnectAdminStatus : public SimMibLeaf {
 
 public:
     atmVcCrossConnectAdminStatus(const Oidx&);
-    virtual ~atmVcCrossConnectAdminStatus();
+    ~atmVcCrossConnectAdminStatus() override;
 
     MibEntryPtr clone() override;
     int         prepare_set_request(Request*, int&) override;
@@ -1519,7 +1519,7 @@ class atmVcCrossConnectL2HOperStatus : public SimMibLeaf {
 
 public:
     atmVcCrossConnectL2HOperStatus(const Oidx&);
-    virtual ~atmVcCrossConnectL2HOperStatus();
+    ~atmVcCrossConnectL2HOperStatus() override;
 
     MibEntryPtr clone() override;
 };
@@ -1536,7 +1536,7 @@ class atmVcCrossConnectH2LOperStatus : public SimMibLeaf {
 
 public:
     atmVcCrossConnectH2LOperStatus(const Oidx&);
-    virtual ~atmVcCrossConnectH2LOperStatus();
+    ~atmVcCrossConnectH2LOperStatus() override;
 
     MibEntryPtr clone() override;
 };
@@ -1553,7 +1553,7 @@ class atmVcCrossConnectL2HLastChange : public SimMibLeaf {
 
 public:
     atmVcCrossConnectL2HLastChange(const Oidx&);
-    virtual ~atmVcCrossConnectL2HLastChange();
+    ~atmVcCrossConnectL2HLastChange() override;
 
     MibEntryPtr clone() override;
 };
@@ -1570,7 +1570,7 @@ class atmVcCrossConnectH2LLastChange : public SimMibLeaf {
 
 public:
     atmVcCrossConnectH2LLastChange(const Oidx&);
-    virtual ~atmVcCrossConnectH2LLastChange();
+    ~atmVcCrossConnectH2LLastChange() override;
 
     MibEntryPtr clone() override;
 };
@@ -1594,7 +1594,7 @@ class atmVcCrossConnectRowStatus : public snmpRowStatus {
 
 public:
     atmVcCrossConnectRowStatus(const Oidx&);
-    virtual ~atmVcCrossConnectRowStatus();
+    ~atmVcCrossConnectRowStatus() override;
 
     MibEntryPtr clone() override;
 };
@@ -1611,7 +1611,7 @@ class aal5VccCrcErrors : public SimMibLeaf {
 
 public:
     aal5VccCrcErrors(const Oidx&);
-    virtual ~aal5VccCrcErrors();
+    ~aal5VccCrcErrors() override;
 
     MibEntryPtr clone() override;
 };
@@ -1633,7 +1633,7 @@ class aal5VccSarTimeOuts : public SimMibLeaf {
 
 public:
     aal5VccSarTimeOuts(const Oidx&);
-    virtual ~aal5VccSarTimeOuts();
+    ~aal5VccSarTimeOuts() override;
 
     MibEntryPtr clone() override;
 };
@@ -1651,7 +1651,7 @@ class aal5VccOverSizedSDUs : public SimMibLeaf {
 
 public:
     aal5VccOverSizedSDUs(const Oidx&);
-    virtual ~aal5VccOverSizedSDUs();
+    ~aal5VccOverSizedSDUs() override;
 
     MibEntryPtr clone() override;
 };
@@ -1680,7 +1680,7 @@ class atmTrafficDescrParamIndexNext : public SimMibLeaf {
 
 public:
     atmTrafficDescrParamIndexNext();
-    virtual ~atmTrafficDescrParamIndexNext();
+    ~atmTrafficDescrParamIndexNext() override;
 
     static atmTrafficDescrParamIndexNext* instance;
 };
@@ -1697,7 +1697,7 @@ class atmInterfaceConfEntry : public MibTable {
 
 public:
     atmInterfaceConfEntry();
-    virtual ~atmInterfaceConfEntry();
+    ~atmInterfaceConfEntry() override;
 
     static atmInterfaceConfEntry* instance;
 
@@ -1717,7 +1717,7 @@ class atmInterfaceDs3PlcpEntry : public MibTable {
 
 public:
     atmInterfaceDs3PlcpEntry();
-    virtual ~atmInterfaceDs3PlcpEntry();
+    ~atmInterfaceDs3PlcpEntry() override;
 
     static atmInterfaceDs3PlcpEntry* instance;
 
@@ -1736,7 +1736,7 @@ class atmInterfaceTCEntry : public MibTable {
 
 public:
     atmInterfaceTCEntry();
-    virtual ~atmInterfaceTCEntry();
+    ~atmInterfaceTCEntry() override;
 
     static atmInterfaceTCEntry* instance;
 
@@ -1754,7 +1754,7 @@ class atmTrafficDescrParamEntry : public MibTable {
 
 public:
     atmTrafficDescrParamEntry();
-    virtual ~atmTrafficDescrParamEntry();
+    ~atmTrafficDescrParamEntry() override;
 
     static atmTrafficDescrParamEntry* instance;
 
@@ -1846,7 +1846,7 @@ class atmVplEntry : public MibTable {
 
 public:
     atmVplEntry();
-    virtual ~atmVplEntry();
+    ~atmVplEntry() override;
 
     static atmVplEntry* instance;
 
@@ -1938,7 +1938,7 @@ class atmVclEntry : public MibTable {
 
 public:
     atmVclEntry();
-    virtual ~atmVclEntry();
+    ~atmVclEntry() override;
 
     static atmVclEntry* instance;
 
@@ -2076,7 +2076,7 @@ class atmVpCrossConnectEntry : public MibTable {
 
 public:
     atmVpCrossConnectEntry();
-    virtual ~atmVpCrossConnectEntry();
+    ~atmVpCrossConnectEntry() override;
 
     static atmVpCrossConnectEntry* instance;
 
@@ -2213,7 +2213,7 @@ class atmVcCrossConnectEntry : public MibTable {
 
 public:
     atmVcCrossConnectEntry();
-    virtual ~atmVcCrossConnectEntry();
+    ~atmVcCrossConnectEntry() override;
 
     static atmVcCrossConnectEntry* instance;
 
@@ -2233,7 +2233,7 @@ class aal5VccEntry : public MibTable {
 
 public:
     aal5VccEntry();
-    virtual ~aal5VccEntry();
+    ~aal5VccEntry() override;
 
     static aal5VccEntry* instance;
 
@@ -2243,7 +2243,7 @@ public:
 class atm_mib : public MibGroup {
 public:
     atm_mib();
-    virtual ~atm_mib() { }
+    ~atm_mib() override { }
 };
 
 #ifdef AGENTPP_NAMESPACE

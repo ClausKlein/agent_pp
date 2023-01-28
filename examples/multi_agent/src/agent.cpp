@@ -131,7 +131,7 @@ void init(Mib& mib, const NS_SNMP OctetStr& engineID, const UdpAddress& inaddr)
 #    endif
     mib.add(new notification_log_mib(&mib));
 
-    OctetStr nonDefaultContext("other");
+    OctetStr const nonDefaultContext("other");
     mib.add(nonDefaultContext, new atm_mib());
 
     v3MP*         v3mp = mib.get_request_list()->get_v3mp();
@@ -212,7 +212,7 @@ class SnmpAgent : public Runnable {
 public:
     SnmpAgent(const UdpAddress& address) : Runnable() { inaddr = address; }
 
-    virtual ~SnmpAgent() { }
+    ~SnmpAgent() override { }
 
     void run() override;
 
@@ -274,8 +274,8 @@ void SnmpAgent::run()
     mib = new Mib(persistentObjectsPath, path(bootCounterFile));
 
 #ifdef _SNMPv3
-    unsigned int snmpEngineBoots = 0;
-    OctetStr     engineId(SnmpEngineID::create_engine_id(inaddr.get_port()));
+    unsigned int   snmpEngineBoots = 0;
+    OctetStr const engineId(SnmpEngineID::create_engine_id(inaddr.get_port()));
 
     // you may use your own methods to load/store this counter
     status = mib->get_boot_counter(engineId, snmpEngineBoots);
@@ -437,9 +437,9 @@ void SnmpAgent::run()
     snmpCommunityEntry* communityEntry = snmpCommunityEntry::get_instance(mib);
     if (communityEntry)
     {
-        OctetStr     co("public");
-        MibTableRow* row = communityEntry->add_row(Oidx::from_string(co, false));
-        OctetStr     tag("v1v2cPermittedManagers");
+        OctetStr const co("public");
+        MibTableRow*   row = communityEntry->add_row(Oidx::from_string(co, false));
+        OctetStr const tag("v1v2cPermittedManagers");
         communityEntry->set_row(
             row, co, co, reqList->get_v3mp()->get_local_engine_id(), "", tag, 3, 1);
     }
@@ -454,10 +454,10 @@ void SnmpAgent::run()
     mib->init();
 
     Vbx*                   vbs = 0;
-    coldStartOid           coldOid;
+    coldStartOid const     coldOid;
     NotificationOriginator no(mib);
     // add an example destination
-    UdpAddress dest("127.0.0.1/162");
+    UdpAddress const dest("127.0.0.1/162");
     no.add_v1_trap_destination(dest, "defaultV1Trap", "v1trap", "public");
     // send the notification
     mib->notify("", coldOid, vbs, 0);
@@ -467,10 +467,7 @@ void SnmpAgent::run()
     {
         req = reqList->receive(2);
         if (req) { mib->process_request(req); }
-        else
-        {
-            mib->cleanup();
-        }
+        else { mib->cleanup(); }
     }
     delete reqList;
     delete mib;

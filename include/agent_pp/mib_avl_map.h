@@ -81,7 +81,7 @@ protected:
 public:
     OidxPtrMibEntryPtrAVLMap(MibEntryPtr deflt);
     OidxPtrMibEntryPtrAVLMap(OidxPtrMibEntryPtrAVLMap& a);
-    inline ~OidxPtrMibEntryPtrAVLMap();
+    inline ~OidxPtrMibEntryPtrAVLMap() override;
 
     MibEntryPtr& operator[](OidxPtr key) override;
 

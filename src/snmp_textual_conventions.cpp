@@ -68,10 +68,10 @@ MibEntryPtr SnmpDisplayString::clone()
 
 int SnmpDisplayString::prepare_set_request(Request* req, int& ind)
 {
-    int s = MibLeaf::prepare_set_request(req, ind);
+    int const s = MibLeaf::prepare_set_request(req, ind);
     if (s != SNMP_ERROR_SUCCESS) return s;
-    OctetStr ostr;
-    Vbx      vb(req->get_value(ind));
+    OctetStr  ostr;
+    Vbx const vb(req->get_value(ind));
     if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
     if ((ostr.len() < min_size) || (ostr.len() > max_size)) return SNMP_ERROR_WRONG_LENGTH;
     return SNMP_ERROR_SUCCESS;
@@ -138,11 +138,11 @@ MibEntryPtr SnmpEngineID::clone()
 
 int SnmpEngineID::prepare_set_request(Request* req, int& ind)
 {
-    int s = MibLeaf::prepare_set_request(req, ind);
+    int const s = MibLeaf::prepare_set_request(req, ind);
     if (s != SNMP_ERROR_SUCCESS) return s;
 
-    OctetStr ostr;
-    Vbx      vb(req->get_value(ind));
+    OctetStr  ostr;
+    Vbx const vb(req->get_value(ind));
     if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
     if ((ostr.len() < 5) || (ostr.len() > 32)) return SNMP_ERROR_WRONG_LENGTH;
     return SNMP_ERROR_SUCCESS;
@@ -164,19 +164,19 @@ OctetStr SnmpEngineID::create_engine_id(unsigned short p)
     port[0] = p / 256;
     port[1] = p % 256;
     port[2] = 0;
-    char   hname[255];
-    size_t len = 255;
+    char         hname[255];
+    size_t const len = 255;
     if (gethostname(hname, len) == 0)
     {
-        OctetStr host((unsigned char*)hname, (strlen(hname) > 23) ? 23 : strlen(hname));
+        OctetStr const host((unsigned char*)hname, (strlen(hname) > 23) ? 23 : strlen(hname));
         engineID += OctetStr(host);
         engineID += OctetStr(port, 2);
     }
     else
     {
-        time_t   ct = time(0);
-        char*    tp = ctime(&ct); // TODO: use ctime_s()! CK
-        OctetStr t((unsigned char*)tp, (strlen(tp) > 23) ? 23 : strlen(tp));
+        time_t const   ct = time(0);
+        char*          tp = ctime(&ct); // TODO: use ctime_s()! CK
+        OctetStr const t((unsigned char*)tp, (strlen(tp) > 23) ? 23 : strlen(tp));
         engineID += t;
         engineID += OctetStr(port, 2);
     }
@@ -209,7 +209,7 @@ bool SnmpTagValue::value_ok(const Vbx& vb)
 {
     OctetStr ostr;
     if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return false;
-    int length = ostr.len();
+    int const length = ostr.len();
     if (length == 0) return true;
     if ((length < 0) || (length > 255)) return false;
 
@@ -224,11 +224,11 @@ bool SnmpTagValue::is_delimiter(char c) { return ((c == 32) || (c == 9) || (c ==
 
 int SnmpTagValue::prepare_set_request(Request* req, int& ind)
 {
-    int s = MibLeaf::prepare_set_request(req, ind);
+    int const s = MibLeaf::prepare_set_request(req, ind);
     if (s != SNMP_ERROR_SUCCESS) return s;
 
-    OctetStr ostr;
-    Vbx      vb(req->get_value(ind));
+    OctetStr  ostr;
+    Vbx const vb(req->get_value(ind));
     if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
     if (ostr.len() > 255) return SNMP_ERROR_WRONG_LENGTH;
     return SNMP_ERROR_SUCCESS;
@@ -262,7 +262,7 @@ bool SnmpTagList::value_ok(const Vbx& vb)
     char* s = (char*)ostr.data();
     if (s)
     {
-        int length = ostr.len();
+        int const length = ostr.len();
         if (length > 255) return false;
 
         if ((length > 0) && (SnmpTagValue::is_delimiter(s[0]))) return false;
@@ -281,8 +281,8 @@ bool SnmpTagList::contains(const char* tag)
 {
     if (!tag) return false;
 
-    int   len = ((OctetStr*)value)->len();
-    char* l   = new char[len + 1];
+    int const len = ((OctetStr*)value)->len();
+    char*     l   = new char[len + 1];
     strlcpy(l, (char*)((OctetStr*)value)->data(), len);
     l[len] = 0; // OK, CK
 
@@ -326,12 +326,9 @@ int TestAndIncr::set(const Vbx& vb)
 {
     // place code for handling operations triggered
     // by this set here
-    int status = MibLeaf::set(vb);
+    int const status = MibLeaf::set(vb);
     if (get_state() == 2147483647) { set_state(0); }
-    else
-    {
-        set_state(get_state() + 1);
-    }
+    else { set_state(get_state() + 1); }
     return status;
 }
 
@@ -390,7 +387,7 @@ int32_t StorageType::get_state() { return (int32_t) * ((SnmpInt32*)value); }
 int StorageTypeVoter::is_transition_ok(
     MibTable* t, MibTableRow* row, const Oidx& oid, int curState, int newState)
 {
-    int storageType = ((StorageTable*)t)->get_storage_type(row);
+    int const storageType = ((StorageTable*)t)->get_storage_type(row);
     if (storageType == 5) { return SNMP_ERROR_INCONSIST_VAL; }
     if (((curState == rowNotInService) || (curState == rowActive)) && (newState == rowDestroy))
     {
@@ -481,17 +478,14 @@ void StorageTable::reset()
     OidListCursor<MibTableRow> cur;
     for (cur.init(&content); cur.get();)
     {
-        long type = ((StorageType*)(cur.get()->get_nth(storage_type)))->get_state();
+        long const type = ((StorageType*)(cur.get()->get_nth(storage_type)))->get_state();
         if ((type != storageType_permanent) && (type != storageType_readOnly))
         {
             MibTableRow* victim = cur.get();
             cur.next();
             delete content.remove(victim);
         }
-        else
-        {
-            cur.next();
-        }
+        else { cur.next(); }
     }
 }
 
@@ -500,7 +494,7 @@ int StorageTable::prepare_set_request(Request* req, int& ind)
     MibLeaf* o = nullptr;
     if ((o = MibTable::find(req->get_oid(ind))) != 0)
     {
-        int storageType = get_storage_type(o->get_reference_to_row());
+        int const storageType = get_storage_type(o->get_reference_to_row());
         if (storageType == storageType_readOnly) { return SNMP_ERROR_INCONSIST_VAL; }
     }
     return MibTable::prepare_set_request(req, ind);
@@ -570,8 +564,8 @@ MibEntryPtr OctetStrMinMax::clone()
 
 int OctetStrMinMax::prepare_set_request(Request* req, int& ind)
 {
-    OctetStr ostr;
-    Vbx      vb(req->get_value(ind));
+    OctetStr  ostr;
+    Vbx const vb(req->get_value(ind));
     if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
     if ((ostr.len() < min) || (ostr.len() > max)) return SNMP_ERROR_WRONG_LENGTH;
     return MibLeaf::prepare_set_request(req, ind);
@@ -680,9 +674,9 @@ void DateAndTime::set_state(const OctetStr& s) { *((OctetStr*)value) = s; }
 
 void DateAndTime::update()
 {
-    time_t     c = sysUpTime::get_currentTime();
-    struct tm  stm { };
-    struct tm* dt = nullptr;
+    time_t const c = sysUpTime::get_currentTime();
+    struct tm    stm { };
+    struct tm*   dt = nullptr;
 
 #ifdef HAVE_LOCALTIME_R
     dt = localtime_r(&c, &stm); // TODO: check if gmtime_r() would be better? CK
@@ -707,8 +701,8 @@ void DateAndTime::update()
         val += '+';
     else
         val += '-';
-    unsigned int tz       = (unsigned int)abs(dt->tm_gmtoff);
-    long         timezone = dt->tm_gmtoff;
+    unsigned int const tz       = (unsigned int)abs(dt->tm_gmtoff);
+    long const         timezone = dt->tm_gmtoff;
 #else
     // initialize timezone needed?
     // tzset();

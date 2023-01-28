@@ -51,7 +51,7 @@ public:
     /**
      * Desctructor
      */
-    virtual ~SimMib();
+    ~SimMib() override;
 };
 
 /**
@@ -122,7 +122,7 @@ public:
     /**
      * Destructor.
      */
-    virtual ~SimMibLeaf();
+    ~SimMibLeaf() override;
 
     /**
      * Clone the receiver object.
@@ -168,7 +168,7 @@ protected:
 class AGENTPP_DECL SimMibTable : public MibTable {
 public:
     SimMibTable(const Oidx& o, const index_info* i, unsigned int n) : MibTable(o, i, n) { }
-    virtual ~SimMibTable() { }
+    ~SimMibTable() override { }
 
     int check_creation(Request*, int&) override;
 };
@@ -176,7 +176,7 @@ public:
 class AGENTPP_DECL SimRowStatus : public snmpRowStatus {
 public:
     SimRowStatus(const Oidx& o, mib_access a) : snmpRowStatus(o, a) { }
-    virtual ~SimRowStatus() { }
+    ~SimRowStatus() override { }
 
     bool transition_ok(const Vbx&) override;
 

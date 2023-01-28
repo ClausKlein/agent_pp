@@ -73,7 +73,7 @@ void CmdThread::run()
 
     cmdExecutionCmdEntry::instance->end_synch();
 
-    int err = system(cmdline.get_printable()); // NOLINT(cert-env33-c)
+    int const err = system(cmdline.get_printable()); // NOLINT(cert-env33-c)
 
     cmdExecutionCmdEntry::instance->start_synch();
     ((cmdExecutionCmdStatus*)row->get_nth(1))->set_state((err != 0) ? 4 : 3);
@@ -341,7 +341,7 @@ void cmdExecutionCmdRowStatus::set_state(int32_t l) { *((SnmpInt32*)value) = l; 
 
 int cmdExecutionCmdRowStatus::prepare_set_request(Request* req, int& ind)
 {
-    Vbx          vb = req->get_value(ind);
+    Vbx const    vb = req->get_value(ind);
     unsigned int l  = 0;
     if (vb.get_value(l) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
 
@@ -436,7 +436,7 @@ cmdExecutionCmdConfigEntry::~cmdExecutionCmdConfigEntry() { }
 
 bool cmdExecutionCmdConfigEntry::deserialize(char* buf, int& sz)
 {
-    bool b = MibTable::deserialize(buf, sz);
+    bool const b = MibTable::deserialize(buf, sz);
     if (!b)
     {
         add_row("2.108.108");
@@ -480,7 +480,7 @@ bool cmdExecutionCmdConfigEntry::contains(const Oidx& index)
 OctetStr cmdExecutionCmdConfigEntry::get_command_line(const OctetStr& command)
 {
     OctetStr                   cmdline;
-    Oidx                       index(Oidx::from_string(command));
+    Oidx const                 index(Oidx::from_string(command));
     OidListCursor<MibTableRow> cur;
     for (cur.init(&content); cur.get(); cur.next())
     {
@@ -578,10 +578,7 @@ void cmdExecutionOutputEntry::remove_all(const Oidx& index)
             cur.next();
             delete content.remove(victim);
         }
-        else
-        {
-            cur.next();
-        }
+        else { cur.next(); }
     }
 }
 

@@ -36,7 +36,7 @@ class cmdExecutionCmdConfigName : public MibLeaf {
 
 public:
     cmdExecutionCmdConfigName(const Oidx&);
-    virtual ~cmdExecutionCmdConfigName();
+    ~cmdExecutionCmdConfigName() override;
 
     MibEntryPtr clone() override;
     void        get_request(Request*, int) override;
@@ -52,7 +52,7 @@ class cmdExecutionCmdConfigLine : public MibLeaf {
 
 public:
     cmdExecutionCmdConfigLine(const Oidx&);
-    virtual ~cmdExecutionCmdConfigLine();
+    ~cmdExecutionCmdConfigLine() override;
 
     MibEntryPtr clone() override;
     void        get_request(Request*, int) override;
@@ -73,7 +73,7 @@ class cmdExecutionCmdNextIndex : public MibLeaf {
 
 public:
     cmdExecutionCmdNextIndex();
-    virtual ~cmdExecutionCmdNextIndex();
+    ~cmdExecutionCmdNextIndex() override;
 
     static cmdExecutionCmdNextIndex* instance;
 
@@ -92,7 +92,7 @@ class cmdExecutionCmdIndex : public MibLeaf {
 
 public:
     cmdExecutionCmdIndex(const Oidx&);
-    virtual ~cmdExecutionCmdIndex();
+    ~cmdExecutionCmdIndex() override;
 
     MibEntryPtr     clone() override;
     void            get_request(Request*, int) override;
@@ -111,7 +111,7 @@ class cmdExecutionCmdName : public MibLeaf {
 
 public:
     cmdExecutionCmdName(const Oidx&);
-    virtual ~cmdExecutionCmdName();
+    ~cmdExecutionCmdName() override;
 
     MibEntryPtr clone() override;
     void        get_request(Request*, int) override;
@@ -129,7 +129,7 @@ class cmdExecutionCmdStatus : public MibLeaf {
 
 public:
     cmdExecutionCmdStatus(const Oidx&);
-    virtual ~cmdExecutionCmdStatus();
+    ~cmdExecutionCmdStatus() override;
 
     MibEntryPtr     clone() override;
     void            get_request(Request*, int) override;
@@ -147,7 +147,7 @@ class cmdExecutionCmdRunTime : public MibLeaf {
 
 public:
     cmdExecutionCmdRunTime(const Oidx&);
-    virtual ~cmdExecutionCmdRunTime();
+    ~cmdExecutionCmdRunTime() override;
 
     MibEntryPtr clone() override;
     void        get_request(Request*, int) override;
@@ -174,7 +174,7 @@ class cmdExecutionCmdRowStatus : public snmpRowStatus {
 
 public:
     cmdExecutionCmdRowStatus(const Oidx&);
-    virtual ~cmdExecutionCmdRowStatus();
+    ~cmdExecutionCmdRowStatus() override;
 
     MibEntryPtr     clone() override;
     virtual int32_t get_state();
@@ -193,7 +193,7 @@ class cmdExecutionOutputLineNumber : public MibLeaf {
 
 public:
     cmdExecutionOutputLineNumber(const Oidx&);
-    virtual ~cmdExecutionOutputLineNumber();
+    ~cmdExecutionOutputLineNumber() override;
 
     MibEntryPtr     clone() override;
     void            get_request(Request*, int) override;
@@ -211,7 +211,7 @@ class cmdExecutionOutputLine : public MibLeaf {
 
 public:
     cmdExecutionOutputLine(const Oidx&);
-    virtual ~cmdExecutionOutputLine();
+    ~cmdExecutionOutputLine() override;
 
     MibEntryPtr clone() override;
     void        get_request(Request*, int) override;
@@ -227,7 +227,7 @@ class cmdExecutionCmdConfigEntry : public StorageTable {
 
 public:
     cmdExecutionCmdConfigEntry();
-    virtual ~cmdExecutionCmdConfigEntry();
+    ~cmdExecutionCmdConfigEntry() override;
 
     static cmdExecutionCmdConfigEntry* instance;
 
@@ -255,7 +255,7 @@ class cmdExecutionCmdEntry : public MibTable {
 
 public:
     cmdExecutionCmdEntry();
-    virtual ~cmdExecutionCmdEntry();
+    ~cmdExecutionCmdEntry() override;
 
     static cmdExecutionCmdEntry* instance;
 
@@ -276,7 +276,7 @@ class cmdExecutionOutputEntry : public MibTable {
 
 public:
     cmdExecutionOutputEntry();
-    virtual ~cmdExecutionOutputEntry();
+    ~cmdExecutionOutputEntry() override;
 
     static cmdExecutionOutputEntry* instance;
 
@@ -289,13 +289,13 @@ public:
 class command_execution_mib : public MibGroup {
 public:
     command_execution_mib();
-    virtual ~command_execution_mib() { }
+    ~command_execution_mib() override { }
 };
 
 class CmdThread : public Runnable {
 public:
     CmdThread(MibTableRow* r) { row_ptr = r; }
-    virtual ~CmdThread() { }
+    ~CmdThread() override { }
     void run() override;
 
 protected:

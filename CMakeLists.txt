@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16...3.21)
+cmake_minimum_required(VERSION 3.21...3.25)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -187,7 +187,7 @@ if(CNF_HAVE_PTHREAD_H)
   check_function_exists(pthread_mutex_timedlock HAVE_PTHREAD_MUTEX_TIMEDLOCK)
 endif()
 
-option(USE_OUTPUT_PATH "build all libaries and runtime files at lib and bin directory" YES)
+option(USE_OUTPUT_PATH "build all libaries and runtime files at the bin directory" YES)
 if(USE_OUTPUT_PATH)
   # -----------------------------------------------------------------------
   # Where to put all the LIBRARY targets when built. This variable is used to initialize the
@@ -212,10 +212,13 @@ set(SNMP_PP_VERSION 3.4.7)
 # see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.13.beta
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG 829b79c65b521dcacc609ea595dbccffdcddbc05 # v${SNMP_PP_VERSION}.13
+  GIT_TAG fba56ad02f6609c4940f1eb0f47b7c0ac43cb326 # VERSION ${SNMP_PP_VERSION}.13
   GITHUB_REPOSITORY ClausKlein/snmp_pp
   OPTIONS "SNMP_PP_LOGGING NO" "SNMP_PP_EXAMPLES YES"
 )
+
+CPMAddPackage("gh:aminya/project_options@0.26.3")
+list(APPEND CMAKE_MODULE_PATH ${ProjectOptions_SRC_DIR})
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake_config.h.in config.h)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake_libagent.h.in libagent.h)
@@ -299,19 +302,39 @@ set(MY_SRC_FILES
     src/vacm.cpp
 )
 
+option(OPTION_ENABLE_COVERAGE "Enable test coverage of projects" OFF)
+if(OPTION_ENABLE_COVERAGE)
+  set(ENABLE_COVERAGE "ENABLE_COVERAGE")
+endif()
+
+option(OPTION_ENABLE_UNITY "Enable Unity builds of projects" ON)
+if(OPTION_ENABLE_UNITY)
+  set(ENABLE_UNITY "ENABLE_UNITY")
+endif()
+
+project_options(
+  PREFIX
+  ${PROJECT_NAME}
+  ENABLE_CACHE
+  ${ENABLE_COVERAGE}
+  ${ENABLE_UNITY}
+  ENABLE_SANITIZER_ADDRESS
+  ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+  # ENABLE_SANITIZER_THREAD
+  # ENABLE_SANITIZER_MEMORY
+  # TODO: WARNINGS_AS_ERRORS
+)
+
 option(BUILD_SHARED_LIBS "Global flag to cause add_library() to create shared libraries if on." ON)
 add_library(${PROJECT_NAME} ${MY_HEADER_FILES} ${MY_HEADER_LIB_FILES} ${CMAKE_CURRENT_BINARY_DIR}/config.h ${MY_SRC_FILES})
-
-option(ENABLE_UNITY "Enable Unity builds of projects" ON)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_project_options ${PROJECT_NAME}_project_warnings)
 set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ${ENABLE_UNITY})
 
 if(MSVC)
-  # FIXME: should be warning level 4 (and all warnings as errors! /WX)
   target_compile_options(${PROJECT_NAME} PRIVATE /W3 /wd4251)
   target_compile_definitions(${PROJECT_NAME} PRIVATE _CRT_SECURE_NO_WARNINGS)
 else()
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -Wno-unused-parameter)
-  # TODO: lots of warnings (more: -Wpedantic)
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wno-unused-parameter)
 endif()
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE 1)
@@ -442,7 +465,7 @@ endif()
 
 install(FILES ${MY_HEADER_LIB_FILES} DESTINATION include)
 
-CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.8.0")
+CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.10.0")
 packageProject(
   # the name of the target to export
   NAME ${PROJECT_NAME}
@@ -453,8 +476,10 @@ packageProject(
   # location of the target's public headers
   INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include
   # should match the target's INSTALL_INTERFACE include directory
-  INCLUDE_DESTINATION include
-  # semicolon separated list of the project's dependencies
+  INCLUDE_DESTINATION
+    include # (optional) option to install only header files with matching pattern
+    INCLUDE_HEADER_PATTERN "*.h"
+    # semicolon separated list of the project's dependencies
   DEPENDENCIES "snmp_pp ${SNMP_PP_VERSION}"
   # (optional) create a header containing the version info
   # Note: that the path to headers should be lowercase
