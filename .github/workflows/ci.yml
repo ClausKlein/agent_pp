@@ -42,7 +42,8 @@ jobs:
 
       - name: Configure
         run: |
-          pip install --user -I ninja cmake
+          pip3 install --user -I ninja cmake
+          which ninja
           cmake --version
           cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D BUILD_SHARED_LIBS=${{ matrix.build }}
 

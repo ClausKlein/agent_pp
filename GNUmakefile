@@ -17,7 +17,7 @@ all: build
 	ninja -C $(BUILD_DIR) $@
 
 test: all
-	cd $(BUILD_DIR) && ctest --verbose --timeout 25 # --output-on-failure
+	cd $(BUILD_DIR) && ctest -C $(BUILD_TYPE) --timeout 25 --output-on-failure --rerun-failed
 
 install: test
 	ninja -C $(BUILD_DIR) $@
