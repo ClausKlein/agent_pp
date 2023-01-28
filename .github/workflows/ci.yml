@@ -6,7 +6,6 @@ on: [push, pull_request]
 env:
   CTEST_OUTPUT_ON_FAILURE: 1
   CPM_SOURCE_CACHE: ${{ github.workspace }}/cpm_modules
-  PATH: ${PATH}:${HOME}/Library/Python/3.11/bin
 
 jobs:
   cmake-build:
@@ -43,7 +42,6 @@ jobs:
 
       - name: Configure
         run: |
-          pip3 install --user -I ninja cmake || echo IGNORED
           which ninja
           cmake --version
           cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D BUILD_SHARED_LIBS=${{ matrix.build }}
