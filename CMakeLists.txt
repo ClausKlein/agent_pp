@@ -211,7 +211,7 @@ set(SNMP_PP_VERSION 3.4.7)
 # see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.13.beta
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG ede93e09f7e0dc86503604ff654fadb1126aac6c # VERSION ${SNMP_PP_VERSION}.13
+  GIT_TAG d45ab500ca41a3fe4b0afac8b2bc7f4c7f1ac562 # VERSION ${SNMP_PP_VERSION}.13
   GITHUB_REPOSITORY ClausKlein/snmp_pp
   OPTIONS "SNMP_PP_LOGGING NO" "SNMP_PP_EXAMPLES YES"
 )

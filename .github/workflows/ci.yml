@@ -42,7 +42,6 @@ jobs:
 
       - name: Configure
         run: |
-          which ninja
           cmake --version
           cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D BUILD_SHARED_LIBS=${{ matrix.build }}
 
@@ -73,7 +72,7 @@ jobs:
         run: |
           export PATH=/usr/local/opt/llvm/bin/:${PATH}
           perl -i.bak -pe 's#-I($CPM_SOURCE_CACHE)#-isystem $1#g;' -e 's#-W[-\w=\d]+\b##g;'  build/compile_commands.json
-          /usr/local/opt/llvm/share/clang/run-clang-tidy.py -p build src examples
+          run-clang-tidy -p build src examples
 
       - name: Run clang-tidy on Ubuntu Host
         if: startsWith(matrix.os, 'ubuntu') && contains(matrix.type, 'static')
