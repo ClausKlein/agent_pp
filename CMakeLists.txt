@@ -208,11 +208,10 @@ endif()
 include(CPM)
 
 set(SNMP_PP_VERSION 3.4.7)
-# XXX find_package(snmp_pp CONFIG ${SNMP_PP_VERSION} REQUIRED)
 # see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.13.beta
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG fba56ad02f6609c4940f1eb0f47b7c0ac43cb326 # VERSION ${SNMP_PP_VERSION}.13
+  GIT_TAG ede93e09f7e0dc86503604ff654fadb1126aac6c # VERSION ${SNMP_PP_VERSION}.13
   GITHUB_REPOSITORY ClausKlein/snmp_pp
   OPTIONS "SNMP_PP_LOGGING NO" "SNMP_PP_EXAMPLES YES"
 )
@@ -302,6 +301,8 @@ set(MY_SRC_FILES
     src/vacm.cpp
 )
 
+option(BUILD_SHARED_LIBS "Global flag to cause add_library() to create shared libraries if on." YES)
+
 option(OPTION_ENABLE_COVERAGE "Enable test coverage of projects" OFF)
 if(OPTION_ENABLE_COVERAGE)
   set(ENABLE_COVERAGE "ENABLE_COVERAGE")
@@ -325,16 +326,23 @@ project_options(
   # TODO: WARNINGS_AS_ERRORS
 )
 
-option(BUILD_SHARED_LIBS "Global flag to cause add_library() to create shared libraries if on." ON)
 add_library(${PROJECT_NAME} ${MY_HEADER_FILES} ${MY_HEADER_LIB_FILES} ${CMAKE_CURRENT_BINARY_DIR}/config.h ${MY_SRC_FILES})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_project_options ${PROJECT_NAME}_project_warnings)
+if(CMAKE_SKIP_INSTALL_RULES)
+  add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+  target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_project_options ${PROJECT_NAME}_project_warnings)
+
+# target_link_libraries(
+#   ${PROJECT_NAME} PRIVATE $<BUILD_LOCAL_INTERFACE:${PROJECT_NAME}_project_options>
+#                           $<BUILD_LOCAL_INTERFACE:${PROJECT_NAME}_project_warnings>
+# )
+endif()
 set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ${ENABLE_UNITY})
 
 if(MSVC)
   target_compile_options(${PROJECT_NAME} PRIVATE /W3 /wd4251)
   target_compile_definitions(${PROJECT_NAME} PRIVATE _CRT_SECURE_NO_WARNINGS)
 else()
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wno-unused-parameter)
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wno-unused-parameter)
 endif()
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE 1)
@@ -354,6 +362,7 @@ target_include_directories(
 )
 target_include_directories(
   ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+                         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/PackageProjectInclude>
                          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>
 )
 
@@ -463,6 +472,10 @@ if(AGENT_PP_EXAMPLES)
   )
 endif()
 
+if(CMAKE_SKIP_INSTALL_RULES)
+  return()
+endif()
+
 install(FILES ${MY_HEADER_LIB_FILES} DESTINATION include)
 
 CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.10.0")
@@ -476,10 +489,10 @@ packageProject(
   # location of the target's public headers
   INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include
   # should match the target's INSTALL_INTERFACE include directory
-  INCLUDE_DESTINATION
-    include # (optional) option to install only header files with matching pattern
-    INCLUDE_HEADER_PATTERN "*.h"
-    # semicolon separated list of the project's dependencies
+  INCLUDE_DESTINATION include
+  # (optional) option to install only header files with matching pattern
+  INCLUDE_HEADER_PATTERN "*.h"
+  # semicolon separated list of the project's dependencies
   DEPENDENCIES "snmp_pp ${SNMP_PP_VERSION}"
   # (optional) create a header containing the version info
   # Note: that the path to headers should be lowercase

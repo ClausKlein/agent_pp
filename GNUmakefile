@@ -1,5 +1,8 @@
 BUILD_TYPE?=Debug
 
+# export CXX=g++-12
+# export CC=gcc-12
+
 export CMAKE_BUILD_TYPE=$(BUILD_TYPE)
 export CPM_USE_LOCAL_PACKAGES=0
 export CPM_SOURCE_CACHE=${HOME}/.cache/CPM
@@ -24,8 +27,8 @@ install: test
 
 build: $(BUILD_DIR)
 build: $(BUILD_DIR)/compile_commands.json
-$(BUILD_DIR)/compile_commands.json:
-	cmake -B $(BUILD_DIR) -S . -G Ninja
+$(BUILD_DIR)/compile_commands.json: GNUmakefile CMakeLists.txt
+	cmake -B $(BUILD_DIR) -S . -G Ninja -D CMAKE_SKIP_INSTALL_RULES=YES
 	perl -i.bak -p -e 's#-W[-\w=\d]+\b##g;' -e 's#-I(${CPM_SOURCE_CACHE})#-isystem $$1#g;' $(BUILD_DIR)/compile_commands.json
 
 $(BUILD_DIR):
@@ -49,5 +52,4 @@ format: distclean
 	find . -type f -name '*.cmake' | xargs cmake-format -i
 	find . -type f -name '*.cpp' | xargs clang-format -i
 	find . -type f -name '*.h' | xargs clang-format -i
-	find . -type f \( -name '*.cpp' -o -name '*.h' \) | xargs grep  --color '\/\/ BEGIN=' || echo OK
 
