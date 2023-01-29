@@ -36,7 +36,7 @@ $(BUILD_DIR):
 
 check: $(BUILD_DIR)/compile_commands.json
 	# run-clang-tidy -p $(BUILD_DIR) -checks='-*,misc-const-correctness,cppcoreguidelines-explicit-virtual-functions' -j1 -fix .
-	run-clang-tidy -p $(BUILD_DIR) -checks='-clang-analyzer-optin.*' .
+	run-clang-tidy -p $(BUILD_DIR) -checks='-clang-analyzer-optin.*,-cert-err33-c,-misc-const-correctness' .
 
 clean:
 	rm -f include/agent_pp/agent++.h

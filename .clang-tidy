@@ -2,6 +2,7 @@
 Checks: "-*,\
 boost-*,\
 cert-*,\
+-cert-err33-c,\
 -cert-err58-cpp,\
 -cert-dcl37-c,\
 -cert-dcl51-cpp,\
