@@ -26,6 +26,10 @@ set(CNF_STDCXX_98_HEADERS YES)
 set(HAVE_INTTYPES_H YES)
 set(AGENT_PP_NAMESPACE on) # "Enable Namespaces (needed!)" ON)
 
+if(NOT PROJECT_IS_TOP_LEVEL)
+  option(CMAKE_SKIP_INSTALL_RULES "Whether to disable generation of installation rules" YES)
+endif()
+
 option(AGENT_PP_PROXY "Enable Proxy" ON)
 option(AGENT_PP_PROXY_FORWARDER "Enable Proxy Forwarder" ON)
 option(AGENT_PP_AGENPRO "build with AgenPro templates (usually disabled)" OFF)
@@ -211,7 +215,7 @@ set(SNMP_PP_VERSION 3.4.7)
 # see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.13.beta
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG 9813ef3068c6dd0acdbe56bc7e55034e8df5206b # VERSION ${SNMP_PP_VERSION}.13
+  GIT_TAG 8c38db54e4b6128b7dde13bca1f5f04999495b19 # VERSION ${SNMP_PP_VERSION}.13
   GITHUB_REPOSITORY ClausKlein/snmp_pp
   OPTIONS "SNMP_PP_LOGGING NO" "SNMP_PP_EXAMPLES YES"
 )
@@ -336,7 +340,7 @@ if(CMAKE_SKIP_INSTALL_RULES)
 #                           $<BUILD_LOCAL_INTERFACE:${PROJECT_NAME}_project_warnings>
 # )
 endif()
-set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ${ENABLE_UNITY})
+set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ${OPTION_ENABLE_UNITY})
 
 if(MSVC)
   target_compile_options(${PROJECT_NAME} PRIVATE /W3 /wd4251)

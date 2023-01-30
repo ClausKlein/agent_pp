@@ -222,7 +222,11 @@ public:
     MibStaticEntry(const Oidx& o, const NS_SNMP SnmpSyntax& v) : Vbx(o) { set_value(v); }
     MibStaticEntry(const MibStaticEntry& other) : Vbx(other) { }
 
-    OidxPtr key() { return (Oidx*)&iv_vb_oid; }
+    //XXX OidxPtr key() { return (Oidx*)&iv_vb_oid; }
+    OidxPtr key() { get_oid(oid); return &oid; }
+
+private:
+    Oidx oid{};
 };
 
 /*------------------------ class MibStaticTable ------------------------*/
