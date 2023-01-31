@@ -37,7 +37,7 @@
 
 #define MULTI_THREADED            true
 #define SINGLE_THREADED           false
-#define AGENTPP_DEFAULT_STACKSIZE 0x10000
+#define AGENTPP_DEFAULT_STACKSIZE 0x20000
 
 #ifdef AGENTPP_NAMESPACE
 namespace Agentpp

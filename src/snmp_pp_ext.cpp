@@ -256,7 +256,7 @@ unsigned char* Vbx::asn_build_long_length(
 
 int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
 {
-    oid            objid[ASN_MAX_NAME_LEN], *op = nullptr;
+    oid_t            objid[ASN_MAX_NAME_LEN], *op = nullptr;
     unsigned char* var_val = nullptr;
     // get the vb list
     unsigned char         type      = 0;
@@ -298,9 +298,9 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
             return SNMP_CLASS_ERROR;
 #endif
         }
-        op = (oid*)malloc((unsigned)vp->name_length * sizeof(oid));
+        op = (oid_t*)malloc((unsigned)vp->name_length * sizeof(oid_t));
         // fixed
-        memcpy((char*)op, (char*)objid, vp->name_length * sizeof(oid));
+        memcpy((char*)op, (char*)objid, vp->name_length * sizeof(oid_t));
         vp->name = op;
 
         int len = MAX_SNMP_PACKET;
@@ -338,10 +338,10 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
         case ASN_OBJECT_ID:
             vp->val_len = ASN_MAX_NAME_LEN;
             asn_parse_objid(var_val, &len, &vp->type, objid, &vp->val_len);
-            // vp->val_len *= sizeof(oid);
-            vp->val.objid = (oid*)malloc((unsigned)vp->val_len * sizeof(oid));
+            // vp->val_len *= sizeof(oid_t);
+            vp->val.objid = (oid_t*)malloc((unsigned)vp->val_len * sizeof(oid_t));
             // fixed
-            memcpy((char*)vp->val.objid, (char*)objid, vp->val_len * sizeof(oid));
+            memcpy((char*)vp->val.objid, (char*)objid, vp->val_len * sizeof(oid_t));
             break;
 
         case SNMP_NOSUCHOBJECT:

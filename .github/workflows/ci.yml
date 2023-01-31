@@ -72,11 +72,11 @@ jobs:
         run: |
           export PATH=/usr/local/opt/llvm/bin/:${PATH}
           perl -i.bak -pe 's#-I($CPM_SOURCE_CACHE)#-isystem $1#g;' -e 's#-W[-\w=\d]+\b##g;'  build/compile_commands.json
-          run-clang-tidy -p build src examples
+          run-clang-tidy -p build .
 
       - name: Run clang-tidy on Ubuntu Host
         if: startsWith(matrix.os, 'ubuntu') && contains(matrix.type, 'static')
         shell: bash
         run: |
           perl -i.bak -pe 's#-I($CPM_SOURCE_CACHE)#-isystem $1#g;' -e 's#-W[-\w=\d]+\b##g;'  build/compile_commands.json
-          run-clang-tidy-13 -p build src examples
+          run-clang-tidy-13 -p build .

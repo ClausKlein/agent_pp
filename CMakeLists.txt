@@ -215,7 +215,7 @@ set(SNMP_PP_VERSION 3.4.7)
 # see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.13.beta
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG 8c38db54e4b6128b7dde13bca1f5f04999495b19 # VERSION ${SNMP_PP_VERSION}.13
+  GIT_TAG 96ba002ae94addc05597771444b0ba1685d41d8b # VERSION ${SNMP_PP_VERSION}.13
   GITHUB_REPOSITORY ClausKlein/snmp_pp
   OPTIONS "SNMP_PP_LOGGING NO" "SNMP_PP_EXAMPLES YES" "CMAKE_SKIP_INSTALL_RULES NO"
 )
@@ -330,8 +330,13 @@ project_options(
   # TODO: WARNINGS_AS_ERRORS
 )
 
+set(PROJECT_EXPORT_HEADER ${PROJECT_NAME}/export.h)
 add_library(${PROJECT_NAME} ${MY_HEADER_FILES} ${MY_HEADER_LIB_FILES} ${CMAKE_CURRENT_BINARY_DIR}/config.h ${MY_SRC_FILES})
 if(CMAKE_SKIP_INSTALL_RULES)
+  include(GenerateExportHeader)
+  generate_export_header(
+    ${PROJECT_NAME} EXPORT_FILE_NAME ${CMAKE_CURRENT_BINARY_DIR}/PackageProjectInclude/${PROJECT_EXPORT_HEADER}
+  )
   add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
   target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_project_options ${PROJECT_NAME}_project_warnings)
 
@@ -344,9 +349,9 @@ set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ${OPTION_ENABLE_UNI
 
 if(MSVC)
   target_compile_options(${PROJECT_NAME} PRIVATE /W3 /wd4251)
-  target_compile_definitions(${PROJECT_NAME} PRIVATE _CRT_SECURE_NO_WARNINGS)
+  target_compile_definitions(${PROJECT_NAME} PUBLIC _CRT_SECURE_NO_WARNINGS)
 else()
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wno-unused-parameter)
+  target_compile_options(${PROJECT_NAME} PUBLIC -Wno-conversion -Wshadow -Wno-unused-parameter -Wno-deprecated-declarations -Wno-old-style-cast -Wno-extra-semi)
 endif()
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE 1)
@@ -502,7 +507,7 @@ packageProject(
   # Note: that the path to headers should be lowercase
   VERSION_HEADER "${PROJECT_NAME}/version.h"
   # (optional) create a export header using GenerateExportHeader module
-  EXPORT_HEADER "${PROJECT_NAME}/export.h"
+  EXPORT_HEADER "${PROJECT_EXPORT_HEADER}"
   # (optional) install your library with a namespace (Note: do NOT add extra '::')
   NAMESPACE ${PROJECT_NAME}
   # (optional) define the project's version compatibility, defaults to `AnyNewerVersion`

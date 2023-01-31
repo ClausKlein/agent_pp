@@ -28,15 +28,15 @@ install: test
 build: $(BUILD_DIR)
 build: $(BUILD_DIR)/compile_commands.json
 $(BUILD_DIR)/compile_commands.json: GNUmakefile CMakeLists.txt
-	cmake -B $(BUILD_DIR) -S . -G Ninja #TODO -D CMAKE_SKIP_INSTALL_RULES=YES
+	cmake -B $(BUILD_DIR) -S . -G Ninja -D CMAKE_SKIP_INSTALL_RULES=YES
 	perl -i.bak -p -e 's#-W[-\w=\d]+\b##g;' -e 's#-I(${CPM_SOURCE_CACHE})#-isystem $$1#g;' $(BUILD_DIR)/compile_commands.json
 
 $(BUILD_DIR):
 	mkdir -p $@
 
 check: $(BUILD_DIR)/compile_commands.json
-	# run-clang-tidy -p $(BUILD_DIR) -checks='-*,misc-const-correctness,cppcoreguidelines-explicit-virtual-functions' -j1 -fix .
-	run-clang-tidy -p $(BUILD_DIR) -checks='-clang-analyzer-optin.*,-cert-err33-c,-misc-const-correctness' .
+	# run-clang-tidy -p $(BUILD_DIR) -checks='-*,hicpp-named-parameter,hicpp-member-init,modernize-redundant-void-arg,modernize-use-bool-literals,modernize-use-auto,modernize-use-nullptr,misc-const-correctness,cppcoreguidelines-explicit-virtual-functions' -j1 -fix .
+	run-clang-tidy -p $(BUILD_DIR) -checks='-clang-analyzer-optin.*' .
 
 clean:
 	rm -f include/agent_pp/agent++.h
