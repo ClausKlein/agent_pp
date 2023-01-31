@@ -167,7 +167,7 @@ public:
     ~snmpTargetAddrTMask() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
+    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * @note The caller has to delete the returned pointer.
@@ -206,8 +206,8 @@ public:
      */
     static snmpCommunityEntry* get_instance(Mib* mib)
     {
-        Oidx const          oid(oidSnmpCommunityEntry);
-        snmpCommunityEntry* entry = (snmpCommunityEntry*)mib->get(oid);
+        Oidx const oid(oidSnmpCommunityEntry);
+        auto*      entry = (snmpCommunityEntry*)mib->get(oid);
         return (entry) ? entry : instance;
     }
 
@@ -289,10 +289,10 @@ public:
      */
     static snmpTargetAddrExtEntry* get_instance(Mib* mib);
 
-    void         row_added(MibTableRow*, const Oidx&, MibTable* s = 0) override;
-    void         row_delete(MibTableRow*, const Oidx&, MibTable* s = 0) override;
+    void row_added(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* s = nullptr) override;
+    void row_delete(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* s = nullptr) override;
     virtual void set_row(MibTableRow* r, const NS_SNMP OctetStr& p0, int p1);
-    int          prepare_set_request(Request*, int&) override;
+    int          prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 #    ifdef _SNMPv3
     virtual bool passes_filter(const NS_SNMP OctetStr&, const NS_SNMP UTarget&);
 #    endif

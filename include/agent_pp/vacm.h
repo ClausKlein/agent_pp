@@ -372,9 +372,9 @@ public:
     VacmSecurityToGroupTable();
     ~VacmSecurityToGroupTable() override;
 
-    bool ready_for_service(Vbx*, int) override;
-    bool could_ever_be_managed(const Oidx&, int&) override;
-    void row_added(MibTableRow*, const Oidx&, MibTable*) override;
+    bool ready_for_service(Vbx* /*pvbs*/, int /*sz*/) override;
+    bool could_ever_be_managed(const Oidx& /*unused*/, int& /*unused*/) override;
+    void row_added(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
     bool getGroupName(
         const int& securiyModel, const NS_SNMP OctetStr& securityName, NS_SNMP OctetStr& groupName);
     bool isGroupNameOK(const NS_SNMP OctetStr&);
@@ -394,9 +394,9 @@ public:
     VacmAccessTable(VacmSecurityToGroupTable*);
     ~VacmAccessTable() override;
 
-    bool ready_for_service(Vbx*, int) override;
-    bool could_ever_be_managed(const Oidx&, int&) override;
-    void row_added(MibTableRow*, const Oidx&, MibTable*) override;
+    bool ready_for_service(Vbx* /*pvbs*/, int /*sz*/) override;
+    bool could_ever_be_managed(const Oidx& /*unused*/, int& /*unused*/) override;
+    void row_added(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
     bool getViewName(const NS_SNMP OctetStr& group, const NS_SNMP OctetStr& context,
         const int securityModel, const int securityLevel, const int viewType,
         NS_SNMP OctetStr& viewName);
@@ -457,13 +457,13 @@ public:
     VacmViewTreeFamilyTable();
     ~VacmViewTreeFamilyTable() override;
 
-    bool ready_for_service(Vbx*, int) override;
-    bool could_ever_be_managed(const Oidx&, int&) override;
-    void row_added(MibTableRow*, const Oidx&, MibTable*) override;
-    void row_activated(MibTableRow*, const Oidx&, MibTable*) override;
-    void row_deactivated(MibTableRow*, const Oidx&, MibTable*) override;
-    void row_delete(MibTableRow*, const Oidx&, MibTable*) override;
-    void row_init(MibTableRow*, const Oidx&, MibTable* t = 0) override;
+    bool ready_for_service(Vbx* /*pvbs*/, int /*sz*/) override;
+    bool could_ever_be_managed(const Oidx& /*unused*/, int& /*unused*/) override;
+    void row_added(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    void row_activated(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    void row_deactivated(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    void row_delete(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    void row_init(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* t = nullptr) override;
     int  isInMibView(const NS_SNMP OctetStr&, const Oidx&);
     bool addNewRow(const NS_SNMP OctetStr& viewName, const Oidx& subtree, const NS_SNMP OctetStr& mask,
         const int type, const int storageType);
@@ -491,7 +491,7 @@ class AGENTPP_DECL VacmViewTreeFamilyTableStatus : public snmpRowStatus {
 public:
     VacmViewTreeFamilyTableStatus(const Oidx&, int);
     ~VacmViewTreeFamilyTableStatus() override { }
-    int         set(const Vbx&) override;
+    int         set(const Vbx& /*unused*/) override;
     MibEntryPtr clone() override;
 
 protected:

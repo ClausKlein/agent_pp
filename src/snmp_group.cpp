@@ -31,7 +31,7 @@ using namespace Agentpp;
  *
  */
 
-snmpEnableAuthenTraps* snmpEnableAuthenTraps::instance = 0;
+snmpEnableAuthenTraps* snmpEnableAuthenTraps::instance = nullptr;
 
 snmpEnableAuthenTraps::snmpEnableAuthenTraps()
     : MibLeaf(oidSnmpEnableAuthenTraps, READWRITE, new SnmpInt32(2))

@@ -568,7 +568,7 @@ public:
         if (lockQueue)
         {
             delete lockQueue;
-            lockQueue = 0;
+            lockQueue = nullptr;
         }
     }
 #endif
@@ -964,7 +964,7 @@ protected:
         if (lockQueue)
         {
             delete lockQueue;
-            lockQueue = 0;
+            lockQueue = nullptr;
         }
     }
 #endif

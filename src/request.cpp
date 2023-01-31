@@ -44,8 +44,8 @@ static const char* loggerModuleName = "agent++.request";
 /*--------------------------- class Request --------------------------*/
 
 #ifdef NO_FAST_MUTEXES
-LockQueue* Request::lockQueue     = 0;
-LockQueue* RequestList::lockQueue = 0;
+LockQueue* Request::lockQueue     = nullptr;
+LockQueue* RequestList::lockQueue = nullptr;
 #endif
 
 Request::Request()
@@ -53,11 +53,12 @@ Request::Request()
 #ifdef _THREADS
       Synchronized(),
 #endif
-      pdu(0), originalVbs(0), originalSize(0), from(), done(0), ready(0), outstanding(0), size(0),
-      non_rep(0), max_rep(0), repeater(0), version(), transaction_id(0), locks()
+      pdu(nullptr), originalVbs(nullptr), originalSize(0), from(), done(nullptr), ready(nullptr),
+      outstanding(0), size(0), non_rep(0), max_rep(0), repeater(0), version(), transaction_id(0),
+      locks()
 #ifdef _SNMPv3
       ,
-      viewName(), vacm(0)
+      viewName(), vacm(nullptr)
 #endif
       ,
       target()
@@ -72,11 +73,12 @@ Request::Request(const Pdux& p, const TargetType& t)
 #ifdef _THREADS
       Synchronized(),
 #endif
-      pdu(0), originalVbs(0), originalSize(0), from(), done(0), ready(0), outstanding(0), size(0),
-      non_rep(0), max_rep(0), repeater(0), version(), transaction_id(0), locks()
+      pdu(nullptr), originalVbs(nullptr), originalSize(0), from(), done(nullptr), ready(nullptr),
+      outstanding(0), size(0), non_rep(0), max_rep(0), repeater(0), version(), transaction_id(0),
+      locks()
 #ifdef _SNMPv3
       ,
-      viewName(), vacm(0)
+      viewName(), vacm(nullptr)
 #endif
       ,
       target(t)
@@ -456,7 +458,7 @@ Vbx* Request::search_value(const Oidx& oid) const
         vb.get_oid(o);
         if (o == oid) return new Vbx((*pdu)[i]);
     }
-    return 0;
+    return nullptr;
 }
 
 /**
@@ -585,7 +587,7 @@ void Request::no_outstanding() { outstanding = 0; }
 MibEntry* Request::get_locked(int i)
 {
     if ((i >= 0) && (i < locks.size())) return locks.getNth(i);
-    return 0;
+    return nullptr;
 }
 
 int Request::lock_index(MibEntry* entry)
@@ -616,7 +618,7 @@ int Request::lock_index(MibEntry* entry)
 void Request::set_locked(int i, MibEntry* entry)
 {
     if ((i < 0) || (i >= size)) return;
-    while (i >= locks.size()) { locks.add(0); }
+    while (i >= locks.size()) { locks.add(nullptr); }
     if (lock_index(entry) < 0)
     {
 #ifdef NO_FAST_MUTEXES
@@ -735,10 +737,10 @@ int Request::get_max_response_length()
 /*------------------------- class RequestList --------------------------*/
 
 RequestList::RequestList()
-    : ThreadManager(), requests(new List<Request>), snmp(0)
+    : ThreadManager(), requests(new List<Request>), snmp(nullptr)
 #ifdef _SNMPv3
       ,
-      vacm(0), v3mp(0)
+      vacm(nullptr), v3mp(nullptr)
 #endif
       ,
       write_community(new OctetStr(DEFAULT_WRITE_COMMUNITY)),
@@ -783,7 +785,7 @@ Request* RequestList::get_request(uint32_t rid)
     {
         if (cur.get()->get_transaction_id() == rid) { return cur.get(); }
     }
-    return 0;
+    return nullptr;
 }
 
 Request* RequestList::find_request_on_id(uint32_t rid)
@@ -793,7 +795,7 @@ Request* RequestList::find_request_on_id(uint32_t rid)
     {
         if (cur.get()->get_pdu()->get_request_id() == rid) { return cur.get(); }
     }
-    return 0;
+    return nullptr;
 }
 
 uint32_t RequestList::get_request_id(const Vbx& vb) TS_SYNCHRONIZED({
@@ -1161,7 +1163,7 @@ void RequestList::answer(Request* req)
         }
         if (status == SNMP_ERROR_TOO_BIG)
         {
-            pdu->set_vblist(0, 0);
+            pdu->set_vblist(nullptr, 0);
             pdu->set_error_status(SNMP_ERROR_TOO_BIG);
             pdu->set_error_index(0);
 #ifdef _SNMPv3
@@ -1192,22 +1194,22 @@ void RequestList::answer(Request* req)
 Request* RequestList::receive(int sec)
 {
 #ifdef _SNMPv3
-    if (vacm == 0)
+    if (vacm == nullptr)
     {
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 0);
         LOG("RequestList: SNMPv3 support enabled, but VACM not initialized: ");
         LOG_END;
-        return 0; // not executed if logging disabled
+        return nullptr; // not executed if logging disabled
     }
-    if (v3mp == 0)
+    if (v3mp == nullptr)
     {
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 0);
         LOG("RequestList: SNMPv3 support enabled, but v3MP not initialized: ");
         LOG_END;
-        return 0; // not executed if logging disabled
+        return nullptr; // not executed if logging disabled
     }
 #endif
-    struct timeval* tvptr = 0;
+    struct timeval* tvptr = nullptr;
     if (sec >= 0)
     {
         tvptr = new (struct timeval);
@@ -1311,7 +1313,7 @@ Request* RequestList::receive(int sec)
                 LOG_END;
                 v3mp->inc_stats_unknown_security_models();
                 v3mp->inc_stats_invalid_msgs();
-                return 0;
+                return nullptr;
             }
         }
         else
@@ -1345,7 +1347,7 @@ Request* RequestList::receive(int sec)
                     authenticationFailure(context_name, target.get_address(), 0);
 
                     Counter32MibLeaf::incrementScalar(mib, oidSnmpInBadCommunityNames);
-                    return 0;
+                    return nullptr;
                 }
 
                 pdu.set_context_engine_id(context_engine_id);
@@ -1375,7 +1377,7 @@ Request* RequestList::receive(int sec)
 
                         authenticationFailure(context_name, target.get_address(), 0);
 
-                        return 0;
+                        return nullptr;
                     }
                 }
             }
@@ -1393,7 +1395,7 @@ Request* RequestList::receive(int sec)
             LOG(pdu.get_request_id());
             LOG_END;
 
-            pdu.set_vblist(0, 0);
+            pdu.set_vblist(nullptr, 0);
             pdu.set_error_status(SNMP_ERROR_TOO_BIG);
             pdu.set_error_index(0);
 
@@ -1402,7 +1404,7 @@ Request* RequestList::receive(int sec)
             Counter32MibLeaf::incrementScalar(mib, oidSnmpOutPkts);
 
             snmp->send(pdu, &target);
-            return 0;
+            return nullptr;
         }
         // check for a proxy application
 #    ifdef _PROXY_FORWARDER
@@ -1417,7 +1419,7 @@ Request* RequestList::receive(int sec)
             LOG(pdu.get_request_id());
             LOG_END;
 
-            Request* req = new Request(pdu, target);
+            auto* req = new Request(pdu, target);
             return add_request(req);
         }
 #    endif // _PROXY_FORWARDER
@@ -1449,7 +1451,7 @@ Request* RequestList::receive(int sec)
             v3mp->inc_stats_invalid_msgs();
             v3mp->inc_stats_unknown_pdu_handlers();
             Counter32MibLeaf::incrementScalar(mib, oidSnmpInASNParseErrs);
-            return 0;
+            return nullptr;
         }
         }
         // initialize viewName;
@@ -1487,7 +1489,7 @@ Request* RequestList::receive(int sec)
 
             authenticationFailure(context_name, target.get_address(), vacmErrorCode);
 
-            return 0;
+            return nullptr;
         }
         case VACM_otherError: {
 
@@ -1503,7 +1505,7 @@ Request* RequestList::receive(int sec)
 
             Counter32MibLeaf::incrementScalar(mib, oidSnmpOutPkts);
             snmp->send(pdu, &target);
-            return 0;
+            return nullptr;
         }
         case VACM_noSuchContext: {
             // delete all vbs and set first vb to oid of counter
@@ -1527,7 +1529,7 @@ Request* RequestList::receive(int sec)
             LOG_END;
 
             snmp->report(pdu, target);
-            return 0;
+            return nullptr;
         }
         } // switch
 
@@ -1550,7 +1552,7 @@ Request* RequestList::receive(int sec)
         else
 #endif // _SNMPv3
         {
-            Request* req = new Request(pdu, target);
+            auto* req = new Request(pdu, target);
 #ifdef _SNMPv3
             // set vacm and initialize viewName
             req->init_vacm(vacm, viewName);
@@ -1619,7 +1621,7 @@ Request* RequestList::receive(int sec)
             if (incInASNParseErrs) incInASNParseErrs->increment();
         }
     }
-    return 0;
+    return nullptr;
 }
 
 Request* RequestList::add_request(Request* req) TS_SYNCHRONIZED({
@@ -1627,7 +1629,7 @@ Request* RequestList::add_request(Request* req) TS_SYNCHRONIZED({
 
     Request* dupl;
     // ignore request, if request_id is already known
-    if (((dupl = find_request_on_id(rid)) == 0)
+    if (((dupl = find_request_on_id(rid)) == nullptr)
         || (strcmp(dupl->from.get_printable(), req->from.get_printable()) != 0))
     {
 
@@ -1644,7 +1646,7 @@ Request* RequestList::add_request(Request* req) TS_SYNCHRONIZED({
     LOG_END;
 
     delete req;
-    return 0;
+    return nullptr;
 })
 
 #ifndef _SNMPv3

@@ -47,7 +47,7 @@ public:
     ~snmpTargetAddrTDomain() override;
 
     MibEntryPtr clone() override;
-    bool        value_ok(const Vbx&) override;
+    bool        value_ok(const Vbx& /*unused*/) override;
     virtual int get_state();
 };
 
@@ -67,7 +67,7 @@ public:
     ~snmpTargetAddrTAddress() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
+    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * @note The caller has to delete the returned pointer.
@@ -125,8 +125,8 @@ public:
     ~snmpTargetAddrParams() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/) override;
 };
 
 /**
@@ -247,8 +247,8 @@ public:
      */
     static snmpTargetParamsEntry* get_instance(Mib* mib)
     {
-        Oidx const             oid(oidSnmpTargetParamsEntry);
-        snmpTargetParamsEntry* entry = (snmpTargetParamsEntry*)mib->get(oid);
+        Oidx const oid(oidSnmpTargetParamsEntry);
+        auto*      entry = (snmpTargetParamsEntry*)mib->get(oid);
         return (entry) ? entry : instance;
     }
     static snmpTargetParamsEntry* instance;
@@ -331,8 +331,8 @@ public:
      */
     static snmpTargetAddrEntry* get_instance(Mib* mib)
     {
-        Oidx const           oid(oidSnmpTargetAddrEntry);
-        snmpTargetAddrEntry* entry = (snmpTargetAddrEntry*)mib->get(oid);
+        Oidx const oid(oidSnmpTargetAddrEntry);
+        auto*      entry = (snmpTargetAddrEntry*)mib->get(oid);
         return (entry) ? entry : instance;
     }
 
@@ -417,7 +417,7 @@ public:
     /**
      * Check if row can be set active.
      */
-    bool ready_for_service(Vbx*, int) override;
+    bool ready_for_service(Vbx* /*pvbs*/, int /*sz*/) override;
 };
 
 class AGENTPP_DECL snmp_target_mib : public MibGroup {

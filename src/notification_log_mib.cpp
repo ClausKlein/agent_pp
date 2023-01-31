@@ -89,7 +89,7 @@ MibEntryPtr nlmConfigLogOperStatus::clone()
  *
  */
 
-nlmConfigGlobalEntryLimit* nlmConfigGlobalEntryLimit::instance = 0;
+nlmConfigGlobalEntryLimit* nlmConfigGlobalEntryLimit::instance = nullptr;
 
 nlmConfigGlobalEntryLimit::nlmConfigGlobalEntryLimit()
     : MibLeaf(oidNlmConfigGlobalEntryLimit, READWRITE, new Gauge32(0), VMODE_DEFAULT)
@@ -161,7 +161,7 @@ int nlmConfigGlobalEntryLimit::prepare_set_request(Request* req, int& ind)
  *
  */
 
-nlmConfigGlobalAgeOut* nlmConfigGlobalAgeOut::instance = 0;
+nlmConfigGlobalAgeOut* nlmConfigGlobalAgeOut::instance = nullptr;
 
 nlmConfigGlobalAgeOut::nlmConfigGlobalAgeOut()
     : MibLeaf(oidNlmConfigGlobalAgeOut, READWRITE, new Gauge32(1440), VMODE_DEFAULT)
@@ -662,7 +662,7 @@ int nlmConfigLogEntryStatus::commit_set_request(Request* req, int ind)
  *
  */
 
-nlmStatsGlobalNotificationsLogged* nlmStatsGlobalNotificationsLogged::instance = 0;
+nlmStatsGlobalNotificationsLogged* nlmStatsGlobalNotificationsLogged::instance = nullptr;
 
 nlmStatsGlobalNotificationsLogged::nlmStatsGlobalNotificationsLogged()
     : Counter32MibLeaf(oidNlmStatsGlobalNotificationsLogged)
@@ -718,7 +718,7 @@ uint32_t nlmStatsGlobalNotificationsLogged::inc()
  *
  */
 
-nlmStatsGlobalNotificationsBumped* nlmStatsGlobalNotificationsBumped::instance = 0;
+nlmStatsGlobalNotificationsBumped* nlmStatsGlobalNotificationsBumped::instance = nullptr;
 
 nlmStatsGlobalNotificationsBumped::nlmStatsGlobalNotificationsBumped()
     : Counter32MibLeaf(oidNlmStatsGlobalNotificationsBumped)
@@ -774,7 +774,7 @@ uint32_t nlmStatsGlobalNotificationsBumped::inc()
  *
  */
 
-nlmConfigLogEntry* nlmConfigLogEntry::instance = 0;
+nlmConfigLogEntry* nlmConfigLogEntry::instance = nullptr;
 
 const index_info indNlmConfigLogEntry[1] = { { sNMP_SYNTAX_OCTETS, false, 0, 255 } };
 
@@ -848,7 +848,7 @@ void nlmConfigLogEntry::set_row(
  *
  */
 
-nlmStatsLogEntry* nlmStatsLogEntry::instance = 0;
+nlmStatsLogEntry* nlmStatsLogEntry::instance = nullptr;
 
 const index_info indNlmStatsLogEntry[1] = { { sNMP_SYNTAX_OCTETS, false, 0, 255 } };
 
@@ -920,7 +920,7 @@ void nlmStatsLogEntry::set_row(MibTableRow* r, uint32_t p0, uint32_t p1)
  *
  */
 
-nlmLogEntry* nlmLogEntry::instance = 0;
+nlmLogEntry* nlmLogEntry::instance = nullptr;
 
 const index_info indNlmLogEntry[2] = { { sNMP_SYNTAX_OCTETS, false, 0, 255 },
     { sNMP_SYNTAX_INT, false, 1, 1 } };
@@ -1081,8 +1081,8 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, con
         }
         GenAddress addr;
         target->get_address(addr);
-        UdpAddress* udpAddress = new UdpAddress(addr);
-        IpAddress   ip(*udpAddress);
+        auto*     udpAddress = new UdpAddress(addr);
+        IpAddress ip(*udpAddress);
         for (int i = 0; i < ip.get_length(); i++) { address += (unsigned char)ip[i]; }
         address += (udpAddress->get_port() >> 8);
         address += (udpAddress->get_port() & 0x00FF);
@@ -1253,7 +1253,7 @@ void nlmLogEntry::check_limits(List<MibTableRow>* logs)
  *
  */
 
-nlmLogVariableEntry* nlmLogVariableEntry::instance = 0;
+nlmLogVariableEntry* nlmLogVariableEntry::instance = nullptr;
 
 const index_info indNlmLogVariableEntry[3] = { { sNMP_SYNTAX_OCTETS, false, 0, 255 },
     { sNMP_SYNTAX_INT, false, 1, 1 }, { sNMP_SYNTAX_INT, false, 1, 1 } };
@@ -1386,7 +1386,7 @@ void nlmLogVariableEntry::add_variable(const Oidx& index, unsigned int i, const 
         r->get_nth(nNlmLogVariableValueType)->set_value(6);
         break;
     case sNMP_SYNTAX_OPAQUE: {
-        OpaqueStr* opaque = new OpaqueStr();
+        auto* opaque = new OpaqueStr();
         vb.get_value(*opaque);
         r->get_nth(nNlmLogVariableOpaqueVal)->replace_value(opaque);
         r->get_nth(nNlmLogVariableOpaqueVal)->set_access(READONLY);
@@ -1416,22 +1416,22 @@ notification_log_mib::notification_log_mib(Mib* mib)
 
     //--AgentGen BEGIN=notification_log_mib::notification_log_mib
     //--AgentGen END
-    nlmConfigGlobalEntryLimit* _nlmConfigGlobalEntryLimit = new nlmConfigGlobalEntryLimit();
+    auto* _nlmConfigGlobalEntryLimit = new nlmConfigGlobalEntryLimit();
     add(_nlmConfigGlobalEntryLimit);
 
-    nlmConfigGlobalAgeOut* _nlmConfigGlobalAgeOut = new nlmConfigGlobalAgeOut();
+    auto* _nlmConfigGlobalAgeOut = new nlmConfigGlobalAgeOut();
     add(_nlmConfigGlobalAgeOut);
 
-    nlmConfigLogEntry* configLogEntry = new nlmConfigLogEntry(mib);
+    auto* configLogEntry = new nlmConfigLogEntry(mib);
     add(configLogEntry);
 
     add(new nlmStatsGlobalNotificationsLogged());
     add(new nlmStatsGlobalNotificationsBumped());
 
-    nlmStatsLogEntry* statsLogEntry = new nlmStatsLogEntry(configLogEntry);
+    auto* statsLogEntry = new nlmStatsLogEntry(configLogEntry);
     add(statsLogEntry);
 
-    nlmLogVariableEntry* logVariableEntry = new nlmLogVariableEntry();
+    auto* logVariableEntry = new nlmLogVariableEntry();
     add(logVariableEntry);
     add(new nlmLogEntry(mib, configLogEntry, statsLogEntry, logVariableEntry,
         _nlmConfigGlobalEntryLimit, _nlmConfigGlobalAgeOut));

@@ -88,16 +88,16 @@ static inline void set_lthread(OidxPtrMibEntryPtrAVLNode* t, int b)
 OidxPtrMibEntryPtrAVLNode* OidxPtrMibEntryPtrAVLMap::leftmost()
 {
     OidxPtrMibEntryPtrAVLNode* t = root;
-    if (t != 0)
-        while (t->lt != 0) t = t->lt;
+    if (t != nullptr)
+        while (t->lt != nullptr) t = t->lt;
     return t;
 }
 
 OidxPtrMibEntryPtrAVLNode* OidxPtrMibEntryPtrAVLMap::rightmost()
 {
     OidxPtrMibEntryPtrAVLNode* t = root;
-    if (t != 0)
-        while (t->rt != 0) t = t->rt;
+    if (t != nullptr)
+        while (t->rt != nullptr) t = t->rt;
     return t;
 }
 
@@ -120,7 +120,7 @@ OidxPtrMibEntryPtrAVLNode* OidxPtrMibEntryPtrAVLMap::pred(OidxPtrMibEntryPtrAVLN
 Pix OidxPtrMibEntryPtrAVLMap::seek(OidxPtr key)
 {
     OidxPtrMibEntryPtrAVLNode* t = root;
-    if (t == 0) return 0;
+    if (t == nullptr) return nullptr;
     for (;;)
     {
         int const cmp = OidxPtrCMP(key, t->item);
@@ -129,12 +129,12 @@ Pix OidxPtrMibEntryPtrAVLMap::seek(OidxPtr key)
         else if (cmp < 0)
         {
             if (lthread(t))
-                return 0;
+                return nullptr;
             else
                 t = t->lt;
         }
         else if (rthread(t))
-            return 0;
+            return nullptr;
         else
             t = t->rt;
     }
@@ -143,7 +143,7 @@ Pix OidxPtrMibEntryPtrAVLMap::seek(OidxPtr key)
 Pix OidxPtrMibEntryPtrAVLMap::seek_inexact(OidxPtr key)
 {
     OidxPtrMibEntryPtrAVLNode* t = root;
-    if (t == 0) return 0;
+    if (t == nullptr) return nullptr;
     for (;;)
     {
         int const cmp = OidxPtrCMP(key, t->item);
@@ -337,7 +337,7 @@ void OidxPtrMibEntryPtrAVLMap::_add(OidxPtrMibEntryPtrAVLNode*& t)
 
 MibEntryPtr& OidxPtrMibEntryPtrAVLMap::operator[](OidxPtr item)
 {
-    if (root == 0)
+    if (root == nullptr)
     {
         ++count;
         root = new OidxPtrMibEntryPtrAVLNode(item, def);
@@ -390,7 +390,7 @@ void OidxPtrMibEntryPtrAVLMap::_del(OidxPtrMibEntryPtrAVLNode* par, OidxPtrMibEn
         {
             _found_node                  = t;
             OidxPtrMibEntryPtrAVLNode* s = succ(t);
-            if (s != 0 && lthread(s)) s->lt = t->lt;
+            if (s != nullptr && lthread(s)) s->lt = t->lt;
             t                 = t->rt;
             _need_rebalancing = 1;
             return;
@@ -399,7 +399,7 @@ void OidxPtrMibEntryPtrAVLMap::_del(OidxPtrMibEntryPtrAVLNode* par, OidxPtrMibEn
         {
             _found_node                  = t;
             OidxPtrMibEntryPtrAVLNode* p = pred(t);
-            if (p != 0 && rthread(p)) p->rt = t->rt;
+            if (p != nullptr && rthread(p)) p->rt = t->rt;
             t                 = t->lt;
             _need_rebalancing = 1;
             return;
@@ -564,24 +564,24 @@ void OidxPtrMibEntryPtrAVLMap::_del(OidxPtrMibEntryPtrAVLNode* par, OidxPtrMibEn
 
 void OidxPtrMibEntryPtrAVLMap::del(OidxPtr item)
 {
-    if (root == 0) return;
+    if (root == nullptr) return;
 
     _need_rebalancing = 0;
     _already_found    = 0;
-    _found_node       = 0;
+    _found_node       = nullptr;
     _target_item      = &item; // NOTE: This will be a dangling reference! CK
     _del(root, root);
     if (_found_node)
     {
         delete (_found_node);
-        if (--count == 0) root = 0;
+        if (--count == 0) root = nullptr;
     }
     // NOLINTNEXTLINE(clang-analyzer-core.StackAddressEscape)
 }
 
 void OidxPtrMibEntryPtrAVLMap::_kill(OidxPtrMibEntryPtrAVLNode* t)
 {
-    if (t != 0)
+    if (t != nullptr)
     {
         if (!lthread(t)) _kill(t->lt);
         if (!rthread(t)) _kill(t->rt);
@@ -592,22 +592,22 @@ void OidxPtrMibEntryPtrAVLMap::_kill(OidxPtrMibEntryPtrAVLNode* t)
 OidxPtrMibEntryPtrAVLMap::OidxPtrMibEntryPtrAVLMap(OidxPtrMibEntryPtrAVLMap& b)
     : OidxPtrMibEntryPtrMap(b.def)
 {
-    root  = 0;
+    root  = nullptr;
     count = 0;
-    for (Pix i = b.first(); i != 0; b.next(i)) (*this)[b.key(i)] = b.contents(i);
+    for (Pix i = b.first(); i != nullptr; b.next(i)) (*this)[b.key(i)] = b.contents(i);
 }
 
 int OidxPtrMibEntryPtrAVLMap::OK()
 {
     int v = 1;
-    if (root == 0)
+    if (root == nullptr)
         v = count == 0;
     else
     {
         int                        n     = 1;
         OidxPtrMibEntryPtrAVLNode* trail = leftmost();
         OidxPtrMibEntryPtrAVLNode* t     = succ(trail);
-        while (t != 0)
+        while (t != nullptr)
         {
             ++n;
             v &= OidxPtrCMP(trail->item, t->item) < 0;

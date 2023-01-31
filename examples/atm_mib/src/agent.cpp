@@ -35,11 +35,11 @@
 #include <agent_pp/system_group.h>
 #include <agent_pp/v3_mib.h>
 #include <agent_pp/vacm.h>
-#include <signal.h>
+#include <csignal>
+#include <cstdlib>
 #include <snmp_pp/log.h>
 #include <snmp_pp/mp_v3.h>
 #include <snmp_pp/oid_def.h>
-#include <stdlib.h>
 
 #ifdef SNMP_PP_NAMESPACE
 using namespace Snmp_pp;
@@ -126,7 +126,7 @@ void init(Mib& mib, const NS_SNMP OctetStr& engineID)
     OctetStr const nonDefaultContext("other");
     mib.add(nonDefaultContext, new atm_mib());
 
-    UsmUserTable* uut = new UsmUserTable();
+    auto* uut = new UsmUserTable();
 
     uut->addNewRow(
         "unsecureUser", SNMP_AUTHPROTOCOL_NONE, SNMP_PRIVPROTOCOL_NONE, "", "", engineID, false);
@@ -424,7 +424,7 @@ int main(int argc, char* argv[])
     // load persistent objects from disk
     mib->init();
 
-    Vbx*                   vbs = 0;
+    Vbx*                   vbs = nullptr;
     coldStartOid const     coldOid;
     NotificationOriginator no;
     // add an example destination

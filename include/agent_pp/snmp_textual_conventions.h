@@ -98,8 +98,8 @@ public:
     ~SnmpDisplayString() override;
 
     MibEntryPtr clone() override;
-    bool        value_ok(const Vbx&) override;
-    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx& /*unused*/) override;
+    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
 protected:
     unsigned int max_size;
@@ -257,7 +257,7 @@ public:
     ~SnmpEngineID() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
+    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * Create a default SnmpEngineID of the form
@@ -323,8 +323,8 @@ public:
     ~SnmpTagValue() override;
 
     MibEntryPtr clone() override;
-    bool        value_ok(const Vbx&) override;
-    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx& /*unused*/) override;
+    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
     static bool is_delimiter(char);
 };
 
@@ -369,7 +369,7 @@ public:
     ~SnmpTagList() override;
 
     MibEntryPtr  clone() override;
-    bool         value_ok(const Vbx&) override;
+    bool         value_ok(const Vbx& /*unused*/) override;
     virtual bool contains(const char*);
 };
 
@@ -433,9 +433,9 @@ public:
 
     virtual int32_t get_state();
     virtual void    set_state(int32_t);
-    int             set(const Vbx&) override;
-    bool            value_ok(const Vbx&) override;
-    int             prepare_set_request(Request*, int&) override;
+    int             set(const Vbx& /*vb*/) override;
+    bool            value_ok(const Vbx& /*unused*/) override;
+    int             prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     bool is_volatile() override { return true; }
 };
@@ -499,7 +499,7 @@ public:
     virtual void set_state(int32_t);
 
     MibEntryPtr clone() override;
-    bool        value_ok(const Vbx&) override;
+    bool        value_ok(const Vbx& /*unused*/) override;
 };
 
 /*---------------------- class StorageTypePolicy ---------------------*/
@@ -523,7 +523,8 @@ public:
 
     ~StorageTypeVoter() override { }
 
-    int is_transition_ok(MibTable*, MibTableRow*, const Oidx&, int, int) override;
+    int is_transition_ok(MibTable* /*unused*/, MibTableRow* /*unused*/, const Oidx& /*unused*/,
+        int /*unused*/, int /*unused*/) override;
 };
 
 /*--------------------------- class StorageTable ------------------------*/
@@ -641,7 +642,7 @@ public:
      */
     virtual int get_storage_type(MibTableRow*);
 
-    int prepare_set_request(Request*, int&) override;
+    int prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
 protected:
     /**
@@ -653,7 +654,7 @@ protected:
      * @return
      *    true if the row should be stored persistently, false otherwise
      */
-    bool is_persistent(MibTableRow*) override;
+    bool is_persistent(MibTableRow* /*unused*/) override;
 
 private:
     void              register_row_status_voting();
@@ -714,7 +715,7 @@ public:
      */
     SnmpInt32MinMax(const Oidx&, mib_access, int, int);
 
-    bool        value_ok(const Vbx&) override;
+    bool        value_ok(const Vbx& /*unused*/) override;
     MibEntryPtr clone() override;
 
     int32_t get_state();
@@ -777,7 +778,7 @@ public:
      */
     OctetStrMinMax(const Oidx&, mib_access, unsigned int, unsigned int);
 
-    int         prepare_set_request(Request*, int&) override;
+    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
     MibEntryPtr clone() override;
 
     /**
@@ -1206,8 +1207,8 @@ public:
 
     ~TimeStampTable() override;
 
-    void row_added(MibTableRow*, const Oidx&, MibTable*) override;
-    void row_delete(MibTableRow*, const Oidx&, MibTable*) override;
+    void row_added(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    void row_delete(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
     /**
      * This method should be called whenever the reciever is changed,
      * except when a row is added or deleted (row_added and row_deleted

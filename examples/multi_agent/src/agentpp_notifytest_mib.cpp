@@ -35,7 +35,7 @@ using namespace Snmp_pp;
 #endif
 
 //--AgentGen BEGIN=_INCLUDE
-#include <stdlib.h>
+#include <cstdlib>
 #ifdef AGENTPP_NAMESPACE
 namespace Agentpp
 {
@@ -47,7 +47,7 @@ namespace Agentpp
  *
  */
 
-agentppNotifyTest* agentppNotifyTest::instance = 0;
+agentppNotifyTest* agentppNotifyTest::instance = nullptr;
 
 agentppNotifyTest::agentppNotifyTest(Mib* mib)
     : MibLeaf(oidAgentppNotifyTest, READWRITE, new SnmpInt32())

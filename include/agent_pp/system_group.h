@@ -72,7 +72,7 @@ class AGENTPP_DECL sysUpTime : public MibLeaf {
 public:
     sysUpTime();
 
-    void get_request(Request*, int) override;
+    void get_request(Request* /*unused*/, int /*unused*/) override;
 
     static unsigned int get();
     static time_t       get_currentTime();
@@ -184,8 +184,8 @@ public:
      * ID, and the services of the system. Optional values are system contact,
      * system name and system location
      */
-    sysGroup(const char* descr, const Oidx& o, const int services, const char* contact = 0,
-        const char* name = 0, const char* location = 0);
+    sysGroup(const char* descr, const Oidx& o, const int services, const char* contact = nullptr,
+        const char* name = nullptr, const char* location = nullptr);
 };
 #ifdef AGENTPP_NAMESPACE
 }

@@ -273,13 +273,13 @@ public:
      */
     static snmpEnableAuthenTraps* get_instance(Mib* mib)
     {
-        Oidx const             oid(oidSnmpEnableAuthenTraps);
-        snmpEnableAuthenTraps* entry = (snmpEnableAuthenTraps*)mib->get(oid);
+        Oidx const oid(oidSnmpEnableAuthenTraps);
+        auto*      entry = (snmpEnableAuthenTraps*)mib->get(oid);
         return (entry) ? entry : instance;
     }
 
     long get_state();
-    bool value_ok(const Vbx&) override;
+    bool value_ok(const Vbx& /*unused*/) override;
 };
 
 /**********************************************************************

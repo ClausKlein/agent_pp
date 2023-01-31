@@ -31,7 +31,7 @@ MibTableSizePolicy::MibTableSizePolicy(const table_size_def* r, unsigned int sz,
 {
     for (unsigned int i = 0; i < sz; i++)
     {
-        MibStaticEntry* e = new MibStaticEntry(r[i].tableID, Gauge32(r[i].sizeLimit));
+        auto* e = new MibStaticEntry(r[i].tableID, Gauge32(r[i].sizeLimit));
         policies.add(e);
     }
 }
@@ -51,7 +51,7 @@ void MibTableSizePolicy::remove_policy(const Oidx& tid)
 }
 
 int MibTableSizePolicy::is_transition_ok(
-    MibTable* t, MibTableRow*, const Oidx&, int curState, int newState)
+    MibTable* t, MibTableRow* /*unused*/, const Oidx& /*unused*/, int curState, int newState)
 {
     if ((curState == rowEmpty) && (newState != rowDestroy))
     {

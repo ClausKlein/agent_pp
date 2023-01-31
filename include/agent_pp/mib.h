@@ -207,7 +207,7 @@ public:
      * @param sz - The size of the buffer returned.
      * @return true if serialization was successful, false otherwise.
      */
-    bool serialize(char*&, int&) override;
+    bool serialize(char*& /*unused*/, int& /*unused*/) override;
 
     /**
      * Read the value of the receiver from a byte stream.
@@ -220,7 +220,7 @@ public:
      * @return
      *    true if deserialization was successful, false otherwise.
      */
-    bool deserialize(char*, int&) override;
+    bool deserialize(char* /*unused*/, int& /*unused*/) override;
 
     /**
      * Get the syntax of the receiver's value.
@@ -328,7 +328,7 @@ public:
      * @param req - A pointer to the whole SNMP GET request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void get_request(Request*, int) override;
+    void get_request(Request* /*unused*/, int /*unused*/) override;
 
     /**
      * Let the receiver process a SNMP GETNEXT subrequest
@@ -336,7 +336,7 @@ public:
      * @param req - A pointer to the whole SNMP GETNEXT request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void get_next_request(Request*, int) override;
+    void get_next_request(Request* /*unused*/, int /*unused*/) override;
 
     /**
      * Let the receiver commit a SNMP SET subrequest
@@ -346,7 +346,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and SNMP_ERROR_COMITFAIL on
      * failure.
      */
-    int commit_set_request(Request*, int) override;
+    int commit_set_request(Request* /*unused*/, int /*unused*/) override;
 
     /**
      * Let the receiver prepare a SNMP SET subrequest
@@ -356,7 +356,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and SNMP_ERROR_WRONG_VALUE,
      *         SNMP_ERROR_WRONG_TYPE, or SNMP_ERROR_NOT_WRITEABLE on failure.
      */
-    int prepare_set_request(Request*, int&) override;
+    int prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * Let the receiver undo a SNMP SET subrequest
@@ -366,7 +366,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and SNMP_ERROR_UNDO_FAIL on
      * failure.
      */
-    int undo_set_request(Request*, int&) override;
+    int undo_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * Clean up resources used for performing (or undoing) set requests.
@@ -374,7 +374,7 @@ public:
      * @param req - A pointer to the whole SNMP SET request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void cleanup_set_request(Request*, int&) override;
+    void cleanup_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * Check whether the receiver's value may be set to the given new value.
@@ -383,7 +383,7 @@ public:
      * @param v - A new value.
      * @return true if the new value is valid, otherwise false.
      */
-    virtual bool value_ok(const Vbx&) { return true; }
+    virtual bool value_ok(const Vbx& /*unused*/) { return true; }
 
     /**
      * Set the receiver's value and backup its old value for a later undo.
@@ -687,7 +687,7 @@ public:
      * @return
      *    true if the new value is valid, otherwise false.
      */
-    bool value_ok(const Vbx&) override;
+    bool value_ok(const Vbx& /*unused*/) override;
 
     /**
      * Check whether the a transition to a given new value is
@@ -721,7 +721,7 @@ public:
      * @return
      *    true if the requested state can be set, otherwise false.
      */
-    virtual bool check_state_change(const Vbx&, Request* req = 0);
+    virtual bool check_state_change(const Vbx&, Request* req = nullptr);
 
     /**
      * Set the receiver's value and backup its old value for a later undo.
@@ -730,7 +730,7 @@ public:
      * @return SNMP_ERROR_SUCCESS if the new value has been set,
      *         SNMP_ERROR_WRONG_TYPE or SNMP_ERROR_BAD_VALUE otherwise.
      */
-    int set(const Vbx&) override;
+    int set(const Vbx& /*vb*/) override;
 
     /**
      * Undo a previous set.
@@ -758,7 +758,7 @@ public:
      *         SNMP_ERROR_WRONG_TYPE, or
      *         SNMP_ERROR_NOT_WRITEABLE on failure.
      */
-    int prepare_set_request(Request*, int&) override;
+    int prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 };
 
 /*--------------------------- class MibTableRow ------------------------*/
@@ -1146,7 +1146,8 @@ public:
      *    a SNMP error status or SNMP_ERROR_SUCCESS if the transition
      *    is acknowledged by the voter.
      */
-    virtual int is_transition_ok(MibTable*, MibTableRow*, const Oidx&, int, int)
+    virtual int is_transition_ok(MibTable* /*unused*/, MibTableRow* /*unused*/, const Oidx& /*unused*/,
+        int /*unused*/, int /*unused*/)
     {
         return SNMP_ERROR_SUCCESS;
     }
@@ -1361,7 +1362,7 @@ public:
      * @param sz - The size of the buffer returned.
      * @return true if serialization was successful, false otherwise.
      */
-    bool serialize(char*&, int&) override;
+    bool serialize(char*& /*unused*/, int& /*unused*/) override;
 
     /**
      * Read the value of the receiver from a byte stream.
@@ -1374,7 +1375,7 @@ public:
      * @return
      *    true if deserialization was successful, false otherwise.
      */
-    bool deserialize(char*, int&) override;
+    bool deserialize(char* /*unused*/, int& /*unused*/) override;
 
     /**
      * Return the immediate successor of the greatest object identifier
@@ -1401,7 +1402,7 @@ public:
      * @param req
      *    the request that needs to update the receiver.
      */
-    virtual void update(Request*) { }
+    virtual void update(Request* /*unused*/) { }
 
     /**
      * Return whether the table is empty or not.
@@ -1427,7 +1428,7 @@ public:
      * @param req - A pointer to the whole SNMP GET request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void get_request(Request*, int) override;
+    void get_request(Request* /*unused*/, int /*unused*/) override;
 
     /**
      * Let the receiver process a SNMP GETNEXT subrequest
@@ -1435,7 +1436,7 @@ public:
      * @param req - A pointer to the whole SNMP GETNEXT request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void get_next_request(Request*, int) override;
+    void get_next_request(Request* /*unused*/, int /*unused*/) override;
 
     /**
      * Let the receiver commit a SNMP SET subrequest
@@ -1445,7 +1446,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and
      *         SNMP_ERROR_COMMITFAIL on failure.
      */
-    int commit_set_request(Request*, int) override;
+    int commit_set_request(Request* /*unused*/, int /*unused*/) override;
 
     /**
      * Let the receiver prepare a SNMP SET subrequest
@@ -1456,7 +1457,7 @@ public:
      *         SNMP_ERROR_WRONG_TYPE, or
      *         SNMP_ERROR_NOT_WRITEABLE on failure.
      */
-    int prepare_set_request(Request*, int&) override;
+    int prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * Let the receiver undo a SNMP SET subrequest
@@ -1466,7 +1467,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and
      *         SNMP_ERROR_UNDO_FAIL on failure.
      */
-    int undo_set_request(Request*, int&) override;
+    int undo_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * Free any resources allocated for a SET request (i.e., undo
@@ -1479,7 +1480,7 @@ public:
      * @return SNMP_ERROR_SUCCESS if the new value has been set,
      *         SNMP_ERROR_WRONG_TYPE or SNMP_ERROR_BAD_VALUE otherwise.
      */
-    void cleanup_set_request(Request*, int&) override;
+    void cleanup_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * Check whether the specified row is ready to set in service.
@@ -1538,7 +1539,10 @@ public:
      *    a pointer to the source MibTable of the event, or 0 if the
      *    event is local.
      */
-    virtual void row_init(MibTableRow*, const Oidx&, MibTable* t = 0) { (void)t; }
+    virtual void row_init(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* t = nullptr)
+    {
+        (void)t;
+    }
 
     /**
      * Is called after a new row has been created and automatic index
@@ -1550,7 +1554,10 @@ public:
      *    a pointer to the source MibTable of the event, or 0 if the
      *    event is local.
      */
-    virtual void row_added(MibTableRow*, const Oidx&, MibTable* t = 0) { (void)t; }
+    virtual void row_added(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* t = nullptr)
+    {
+        (void)t;
+    }
     /**
      * Is called before a row is deleted by MibTable
      *
@@ -1560,7 +1567,10 @@ public:
      *    a pointer to the source MibTable of the event, or 0 if the
      *    event is local.
      */
-    virtual void row_delete(MibTableRow*, const Oidx&, MibTable* t = 0) { (void)t; }
+    virtual void row_delete(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* t = nullptr)
+    {
+        (void)t;
+    }
 
     /**
      * Is called when a row is activated by a SET request setting
@@ -1572,7 +1582,10 @@ public:
      *    a pointer to the source MibTable of the event, or 0 if the
      *    event is local.
      */
-    virtual void row_activated(MibTableRow*, const Oidx&, MibTable* t = 0) { (void)t; }
+    virtual void row_activated(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* t = nullptr)
+    {
+        (void)t;
+    }
 
     /**
      * Is called when a row is deactivated by a SET request setting
@@ -1584,7 +1597,11 @@ public:
      *    a pointer to the source MibTable of the event, or 0 if the
      *    event is local.
      */
-    virtual void row_deactivated(MibTableRow*, const Oidx&, MibTable* t = 0) { (void)t; }
+    virtual void row_deactivated(
+        MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* t = nullptr)
+    {
+        (void)t;
+    }
 
     /**
      * Return the next available index value for the receiver table,
@@ -1929,7 +1946,7 @@ protected:
      *    otherwise (if no successor exists or is out of scope)
      *    a zero length oid is returned
      */
-    Oidx find_succ(const Oidx&, Request* req = 0) override;
+    Oidx find_succ(const Oidx& /*unused*/, Request* req = nullptr) override;
 
     /**
      * Return a pointer to the generator object of a given column.
@@ -1984,7 +2001,7 @@ protected:
      *    It returns the default values of that row. If vbs is 0
      *    no default values are returned.
      */
-    virtual void get_required_columns(bool*, Vbx* vbs = 0);
+    virtual void get_required_columns(bool*, Vbx* vbs = nullptr);
 
     /**
      * Get the value of the snmpRowStatus object of a given row.
@@ -2036,7 +2053,7 @@ protected:
      * @return
      *    true if the row should be stored persistently, false otherwise
      */
-    virtual bool is_persistent(MibTableRow*) { return true; }
+    virtual bool is_persistent(MibTableRow* /*unused*/) { return true; }
 
     /**
      * Let all voters vote for or against a row status transition.
@@ -2243,7 +2260,7 @@ public:
      * @return
      *    true if the contents could be saved successfully, false otherwise.
      */
-    bool save(MibContext*, const NS_SNMP OctetStr&) override;
+    bool save(MibContext* /*unused*/, const NS_SNMP OctetStr& /*unused*/) override;
 
     /**
      * Loads the persistent data in the supplied MibContext from disk.
@@ -2254,7 +2271,7 @@ public:
      * @return
      *    true if the contents could be saved successfully, false otherwise.
      */
-    bool load(MibContext*, const NS_SNMP OctetStr&) override;
+    bool load(MibContext* /*unused*/, const NS_SNMP OctetStr& /*unused*/) override;
 
     MibConfigFormat* clone() override { return new MibConfigBER(); }
 };
@@ -2711,7 +2728,7 @@ public:
      * @return
      *    true if persistent storage is activated.
      */
-    bool is_persistency_activated() const { return (persistent_objects_path != 0); }
+    bool is_persistency_activated() const { return (persistent_objects_path != nullptr); }
 
     /**
      * Check whether a node (a MIB object) is complex, i.e.
@@ -2898,7 +2915,7 @@ public:
     void delete_thread_pool()
     {
         if (threadPool) delete threadPool;
-        threadPool = 0;
+        threadPool = nullptr;
     }
 
     /**

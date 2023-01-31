@@ -92,16 +92,16 @@ static inline void set_lthread(OidxPtrEntryPtrAVLNode* t, int b)
 OidxPtrEntryPtrAVLNode* OidxPtrEntryPtrAVLMap::leftmost() const
 {
     OidxPtrEntryPtrAVLNode* t = root;
-    if (t != 0)
-        while (t->lt != 0) t = t->lt;
+    if (t != nullptr)
+        while (t->lt != nullptr) t = t->lt;
     return t;
 }
 
 OidxPtrEntryPtrAVLNode* OidxPtrEntryPtrAVLMap::rightmost() const
 {
     OidxPtrEntryPtrAVLNode* t = root;
-    if (t != 0)
-        while (t->rt != 0) t = t->rt;
+    if (t != nullptr)
+        while (t->rt != nullptr) t = t->rt;
     return t;
 }
 
@@ -124,7 +124,7 @@ OidxPtrEntryPtrAVLNode* OidxPtrEntryPtrAVLMap::pred(OidxPtrEntryPtrAVLNode* t) c
 Pix OidxPtrEntryPtrAVLMap::seek(OidxPtr key) const
 {
     OidxPtrEntryPtrAVLNode* t = root;
-    if (t == 0) return 0;
+    if (t == nullptr) return nullptr;
     for (;;)
     {
         int const cmp = OidxPtrCMP(key, t->item);
@@ -133,12 +133,12 @@ Pix OidxPtrEntryPtrAVLMap::seek(OidxPtr key) const
         else if (cmp < 0)
         {
             if (lthread(t))
-                return 0;
+                return nullptr;
             else
                 t = t->lt;
         }
         else if (rthread(t))
-            return 0;
+            return nullptr;
         else
             t = t->rt;
     }
@@ -147,7 +147,7 @@ Pix OidxPtrEntryPtrAVLMap::seek(OidxPtr key) const
 Pix OidxPtrEntryPtrAVLMap::seek_inexact(OidxPtr key) const
 {
     OidxPtrEntryPtrAVLNode* t = root;
-    if (t == 0) return 0;
+    if (t == nullptr) return nullptr;
     for (;;)
     {
         int const cmp = OidxPtrCMP(key, t->item);
@@ -334,7 +334,7 @@ void OidxPtrEntryPtrAVLMap::_add(OidxPtrEntryPtrAVLNode*& t)
 
 EntryPtr& OidxPtrEntryPtrAVLMap::operator[](OidxPtr item)
 {
-    if (root == 0)
+    if (root == nullptr)
     {
         ++count;
         root = new OidxPtrEntryPtrAVLNode(item, def);
@@ -385,7 +385,7 @@ void OidxPtrEntryPtrAVLMap::_del(OidxPtrEntryPtrAVLNode* par, OidxPtrEntryPtrAVL
         {
             _found_node               = t;
             OidxPtrEntryPtrAVLNode* s = succ(t);
-            if (s != 0 && lthread(s)) s->lt = t->lt;
+            if (s != nullptr && lthread(s)) s->lt = t->lt;
             t                 = t->rt;
             _need_rebalancing = true;
             return;
@@ -394,7 +394,7 @@ void OidxPtrEntryPtrAVLMap::_del(OidxPtrEntryPtrAVLNode* par, OidxPtrEntryPtrAVL
         {
             _found_node               = t;
             OidxPtrEntryPtrAVLNode* p = pred(t);
-            if (p != 0 && rthread(p)) p->rt = t->rt;
+            if (p != nullptr && rthread(p)) p->rt = t->rt;
             t                 = t->lt;
             _need_rebalancing = true;
             return;
@@ -559,22 +559,22 @@ void OidxPtrEntryPtrAVLMap::_del(OidxPtrEntryPtrAVLNode* par, OidxPtrEntryPtrAVL
 
 void OidxPtrEntryPtrAVLMap::del(OidxPtr item)
 {
-    if (root == 0) return;
+    if (root == nullptr) return;
     _need_rebalancing = false;
     _already_found    = false;
-    _found_node       = 0;
+    _found_node       = nullptr;
     _target_item      = &item;
     _del(root, root);
     if (_found_node)
     {
         delete (_found_node);
-        if (--count == 0) root = 0;
+        if (--count == 0) root = nullptr;
     }
 }
 
 void OidxPtrEntryPtrAVLMap::_kill(OidxPtrEntryPtrAVLNode* t)
 {
-    if (t != 0)
+    if (t != nullptr)
     {
         if (!lthread(t)) _kill(t->lt);
         if (!rthread(t)) _kill(t->rt);
@@ -584,22 +584,22 @@ void OidxPtrEntryPtrAVLMap::_kill(OidxPtrEntryPtrAVLNode* t)
 
 OidxPtrEntryPtrAVLMap::OidxPtrEntryPtrAVLMap(OidxPtrEntryPtrAVLMap& b) : OidxPtrEntryPtrMap(b.def)
 {
-    root  = 0;
+    root  = nullptr;
     count = 0;
-    for (Pix i = b.first(); i != 0; b.next(i)) (*this)[b.key(i)] = b.contents(i);
+    for (Pix i = b.first(); i != nullptr; b.next(i)) (*this)[b.key(i)] = b.contents(i);
 }
 
 int OidxPtrEntryPtrAVLMap::OK()
 {
     int v = 1;
-    if (root == 0)
+    if (root == nullptr)
         v = count == 0;
     else
     {
         int                     n     = 1;
         OidxPtrEntryPtrAVLNode* trail = leftmost();
         OidxPtrEntryPtrAVLNode* t     = succ(trail);
-        while (t != 0)
+        while (t != nullptr)
         {
             ++n;
             v &= OidxPtrCMP(trail->item, t->item) < 0;

@@ -152,7 +152,7 @@ public:
             return retval;
         }
         else
-            return Oidx();
+            return {};
     }
 
     /**
@@ -173,7 +173,7 @@ public:
             return retval;
         }
         else
-            return Oidx();
+            return {};
     }
 
     /**
@@ -196,7 +196,7 @@ public:
         if (smival.value.oid.ptr)
         {
             delete[] smival.value.oid.ptr;
-            smival.value.oid.ptr = NULL;
+            smival.value.oid.ptr = nullptr;
         }
         smival.value.oid.len    = 1;
         smival.value.oid.ptr    = (SmiLPUINT32) new SmiUINT32[1];

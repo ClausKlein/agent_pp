@@ -144,11 +144,11 @@ public:
 
     static agentppCfgSecSrcAddrValidation* instance;
 
-    void            get_request(Request*, int) override;
+    void            get_request(Request* /*unused*/, int /*unused*/) override;
     virtual int32_t get_state();
     virtual void    set_state(int32_t);
-    int             set(const Vbx&) override;
-    bool            value_ok(const Vbx&) override;
+    int             set(const Vbx& /*vb*/) override;
+    bool            value_ok(const Vbx& /*unused*/) override;
     enum labels { e_enabled = 1, e_disabled = 2, e_notAvailable = 3 };
 
     //--AgentGen BEGIN=agentppCfgSecSrcAddrValidation
@@ -196,10 +196,10 @@ public:
 
     virtual int32_t get_state();
     virtual void    set_state(int32_t);
-    void            get_request(Request*, int) override;
-    bool            value_ok(const Vbx&) override;
-    int             commit_set_request(Request*, int) override;
-    int             undo_set_request(Request*, int&) override;
+    void            get_request(Request* /*unused*/, int /*unused*/) override;
+    bool            value_ok(const Vbx& /*unused*/) override;
+    int             commit_set_request(Request* /*unused*/, int /*unused*/) override;
+    int             undo_set_request(Request* /*unused*/, int& /*unused*/) override;
 
 protected:
     int logClass;
@@ -223,13 +223,13 @@ public:
     ~agentppCfgStoragePath() override;
 
     MibEntryPtr              clone() override;
-    void                     get_request(Request*, int) override;
+    void                     get_request(Request* /*unused*/, int /*unused*/) override;
     virtual NS_SNMP OctetStr get_state();
     virtual void             set_state(const NS_SNMP OctetStr&);
-    int                      prepare_set_request(Request*, int&) override;
+    int                      prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     //--AgentGen BEGIN=agentppCfgStoragePath
-    int commit_set_request(Request*, int) override;
+    int commit_set_request(Request* /*unused*/, int /*unused*/) override;
     //--AgentGen END
 };
 
@@ -249,11 +249,11 @@ public:
     ~agentppCfgStorageFormat() override;
 
     MibEntryPtr     clone() override;
-    void            get_request(Request*, int) override;
+    void            get_request(Request* /*unused*/, int /*unused*/) override;
     virtual int32_t get_state();
     virtual void    set_state(int32_t);
-    int             prepare_set_request(Request*, int&) override;
-    bool            value_ok(const Vbx&) override;
+    int             prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    bool            value_ok(const Vbx& /*unused*/) override;
     enum labels { e_agentppBER = 1 };
 
     //--AgentGen BEGIN=agentppCfgStorageFormat
@@ -288,12 +288,12 @@ public:
     ~agentppCfgStorageOperation() override;
 
     MibEntryPtr     clone() override;
-    void            get_request(Request*, int) override;
+    void            get_request(Request* /*unused*/, int /*unused*/) override;
     virtual int32_t get_state();
     virtual void    set_state(int32_t);
-    int             set(const Vbx&) override;
-    int             prepare_set_request(Request*, int&) override;
-    bool            value_ok(const Vbx&) override;
+    int             set(const Vbx& /*vb*/) override;
+    int             prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    bool            value_ok(const Vbx& /*unused*/) override;
     enum labels { e_idle = 1, e_inProgress = 2, e_store = 3, e_restore = 4 };
 
     //--AgentGen BEGIN=agentppCfgStorageOperation
@@ -319,11 +319,11 @@ public:
     ~agentppCfgStorageStorageType() override;
 
     MibEntryPtr clone() override;
-    void        get_request(Request*, int) override;
+    void        get_request(Request* /*unused*/, int /*unused*/) override;
     int32_t     get_state() override;
-    void        set_state(int32_t) override;
-    int         set(const Vbx&) override;
-    int         prepare_set_request(Request*, int&) override;
+    void        set_state(int32_t /*unused*/) override;
+    int         set(const Vbx& /*vb*/) override;
+    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
     enum labels { e_other = 1, e_volatile = 2, e_nonVolatile = 3, e_permanent = 4, e_readOnly = 5 };
 
     //--AgentGen BEGIN=agentppCfgStorageStorageType
@@ -346,8 +346,8 @@ public:
     MibEntryPtr     clone() override;
     virtual int32_t get_state();
     virtual void    set_state(int32_t);
-    int             set(const Vbx&) override;
-    int             prepare_set_request(Request*, int&) override;
+    int             set(const Vbx& /*unused*/) override;
+    int             prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
     enum labels {
         e_active        = 1,
         e_notInService  = 2,
@@ -378,9 +378,10 @@ public:
 
     static agentppCfgStorageEntry* instance;
 
-    void         get_request(Request*, int) override;
-    int          prepare_set_request(Request*, int&) override;
-    int          is_transition_ok(MibTable*, MibTableRow*, const Oidx&, int, int) override;
+    void get_request(Request* /*unused*/, int /*unused*/) override;
+    int  prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    int  is_transition_ok(MibTable* /*unused*/, MibTableRow* /*unused*/, const Oidx& /*unused*/,
+         int /*unused*/, int /*unused*/) override;
     virtual void set_row(MibTableRow* r, const NS_SNMP OctetStr& p1, int32_t p2, uint32_t p3,
         uint32_t p4, int32_t p5, int32_t p6, int32_t p7);
     //--AgentGen BEGIN=agentppCfgStorageEntry

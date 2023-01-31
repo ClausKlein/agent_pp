@@ -170,7 +170,7 @@ public:
     SimMibTable(const Oidx& o, const index_info* i, unsigned int n) : MibTable(o, i, n) { }
     ~SimMibTable() override { }
 
-    int check_creation(Request*, int&) override;
+    int check_creation(Request* /*unused*/, int& /*unused*/) override;
 };
 
 class AGENTPP_DECL SimRowStatus : public snmpRowStatus {
@@ -178,7 +178,7 @@ public:
     SimRowStatus(const Oidx& o, mib_access a) : snmpRowStatus(o, a) { }
     ~SimRowStatus() override { }
 
-    bool transition_ok(const Vbx&) override;
+    bool transition_ok(const Vbx& /*unused*/) override;
 
     /**
      * Return the maximum access rights for the managed object
@@ -208,7 +208,7 @@ class AGENTPP_DECL simSysUpTime : public SimMibLeaf {
 public:
     simSysUpTime();
 
-    void get_request(Request*, int) override;
+    void get_request(Request* /*unused*/, int /*unused*/) override;
 
     static time_t get();
     static time_t get_currentTime();

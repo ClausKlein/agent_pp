@@ -20,8 +20,8 @@
 
 #include <agent_pp/agent++.h>
 
-#include <signal.h>
-#include <stdlib.h>
+#include <csignal>
+#include <cstdlib>
 
 #ifndef _SNMPv3
 #    error "_SNMPv3 must be defined in order to use the ProxyForwarder"
@@ -108,7 +108,7 @@ void init(Mib& mib, const NS_SNMP OctetStr& engineID)
     mib.add(new snmp_community_mib());
     mib.add(new snmp_notification_mib());
 
-    UsmUserTable* uut = new UsmUserTable();
+    auto* uut = new UsmUserTable();
 
     uut->addNewRow(
         "unsecureUser", SNMP_AUTHPROTOCOL_NONE, SNMP_PRIVPROTOCOL_NONE, "", "", engineID, false);
@@ -241,7 +241,7 @@ int main(int argc, char* argv[])
     init(*mib, engineId);
     snmp_community_mib::add_public();
 
-    ProxyForwarder* proxy = new ProxyForwarder(mib, "", ProxyForwarder::ALL);
+    auto* proxy = new ProxyForwarder(mib, "", ProxyForwarder::ALL);
     mib->register_proxy(proxy);
 
 #ifdef _SNMPv3
@@ -359,7 +359,7 @@ int main(int argc, char* argv[])
     // load persitent objects from disk
     mib->init();
 
-    Vbx*                   vbs = 0;
+    Vbx*                   vbs = nullptr;
     coldStartOid const     coldOid;
     NotificationOriginator no;
     UdpAddress const       dest("127.0.0.1/162");

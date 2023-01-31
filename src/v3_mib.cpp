@@ -107,11 +107,11 @@ V3SnmpEngineMaxMessageSize::V3SnmpEngineMaxMessageSize()
  *  class V3SnmpEngine
  *
  **********************************************************************/
-V3SnmpEngine::V3SnmpEngine(void) : V3SnmpEngine(v3MP::instance) { }
+V3SnmpEngine::V3SnmpEngine() : V3SnmpEngine(v3MP::instance) { }
 
 V3SnmpEngine::V3SnmpEngine(v3MP* v3mp) : MibGroup(oidV3SnmpEngine)
 {
-    USM* usm = 0;
+    USM* usm = nullptr;
     if (v3mp) usm = v3mp->get_usm();
     if ((!v3mp) || (!usm))
     {
@@ -190,20 +190,20 @@ int UsmUserTableStatus::unset()
             if ((get() == rowActive) || (get() == rowCreateAndGo)) deleteUsmUser();
             if (value) delete value;
             value = undo;
-            undo  = 0;
+            undo  = nullptr;
             break;
         case rowActive:
             addUsmUser();
             if (value) delete value;
             value = undo;
-            undo  = 0;
+            undo  = nullptr;
             break;
         case rowNotInService:
         case rowNotReady:
             if (get() == rowActive) deleteUsmUser();
             if (value) delete value;
             value = undo;
-            undo  = 0;
+            undo  = nullptr;
             break;
         case rowCreateAndGo: {
             set_value(rowNotReady);
@@ -222,7 +222,7 @@ int UsmUserTableStatus::unset()
         default:
             if (value) delete value;
             value = undo;
-            undo  = 0;
+            undo  = nullptr;
         }
     }
     return SNMP_ERROR_SUCCESS;
@@ -270,7 +270,7 @@ MibEntryPtr UsmUserTableStatus::clone()
     return other;
 }
 
-UsmUserTable* usm_user_table_ptr = NULL;
+UsmUserTable* usm_user_table_ptr = nullptr;
 
 void usm_callback(const OctetStr& engine_id, const OctetStr& usm_user_name,
     const OctetStr& usm_user_security_name, const int auth_protocol, const OctetStr& auth_key,
@@ -364,10 +364,10 @@ UsmUserTable::UsmUserTable(v3MP* v3mp) : StorageTable(oidUsmUserEntry, iUsmUserT
         newRow->get_nth(2)->replace_value(new OctetStr((char*)(user->usmUserSecurityName)));
         newRow->get_nth(3)->replace_value(o.clone());
 
-        UsmKeyChange* ukc5 = (UsmKeyChange*)newRow->get_nth(5);
-        UsmKeyChange* ukc6 = (UsmKeyChange*)newRow->get_nth(6);
-        UsmKeyChange* ukc8 = (UsmKeyChange*)newRow->get_nth(8);
-        UsmKeyChange* ukc9 = (UsmKeyChange*)newRow->get_nth(9);
+        auto* ukc5 = (UsmKeyChange*)newRow->get_nth(5);
+        auto* ukc6 = (UsmKeyChange*)newRow->get_nth(6);
+        auto* ukc8 = (UsmKeyChange*)newRow->get_nth(8);
+        auto* ukc9 = (UsmKeyChange*)newRow->get_nth(9);
 
         if (user->usmUserAuthProtocol == SNMP_AUTHPROTOCOL_NONE)
         {
@@ -477,10 +477,10 @@ void UsmUserTable::initialize_key_change(MibTableRow* row)
     Oidx o;
     row->get_nth(4)->get_value(o); // oid auth protocol
 
-    UsmKeyChange* ukc5 = (UsmKeyChange*)row->get_nth(5);
-    UsmKeyChange* ukc6 = (UsmKeyChange*)row->get_nth(6);
-    UsmKeyChange* ukc8 = (UsmKeyChange*)row->get_nth(8);
-    UsmKeyChange* ukc9 = (UsmKeyChange*)row->get_nth(9);
+    auto* ukc5 = (UsmKeyChange*)row->get_nth(5);
+    auto* ukc6 = (UsmKeyChange*)row->get_nth(6);
+    auto* ukc8 = (UsmKeyChange*)row->get_nth(8);
+    auto* ukc9 = (UsmKeyChange*)row->get_nth(9);
 
     if ((o == oidUsmNoAuthProtocol) || (auth_base.len() + 1 != o.len()) || (!auth_base.is_root_of(o)))
     {
@@ -537,7 +537,7 @@ void UsmUserTable::initialize_key_change(MibTableRow* row)
     }
 }
 
-void UsmUserTable::row_init(MibTableRow* new_row, const Oidx& ind, MibTable*)
+void UsmUserTable::row_init(MibTableRow* new_row, const Oidx& ind, MibTable* /*t*/)
 {
     initialize_key_change(new_row);
     // add user to USM
@@ -561,7 +561,7 @@ void UsmUserTable::row_init(MibTableRow* new_row, const Oidx& ind, MibTable*)
     }
 }
 
-void UsmUserTable::row_added(MibTableRow* new_row, const Oidx& ind, MibTable*)
+void UsmUserTable::row_added(MibTableRow* new_row, const Oidx& ind, MibTable* /*t*/)
 {
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
     LOG("UsmUserTable: add row with index");
@@ -590,7 +590,7 @@ void UsmUserTable::row_added(MibTableRow* new_row, const Oidx& ind, MibTable*)
     ml->set_value(o.as_string());
 }
 
-void UsmUserTable::row_deactivated(MibTableRow* row, const Oidx& ind, MibTable*)
+void UsmUserTable::row_deactivated(MibTableRow* row, const Oidx& ind, MibTable* /*t*/)
 {
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
     LOG("UsmUserTable: deactivated row with index");
@@ -637,7 +637,7 @@ MibTableRow* UsmUserTable::addNewRow(const OctetStr& userName, const OctetStr& s
             LOG(res);
             LOG_END;
         }
-        return 0;
+        return nullptr;
     }
 
     res = usm->get_auth_priv()->password_to_key_priv(authProtocol, privProtocol, privPassword.data(),
@@ -664,7 +664,7 @@ MibTableRow* UsmUserTable::addNewRow(const OctetStr& userName, const OctetStr& s
     // add User into MIB
     MibTableRow* new_row = addNewRow(engineID, userName, securityName, authProtocol,
         OctetStr(authKey, authKeyLength), privProtocol, OctetStr(privKey, privKeyLength));
-    if (!new_row) return 0;
+    if (!new_row) return nullptr;
 
     if (addPassWordsToUSM)
     {
@@ -674,7 +674,7 @@ MibTableRow* UsmUserTable::addNewRow(const OctetStr& userName, const OctetStr& s
             != SNMPv3_USM_OK)
         {
             deleteRow(engineID, userName);
-            return 0;
+            return nullptr;
         }
     }
     return new_row;
@@ -693,7 +693,7 @@ MibTableRow* UsmUserTable::addNewRow(const OctetStr& engineID, const OctetStr& u
                 engineID, userName, securityName, authProtocol, authKey, privProtocol, privKey)
             != SNMPv3_USM_OK)
         {
-            return 0;
+            return nullptr;
         }
         else
         {
@@ -713,10 +713,10 @@ MibTableRow* UsmUserTable::addNewRow(const OctetStr& engineID, const OctetStr& u
     newRow->get_nth(2)->replace_value(securityName.clone());
     newRow->get_nth(3)->replace_value(newIndex.clone());
 
-    UsmKeyChange* ukc5 = (UsmKeyChange*)newRow->get_nth(5);
-    UsmKeyChange* ukc6 = (UsmKeyChange*)newRow->get_nth(6);
-    UsmKeyChange* ukc8 = (UsmKeyChange*)newRow->get_nth(8);
-    UsmKeyChange* ukc9 = (UsmKeyChange*)newRow->get_nth(9);
+    auto* ukc5 = (UsmKeyChange*)newRow->get_nth(5);
+    auto* ukc6 = (UsmKeyChange*)newRow->get_nth(6);
+    auto* ukc8 = (UsmKeyChange*)newRow->get_nth(8);
+    auto* ukc9 = (UsmKeyChange*)newRow->get_nth(9);
 
     if (authProtocol == SNMP_AUTHPROTOCOL_NONE)
     {
@@ -951,10 +951,10 @@ int UsmCloneFrom::set(const Vbx& vb)
             Oidx auth_oid;
             my_row->get_nth(4)->get_value(auth_oid);
 
-            UsmKeyChange* ukc5 = (UsmKeyChange*)my_row->get_nth(5);
-            UsmKeyChange* ukc6 = (UsmKeyChange*)my_row->get_nth(6);
-            UsmKeyChange* ukc8 = (UsmKeyChange*)my_row->get_nth(8);
-            UsmKeyChange* ukc9 = (UsmKeyChange*)my_row->get_nth(9);
+            auto* ukc5 = (UsmKeyChange*)my_row->get_nth(5);
+            auto* ukc6 = (UsmKeyChange*)my_row->get_nth(6);
+            auto* ukc8 = (UsmKeyChange*)my_row->get_nth(8);
+            auto* ukc9 = (UsmKeyChange*)my_row->get_nth(9);
 
             if ((auth_oid == oidUsmNoAuthProtocol)
                 || (UsmUserTable::auth_base.len() + 1 != auth_oid.len())
@@ -1088,7 +1088,7 @@ UsmKeyChange::UsmKeyChange(
 
 UsmKeyChange::UsmKeyChange(const Oidx& o, USM* u)
     : MibLeaf(o, READCREATE, new OctetStr(""), VMODE_DEFAULT), type_of_key(NOKEY), key_len(-1),
-      hash_function(-1), otherKeyChangeObject(0), usm(u)
+      hash_function(-1), otherKeyChangeObject(nullptr), usm(u)
 { }
 
 void UsmKeyChange::initialize(int keylen, int hashfunction, int typeOfKey, UsmKeyChange* ukc)
@@ -1225,7 +1225,7 @@ int UsmKeyChange::unset()
         if (!otherKeyChangeObject)
         {
             delete undo;
-            undo = 0;
+            undo = nullptr;
             // if there is nothing to undo -> return success
             // if value can be unset (see end of method)
         }
@@ -1311,7 +1311,7 @@ bool UsmKeyChange::process_key_change(OctetStr& os)
         return false;
     }
 
-    unsigned char* digest = new unsigned char[auth->get_hash_len()];
+    auto* digest = new unsigned char[auth->get_hash_len()];
     if (!digest) return false;
 
     OctetStr old_key;
@@ -1506,7 +1506,7 @@ void UsmStatsDecryptionErrors::get_request(Request* req, int index)
  *
  **********************************************************************/
 
-UsmStats::UsmStats(void) : UsmStats(v3MP::instance) { }
+UsmStats::UsmStats() : UsmStats(v3MP::instance) { }
 
 UsmStats::UsmStats(v3MP* v3mp) : MibGroup(oidUsmStats)
 {
@@ -1562,7 +1562,7 @@ void MPDGroupSnmpUnknownPDUHandlers::get_request(Request* req, int index)
     MibLeaf::get_request(req, index);
 }
 
-MPDGroup::MPDGroup(void) : MPDGroup(v3MP::instance) { }
+MPDGroup::MPDGroup() : MPDGroup(v3MP::instance) { }
 
 MPDGroup::MPDGroup(v3MP* v3mp) : MibGroup(oidMPDGroup)
 {

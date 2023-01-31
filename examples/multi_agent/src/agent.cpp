@@ -134,8 +134,8 @@ void init(Mib& mib, const NS_SNMP OctetStr& engineID, const UdpAddress& inaddr)
     OctetStr const nonDefaultContext("other");
     mib.add(nonDefaultContext, new atm_mib());
 
-    v3MP*         v3mp = mib.get_request_list()->get_v3mp();
-    UsmUserTable* uut  = new UsmUserTable(v3mp);
+    v3MP* v3mp = mib.get_request_list()->get_v3mp();
+    auto* uut  = new UsmUserTable(v3mp);
 
     uut->addNewRow(
         "unsecureUser", SNMP_AUTHPROTOCOL_NONE, SNMP_PRIVPROTOCOL_NONE, "", "", engineID, false);
@@ -453,7 +453,7 @@ void SnmpAgent::run()
     // load persistent objects from disk
     mib->init();
 
-    Vbx*                   vbs = 0;
+    Vbx*                   vbs = nullptr;
     coldStartOid const     coldOid;
     NotificationOriginator no(mib);
     // add an example destination

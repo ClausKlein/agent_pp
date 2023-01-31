@@ -252,8 +252,8 @@ public:
      */
     static snmpNotifyFilterEntry* get_instance(Mib* mib)
     {
-        Oidx const             oid(oidSnmpNotifyFilterEntry);
-        snmpNotifyFilterEntry* entry = (snmpNotifyFilterEntry*)mib->get(oid);
+        Oidx const oid(oidSnmpNotifyFilterEntry);
+        auto*      entry = (snmpNotifyFilterEntry*)mib->get(oid);
         return (entry) ? entry : instance;
     }
     static snmpNotifyFilterEntry* instance;

@@ -53,13 +53,13 @@ static const char* loggerModuleName = "agent++.mib";
 
 MibLeaf::MibLeaf()
 {
-    init(0, VMODE_NONE);
+    init(nullptr, VMODE_NONE);
     validity = 0;
 }
 
 MibLeaf::MibLeaf(const Oidx& o, mib_access a, SmiUINT32 s) : MibEntry(o, a)
 {
-    init(0, VMODE_NONE);
+    init(nullptr, VMODE_NONE);
     set_syntax(s);
 }
 
@@ -82,14 +82,14 @@ MibLeaf::MibLeaf(const MibLeaf& other) : MibEntry(other.oid, other.access)
     if (other.value)
         value = other.value->clone();
     else
-        value = 0;
+        value = nullptr;
     value_mode = other.value_mode;
 
     validity = other.validity;
     // ATTENTION: table and row probably have to be adjusted later!
     my_table = other.my_table;
     my_row   = other.my_row;
-    undo     = 0;
+    undo     = nullptr;
 }
 
 /**
@@ -104,9 +104,9 @@ void MibLeaf::init(SnmpSyntax* s, int mode)
     value      = s;
     value_mode = mode;
     if (mode & VMODE_DEFAULT) validity |= LEAF_VALUE_INITIALIZED;
-    my_table = 0;
-    my_row   = 0;
-    undo     = 0;
+    my_table = nullptr;
+    my_row   = nullptr;
+    undo     = nullptr;
 }
 
 /**
@@ -132,7 +132,10 @@ MibEntryPtr MibLeaf::clone() { return new MibLeaf(*this); }
  *         if the object has no value.
  */
 
-SmiUINT32 MibLeaf::get_syntax() const { return (value == 0) ? sNMP_SYNTAX_NULL : value->get_syntax(); }
+SmiUINT32 MibLeaf::get_syntax() const
+{
+    return (value == nullptr) ? sNMP_SYNTAX_NULL : value->get_syntax();
+}
 
 /**
  * Set the syntax of the receiver's value and delete the old value.
@@ -143,7 +146,7 @@ SmiUINT32 MibLeaf::get_syntax() const { return (value == 0) ? sNMP_SYNTAX_NULL :
 void MibLeaf::set_syntax(SmiUINT32 syntax)
 {
     if (value) delete value; // setting to SNMP_SYNTAX_NULL
-    value = 0;
+    value = nullptr;
 
     switch (syntax)
     {
@@ -229,7 +232,7 @@ Vbx MibLeaf::get_value() const
 void MibLeaf::free_value()
 {
     if (value) delete value;
-    value = 0;
+    value = nullptr;
     validity &= ~LEAF_VALUE_INITIALIZED;
 }
 
@@ -242,10 +245,10 @@ bool MibLeaf::serialize(char*& buf, int& sz)
 
 bool MibLeaf::deserialize(char* buf, int& sz)
 {
-    Vbx*           vbs    = nullptr;
-    int            size   = 0;
-    unsigned char* data   = (unsigned char*)buf;
-    int const      status = Vbx::from_asn1(vbs, size, data, sz);
+    Vbx*      vbs    = nullptr;
+    int       size   = 0;
+    auto*     data   = (unsigned char*)buf;
+    int const status = Vbx::from_asn1(vbs, size, data, sz);
     if (status == SNMP_CLASS_SUCCESS)
     {
         if (size > 0)
@@ -329,7 +332,7 @@ int MibLeaf::prepare_set_request(Request* req, int& ind)
     return SNMP_ERROR_NOT_WRITEABLE;
 }
 
-int MibLeaf::undo_set_request(Request*, int&)
+int MibLeaf::undo_set_request(Request* /*unused*/, int& /*unused*/)
 {
     return (unset() == SNMP_ERROR_SUCCESS) ? SNMP_ERROR_SUCCESS : SNMP_ERROR_UNDO_FAIL;
 }
@@ -346,23 +349,23 @@ int MibLeaf::unset()
     {
         delete value;
         value = undo;
-        undo  = 0;
+        undo  = nullptr;
     }
     return SNMP_ERROR_SUCCESS;
 }
 
-void MibLeaf::cleanup_set_request(Request*, int&)
+void MibLeaf::cleanup_set_request(Request* /*unused*/, int& /*unused*/)
 {
     if (undo)
     {
         delete undo;
-        undo = 0;
+        undo = nullptr;
     }
 }
 
 Counter32MibLeaf* Counter32MibLeaf::get_instance(Mib* mib, const Oidx& oid, const Oidx& ind)
 {
-    Counter32MibLeaf* entry = 0;
+    Counter32MibLeaf* entry = nullptr;
     if (oid.last() == 0)
     {
         // scalar
@@ -372,7 +375,7 @@ Counter32MibLeaf* Counter32MibLeaf::get_instance(Mib* mib, const Oidx& oid, cons
     {
         // column
         const Oidx& tableOid(oid);
-        MibTable*   table = (MibTable*)mib->get(tableOid);
+        auto*       table = (MibTable*)mib->get(tableOid);
         if (table)
         {
             Oidx cellOid(oid);
@@ -386,7 +389,7 @@ Counter32MibLeaf* Counter32MibLeaf::get_instance(Mib* mib, const Oidx& oid, cons
 Counter32MibLeaf* Counter32MibLeaf::get_instance(
     Mib* mib, const OctetStr& context, const Oidx& oid, const Oidx& ind)
 {
-    Counter32MibLeaf* entry = 0;
+    Counter32MibLeaf* entry = nullptr;
     if (oid.last() == 0)
     {
         // scalar
@@ -396,7 +399,7 @@ Counter32MibLeaf* Counter32MibLeaf::get_instance(
     {
         // column
         const Oidx& tableOid(oid);
-        MibTable*   table = (MibTable*)mib->get(context, tableOid);
+        auto*       table = (MibTable*)mib->get(context, tableOid);
         if (table)
         {
             Oidx cellOid(oid);
@@ -490,7 +493,7 @@ snmpRowStatus::~snmpRowStatus() { }
 
 MibEntryPtr snmpRowStatus::clone()
 {
-    snmpRowStatus* ptr = new snmpRowStatus(oid, access);
+    auto* ptr = new snmpRowStatus(oid, access);
     ptr->set_reference_to_table(my_table);
     return ptr;
 }
@@ -625,7 +628,7 @@ int snmpRowStatus::set(const Vbx& vb)
     case rowDestroy:
         set_value(rs);
         delete undo; // No undo of row destroy!
-        undo = 0;
+        undo = nullptr;
         break;
     default: set_value(rs);
     }
@@ -652,13 +655,13 @@ int snmpRowStatus::unset()
                 my_table->fire_row_changed(rowDestroy, my_row, my_row->get_index());
             if (value) delete value;
             value = undo;
-            undo  = 0;
+            undo  = nullptr;
             break;
         case rowActive:
             my_table->fire_row_changed(rowActive, my_row, my_row->get_index());
             if (value) delete value;
             value = undo;
-            undo  = 0;
+            undo  = nullptr;
             break;
         case rowNotInService:
         case rowNotReady:
@@ -666,12 +669,12 @@ int snmpRowStatus::unset()
                 my_table->fire_row_changed(rowNotInService, my_row, my_row->get_index());
             if (value) delete value;
             value = undo;
-            undo  = 0;
+            undo  = nullptr;
             break;
         case rowCreateAndGo: {
             set_value(rowNotReady);
             delete undo;
-            undo = 0;
+            undo = nullptr;
             Vbx vbx;
             vbx.set_value(rowActive);
             if (check_state_change(vbx))
@@ -685,12 +688,12 @@ int snmpRowStatus::unset()
                 my_table->fire_row_changed(rowDestroy, my_row, my_row->get_index());
             set_value(rowNotReady);
             delete undo;
-            undo = 0;
+            undo = nullptr;
             break;
         default:
             if (value) delete value;
             value = undo;
-            undo  = 0;
+            undo  = nullptr;
         }
     }
     return SNMP_ERROR_SUCCESS;
@@ -718,7 +721,7 @@ MibTableRow::MibTableRow()
 {
     base       = "";
     index      = "";
-    row_status = 0;
+    row_status = nullptr;
 }
 
 /**
@@ -732,7 +735,7 @@ MibTableRow::MibTableRow(const Oidx& b)
 {
     base       = b;
     index      = "";
-    row_status = 0;
+    row_status = nullptr;
 }
 
 /**
@@ -743,7 +746,7 @@ MibTableRow::MibTableRow(const Oidx& b)
 
 MibTableRow::MibTableRow(const MibTableRow& other)
 {
-    row_status = 0;
+    row_status = nullptr;
 #ifdef USE_ARRAY_TEMPLATE
     ArrayCursor<MibLeaf> cur;
 #else
@@ -762,7 +765,7 @@ MibTableRow::MibTableRow(const MibTableRow& other)
         }
         else
         {
-            MibLeaf* leaf = (MibLeaf*)cur.get()->clone();
+            auto* leaf = (MibLeaf*)cur.get()->clone();
             // a cloned leaf is not initialized by default
             if ((leaf->get_access() == READCREATE) && (!leaf->has_default()))
             {
@@ -970,7 +973,7 @@ MibLeaf* MibTableRow::get_element(const Oidx& oid)
         }
 #endif
     }
-    return 0;
+    return nullptr;
 }
 
 /**
@@ -1079,10 +1082,10 @@ MibTable::MibTable(const MibTable& other) : MibEntry(other.oid, other.access)
  */
 MibTable::MibTable(const Oidx& o) : MibEntry(o, NOACCESS)
 {
-    index_info* istruc = new index_info[1];
-    istruc[0].min      = 0;
-    istruc[0].max      = 127;
-    istruc[0].implied  = true;
+    auto* istruc      = new index_info[1];
+    istruc[0].min     = 0;
+    istruc[0].max     = 127;
+    istruc[0].implied = true;
     init(o, istruc, 1);
     delete[] istruc;
 }
@@ -1096,8 +1099,8 @@ MibTable::MibTable(const Oidx& o) : MibEntry(o, NOACCESS)
  */
 MibTable::MibTable(const Oidx& o, int ilen) : MibEntry(o, NOACCESS)
 {
-    index_info* istruc = new index_info[1];
-    istruc[0].type     = sNMP_SYNTAX_OID;
+    auto* istruc   = new index_info[1];
+    istruc[0].type = sNMP_SYNTAX_OID;
     if (ilen > 0)
     {
         istruc[0].min = istruc[0].max = ilen;
@@ -1132,8 +1135,8 @@ MibTable::MibTable(const Oidx& o, int ilen) : MibEntry(o, NOACCESS)
  */
 MibTable::MibTable(const Oidx& o, int ilen, bool a) : MibEntry(o, NOACCESS)
 {
-    index_info* istruc = new index_info[1];
-    istruc[0].type     = sNMP_SYNTAX_OID;
+    auto* istruc   = new index_info[1];
+    istruc[0].type = sNMP_SYNTAX_OID;
     if (ilen > 0)
     {
         istruc[0].min = istruc[0].max = ilen;
@@ -1171,7 +1174,7 @@ MibTable::~MibTable()
 void MibTable::init(const Oidx& o, const index_info* istruc, unsigned int ilen)
 {
     generator.set_base(o);
-    row_status = 0;
+    row_status = nullptr;
     row_timeout.set_life(DEFAULT_ROW_CREATION_TIMEOUT);
     index_len   = ilen;
     index_struc = new index_info[ilen];
@@ -1209,7 +1212,7 @@ bool MibTable::serialize(char*& buf, int& sz)
 
         // set volatile values to Null
 
-        unsigned char* b      = 0;
+        unsigned char* b      = nullptr;
         int            buflen = 0;
         int const      status = Vbx::to_asn1(vbs, vbsz, b, buflen);
         delete[] vbs;
@@ -1261,11 +1264,11 @@ bool MibTable::deserialize(char* buf, int& sz)
     }
     while (size > 0)
     {
-        unsigned char* data   = (unsigned char*)buf;
-        Vbx*           vbs    = 0;
-        int            vbsz   = 0;
-        int const      status = Vbx::from_asn1(vbs, vbsz, data, size);
-        buf                   = (char*)data;
+        auto*     data   = (unsigned char*)buf;
+        Vbx*      vbs    = nullptr;
+        int       vbsz   = 0;
+        int const status = Vbx::from_asn1(vbs, vbsz, data, size);
+        buf              = (char*)data;
         if ((status != SNMP_CLASS_SUCCESS) || (vbsz == 0) || (vbsz != generator.size()))
         {
 
@@ -1313,7 +1316,7 @@ int MibTable::set_value(Request* req, int reqind)
     Oidx const tmpoid(req->get_oid(reqind));
     MibLeaf*   o = nullptr;
 
-    if ((o = find(tmpoid)) != 0)
+    if ((o = find(tmpoid)) != nullptr)
     {
 
         if ((row_status) && (get_generator(tmpoid) == row_status))
@@ -1502,7 +1505,7 @@ int MibTable::perform_voting(MibTableRow* row, int curState, int reqState)
 {
     ListCursor<MibTableVoter> cur;
     Oidx const                ind(row->get_index());
-    int                       vote = is_transition_ok(0, row, ind, curState, reqState);
+    int                       vote = is_transition_ok(nullptr, row, ind, curState, reqState);
     for (cur.init(&voters); ((cur.get()) && (vote == SNMP_ERROR_SUCCESS)); cur.next())
     {
         vote = cur.get()->is_transition_ok(this, row, ind, curState, reqState);
@@ -1563,7 +1566,7 @@ void MibTable::fire_row_changed(int event, MibTableRow* row, const Oidx& ind)
  */
 MibTableRow* MibTable::add_row(const Oidx& ind)
 {
-    MibTableRow* new_row = new MibTableRow(generator);
+    auto* new_row = new MibTableRow(generator);
     new_row->set_index(ind);
     fire_row_changed(rowCreateAndGo, new_row, ind);
     return content.add(new_row);
@@ -1571,7 +1574,7 @@ MibTableRow* MibTable::add_row(const Oidx& ind)
 
 MibTableRow* MibTable::init_row(const Oidx& ind, Vbx* vbs)
 {
-    MibTableRow* row = new MibTableRow(generator);
+    auto* row = new MibTableRow(generator);
     row->set_index(ind);
     int i = 0;
 #ifdef USE_ARRAY_TEMPLATE
@@ -1611,9 +1614,9 @@ MibLeaf* MibTable::find(const Oidx& o) const
     if (row)
     {
         MibLeaf* leaf = nullptr;
-        if ((leaf = row->get_element(o)) != 0) return leaf;
+        if ((leaf = row->get_element(o)) != nullptr) return leaf;
     }
-    return 0;
+    return nullptr;
 }
 
 /**
@@ -1624,7 +1627,7 @@ MibLeaf* MibTable::find(const Oidx& o) const
  */
 MibLeaf* MibTable::find_next(const Oidx& o)
 {
-    if (content.empty()) return 0;
+    if (content.empty()) return nullptr;
 
     // shortcut
     if (content.first()->first()->get_oid() > o) { return content.first()->first(); }
@@ -1639,7 +1642,7 @@ MibLeaf* MibTable::find_next(const Oidx& o)
 
         if (cur.get()->get_oid() > o) break;
     }
-    if (!cur.get()) return 0;
+    if (!cur.get()) return nullptr;
     Oidx                       ind = index(o);
     OidListCursor<MibTableRow> row;
     row.init(&content);
@@ -1651,10 +1654,10 @@ MibLeaf* MibTable::find_next(const Oidx& o)
         // the same size
         if (row.get()->get_nth(col)->get_oid() > o) return row.get()->get_nth(col);
     }
-    return 0;
+    return nullptr;
 }
 
-Oidx MibTable::find_succ(const Oidx& o, Request*)
+Oidx MibTable::find_succ(const Oidx& o, Request* /*req*/)
 {
     ThreadSynchronize const s(*this);
     {
@@ -1668,7 +1671,7 @@ Oidx MibTable::find_succ(const Oidx& o, Request*)
         // NOLINTNEXTLINE(clang-analyzer-cplusplus.NewDeleteLeaks)
         if (l) { return l->get_oid(); }
 
-        return Oidx();
+        return {};
     }
 }
 
@@ -1680,7 +1683,7 @@ Oidx MibTable::find_succ(const Oidx& o, Request*)
  */
 MibLeaf* MibTable::find_prev(const Oidx& o)
 {
-    if (content.empty()) return 0;
+    if (content.empty()) return nullptr;
 
     // shortcut
     if (content.last()->last()->get_oid() < o) { return content.last()->last(); }
@@ -1694,7 +1697,7 @@ MibLeaf* MibTable::find_prev(const Oidx& o)
     {
         if (cur.get()->get_oid() < o) break;
     }
-    if (!cur.get()) return 0;
+    if (!cur.get()) return nullptr;
     OidListCursor<MibTableRow> row;
     for (row.init(&content); row.get(); row.next())
     {
@@ -1702,7 +1705,7 @@ MibLeaf* MibTable::find_prev(const Oidx& o)
         // the same size
         if (row.get()->get_nth(col)->get_oid() < o) return row.get()->get_nth(col);
     }
-    return 0;
+    return nullptr;
 }
 
 /**
@@ -1717,7 +1720,7 @@ MibLeaf* MibTable::get(int n, int m)
 {
     MibTableRow* ptr = content.getNth(m);
     if (ptr) return ptr->get_nth(n);
-    return 0;
+    return nullptr;
 }
 
 /**
@@ -1731,7 +1734,7 @@ MibLeaf* MibTable::get(int n, int m)
 MibLeaf* MibTable::get_generator(const Oidx& o)
 {
     // does oid belong to this table?
-    if ((o.len() <= oid.len()) || (o.cut_right(o.len() - oid.len()) != oid)) return 0; // no
+    if ((o.len() <= oid.len()) || (o.cut_right(o.len() - oid.len()) != oid)) return nullptr; // no
 
     Oidx genOid(oid);
     genOid += o[oid.len()];
@@ -1863,7 +1866,7 @@ bool MibTable::ready(Vbx* pvbs, int sz, MibTableRow* row)
 {
     // sz must be size of a complete row!
     bool* required = new bool[sz];
-    get_required_columns(required, 0);
+    get_required_columns(required, nullptr);
 
     for (int i = 0; i < sz; i++)
     {
@@ -1922,7 +1925,7 @@ bool MibTable::ready(Vbx* pvbs, int sz, MibTableRow* row)
 void MibTable::get_request(Request* req, int ind)
 {
     MibLeaf* o = nullptr;
-    if ((o = find(req->get_oid(ind))) != 0)
+    if ((o = find(req->get_oid(ind))) != nullptr)
     {
 
         if (o->get_access() >= READONLY)
@@ -1968,7 +1971,7 @@ void MibTable::get_request(Request* req, int ind)
 void MibTable::get_next_request(Request* req, int ind)
 {
     MibLeaf* o = nullptr;
-    if ((o = find(req->get_oid(ind))) != 0) { o->get_request(req, ind); }
+    if ((o = find(req->get_oid(ind))) != nullptr) { o->get_request(req, ind); }
     else
     {
         Vbx vb(req->get_oid(ind));
@@ -2135,7 +2138,7 @@ int MibTable::check_creation(Request* req, int& ind)
         }
     }
     // test values through prepare
-    MibTableRow* new_row = new MibTableRow(generator);
+    auto* new_row = new MibTableRow(generator);
     new_row->set_index(new_index);
     for (i = 0; i < req->subrequests(); i++)
     {
@@ -2221,7 +2224,7 @@ int MibTable::prepare_set_request(Request* req, int& ind)
 {
     int      result = SNMP_ERROR_NO_CREATION;
     MibLeaf* o      = nullptr;
-    if ((o = find(req->get_oid(ind))) != 0)
+    if ((o = find(req->get_oid(ind))) != nullptr)
     {
         if (delete_rows.index(o->my_row) < 0)
         {
@@ -2287,7 +2290,7 @@ int MibTable::undo_set_request(Request* req, int& ind)
     int result = SNMP_ERROR_SUCCESS;
     for (int i = 0; i < req->subrequests(); i++)
     {
-        if ((o = find(req->get_oid(i))) != 0)
+        if ((o = find(req->get_oid(i))) != nullptr)
         {
             int const status = o->undo_set_request(req, i);
             if ((!result) && (status != SNMP_ERROR_SUCCESS)) result = status;
@@ -2305,7 +2308,7 @@ void MibTable::cleanup_set_request(Request* req, int& ind)
     MibLeaf* o = nullptr;
     for (int i = 0; i < req->subrequests(); i++)
     {
-        if ((o = find(req->get_oid(i))) != 0) { o->cleanup_set_request(req, i); }
+        if ((o = find(req->get_oid(i))) != nullptr) { o->cleanup_set_request(req, i); }
     }
     delete_rows.clear();
 }
@@ -2503,7 +2506,7 @@ void MibTable::get_contents(Vbx**& contents, int& rows, int& cols, int discrimin
 List<MibTableRow>* MibTable::get_rows(int discriminator)
 {
     OidListCursor<MibTableRow> cur;
-    List<MibTableRow>*         list = new List<MibTableRow>;
+    auto*                      list = new List<MibTableRow>;
     for (cur.init(&content); cur.get(); cur.next())
     {
         snmpRowStatus* status = cur.get()->get_row_status();
@@ -2534,14 +2537,14 @@ List<MibTableRow>* MibTable::get_rows(int discriminator)
  */
 List<MibTableRow>* MibTable::get_rows_cloned(int discriminator)
 {
-    return get_rows_cloned(0, discriminator);
+    return get_rows_cloned(nullptr, discriminator);
 }
 
 List<MibTableRow>* MibTable::get_rows_cloned(const Oidx* prefix, int discriminator)
 {
     start_synch();
     OidListCursor<MibTableRow> cur;
-    List<MibTableRow>*         list = new List<MibTableRow>();
+    auto*                      list = new List<MibTableRow>();
     for (cur.init(&content); cur.get(); cur.next())
     {
         snmpRowStatus* status = cur.get()->get_row_status();
@@ -2590,7 +2593,7 @@ bool MibConfigBER::load(MibContext* context, const NS_SNMP OctetStr& path)
 
 /*--------------------------- class Mib -----------------------------*/
 
-Mib* Mib::instance = 0;
+Mib* Mib::instance = nullptr;
 #ifdef STATIC_REQUEST_LIST
 RequestList* Mib::requestList = 0;
 #endif
@@ -2642,10 +2645,10 @@ Mib::~Mib()
     if (persistent_objects_path)
     {
         delete persistent_objects_path;
-        persistent_objects_path = 0;
+        persistent_objects_path = nullptr;
     }
     // entries.clearAll() is called within ~List().
-    instance = 0;
+    instance = nullptr;
 }
 
 void Mib::construct(const OctetStr& path, const OctetStr& bootCounterFilePath)
@@ -2653,12 +2656,12 @@ void Mib::construct(const OctetStr& path, const OctetStr& bootCounterFilePath)
     instance                = this;
     persistent_objects_path = new OctetStr(path);
 
-    notificationSender = 0;
+    notificationSender = nullptr;
     // add default context
     defaultContext = new MibContext();
     contexts.add(defaultContext);
 #ifndef STATIC_REQUEST_LIST
-    requestList = 0;
+    requestList = nullptr;
 #endif
 #ifdef _SNMPv3
     bootCounterFile = bootCounterFilePath;
@@ -2668,7 +2671,7 @@ void Mib::construct(const OctetStr& path, const OctetStr& bootCounterFilePath)
 #    endif
 #endif
 #ifdef AGENTPP_USE_THREAD_POOL
-    threadPool = 0;
+    threadPool = nullptr;
 #endif
     add_config_format(1, new MibConfigBER());
 }
@@ -2751,7 +2754,7 @@ bool Mib::remove(const Oidx& oid)
     // first look for a group
     if (!defaultContext->remove_group(oid))
     {
-        MibEntryPtr entry = NULL;
+        MibEntryPtr entry = nullptr;
         if ((defaultContext->find(oid, entry) == SNMP_ERROR_SUCCESS) && (entry))
         {
             entry->start_synch();
@@ -2791,7 +2794,7 @@ bool Mib::remove(const OctetStr& context, const Oidx& oid)
     }
     if (!c->remove_group(oid))
     {
-        MibEntryPtr entry = NULL;
+        MibEntryPtr entry = nullptr;
         if ((c->find(oid, entry) == SNMP_ERROR_SUCCESS) && (entry))
         {
             entry->start_synch();
@@ -2829,7 +2832,7 @@ void Mib::set_persistent_objects_path(const OctetStr* str)
     if (persistent_objects_path)
     {
         delete persistent_objects_path;
-        persistent_objects_path = 0;
+        persistent_objects_path = nullptr;
     }
     if (str) persistent_objects_path = (OctetStr*)str->clone();
 }
@@ -2889,7 +2892,7 @@ bool Mib::save(unsigned int format, const OctetStr& path)
 
 MibConfigFormat* Mib::add_config_format(unsigned int formatID, MibConfigFormat* format)
 {
-    while ((unsigned int)configFormats.size() < formatID) { configFormats.add(0); }
+    while ((unsigned int)configFormats.size() < formatID) { configFormats.add(nullptr); }
     return configFormats.overwriteNth(formatID - 1, format);
 }
 
@@ -2936,7 +2939,7 @@ MibEntryPtr Mib::get(const OctetStr& context, const Oidx& key)
 {
     Oidx        contextKey(Oidx::from_string(context));
     MibContext* c = contexts.find(&contextKey);
-    if (!c) return 0;
+    if (!c) return nullptr;
     return c->get(key);
 }
 
@@ -2976,8 +2979,8 @@ int Mib::find_managing_object(MibContext* context, const Oidx& oid, MibEntryPtr&
     return sNMP_SYNTAX_NOSUCHOBJECT;
 }
 
-int Mib::find_next(
-    MibContext* context, const Oidx& oid, MibEntryPtr& entry, Request* req, const int, Oidx& nextOid)
+int Mib::find_next(MibContext* context, const Oidx& oid, MibEntryPtr& entry, Request* req,
+    const int /*unused*/, Oidx& nextOid)
 {
     if (!context) return sNMP_SYNTAX_NOSUCHOBJECT;
     int err = find_managing_object(context, oid, entry, req);
@@ -3233,9 +3236,9 @@ bool Mib::process_request(Request* req, int reqind)
 void Mib::process_request(Request* req)
 {
 #ifdef _THREADS
-    MibMethodCall* call = new MibMethodCall(this, &Mib::do_process_request, req);
+    auto* call = new MibMethodCall(this, &Mib::do_process_request, req);
 #    ifdef AGENTPP_USE_THREAD_POOL
-    MibTask* mt = new MibTask(call);
+    auto* mt = new MibTask(call);
     threadPool->execute(mt);
 #    else
 #        ifdef _WIN32THREADS
@@ -3430,7 +3433,7 @@ void Mib::delete_request(Request* req)
 {
     if (requestList) { requestList->unlock_request(req); }
     delete req;
-    req = 0;
+    req = nullptr;
 }
 
 void Mib::process_set_request(Request* req)
@@ -3473,7 +3476,7 @@ int Mib::process_prepare_set_request(Request* req)
     LOG_END;
 
     int         err   = 0;
-    MibEntryPtr entry = 0;
+    MibEntryPtr entry = nullptr;
     // before processing the SET lock all affected MIB objects
     lock_mib();
     for (int i = 0; i < req->subrequests(); i++)
@@ -3532,7 +3535,7 @@ int Mib::process_commit_set_request(Request* req)
     LOG(req->get_transaction_id());
     LOG_END;
 
-    MibEntryPtr entry = 0;
+    MibEntryPtr entry = nullptr;
 
     for (int i = 0; i < req->subrequests(); i++)
     {
@@ -3576,7 +3579,7 @@ int Mib::process_undo_set_request(Request* req)
     LOG(req->get_transaction_id());
     LOG_END;
 
-    MibEntryPtr entry = 0;
+    MibEntryPtr entry = nullptr;
 
     int status = SNMP_ERROR_SUCCESS;
     for (int i = 0; i < req->subrequests(); i++)
@@ -3612,7 +3615,7 @@ void Mib::process_cleanup_set_request(Request* req)
     LOG(req->get_transaction_id());
     LOG_END;
 
-    MibEntryPtr entry = 0;
+    MibEntryPtr entry = nullptr;
 
     for (int i = 0; i < req->subrequests(); i++)
     {
@@ -3946,7 +3949,7 @@ void Mib::finalize(Request* req)
     else
     {
         delete req;
-        req = 0;
+        req = nullptr;
     }
 }
 

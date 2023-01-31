@@ -36,7 +36,7 @@ static const char* loggerModuleName = "agent++.mib_context";
 
 MibGroup::MibGroup(const Oidx& o) : MibEntry(o, NOACCESS)
 {
-    persistencyName = 0;
+    persistencyName = nullptr;
     timeout         = 0;
 }
 
@@ -63,7 +63,7 @@ MibEntryPtr MibGroup::add(MibEntryPtr item)
         LOG(item->key()->get_printable());
         LOG(oid.get_printable());
         LOG_END;
-        return 0;
+        return nullptr;
     }
     /* This has been removed in v3.5.15 because it had more drawbacks than
        use.
@@ -83,7 +83,7 @@ MibEntryPtr MibGroup::add(MibEntryPtr item)
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
         LOG("MibGroup: cannot add a MibGroup to a MibGroup");
         LOG_END;
-        return 0;
+        return nullptr;
     }
 
     /* check if the oid already exists */
@@ -97,7 +97,7 @@ MibEntryPtr MibGroup::add(MibEntryPtr item)
             LOG(item->key()->get_printable());
             LOG(oid.get_printable());
             LOG_END;
-            return 0;
+            return nullptr;
         }
     }
 
@@ -117,7 +117,7 @@ void MibGroup::remove(const Oidx& o)
     }
 }
 
-ListCursor<MibEntry> MibGroup::get_content() { return ListCursor<MibEntry>(&content); }
+ListCursor<MibEntry> MibGroup::get_content() { return { &content }; }
 
 void MibGroup::clearAll() { content.clearAll(); }
 
@@ -128,7 +128,7 @@ void MibGroup::load_from_file(const char* fname)
     long  size = 0, bytes = 0;
     char  header[16];
 
-    if ((f = fopen(fname, "rb")) == 0) return;
+    if ((f = fopen(fname, "rb")) == nullptr) return;
 
     size = AgentTools::file_size(f);
     if (size <= 0)
@@ -215,10 +215,10 @@ void MibGroup::load_from_file(const char* fname)
 void MibGroup::save_to_file(const char* fname)
 {
     FILE* f     = nullptr;
-    char* buf   = 0;
+    char* buf   = nullptr;
     int   bytes = 0;
 
-    if ((f = fopen(fname, "wb")) == 0)
+    if ((f = fopen(fname, "wb")) == nullptr)
     {
         LOG_BEGIN(loggerModuleName, WARNING_LOG | 1);
         LOG("MibGroup: Saving to file to not possible: (file)");
@@ -236,7 +236,7 @@ void MibGroup::save_to_file(const char* fname)
         {
             fwrite(buf, sizeof(char), bytes, f);
             delete[] buf;
-            buf = 0;
+            buf = nullptr;
         }
     }
     fclose(f);
@@ -248,14 +248,14 @@ MibContext::MibContext()
 {
     context         = "";
     contextKey      = Oidx::from_string(context);
-    persistencyPath = 0;
+    persistencyPath = nullptr;
 }
 
 MibContext::MibContext(const OctetStr& c)
 {
     context         = c;
     contextKey      = Oidx::from_string(c);
-    persistencyPath = 0;
+    persistencyPath = nullptr;
 }
 
 MibContext::~MibContext() TS_SYNCHRONIZED({
@@ -368,10 +368,10 @@ int MibContext::find(const Oidx& oid, MibEntryPtr& entry) TS_SYNCHRONIZED({
 
                     OidListCursor<MibEntry> MibContext::get_content()
 {
-    return OidListCursor<MibEntry>(&content);
+    return { &content };
 }
 
-OidListCursor<MibGroup> MibContext::get_groups() { return OidListCursor<MibGroup>(&groups); }
+OidListCursor<MibGroup> MibContext::get_groups() { return { &groups }; }
 
 MibEntry* MibContext::add(MibEntry* item)
 {
@@ -384,7 +384,7 @@ MibEntry* MibContext::add(MibEntry* item)
         LOG(item->key()->get_printable());
         LOG(context.get_printable());
         LOG_END;
-        return 0;
+        return nullptr;
     }
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 3);
     LOG("MibContext: adding MIB object (context)(oid)");
@@ -400,12 +400,12 @@ MibEntry* MibContext::add(MibEntry* item)
         LOG(context.get_printable());
         LOG(item->key()->get_printable());
         LOG_END;
-        return 0;
+        return nullptr;
     }
 
     if (item->type() == AGENTPP_GROUP)
     {
-        MibGroup* mg = (MibGroup*)item;
+        auto* mg = (MibGroup*)item;
         if (groups.find(mg->key()))
         {
             LOG_BEGIN(loggerModuleName, WARNING_LOG | 1);
@@ -413,7 +413,7 @@ MibEntry* MibContext::add(MibEntry* item)
             LOG(context.get_printable());
             LOG(item->key()->get_printable());
             LOG_END;
-            return 0;
+            return nullptr;
         }
         ListCursor<MibEntry> cur(mg->get_content());
         for (; cur.get(); cur.next()) content.add(cur.get());
@@ -427,7 +427,7 @@ MibEntry* MibContext::remove(const Oidx& oid) TS_SYNCHRONIZED({
     Oidx      tmpoid(oid);
     MibEntry* victim = content.find(&tmpoid);
     if (victim) return content.remove(victim);
-    return 0;
+    return nullptr;
 })
 
     MibEntry* MibContext::get(const Oidx& oid) TS_SYNCHRONIZED({
@@ -473,7 +473,7 @@ bool MibContext::remove_group(const Oidx& oid) TS_SYNCHRONIZED({
             }
         }
     }
-    return 0;
+    return nullptr;
 }
 #ifdef AGENTPP_NAMESPACE
 }

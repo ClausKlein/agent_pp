@@ -162,7 +162,7 @@ Synchronized::Synchronized()
     ERR_CHK_WITHOUT_EXCEPTIONS(pthread_mutexattr_destroy(&attr));
 
     memset(&cond, 0, sizeof(cond));
-    ERR_CHK_WITHOUT_EXCEPTIONS(pthread_cond_init(&cond, 0));
+    ERR_CHK_WITHOUT_EXCEPTIONS(pthread_cond_init(&cond, nullptr));
 #    else
 #        ifdef WIN32
     // Semaphore initially auto signaled, auto reset mode, unnamed
@@ -223,7 +223,7 @@ Synchronized::~Synchronized()
 void Synchronized::wait()
 {
 #    ifdef POSIX_THREADS
-    cond_timed_wait(0);
+    cond_timed_wait(nullptr);
 #    else
 #        ifdef WIN32
     wait(INFINITE);
@@ -727,7 +727,7 @@ ThreadList Thread::threadList;
 #    ifdef POSIX_THREADS
 void* thread_starter(void* t)
 {
-    Thread* thread = (Thread*)t;
+    auto* thread = (Thread*)t;
     Thread::threadList.add(thread);
 
 #        ifndef NO_FAST_MUTEXES
@@ -1007,7 +1007,7 @@ void Thread::nsleep(int secs, long nanos)
 TaskManager::TaskManager(ThreadPool* tp, int stackSize) : thread(*this)
 {
     threadPool = tp;
-    task       = 0;
+    task       = nullptr;
     go         = true;
     thread.set_stack_size(stackSize);
     thread.start();
@@ -1037,7 +1037,7 @@ void TaskManager::run()
         {
             task->run();
             delete task;
-            task = 0;
+            task = nullptr;
             unlock();
             if (threadPool->is_one_time_execution()) { return; }
             threadPool->idle_notification();
@@ -1048,7 +1048,7 @@ void TaskManager::run()
     if (task)
     {
         delete task;
-        task = 0;
+        task = nullptr;
     }
     unlock();
 }
@@ -1081,7 +1081,7 @@ bool TaskManager::set_task(Runnable* t)
 void ThreadPool::execute(Runnable* t)
 {
     lock();
-    TaskManager* tm = 0;
+    TaskManager* tm = nullptr;
     while (!tm)
     {
         ArrayCursor<TaskManager> cur;
@@ -1099,11 +1099,11 @@ void ThreadPool::execute(Runnable* t)
                 else
                 {
                     // task could not be assigned
-                    tm = 0;
+                    tm = nullptr;
                     lock();
                 }
             }
-            tm = 0;
+            tm = nullptr;
         }
         if (!tm) wait(1000);
     }
@@ -1209,7 +1209,7 @@ QueuedThreadPool::~QueuedThreadPool()
 
 void QueuedThreadPool::assign(Runnable* t)
 {
-    TaskManager*             tm = 0;
+    TaskManager*             tm = nullptr;
     ArrayCursor<TaskManager> cur;
     for (cur.init(&taskList); cur.get(); cur.next())
     {
@@ -1222,7 +1222,7 @@ void QueuedThreadPool::assign(Runnable* t)
             Thread::unlock();
             if (!tm->set_task(t))
             {
-                tm = 0;
+                tm = nullptr;
                 Thread::lock();
             }
             else
@@ -1231,7 +1231,7 @@ void QueuedThreadPool::assign(Runnable* t)
                 break;
             }
         }
-        tm = 0;
+        tm = nullptr;
     }
     if (!tm)
     {

@@ -28,11 +28,11 @@
 #include <agent_pp/system_group.h>
 #include <agent_pp/v3_mib.h>
 #include <agent_pp/vacm.h>
-#include <signal.h>
+#include <csignal>
+#include <cstdlib>
 #include <snmp_pp/log.h>
 #include <snmp_pp/mp_v3.h>
 #include <snmp_pp/oid_def.h>
-#include <stdlib.h>
 
 #ifdef SNMP_PP_NAMESPACE
 using namespace Snmp_pp;
@@ -130,11 +130,11 @@ void init(Mib& mib, const NS_SNMP OctetStr& engineID)
     mib.add(new snmp_target_mib());
     mib.add(new snmp_notification_mib());
 
-    DynamicTable* dt = new DynamicTable("1.3.6.1.4.1.4976.6.2.1", indDynamicTable, 1);
+    auto* dt = new DynamicTable("1.3.6.1.4.1.4976.6.2.1", indDynamicTable, 1);
     mib.add(dt);
 
 #ifdef _SNMPv3
-    UsmUserTable* uut = new UsmUserTable();
+    auto* uut = new UsmUserTable();
 
     uut->addNewRow(
         "unsecureUser", SNMPv3_usmNoAuthProtocol, SNMPv3_usmNoPrivProtocol, "", "", engineID, false);
@@ -376,7 +376,7 @@ int main(int argc, char* argv[])
     vacm->addNewView("restricted", "1.3.6.1.6.3.15.1.1", "", view_included, storageType_nonVolatile);
 
 #endif
-    Vbx*                   vbs = 0;
+    Vbx*                   vbs = nullptr;
     coldStartOid const     coldOid;
     NotificationOriginator no;
     UdpAddress const       dest("127.0.0.1/162");

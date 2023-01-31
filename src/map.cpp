@@ -50,14 +50,14 @@ static const char* loggerModuleName = "agent++.map";
 Pix OidxPtrEntryPtrMap::seek(OidxPtr item) const
 {
     Pix i = nullptr;
-    for (i = first(); i != 0 && !(OidxPtrEQ(key(i), item)); next(i))
+    for (i = first(); i != nullptr && !(OidxPtrEQ(key(i), item)); next(i))
         ;
     return i;
 }
 
 int OidxPtrEntryPtrMap::owns(Pix idx)
 {
-    if (idx == 0) return 0;
+    if (idx == nullptr) return 0;
     for (Pix i = first(); i; next(i))
         if (i == idx) return 1;
     return 0;
@@ -66,14 +66,14 @@ int OidxPtrEntryPtrMap::owns(Pix idx)
 void OidxPtrEntryPtrMap::clear()
 {
     Pix i = first();
-    while (i != 0)
+    while (i != nullptr)
     {
         del(key(i));
         i = first();
     }
 }
 
-int OidxPtrEntryPtrMap::contains(OidxPtr item) const { return seek(item) != 0; }
+int OidxPtrEntryPtrMap::contains(OidxPtr item) const { return seek(item) != nullptr; }
 
 void OidxPtrEntryPtrMap::error(const char* msg) const
 {

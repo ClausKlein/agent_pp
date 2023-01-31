@@ -58,7 +58,7 @@ namespace Agentpp
  * that SET request will be delayed by one second."
  */
 
-agentppTestTimeout* agentppTestTimeout::instance = 0;
+agentppTestTimeout* agentppTestTimeout::instance = nullptr;
 
 agentppTestTimeout::agentppTestTimeout() : MibLeaf(oidAgentppTestTimeout, READWRITE, new Gauge32())
 {
@@ -76,7 +76,7 @@ agentppTestTimeout::~agentppTestTimeout()
     //--AgentGen END
 
     // clear singleton reference
-    agentppTestTimeout::instance = 0;
+    agentppTestTimeout::instance = nullptr;
 }
 
 void agentppTestTimeout::get_request(Request* req, int ind)
@@ -102,7 +102,7 @@ int agentppTestTimeout::set(const Vbx& vb)
     tvptr.tv_sec         = timeout / 1000; // wait up to sec seconds
     tvptr.tv_usec        = (timeout % 1000) * 1000;
 
-    select(0, NULL, NULL, NULL, &tvptr);
+    select(0, nullptr, nullptr, nullptr, &tvptr);
     //--AgentGen END
     return MibLeaf::set(vb);
 }
@@ -626,7 +626,7 @@ int agentppTestSparseRowStatus::prepare_set_request(Request* req, int& ind)
  * registered in random intervals."
  */
 
-agentppTestSharedEntry* agentppTestSharedEntry::instance = 0;
+agentppTestSharedEntry* agentppTestSharedEntry::instance = nullptr;
 
 const index_info indAgentppTestSharedEntry[1] = { { sNMP_SYNTAX_INT, false, 1, 1 } };
 
@@ -650,7 +650,7 @@ agentppTestSharedEntry::~agentppTestSharedEntry()
     //--AgentGen BEGIN=agentppTestSharedEntry::~agentppTestSharedEntry
     //--AgentGen END
     // clear singleton reference
-    agentppTestSharedEntry::instance = 0;
+    agentppTestSharedEntry::instance = nullptr;
 }
 
 //--AgentGen BEGIN=agentppTestSharedEntry
@@ -663,7 +663,7 @@ agentppTestSharedEntry::~agentppTestSharedEntry()
  * session that implements the AGENTPP-TEST-MIB."
  */
 
-agentppTestSessionsEntry* agentppTestSessionsEntry::instance = 0;
+agentppTestSessionsEntry* agentppTestSessionsEntry::instance = nullptr;
 
 const index_info indAgentppTestSessionsEntry[1] = { { sNMP_SYNTAX_INT, false, 1, 1 } };
 
@@ -684,7 +684,7 @@ agentppTestSessionsEntry::~agentppTestSessionsEntry()
     //--AgentGen BEGIN=agentppTestSessionsEntry::~agentppTestSessionsEntry
     //--AgentGen END
     // clear singleton reference
-    agentppTestSessionsEntry::instance = 0;
+    agentppTestSessionsEntry::instance = nullptr;
 }
 
 //--AgentGen BEGIN=agentppTestSessionsEntry
@@ -697,7 +697,7 @@ agentppTestSessionsEntry::~agentppTestSessionsEntry()
  * deleted via its row status column."
  */
 
-agentppTestSparseEntry* agentppTestSparseEntry::instance = 0;
+agentppTestSparseEntry* agentppTestSparseEntry::instance = nullptr;
 
 const index_info indAgentppTestSparseEntry[1] = { { sNMP_SYNTAX_OCTETS, false, 0, 255 } };
 
@@ -721,7 +721,7 @@ agentppTestSparseEntry::~agentppTestSparseEntry()
     //--AgentGen BEGIN=agentppTestSparseEntry::~agentppTestSparseEntry
     //--AgentGen END
     // clear singleton reference
-    agentppTestSparseEntry::instance = 0;
+    agentppTestSparseEntry::instance = nullptr;
 }
 
 void agentppTestSparseEntry::get_request(Request* req, int ind)

@@ -666,7 +666,7 @@ public:
      * Execute a task. The task will be deleted after call of
      * its run() method.
      */
-    void execute(Runnable*) override;
+    void execute(Runnable* /*unused*/) override;
 
     /**
      * Gets the current number of queued tasks.

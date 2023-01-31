@@ -128,7 +128,8 @@ public:
      *    successfully, otherwise an appropriate SNMP error is
      *    returned.
      */
-    int notify(const NS_SNMP OctetStr&, const Oidx&, Vbx*, int, unsigned int = 0) override;
+    int notify(const NS_SNMP OctetStr& /*unused*/, const Oidx& /*unused*/, Vbx* /*unused*/,
+        int /*unused*/, unsigned int /*unused*/ = 0) override;
 
     /**
      * Make all necessary entries in snmpTargetAddressTable,
@@ -323,7 +324,7 @@ protected:
             : vbs(_vbs), size(_size), id(_id), timestamp(_timestamp), enterprise(_enterprise),
               contextName(_contextName)
         {
-            target        = 0;
+            target        = nullptr;
             securityModel = 0;
             securityLevel = 0;
             mpModel       = 0;

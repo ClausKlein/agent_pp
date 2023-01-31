@@ -86,7 +86,7 @@ public:
      */
     T* addFirst(T* t)
     {
-        head = new ListItem<T>(NULL, head, t);
+        head = new ListItem<T>(nullptr, head, t);
         if (head->next) head->next->prev = head;
         if (!tail) tail = head;
         return head->item;
@@ -107,7 +107,7 @@ public:
         else
         {
             ListItem<T>* p = tail;
-            p->next        = new ListItem<T>(p, NULL, t);
+            p->next        = new ListItem<T>(p, nullptr, t);
             tail           = p->next;
             return tail->item;
         }
@@ -251,8 +251,8 @@ public:
             tmp = tmp->next;
             delete del;
         }
-        head = 0;
-        tail = 0;
+        head = nullptr;
+        tail = nullptr;
     }
 
     /**
@@ -269,8 +269,8 @@ public:
             tmp = tmp->next;
             delete del;
         }
-        head = 0;
-        tail = 0;
+        head = nullptr;
+        tail = nullptr;
     }
 
     /**
@@ -287,12 +287,12 @@ public:
 
         ListItem<T>* tmp = nullptr;
 
-        if (!head) return 0;
+        if (!head) return nullptr;
         tmp = head;
         do {
             if (tmp->item == i) { return remove(tmp); }
-        } while ((tmp = tmp->next) != 0);
-        return 0;
+        } while ((tmp = tmp->next) != nullptr);
+        return nullptr;
     }
 
     /**
@@ -314,18 +314,18 @@ public:
         }
         else if (victim->next)
         {
-            victim->next->prev = 0;
+            victim->next->prev = nullptr;
             head               = victim->next;
         }
         else if (victim->prev)
         {
-            victim->prev->next = 0;
+            victim->prev->next = nullptr;
             tail               = victim->prev;
         }
         else
         {
-            head = 0;
-            tail = 0;
+            head = nullptr;
+            tail = nullptr;
         }
         delete victim;
         return i;
@@ -483,12 +483,12 @@ public:
      *    a value != 0, if the list is empty. A value of 0, if the
      *    list is not empty.
      */
-    bool empty() const { return (head == 0); }
+    bool empty() const { return (head == nullptr); }
 
     /**
      * Default constructor.
      */
-    List() : head(0), tail(0) { }
+    List() : head(nullptr), tail(nullptr) { }
 
     /**
      * Destructor (deletes all elements of the list)
@@ -756,7 +756,7 @@ public:
     {
         Pix i = content->first();
         if (i) return (T*)content->contents(i);
-        return 0;
+        return nullptr;
     }
 
     T* last() const
@@ -771,7 +771,7 @@ public:
         Pix x = content->first();
         for (int n = 0; ((n < i) && (x)); n++) { content->next(x); }
         if (x) return (T*)content->contents(x);
-        return 0;
+        return nullptr;
     }
 
     int index(T* t) const
@@ -802,7 +802,7 @@ public:
         content->clear();
     }
 
-    OidList() { content = new OidxPtrEntryPtrAVLMap(0); }
+    OidList() { content = new OidxPtrEntryPtrAVLMap(nullptr); }
     ~OidList()
     {
         clearAll();
@@ -833,7 +833,7 @@ public:
         if ((list) && (cursor))
             return (T*)list->content->contents(cursor);
         else
-            return 0;
+            return nullptr;
     }
 
     T* get_next()
@@ -866,7 +866,7 @@ public:
             return (cursor) ? true : false;
         }
         else if (cursor)
-            cursor = 0;
+            cursor = nullptr;
         return 0;
     }
 
@@ -878,7 +878,7 @@ public:
             return (cursor) ? true : false;
         }
         else if (cursor)
-            cursor = 0;
+            cursor = nullptr;
         return 0;
     }
 
@@ -902,7 +902,7 @@ public:
         return false;
     }
 
-    OidListCursor() : cursor(0) { list = 0; }
+    OidListCursor() : cursor(nullptr) { list = nullptr; }
     OidListCursor(OidList<T>* l) : cursor(l->content->first()) { list = l; }
     OidListCursor(const OidListCursor<T>& c) : cursor(c.cursor) { list = c.list; }
 
@@ -1071,7 +1071,7 @@ public:
         for (unsigned int i = 0; i < sz; i++) { delete content[i]; }
         delete[] content;
         sz      = 0;
-        content = 0;
+        content = nullptr;
     }
 
     /**
@@ -1082,7 +1082,7 @@ public:
     {
         delete[] content;
         sz      = 0;
-        content = 0;
+        content = nullptr;
     }
 
     /**
@@ -1109,7 +1109,7 @@ public:
         {
             if (item == content[i]) { return remove(i); }
         }
-        return 0;
+        return nullptr;
     }
 
     /**
@@ -1123,7 +1123,7 @@ public:
      */
     T* remove(unsigned int i)
     {
-        if (i >= sz) return 0;
+        if (i >= sz) return nullptr;
         T*  t   = content[i];
         T** h   = content;
         content = new T*[sz - 1];
@@ -1145,7 +1145,7 @@ public:
      */
     T* getNth(int n) const
     {
-        if ((n < 0) || (((unsigned int)n) >= sz)) return 0;
+        if ((n < 0) || (((unsigned int)n) >= sz)) return nullptr;
         return content[n];
     }
 
@@ -1173,14 +1173,14 @@ public:
      * @return
      *    the pointer to the first element, or 0 if the receiver is empty.
      */
-    T* first() const { return (sz) ? content[0] : 0; }
+    T* first() const { return (sz) ? content[0] : nullptr; }
     /**
      * Return the last element.
      *
      * @return
      *    the pointer to the last element, or 0 if the receiver is empty.
      */
-    T* last() const { return (sz) ? content[sz - 1] : 0; }
+    T* last() const { return (sz) ? content[sz - 1] : nullptr; }
 
     /**
      * Replace the nth element with a given one.
@@ -1247,7 +1247,7 @@ public:
      */
     Array<T>* clone()
     {
-        Array<T>* r = new Array<T>();
+        auto* r = new Array<T>();
         if (sz == 0) return r;
         r->sz = sz;
         delete[] r->content;
@@ -1269,7 +1269,7 @@ public:
     /**
      * Default constructor.
      */
-    Array() : sz(0) { content = 0; }
+    Array() : sz(0) { content = nullptr; }
 
     /**
      * Destructor (deletes all elements of the list)

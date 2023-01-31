@@ -45,7 +45,7 @@ extern "C" {
 static void* inform_caller(void* ptr)
 #    endif
 {
-    InformInfo* callInfo = (InformInfo*)ptr;
+    auto* callInfo = (InformInfo*)ptr;
     LOG_BEGIN(loggerModuleName, EVENT_LOG | 2);
     LOG("SnmpRequest: inform thread started");
     LOG_END;
@@ -62,7 +62,7 @@ static void* inform_caller(void* ptr)
     LOG(status);
     LOG_END;
 #    ifndef _WIN32THREADS
-    return 0;
+    return nullptr;
 }
 #    endif
 }
@@ -262,12 +262,12 @@ void SnmpRequest::inform(CTarget& target, Vbx* vbs, int sz, const Oidx& oid)
     Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpOutTraps);
 
 #ifdef _THREADS
-    InformInfo* callInfo = new InformInfo(target, vbs, sz, oid);
+    auto* callInfo = new InformInfo(target, vbs, sz, oid);
 
 #    ifdef _WIN32THREADS
     _beginthread(inform_caller, 0, callInfo);
 #    else
-    static pthread_attr_t* attr = 0;
+    static pthread_attr_t* attr = nullptr;
 
     pthread_t thread {};
     if (!attr)

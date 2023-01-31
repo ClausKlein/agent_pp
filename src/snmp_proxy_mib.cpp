@@ -32,7 +32,7 @@ namespace Agentpp
  *
  */
 
-snmpProxyEntry* snmpProxyEntry::instance = 0;
+snmpProxyEntry* snmpProxyEntry::instance = nullptr;
 
 snmpProxyEntry::snmpProxyEntry() : StorageTable(oidSnmpProxyEntry, iSnmpAdminString, 1)
 {
@@ -50,7 +50,7 @@ snmpProxyEntry::snmpProxyEntry() : StorageTable(oidSnmpProxyEntry, iSnmpAdminStr
     add_col(new snmpRowStatus("9", READCREATE));
 }
 
-snmpProxyEntry::~snmpProxyEntry() { instance = 0; }
+snmpProxyEntry::~snmpProxyEntry() { instance = nullptr; }
 
 void snmpProxyEntry::set_row(
     MibTableRow* r, int p0, char* p1, char* p2, char* p3, char* p4, char* p5, int p6, int p7)

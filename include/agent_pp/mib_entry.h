@@ -131,10 +131,10 @@ public:
      *    otherwise (if no successor exists or is out of scope)
      *    a zero length oid is returned
      */
-    virtual Oidx find_succ(const Oidx&, Request* req = 0)
+    virtual Oidx find_succ(const Oidx& /*unused*/, Request* req = nullptr)
     {
         (void)req;
-        return Oidx();
+        return {};
     }
 
     // interfaces dispatch table <-> management instrumentation
@@ -145,7 +145,7 @@ public:
      * @param req - A pointer to the whole SNMP GET request.
      * @param ind - The index of the subrequest to be processed.
      */
-    virtual void get_request(Request*, int) { }
+    virtual void get_request(Request* /*unused*/, int /*unused*/) { }
 
     /**
      * Let the receiver process a SNMP GETNEXT subrequest. The
@@ -158,7 +158,7 @@ public:
      * @param req - A pointer to the whole SNMP GETNEXT request.
      * @param ind - The index of the subrequest to be processed.
      */
-    virtual void get_next_request(Request*, int) { }
+    virtual void get_next_request(Request* /*unused*/, int /*unused*/) { }
 
     /**
      * Let the receiver commit a SNMP SET subrequest
@@ -168,7 +168,10 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and
      *         SNMP_ERROR_COMITFAIL on failure.
      */
-    virtual int commit_set_request(Request*, int) { return SNMP_ERROR_COMMITFAIL; }
+    virtual int commit_set_request(Request* /*unused*/, int /*unused*/)
+    {
+        return SNMP_ERROR_COMMITFAIL;
+    }
 
     /**
      * Let the receiver prepare a SNMP SET subrequest
@@ -179,7 +182,10 @@ public:
      *         SNMP_ERROR_WRONG_TYPE, or
      *         SNMP_ERROR_NOT_WRITEABLE on failure.
      */
-    virtual int prepare_set_request(Request*, int&) { return SNMP_ERROR_NO_SUCH_NAME; }
+    virtual int prepare_set_request(Request* /*unused*/, int& /*unused*/)
+    {
+        return SNMP_ERROR_NO_SUCH_NAME;
+    }
 
     /**
      * Clean up resources used for performing (or undoing) set requests.
@@ -187,7 +193,7 @@ public:
      * @param req - A pointer to the whole SNMP SET request.
      * @param ind - The index of the subrequest to be processed.
      */
-    virtual int undo_set_request(Request*, int&) { return SNMP_ERROR_SUCCESS; }
+    virtual int undo_set_request(Request* /*unused*/, int& /*unused*/) { return SNMP_ERROR_SUCCESS; }
 
     /**
      * Set the receiver's value and backup its old value for a later undo.
@@ -196,7 +202,7 @@ public:
      * @return SNMP_ERROR_SUCCESS if the new value has been set,
      *         SNMP_ERROR_WRONG_TYPE or SNMP_ERROR_BAD_VALUE otherwise.
      */
-    virtual void cleanup_set_request(Request*, int&) { }
+    virtual void cleanup_set_request(Request* /*unused*/, int& /*unused*/) { }
 
     // load/save mib objects from/to hard disk
 
@@ -278,7 +284,7 @@ public:
      * @param change - The type of the change (REMOVE, CREATE, CHANGE,
      *                 or UPDATE)
      */
-    virtual void change_notification(const Oidx&, mib_change) { }
+    virtual void change_notification(const Oidx& /*unused*/, mib_change /*unused*/) { }
 
     /**
      * Return a pointer to the key (object identifier) of the receiver.

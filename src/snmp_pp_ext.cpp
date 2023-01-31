@@ -141,7 +141,7 @@ int Vbx::to_asn1(Vbx* vbs, int sz, unsigned char*& buf, int& length)
     {
         cp = snmp_build_var_op(cp, vp->name, &vp->name_length, vp->type, vp->val_len,
             (unsigned char*)vp->val.string, &len);
-        if (cp == NULL)
+        if (cp == nullptr)
         {
             snmp_free_pdu(pdu);
             return SNMP_CLASS_ERROR;
@@ -154,7 +154,7 @@ int Vbx::to_asn1(Vbx* vbs, int sz, unsigned char*& buf, int& length)
     len = length + 4;
     cp  = asn_build_long_len_sequence(
         buf, &len, (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR), length, 3);
-    if (cp == NULL)
+    if (cp == nullptr)
     {
         delete[] buf;
         return SNMP_CLASS_ERROR;
@@ -172,17 +172,17 @@ unsigned char* Vbx::asn_build_long_len_sequence(
     if (*datalength < 2) /* need at least two octets for a sequence */
     {
         ASNERROR("build_sequence");
-        return NULL;
+        return nullptr;
     }
     *data++ = type;
     (*datalength)--;
 
     data_with_length = asn_build_long_length(data, datalength, length, lengthOfLength);
-    if (data_with_length == NULL)
+    if (data_with_length == nullptr)
     {
         (*datalength)++;
         /* correct datalength to emulate old behavior of build_sequence */
-        return NULL;
+        return nullptr;
     }
     return data_with_length;
 }
@@ -199,7 +199,7 @@ unsigned char* Vbx::asn_build_long_length(
         if (*datalength < 1)
         {
             ASNERROR("build_length");
-            return NULL;
+            return nullptr;
         }
         *data++ = (unsigned char)length;
         break;
@@ -208,7 +208,7 @@ unsigned char* Vbx::asn_build_long_length(
         if (*datalength < 2)
         {
             ASNERROR("build_length");
-            return NULL;
+            return nullptr;
         }
         *data++ = (unsigned char)(0x01 | ASN_LONG_LEN);
         *data++ = (unsigned char)length;
@@ -218,7 +218,7 @@ unsigned char* Vbx::asn_build_long_length(
         if (*datalength < 3)
         {
             ASNERROR("build_length");
-            return NULL;
+            return nullptr;
         }
         *data++ = (unsigned char)(0x02 | ASN_LONG_LEN);
         *data++ = (unsigned char)((length >> 8) & 0xFF);
@@ -229,7 +229,7 @@ unsigned char* Vbx::asn_build_long_length(
         if (*datalength < 4)
         {
             ASNERROR("build_length");
-            return NULL;
+            return nullptr;
         }
         *data++ = (unsigned char)(0x03 | ASN_LONG_LEN);
         *data++ = (unsigned char)((length >> 16) & 0xFF);
@@ -241,7 +241,7 @@ unsigned char* Vbx::asn_build_long_length(
         if (*datalength < 5)
         {
             ASNERROR("build_length");
-            return NULL;
+            return nullptr;
         }
         *data++ = (unsigned char)(0x04 | ASN_LONG_LEN);
         *data++ = (unsigned char)((length >> 24) & 0xFF);
@@ -256,14 +256,14 @@ unsigned char* Vbx::asn_build_long_length(
 
 int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
 {
-    oid_t            objid[ASN_MAX_NAME_LEN], *op = nullptr;
+    oid_t          objid[ASN_MAX_NAME_LEN], *op = nullptr;
     unsigned char* var_val = nullptr;
     // get the vb list
     unsigned char         type      = 0;
-    struct variable_list* vp        = 0;
+    struct variable_list* vp        = nullptr;
     int                   seqLength = length;
     data                            = asn_parse_header(data, &seqLength, &type);
-    if ((data == NULL) || (seqLength > length)) return SNMP_CLASS_ERROR;
+    if ((data == nullptr) || (seqLength > length)) return SNMP_CLASS_ERROR;
     if (type != (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR)) return SNMP_CLASS_ERROR;
     snmp_pdu* pdu = snmp_pdu_create(0);
     sz            = 0;
@@ -271,7 +271,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
     while (seqLength > 0)
     {
         sz++;
-        if (pdu->variables == NULL)
+        if (pdu->variables == nullptr)
         {
             pdu->variables = vp = (struct variable_list*)malloc(sizeof(struct variable_list));
         }
@@ -283,13 +283,13 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
             vp->next_variable = (struct variable_list*)malloc(sizeof(struct variable_list));
             vp                = vp->next_variable;
         }
-        vp->next_variable = NULL;
-        vp->val.string    = NULL;
-        vp->name          = NULL;
+        vp->next_variable = nullptr;
+        vp->val.string    = nullptr;
+        vp->name          = nullptr;
         vp->name_length   = ASN_MAX_NAME_LEN;
         data              = snmp_parse_var_op(
             data, objid, &vp->name_length, &vp->type, &vp->val_len, &var_val, (int*)&seqLength);
-        if (data == NULL)
+        if (data == nullptr)
         {
             snmp_free_pdu(pdu);
 #ifdef _SNMPv3
@@ -656,7 +656,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
 #        endif // SNMP_PP_IPv6
 
 #    else // HAVE_POLL_SYSCALL
-        nfound = select(max_fd + 1, &readfds, 0, 0, tvptr);
+        nfound = select(max_fd + 1, &readfds, nullptr, nullptr, tvptr);
 
         if (nfound == -1)
         {
@@ -814,7 +814,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             return status; // Success! return
         }
 #    endif // SNMP_PP_IPv6
-    } while (1);
+    } while (true);
 }
 
 #else // _SNMPv3 is not defined
@@ -999,8 +999,8 @@ int Snmpx::send(Pdux const& pdu, SnmpTarget* target)
     OctetStr     engine_id;
     OctetStr     security_name;
     int          security_model = 0;
-    CTarget*     ctarget        = NULL;
-    UTarget*     utarget        = NULL;
+    CTarget*     ctarget        = nullptr;
+    UTarget*     utarget        = nullptr;
 
     version = target->get_version();
     target->get_address(gen_address);

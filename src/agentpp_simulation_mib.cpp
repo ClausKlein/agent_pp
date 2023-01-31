@@ -32,7 +32,7 @@ namespace Agentpp
  *
  */
 
-agentppSimMode* agentppSimMode::instance = 0;
+agentppSimMode* agentppSimMode::instance = nullptr;
 
 agentppSimMode::agentppSimMode()
     : MibLeaf("1.3.6.1.4.1.4976.2.1.1.0", READWRITE, new SnmpInt32(1), true)
@@ -92,7 +92,7 @@ bool agentppSimMode::value_ok(const Vbx& vb)
  *
  */
 
-agentppSimDeleteRow* agentppSimDeleteRow::instance = 0;
+agentppSimDeleteRow* agentppSimDeleteRow::instance = nullptr;
 
 agentppSimDeleteRow::agentppSimDeleteRow(Mib* m)
     : MibLeaf(oidAgentppSimDeleteRow, READWRITE, new Oid())
@@ -111,7 +111,7 @@ int agentppSimDeleteRow::commit_set_request(Request* req, int ind)
     Vbx const vb(req->get_value(ind));
     vb.get_value(toid);
 
-    MibEntryPtr entry = 0;
+    MibEntryPtr entry = nullptr;
     int const   status =
 #ifdef _SNMPv3
         mib->find_managing_object(mib->get_context(req->get_context()), toid, entry, req);
@@ -120,7 +120,7 @@ int agentppSimDeleteRow::commit_set_request(Request* req, int ind)
 #endif
     if (status != SNMP_ERROR_SUCCESS) return SNMP_ERROR_WRONG_VALUE;
     if (entry->type() != AGENTPP_TABLE) return SNMP_ERROR_WRONG_VALUE;
-    MibTable* table = (MibTable*)entry;
+    auto* table = (MibTable*)entry;
 
     table->start_synch();
     Oidx const index = table->index(toid);
@@ -137,7 +137,7 @@ int agentppSimDeleteRow::prepare_set_request(Request* req, int& ind)
     Oidx      toid;
     Vbx const vb(req->get_value(ind));
     if (vb.get_value(toid) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
-    MibEntryPtr entry = 0;
+    MibEntryPtr entry = nullptr;
     status =
 #ifdef _SNMPv3
         mib->find_managing_object(mib->get_context(req->get_context()), toid, entry, req);
@@ -146,7 +146,7 @@ int agentppSimDeleteRow::prepare_set_request(Request* req, int& ind)
 #endif
     if (status != SNMP_ERROR_SUCCESS) return SNMP_ERROR_WRONG_VALUE;
     if (entry->type() != AGENTPP_TABLE) return SNMP_ERROR_WRONG_VALUE;
-    MibTable*    table = (MibTable*)entry;
+    auto*        table = (MibTable*)entry;
     Oidx const   index = table->index(toid);
     MibTableRow* r     = table->find_index(index);
     if (!r) return SNMP_ERROR_WRONG_VALUE;
@@ -159,7 +159,7 @@ int agentppSimDeleteRow::prepare_set_request(Request* req, int& ind)
  *
  */
 
-agentppSimDeleteTableContents* agentppSimDeleteTableContents::instance = 0;
+agentppSimDeleteTableContents* agentppSimDeleteTableContents::instance = nullptr;
 
 agentppSimDeleteTableContents::agentppSimDeleteTableContents(Mib* m)
     : MibLeaf(oidAgentppSimDeleteTableContents, READWRITE, new Oid())
@@ -175,7 +175,7 @@ int agentppSimDeleteTableContents::commit_set_request(Request* req, int ind)
     Oidx      toid;
     Vbx const vb(req->get_value(ind));
     vb.get_value(toid);
-    MibEntryPtr entry = 0;
+    MibEntryPtr entry = nullptr;
     int const   status =
 #ifdef _SNMPv3
         mib->find_managing_object(mib->get_context(req->get_context()), toid, entry, req);
@@ -185,7 +185,7 @@ int agentppSimDeleteTableContents::commit_set_request(Request* req, int ind)
     if (status != SNMP_ERROR_SUCCESS) return SNMP_ERROR_WRONG_VALUE;
     if (entry->type() != AGENTPP_TABLE) return SNMP_ERROR_WRONG_VALUE;
 
-    MibTable* table = (MibTable*)entry;
+    auto* table = (MibTable*)entry;
     entry->start_synch();
     table->clear();
     entry->end_synch();
@@ -201,7 +201,7 @@ int agentppSimDeleteTableContents::prepare_set_request(Request* req, int& ind)
     Oidx      toid;
     Vbx const vb(req->get_value(ind));
     if (vb.get_value(toid) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
-    MibEntryPtr entry = 0;
+    MibEntryPtr entry = nullptr;
     status =
 #ifdef _SNMPv3
         mib->find_managing_object(mib->get_context(req->get_context()), toid, entry, req);

@@ -57,10 +57,10 @@ public:
     static agentppNotifyTest* instance;
 
     virtual int32_t get_state();
-    virtual void    set_state(int32_t);
-    int             set(const Vbx&) override;
-    int             prepare_set_request(Request*, int&) override;
-    bool            value_ok(const Vbx&) override;
+    virtual void    set_state(int32_t /*l*/);
+    int             set(const Vbx& /*vb*/) override;
+    int             prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool            value_ok(const Vbx& /*unused*/ /*vb*/) override;
     enum labels { e_agentppNotifyTestAllTypes = 1 };
 
     //--AgentGen BEGIN=agentppNotifyTest
@@ -80,7 +80,7 @@ public:
     agentppNotifyTestAllTypes();
     ~agentppNotifyTestAllTypes() override;
 
-    virtual void generate(Vbx*, int, const NS_SNMP OctetStr&);
+    virtual void generate(Vbx* /*vbs*/, int /*sz*/, const NS_SNMP OctetStr& /*context*/);
 
     //--AgentGen BEGIN=agentppNotifyTestAllTypes
     //--AgentGen END

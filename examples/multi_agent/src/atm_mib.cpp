@@ -1534,7 +1534,7 @@ int atmVclConnKind::prepare_set_request(Request* req, int& ind)
  *
  */
 
-atmVpCrossConnectIndexNext* atmVpCrossConnectIndexNext::instance = 0;
+atmVpCrossConnectIndexNext* atmVpCrossConnectIndexNext::instance = nullptr;
 
 atmVpCrossConnectIndexNext::atmVpCrossConnectIndexNext()
     : SimMibLeaf(oidAtmVpCrossConnectIndexNext, READONLY, new SnmpInt32())
@@ -1681,7 +1681,7 @@ MibEntryPtr atmVpCrossConnectRowStatus::clone()
  *
  */
 
-atmVcCrossConnectIndexNext* atmVcCrossConnectIndexNext::instance = 0;
+atmVcCrossConnectIndexNext* atmVcCrossConnectIndexNext::instance = nullptr;
 
 atmVcCrossConnectIndexNext::atmVcCrossConnectIndexNext()
     : SimMibLeaf(oidAtmVcCrossConnectIndexNext, READONLY, new SnmpInt32())
@@ -1880,7 +1880,7 @@ MibEntryPtr aal5VccOverSizedSDUs::clone()
  *
  */
 
-atmTrafficDescrParamIndexNext* atmTrafficDescrParamIndexNext::instance = 0;
+atmTrafficDescrParamIndexNext* atmTrafficDescrParamIndexNext::instance = nullptr;
 
 atmTrafficDescrParamIndexNext::atmTrafficDescrParamIndexNext()
     : SimMibLeaf(oidAtmTrafficDescrParamIndexNext, READONLY, new SnmpInt32())
@@ -1897,7 +1897,7 @@ atmTrafficDescrParamIndexNext::~atmTrafficDescrParamIndexNext() { }
  *
  */
 
-atmInterfaceConfEntry* atmInterfaceConfEntry::instance = 0;
+atmInterfaceConfEntry* atmInterfaceConfEntry::instance = nullptr;
 
 const index_info indAtmInterfaceConfEntry[1] = { { sNMP_SYNTAX_INT, false, 1, 1 } };
 
@@ -1959,7 +1959,7 @@ void atmInterfaceConfEntry::set_row(MibTableRow* r, int p0, int p1, int p2, int 
  *
  */
 
-atmInterfaceDs3PlcpEntry* atmInterfaceDs3PlcpEntry::instance = 0;
+atmInterfaceDs3PlcpEntry* atmInterfaceDs3PlcpEntry::instance = nullptr;
 
 const index_info indAtmInterfaceDs3PlcpEntry[1] = { { sNMP_SYNTAX_INT, false, 1, 1 } };
 
@@ -1989,7 +1989,7 @@ void atmInterfaceDs3PlcpEntry::set_row(MibTableRow* r, int p0, int p1, int p2)
  *
  */
 
-atmInterfaceTCEntry* atmInterfaceTCEntry::instance = 0;
+atmInterfaceTCEntry* atmInterfaceTCEntry::instance = nullptr;
 
 const index_info indAtmInterfaceTCEntry[1] = { { sNMP_SYNTAX_INT, false, 1, 1 } };
 
@@ -2017,7 +2017,7 @@ void atmInterfaceTCEntry::set_row(MibTableRow* r, int p0, int p1)
  *
  */
 
-atmTrafficDescrParamEntry* atmTrafficDescrParamEntry::instance = 0;
+atmTrafficDescrParamEntry* atmTrafficDescrParamEntry::instance = nullptr;
 
 const index_info indAtmTrafficDescrParamEntry[1] = { { sNMP_SYNTAX_INT, false, 1, 1 } };
 
@@ -2062,7 +2062,7 @@ void atmTrafficDescrParamEntry::set_row(
  *
  */
 
-atmVplEntry* atmVplEntry::instance = 0;
+atmVplEntry* atmVplEntry::instance = nullptr;
 
 const index_info indAtmVplEntry[2] = { { sNMP_SYNTAX_INT, false, 1, 1 },
     { sNMP_SYNTAX_INT, false, 1, 1 } };
@@ -2105,7 +2105,7 @@ void atmVplEntry::set_row(
  *
  */
 
-atmVclEntry* atmVclEntry::instance = 0;
+atmVclEntry* atmVclEntry::instance = nullptr;
 
 const index_info indAtmVclEntry[3] = { { sNMP_SYNTAX_INT, false, 1, 1 },
     { sNMP_SYNTAX_INT, false, 1, 1 }, { sNMP_SYNTAX_INT, false, 1, 1 } };
@@ -2158,7 +2158,7 @@ void atmVclEntry::set_row(MibTableRow* r, int p0, int p1, int p2, int p3, int p4
  *
  */
 
-atmVpCrossConnectEntry* atmVpCrossConnectEntry::instance = 0;
+atmVpCrossConnectEntry* atmVpCrossConnectEntry::instance = nullptr;
 
 const index_info indAtmVpCrossConnectEntry[5] = { { sNMP_SYNTAX_INT, false, 1, 1 },
     { sNMP_SYNTAX_INT, false, 1, 1 }, { sNMP_SYNTAX_INT, false, 1, 1 },
@@ -2196,7 +2196,7 @@ void atmVpCrossConnectEntry::set_row(MibTableRow* r, int p0, int p1, int p2, int
  *
  */
 
-atmVcCrossConnectEntry* atmVcCrossConnectEntry::instance = 0;
+atmVcCrossConnectEntry* atmVcCrossConnectEntry::instance = nullptr;
 
 const index_info indAtmVcCrossConnectEntry[7] = { { sNMP_SYNTAX_INT, false, 1, 1 },
     { sNMP_SYNTAX_INT, false, 1, 1 }, { sNMP_SYNTAX_INT, false, 1, 1 },
@@ -2235,7 +2235,7 @@ void atmVcCrossConnectEntry::set_row(MibTableRow* r, int p0, int p1, int p2, int
  *
  */
 
-aal5VccEntry* aal5VccEntry::instance = 0;
+aal5VccEntry* aal5VccEntry::instance = nullptr;
 
 const index_info indAal5VccEntry[3] = { { sNMP_SYNTAX_INT, false, 1, 1 },
     { sNMP_SYNTAX_INT, false, 1, 1 }, { sNMP_SYNTAX_INT, false, 1, 1 } };

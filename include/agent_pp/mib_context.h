@@ -152,14 +152,14 @@ public:
      *
      * @param fname - A file name.
      */
-    void load_from_file(const char*) override;
+    void load_from_file(const char* /*unused*/) override;
 
     /**
      * Save the value(s) of the receiver node to a file.
      *
      * @param fname - A file name.
      */
-    void save_to_file(const char*) override;
+    void save_to_file(const char* /*unused*/) override;
 
     /**
      * Return whether objects in this group are persistent or not.
@@ -168,7 +168,7 @@ public:
      *    true if objects of this group should be stored persistently,
      *    false otherwise.
      */
-    bool is_persistent() { return (persistencyName != 0); }
+    bool is_persistent() { return (persistencyName != nullptr); }
 
     NS_SNMP OctetStr get_persistency_name() { return *persistencyName; }
 
@@ -470,7 +470,10 @@ public:
      *    a pointer to the n-th MibGroup of this context or
      *    0 if n is out of range.
      */
-    MibGroup* get_group(int n) { return ((n >= 0) && (n < groups.size())) ? groups.getNth(n) : 0; }
+    MibGroup* get_group(int n)
+    {
+        return ((n >= 0) && (n < groups.size())) ? groups.getNth(n) : nullptr;
+    }
 
     /**
      * Get the number of entries in this context.

@@ -236,12 +236,12 @@ namespace Agentpp
 class atmInterfaceMaxVpcs : public SimMibLeaf {
 
 public:
-    atmInterfaceMaxVpcs(const Oidx&);
+    atmInterfaceMaxVpcs(const Oidx& /*id*/);
     ~atmInterfaceMaxVpcs() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -254,12 +254,12 @@ public:
 class atmInterfaceMaxVccs : public SimMibLeaf {
 
 public:
-    atmInterfaceMaxVccs(const Oidx&);
+    atmInterfaceMaxVccs(const Oidx& /*id*/);
     ~atmInterfaceMaxVccs() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -280,7 +280,7 @@ public:
 class atmInterfaceConfVpcs : public SimMibLeaf {
 
 public:
-    atmInterfaceConfVpcs(const Oidx&);
+    atmInterfaceConfVpcs(const Oidx& /*id*/);
     ~atmInterfaceConfVpcs() override;
 
     MibEntryPtr clone() override;
@@ -300,7 +300,7 @@ public:
 class atmInterfaceConfVccs : public SimMibLeaf {
 
 public:
-    atmInterfaceConfVccs(const Oidx&);
+    atmInterfaceConfVccs(const Oidx& /*id*/);
     ~atmInterfaceConfVccs() override;
 
     MibEntryPtr clone() override;
@@ -319,12 +319,12 @@ public:
 class atmInterfaceMaxActiveVpiBits : public SimMibLeaf {
 
 public:
-    atmInterfaceMaxActiveVpiBits(const Oidx&);
+    atmInterfaceMaxActiveVpiBits(const Oidx& /*id*/);
     ~atmInterfaceMaxActiveVpiBits() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -337,12 +337,12 @@ public:
 class atmInterfaceMaxActiveVciBits : public SimMibLeaf {
 
 public:
-    atmInterfaceMaxActiveVciBits(const Oidx&);
+    atmInterfaceMaxActiveVciBits(const Oidx& /*id*/);
     ~atmInterfaceMaxActiveVciBits() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -358,12 +358,12 @@ public:
 class atmInterfaceIlmiVpi : public SimMibLeaf {
 
 public:
-    atmInterfaceIlmiVpi(const Oidx&);
+    atmInterfaceIlmiVpi(const Oidx& /*id*/);
     ~atmInterfaceIlmiVpi() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -379,12 +379,12 @@ public:
 class atmInterfaceIlmiVci : public SimMibLeaf {
 
 public:
-    atmInterfaceIlmiVci(const Oidx&);
+    atmInterfaceIlmiVci(const Oidx& /*id*/);
     ~atmInterfaceIlmiVci() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -397,7 +397,7 @@ public:
 class atmInterfaceAddressType : public SimMibLeaf {
 
 public:
-    atmInterfaceAddressType(const Oidx&);
+    atmInterfaceAddressType(const Oidx& /*id*/);
     ~atmInterfaceAddressType() override;
 
     MibEntryPtr clone() override;
@@ -421,7 +421,7 @@ public:
 class atmInterfaceAdminAddress : public SimMibLeaf {
 
 public:
-    atmInterfaceAdminAddress(const Oidx&);
+    atmInterfaceAdminAddress(const Oidx& /*id*/);
     ~atmInterfaceAdminAddress() override;
 
     MibEntryPtr clone() override;
@@ -444,12 +444,12 @@ public:
 class atmInterfaceMyNeighborIpAddress : public SimMibLeaf {
 
 public:
-    atmInterfaceMyNeighborIpAddress(const Oidx&);
+    atmInterfaceMyNeighborIpAddress(const Oidx& /*id*/);
     ~atmInterfaceMyNeighborIpAddress() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -473,12 +473,12 @@ public:
 class atmInterfaceMyNeighborIfName : public SimMibLeaf {
 
 public:
-    atmInterfaceMyNeighborIfName(const Oidx&);
+    atmInterfaceMyNeighborIfName(const Oidx& /*id*/);
     ~atmInterfaceMyNeighborIfName() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -501,7 +501,7 @@ public:
 class atmInterfaceCurrentMaxVpiBits : public SimMibLeaf {
 
 public:
-    atmInterfaceCurrentMaxVpiBits(const Oidx&);
+    atmInterfaceCurrentMaxVpiBits(const Oidx& /*id*/);
     ~atmInterfaceCurrentMaxVpiBits() override;
 
     MibEntryPtr clone() override;
@@ -527,7 +527,7 @@ public:
 class atmInterfaceCurrentMaxVciBits : public SimMibLeaf {
 
 public:
-    atmInterfaceCurrentMaxVciBits(const Oidx&);
+    atmInterfaceCurrentMaxVciBits(const Oidx& /*id*/);
     ~atmInterfaceCurrentMaxVciBits() override;
 
     MibEntryPtr clone() override;
@@ -546,12 +546,12 @@ public:
 class atmInterfaceSubscrAddress : public SimMibLeaf {
 
 public:
-    atmInterfaceSubscrAddress(const Oidx&);
+    atmInterfaceSubscrAddress(const Oidx& /*id*/);
     ~atmInterfaceSubscrAddress() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -566,7 +566,7 @@ public:
 class atmInterfaceDs3PlcpSEFSs : public SimMibLeaf {
 
 public:
-    atmInterfaceDs3PlcpSEFSs(const Oidx&);
+    atmInterfaceDs3PlcpSEFSs(const Oidx& /*id*/);
     ~atmInterfaceDs3PlcpSEFSs() override;
 
     MibEntryPtr clone() override;
@@ -591,7 +591,7 @@ public:
 class atmInterfaceDs3PlcpAlarmState : public SimMibLeaf {
 
 public:
-    atmInterfaceDs3PlcpAlarmState(const Oidx&);
+    atmInterfaceDs3PlcpAlarmState(const Oidx& /*id*/);
     ~atmInterfaceDs3PlcpAlarmState() override;
 
     MibEntryPtr clone() override;
@@ -607,7 +607,7 @@ public:
 class atmInterfaceDs3PlcpUASs : public SimMibLeaf {
 
 public:
-    atmInterfaceDs3PlcpUASs(const Oidx&);
+    atmInterfaceDs3PlcpUASs(const Oidx& /*id*/);
     ~atmInterfaceDs3PlcpUASs() override;
 
     MibEntryPtr clone() override;
@@ -627,7 +627,7 @@ public:
 class atmInterfaceOCDEvents : public SimMibLeaf {
 
 public:
-    atmInterfaceOCDEvents(const Oidx&);
+    atmInterfaceOCDEvents(const Oidx& /*id*/);
     ~atmInterfaceOCDEvents() override;
 
     MibEntryPtr clone() override;
@@ -649,7 +649,7 @@ public:
 class atmInterfaceTCAlarmState : public SimMibLeaf {
 
 public:
-    atmInterfaceTCAlarmState(const Oidx&);
+    atmInterfaceTCAlarmState(const Oidx& /*id*/);
     ~atmInterfaceTCAlarmState() override;
 
     MibEntryPtr clone() override;
@@ -675,12 +675,12 @@ public:
 class atmTrafficDescrType : public SimMibLeaf {
 
 public:
-    atmTrafficDescrType(const Oidx&);
+    atmTrafficDescrType(const Oidx& /*id*/);
     ~atmTrafficDescrType() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -694,12 +694,12 @@ public:
 class atmTrafficDescrParam1 : public SimMibLeaf {
 
 public:
-    atmTrafficDescrParam1(const Oidx&);
+    atmTrafficDescrParam1(const Oidx& /*id*/);
     ~atmTrafficDescrParam1() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -713,12 +713,12 @@ public:
 class atmTrafficDescrParam2 : public SimMibLeaf {
 
 public:
-    atmTrafficDescrParam2(const Oidx&);
+    atmTrafficDescrParam2(const Oidx& /*id*/);
     ~atmTrafficDescrParam2() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -732,12 +732,12 @@ public:
 class atmTrafficDescrParam3 : public SimMibLeaf {
 
 public:
-    atmTrafficDescrParam3(const Oidx&);
+    atmTrafficDescrParam3(const Oidx& /*id*/);
     ~atmTrafficDescrParam3() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -751,12 +751,12 @@ public:
 class atmTrafficDescrParam4 : public SimMibLeaf {
 
 public:
-    atmTrafficDescrParam4(const Oidx&);
+    atmTrafficDescrParam4(const Oidx& /*id*/);
     ~atmTrafficDescrParam4() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -770,12 +770,12 @@ public:
 class atmTrafficDescrParam5 : public SimMibLeaf {
 
 public:
-    atmTrafficDescrParam5(const Oidx&);
+    atmTrafficDescrParam5(const Oidx& /*id*/);
     ~atmTrafficDescrParam5() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -799,12 +799,12 @@ public:
 class atmTrafficQoSClass : public SimMibLeaf {
 
 public:
-    atmTrafficQoSClass(const Oidx&);
+    atmTrafficQoSClass(const Oidx& /*id*/);
     ~atmTrafficQoSClass() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -818,7 +818,7 @@ public:
 class atmTrafficDescrRowStatus : public snmpRowStatus {
 
 public:
-    atmTrafficDescrRowStatus(const Oidx&);
+    atmTrafficDescrRowStatus(const Oidx& /*id*/);
     ~atmTrafficDescrRowStatus() override;
 
     MibEntryPtr clone() override;
@@ -833,12 +833,12 @@ public:
 class atmServiceCategory : public SimMibLeaf {
 
 public:
-    atmServiceCategory(const Oidx&);
+    atmServiceCategory(const Oidx& /*id*/);
     ~atmServiceCategory() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -856,12 +856,12 @@ public:
 class atmTrafficFrameDiscard : public SimMibLeaf {
 
 public:
-    atmTrafficFrameDiscard(const Oidx&);
+    atmTrafficFrameDiscard(const Oidx& /*id*/);
     ~atmTrafficFrameDiscard() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -877,12 +877,12 @@ public:
 class atmVplAdminStatus : public SimMibLeaf {
 
 public:
-    atmVplAdminStatus(const Oidx&);
+    atmVplAdminStatus(const Oidx& /*id*/);
     ~atmVplAdminStatus() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -894,7 +894,7 @@ public:
 class atmVplOperStatus : public SimMibLeaf {
 
 public:
-    atmVplOperStatus(const Oidx&);
+    atmVplOperStatus(const Oidx& /*id*/);
     ~atmVplOperStatus() override;
 
     MibEntryPtr clone() override;
@@ -910,7 +910,7 @@ public:
 class atmVplLastChange : public SimMibLeaf {
 
 public:
-    atmVplLastChange(const Oidx&);
+    atmVplLastChange(const Oidx& /*id*/);
     ~atmVplLastChange() override;
 
     MibEntryPtr clone() override;
@@ -927,12 +927,12 @@ public:
 class atmVplReceiveTrafficDescrIndex : public SimMibLeaf {
 
 public:
-    atmVplReceiveTrafficDescrIndex(const Oidx&);
+    atmVplReceiveTrafficDescrIndex(const Oidx& /*id*/);
     ~atmVplReceiveTrafficDescrIndex() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -946,12 +946,12 @@ public:
 class atmVplTransmitTrafficDescrIndex : public SimMibLeaf {
 
 public:
-    atmVplTransmitTrafficDescrIndex(const Oidx&);
+    atmVplTransmitTrafficDescrIndex(const Oidx& /*id*/);
     ~atmVplTransmitTrafficDescrIndex() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -979,7 +979,7 @@ public:
 class atmVplCrossConnectIdentifier : public SimMibLeaf {
 
 public:
-    atmVplCrossConnectIdentifier(const Oidx&);
+    atmVplCrossConnectIdentifier(const Oidx& /*id*/);
     ~atmVplCrossConnectIdentifier() override;
 
     MibEntryPtr clone() override;
@@ -1005,7 +1005,7 @@ public:
 class atmVplRowStatus : public snmpRowStatus {
 
 public:
-    atmVplRowStatus(const Oidx&);
+    atmVplRowStatus(const Oidx& /*id*/);
     ~atmVplRowStatus() override;
 
     MibEntryPtr clone() override;
@@ -1020,12 +1020,12 @@ public:
 class atmVplCastType : public SimMibLeaf {
 
 public:
-    atmVplCastType(const Oidx&);
+    atmVplCastType(const Oidx& /*id*/);
     ~atmVplCastType() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -1037,12 +1037,12 @@ public:
 class atmVplConnKind : public SimMibLeaf {
 
 public:
-    atmVplConnKind(const Oidx&);
+    atmVplConnKind(const Oidx& /*id*/);
     ~atmVplConnKind() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -1058,12 +1058,12 @@ public:
 class atmVclAdminStatus : public SimMibLeaf {
 
 public:
-    atmVclAdminStatus(const Oidx&);
+    atmVclAdminStatus(const Oidx& /*id*/);
     ~atmVclAdminStatus() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -1075,7 +1075,7 @@ public:
 class atmVclOperStatus : public SimMibLeaf {
 
 public:
-    atmVclOperStatus(const Oidx&);
+    atmVclOperStatus(const Oidx& /*id*/);
     ~atmVclOperStatus() override;
 
     MibEntryPtr clone() override;
@@ -1091,7 +1091,7 @@ public:
 class atmVclLastChange : public SimMibLeaf {
 
 public:
-    atmVclLastChange(const Oidx&);
+    atmVclLastChange(const Oidx& /*id*/);
     ~atmVclLastChange() override;
 
     MibEntryPtr clone() override;
@@ -1108,12 +1108,12 @@ public:
 class atmVclReceiveTrafficDescrIndex : public SimMibLeaf {
 
 public:
-    atmVclReceiveTrafficDescrIndex(const Oidx&);
+    atmVclReceiveTrafficDescrIndex(const Oidx& /*id*/);
     ~atmVclReceiveTrafficDescrIndex() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -1127,12 +1127,12 @@ public:
 class atmVclTransmitTrafficDescrIndex : public SimMibLeaf {
 
 public:
-    atmVclTransmitTrafficDescrIndex(const Oidx&);
+    atmVclTransmitTrafficDescrIndex(const Oidx& /*id*/);
     ~atmVclTransmitTrafficDescrIndex() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -1151,12 +1151,12 @@ public:
 class atmVccAalType : public SimMibLeaf {
 
 public:
-    atmVccAalType(const Oidx&);
+    atmVccAalType(const Oidx& /*id*/);
     ~atmVccAalType() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -1172,12 +1172,12 @@ public:
 class atmVccAal5CpcsTransmitSduSize : public SimMibLeaf {
 
 public:
-    atmVccAal5CpcsTransmitSduSize(const Oidx&);
+    atmVccAal5CpcsTransmitSduSize(const Oidx& /*id*/);
     ~atmVccAal5CpcsTransmitSduSize() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -1193,12 +1193,12 @@ public:
 class atmVccAal5CpcsReceiveSduSize : public SimMibLeaf {
 
 public:
-    atmVccAal5CpcsReceiveSduSize(const Oidx&);
+    atmVccAal5CpcsReceiveSduSize(const Oidx& /*id*/);
     ~atmVccAal5CpcsReceiveSduSize() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -1217,12 +1217,12 @@ public:
 class atmVccAal5EncapsType : public SimMibLeaf {
 
 public:
-    atmVccAal5EncapsType(const Oidx&);
+    atmVccAal5EncapsType(const Oidx& /*id*/);
     ~atmVccAal5EncapsType() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -1251,7 +1251,7 @@ public:
 class atmVclCrossConnectIdentifier : public SimMibLeaf {
 
 public:
-    atmVclCrossConnectIdentifier(const Oidx&);
+    atmVclCrossConnectIdentifier(const Oidx& /*id*/);
     ~atmVclCrossConnectIdentifier() override;
 
     MibEntryPtr clone() override;
@@ -1285,7 +1285,7 @@ public:
 class atmVclRowStatus : public snmpRowStatus {
 
 public:
-    atmVclRowStatus(const Oidx&);
+    atmVclRowStatus(const Oidx& /*id*/);
     ~atmVclRowStatus() override;
 
     MibEntryPtr clone() override;
@@ -1300,12 +1300,12 @@ public:
 class atmVclCastType : public SimMibLeaf {
 
 public:
-    atmVclCastType(const Oidx&);
+    atmVclCastType(const Oidx& /*id*/);
     ~atmVclCastType() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -1317,12 +1317,12 @@ public:
 class atmVclConnKind : public SimMibLeaf {
 
 public:
-    atmVclConnKind(const Oidx&);
+    atmVclConnKind(const Oidx& /*id*/);
     ~atmVclConnKind() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -1362,12 +1362,12 @@ public:
 class atmVpCrossConnectAdminStatus : public SimMibLeaf {
 
 public:
-    atmVpCrossConnectAdminStatus(const Oidx&);
+    atmVpCrossConnectAdminStatus(const Oidx& /*id*/);
     ~atmVpCrossConnectAdminStatus() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -1381,7 +1381,7 @@ public:
 class atmVpCrossConnectL2HOperStatus : public SimMibLeaf {
 
 public:
-    atmVpCrossConnectL2HOperStatus(const Oidx&);
+    atmVpCrossConnectL2HOperStatus(const Oidx& /*id*/);
     ~atmVpCrossConnectL2HOperStatus() override;
 
     MibEntryPtr clone() override;
@@ -1398,7 +1398,7 @@ public:
 class atmVpCrossConnectH2LOperStatus : public SimMibLeaf {
 
 public:
-    atmVpCrossConnectH2LOperStatus(const Oidx&);
+    atmVpCrossConnectH2LOperStatus(const Oidx& /*id*/);
     ~atmVpCrossConnectH2LOperStatus() override;
 
     MibEntryPtr clone() override;
@@ -1415,7 +1415,7 @@ public:
 class atmVpCrossConnectL2HLastChange : public SimMibLeaf {
 
 public:
-    atmVpCrossConnectL2HLastChange(const Oidx&);
+    atmVpCrossConnectL2HLastChange(const Oidx& /*id*/);
     ~atmVpCrossConnectL2HLastChange() override;
 
     MibEntryPtr clone() override;
@@ -1432,7 +1432,7 @@ public:
 class atmVpCrossConnectH2LLastChange : public SimMibLeaf {
 
 public:
-    atmVpCrossConnectH2LLastChange(const Oidx&);
+    atmVpCrossConnectH2LLastChange(const Oidx& /*id*/);
     ~atmVpCrossConnectH2LLastChange() override;
 
     MibEntryPtr clone() override;
@@ -1456,7 +1456,7 @@ public:
 class atmVpCrossConnectRowStatus : public snmpRowStatus {
 
 public:
-    atmVpCrossConnectRowStatus(const Oidx&);
+    atmVpCrossConnectRowStatus(const Oidx& /*id*/);
     ~atmVpCrossConnectRowStatus() override;
 
     MibEntryPtr clone() override;
@@ -1499,12 +1499,12 @@ public:
 class atmVcCrossConnectAdminStatus : public SimMibLeaf {
 
 public:
-    atmVcCrossConnectAdminStatus(const Oidx&);
+    atmVcCrossConnectAdminStatus(const Oidx& /*id*/);
     ~atmVcCrossConnectAdminStatus() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
 
 /**
@@ -1518,7 +1518,7 @@ public:
 class atmVcCrossConnectL2HOperStatus : public SimMibLeaf {
 
 public:
-    atmVcCrossConnectL2HOperStatus(const Oidx&);
+    atmVcCrossConnectL2HOperStatus(const Oidx& /*id*/);
     ~atmVcCrossConnectL2HOperStatus() override;
 
     MibEntryPtr clone() override;
@@ -1535,7 +1535,7 @@ public:
 class atmVcCrossConnectH2LOperStatus : public SimMibLeaf {
 
 public:
-    atmVcCrossConnectH2LOperStatus(const Oidx&);
+    atmVcCrossConnectH2LOperStatus(const Oidx& /*id*/);
     ~atmVcCrossConnectH2LOperStatus() override;
 
     MibEntryPtr clone() override;
@@ -1552,7 +1552,7 @@ public:
 class atmVcCrossConnectL2HLastChange : public SimMibLeaf {
 
 public:
-    atmVcCrossConnectL2HLastChange(const Oidx&);
+    atmVcCrossConnectL2HLastChange(const Oidx& /*id*/);
     ~atmVcCrossConnectL2HLastChange() override;
 
     MibEntryPtr clone() override;
@@ -1569,7 +1569,7 @@ public:
 class atmVcCrossConnectH2LLastChange : public SimMibLeaf {
 
 public:
-    atmVcCrossConnectH2LLastChange(const Oidx&);
+    atmVcCrossConnectH2LLastChange(const Oidx& /*id*/);
     ~atmVcCrossConnectH2LLastChange() override;
 
     MibEntryPtr clone() override;
@@ -1593,7 +1593,7 @@ public:
 class atmVcCrossConnectRowStatus : public snmpRowStatus {
 
 public:
-    atmVcCrossConnectRowStatus(const Oidx&);
+    atmVcCrossConnectRowStatus(const Oidx& /*id*/);
     ~atmVcCrossConnectRowStatus() override;
 
     MibEntryPtr clone() override;
@@ -1610,7 +1610,7 @@ public:
 class aal5VccCrcErrors : public SimMibLeaf {
 
 public:
-    aal5VccCrcErrors(const Oidx&);
+    aal5VccCrcErrors(const Oidx& /*id*/);
     ~aal5VccCrcErrors() override;
 
     MibEntryPtr clone() override;
@@ -1632,7 +1632,7 @@ public:
 class aal5VccSarTimeOuts : public SimMibLeaf {
 
 public:
-    aal5VccSarTimeOuts(const Oidx&);
+    aal5VccSarTimeOuts(const Oidx& /*id*/);
     ~aal5VccSarTimeOuts() override;
 
     MibEntryPtr clone() override;
@@ -1650,7 +1650,7 @@ public:
 class aal5VccOverSizedSDUs : public SimMibLeaf {
 
 public:
-    aal5VccOverSizedSDUs(const Oidx&);
+    aal5VccOverSizedSDUs(const Oidx& /*id*/);
     ~aal5VccOverSizedSDUs() override;
 
     MibEntryPtr clone() override;

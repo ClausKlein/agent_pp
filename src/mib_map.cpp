@@ -50,14 +50,14 @@ static const char* loggerModuleName = "agent++.mib_map";
 Pix OidxPtrMibEntryPtrMap::seek(OidxPtr item)
 {
     Pix i = nullptr;
-    for (i = first(); i != 0 && !(OidxPtrEQ(key(i), item)); next(i))
+    for (i = first(); i != nullptr && !(OidxPtrEQ(key(i), item)); next(i))
         ;
     return i;
 }
 
 int OidxPtrMibEntryPtrMap::owns(Pix idx)
 {
-    if (idx == 0) return 0;
+    if (idx == nullptr) return 0;
     for (Pix i = first(); i; next(i))
         if (i == idx) return 1;
     return 0;
@@ -66,14 +66,14 @@ int OidxPtrMibEntryPtrMap::owns(Pix idx)
 void OidxPtrMibEntryPtrMap::clear()
 {
     Pix i = first();
-    while (i != 0)
+    while (i != nullptr)
     {
         del(key(i));
         i = first();
     }
 }
 
-int OidxPtrMibEntryPtrMap::contains(OidxPtr item) { return seek(item) != 0; }
+int OidxPtrMibEntryPtrMap::contains(OidxPtr item) { return seek(item) != nullptr; }
 
 void OidxPtrMibEntryPtrMap::error(const char* msg)
 {

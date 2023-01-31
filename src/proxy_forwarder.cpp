@@ -40,7 +40,7 @@ ProxyForwarder::ProxyForwarder(Mib* mib, const OctetStr& contextEngineID, pdu_ty
 {
     regKey = Oidx::from_string(contextEngineID);
     regKey += t;
-    snmp = 0;
+    snmp = nullptr;
     initialize(mib);
 }
 
@@ -80,7 +80,7 @@ void ProxyForwarder::check_references(Mib* mib)
 OidList<MibTableRow>* ProxyForwarder::get_matches(Request* req)
 {
     List<MibTableRow>*      list    = _snmpProxyEntry->get_rows_cloned(true);
-    OidList<MibTableRow>*   matches = new OidList<MibTableRow>;
+    auto*                   matches = new OidList<MibTableRow>;
     ListCursor<MibTableRow> cur;
     for (cur.init(list); cur.get(); cur.next())
     {

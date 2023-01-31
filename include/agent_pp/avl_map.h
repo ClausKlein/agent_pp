@@ -52,8 +52,8 @@ struct OidxPtrEntryPtrAVLNode {
     OidxPtr                 item;
     EntryPtr                cont;
     char                    stat;
-    OidxPtrEntryPtrAVLNode(
-        OidxPtr h, EntryPtr c, OidxPtrEntryPtrAVLNode* l = 0, OidxPtrEntryPtrAVLNode* r = 0);
+    OidxPtrEntryPtrAVLNode(OidxPtr h, EntryPtr c, OidxPtrEntryPtrAVLNode* l = nullptr,
+        OidxPtrEntryPtrAVLNode* r = nullptr);
     ~OidxPtrEntryPtrAVLNode() {};
 };
 
@@ -79,10 +79,10 @@ protected:
     // state information stored per instance to
     // allow independent use of separate instances in separate threads without
     // interference.
-    bool                    _need_rebalancing; // to send back balance info from rec. calls
-    OidxPtr*                _target_item;      // add/del_item target
-    OidxPtrEntryPtrAVLNode* _found_node;       // returned added/deleted node
-    int                     _already_found;    // for deletion subcases
+    bool                    _need_rebalancing {}; // to send back balance info from rec. calls
+    OidxPtr*                _target_item {};      // add/del_item target
+    OidxPtrEntryPtrAVLNode* _found_node {};       // returned added/deleted node
+    int                     _already_found {};    // for deletion subcases
 
 public:
     OidxPtrEntryPtrAVLMap(EntryPtr deflt);
@@ -114,7 +114,7 @@ inline OidxPtrEntryPtrAVLMap::~OidxPtrEntryPtrAVLMap() { _kill(root); }
 
 inline OidxPtrEntryPtrAVLMap::OidxPtrEntryPtrAVLMap(EntryPtr deflt) : OidxPtrEntryPtrMap(deflt)
 {
-    root = 0;
+    root = nullptr;
 }
 
 inline Pix OidxPtrEntryPtrAVLMap::first() const { return Pix(leftmost()); }
@@ -123,24 +123,24 @@ inline Pix OidxPtrEntryPtrAVLMap::last() const { return Pix(rightmost()); }
 
 inline void OidxPtrEntryPtrAVLMap::next(Pix& i) const
 {
-    if (i != 0) i = Pix(succ((OidxPtrEntryPtrAVLNode*)i));
+    if (i != nullptr) i = Pix(succ((OidxPtrEntryPtrAVLNode*)i));
 }
 
 inline void OidxPtrEntryPtrAVLMap::prev(Pix& i) const
 {
-    if (i != 0) i = Pix(pred((OidxPtrEntryPtrAVLNode*)i));
+    if (i != nullptr) i = Pix(pred((OidxPtrEntryPtrAVLNode*)i));
 }
 
 inline OidxPtr& OidxPtrEntryPtrAVLMap::key(Pix i) const
 {
-    if (i == 0) error("null Pix"); // FIXME: Warning C6011 Dereferencing NULL pointer
+    if (i == nullptr) error("null Pix"); // FIXME: Warning C6011 Dereferencing NULL pointer
 
     return ((OidxPtrEntryPtrAVLNode*)i)->item;
 }
 
 inline EntryPtr& OidxPtrEntryPtrAVLMap::contents(Pix i)
 {
-    if (i == 0) error("null Pix"); // FIXME: Warning C6011 Dereferencing NULL pointer
+    if (i == nullptr) error("null Pix"); // FIXME: Warning C6011 Dereferencing NULL pointer
 
     return ((OidxPtrEntryPtrAVLNode*)i)->cont;
 }
@@ -149,10 +149,10 @@ inline void OidxPtrEntryPtrAVLMap::clear()
 {
     _kill(root);
     count = 0;
-    root  = 0;
+    root  = nullptr;
 }
 
-inline int OidxPtrEntryPtrAVLMap::contains(OidxPtr key_) const { return seek(key_) != 0; }
+inline int OidxPtrEntryPtrAVLMap::contains(OidxPtr key_) const { return seek(key_) != nullptr; }
 #ifdef AGENTPP_NAMESPACE
 }
 #endif

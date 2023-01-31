@@ -101,7 +101,7 @@ public:
      *    otherwise (if no successor exists or is out of scope)
      *    a zero length oid is returned
      */
-    Oidx find_succ(const Oidx&, Request* req = 0) override = 0;
+    Oidx find_succ(const Oidx& /*unused*/, Request* req = nullptr) override = 0;
 
     // interfaces dispatch table <-> management instrumentation
 
@@ -111,7 +111,7 @@ public:
      * @param req - A pointer to the whole SNMP GET request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void get_request(Request*, int) override = 0;
+    void get_request(Request* /*unused*/, int /*unused*/) override = 0;
 
     /**
      * Let the receiver process a SNMP GETNEXT subrequest
@@ -119,7 +119,7 @@ public:
      * @param req - A pointer to the whole SNMP GETNEXT request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void get_next_request(Request*, int) override = 0;
+    void get_next_request(Request* /*unused*/, int /*unused*/) override = 0;
 
     /**
      * Let the receiver commit a SNMP SET subrequest
@@ -129,7 +129,10 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and
      *         SNMP_ERROR_COMITFAIL on failure.
      */
-    int commit_set_request(Request*, int) override { return SNMP_ERROR_COMMITFAIL; }
+    int commit_set_request(Request* /*unused*/, int /*unused*/) override
+    {
+        return SNMP_ERROR_COMMITFAIL;
+    }
 
     /**
      * Let the receiver prepare a SNMP SET subrequest
@@ -140,7 +143,10 @@ public:
      *         SNMP_ERROR_WRONG_TYPE, or
      *         SNMP_ERROR_NOT_WRITEABLE on failure.
      */
-    int prepare_set_request(Request*, int&) override { return SNMP_ERROR_NOT_WRITEABLE; }
+    int prepare_set_request(Request* /*unused*/, int& /*unused*/) override
+    {
+        return SNMP_ERROR_NOT_WRITEABLE;
+    }
 
     /**
      * Let the receiver undo a SNMP SET subrequest
@@ -150,7 +156,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and
      *         SNMP_ERROR_UNDO_FAIL on failure.
      */
-    int undo_set_request(Request*, int&) override { return SNMP_ERROR_SUCCESS; }
+    int undo_set_request(Request* /*unused*/, int& /*unused*/) override { return SNMP_ERROR_SUCCESS; }
 
     /**
      * Clean up resources used for performing (or undoing) set requests.
@@ -158,7 +164,7 @@ public:
      * @param req - A pointer to the whole SNMP SET request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void cleanup_set_request(Request*, int&) override { }
+    void cleanup_set_request(Request* /*unused*/, int& /*unused*/) override { }
 
     /**
      * Serialize the value of the receiver.
@@ -167,7 +173,7 @@ public:
      * @param sz - The size of the buffer returned.
      * @return true if serialization was successful, false otherwise.
      */
-    bool serialize(char*&, int&) override { return false; }
+    bool serialize(char*& /*unused*/, int& /*unused*/) override { return false; }
 
     /**
      * Read the value of the receiver from a byte stream.
@@ -180,7 +186,7 @@ public:
      * @return
      *    true if deserialization was successful, false otherwise.
      */
-    bool deserialize(char*, int&) override { return false; }
+    bool deserialize(char* /*unused*/, int& /*unused*/) override { return false; }
 
     /**
      * Check whether the receiver node contains any instance of a
@@ -222,11 +228,15 @@ public:
     MibStaticEntry(const Oidx& o, const NS_SNMP SnmpSyntax& v) : Vbx(o) { set_value(v); }
     MibStaticEntry(const MibStaticEntry& other) : Vbx(other) { }
 
-    //XXX OidxPtr key() { return (Oidx*)&iv_vb_oid; }
-    OidxPtr key() { get_oid(oid); return &oid; }
+    // XXX OidxPtr key() { return (Oidx*)&iv_vb_oid; }
+    OidxPtr key()
+    {
+        get_oid(oid);
+        return &oid;
+    }
 
 private:
-    Oidx oid{};
+    Oidx oid {};
 };
 
 /*------------------------ class MibStaticTable ------------------------*/
@@ -341,7 +351,7 @@ public:
      *    otherwise (if no successor exists or is out of scope)
      *    a zero length oid is returned
      */
-    Oidx find_succ(const Oidx&, Request* req = 0) override;
+    Oidx find_succ(const Oidx& /*unused*/, Request* req = nullptr) override;
 
     /**
      * Let the receiver process a SNMP GET subrequest
@@ -349,7 +359,7 @@ public:
      * @param req - A pointer to the whole SNMP GET request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void get_request(Request*, int) override;
+    void get_request(Request* /*unused*/, int /*unused*/) override;
 
     /**
      * Let the receiver process a SNMP GETNEXT subrequest
@@ -357,7 +367,7 @@ public:
      * @param req - A pointer to the whole SNMP GETNEXT request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void get_next_request(Request*, int) override;
+    void get_next_request(Request* /*unused*/, int /*unused*/) override;
 
 protected:
     OidList<MibStaticEntry> contents;

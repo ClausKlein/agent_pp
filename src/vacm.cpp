@@ -147,7 +147,7 @@ bool VacmSecurityToGroupTable::ready_for_service(Vbx* pvbs, int sz)
     return true;
 }
 
-void VacmSecurityToGroupTable::row_added(MibTableRow* new_row, const Oidx& ind, MibTable*)
+void VacmSecurityToGroupTable::row_added(MibTableRow* new_row, const Oidx& ind, MibTable* /*t*/)
 {
     Oidx o = Oidx(ind);
     if (o.len() == 0) { return; }
@@ -196,7 +196,7 @@ bool VacmSecurityToGroupTable::getGroupName(
     LOG_END;
 
     MibLeaf* leaf = nullptr;
-    if ((leaf = find(o)) == 0) return false;
+    if ((leaf = find(o)) == nullptr) return false;
     leaf->get_value().get_value(groupName);
     return true;
 }
@@ -302,7 +302,7 @@ bool VacmAccessTable::ready_for_service(Vbx* pvbs, int sz)
     return true;
 }
 
-void VacmAccessTable::row_added(MibTableRow* new_row, const Oidx& ind, MibTable*)
+void VacmAccessTable::row_added(MibTableRow* new_row, const Oidx& ind, MibTable* /*t*/)
 {
     // GroupName (erster Index) muss nicht gesetzt werden.
 
@@ -355,7 +355,7 @@ bool VacmAccessTable::getViewName(const OctetStr& group, const OctetStr& context
     bool         foundMatchContextExact   = false;
     unsigned int foundContextPrefixLength = 0;
     unsigned int foundSecurityLevel       = 0;
-    MibTableRow* foundRow                 = NULL;
+    MibTableRow* foundRow                 = nullptr;
 
     unsigned int const groupLen = group.len();
     Oidx               ind;
@@ -631,7 +631,7 @@ bool VacmViewTreeFamilyTable::ready_for_service(Vbx* pvbs, int sz)
     return true;
 }
 
-void VacmViewTreeFamilyTable::row_added(MibTableRow* new_row, const Oidx& ind, MibTable*)
+void VacmViewTreeFamilyTable::row_added(MibTableRow* new_row, const Oidx& ind, MibTable* /*t*/)
 {
     Oidx o = Oidx(ind);
     if (o.len() == 0) { return; }
@@ -643,7 +643,7 @@ void VacmViewTreeFamilyTable::row_added(MibTableRow* new_row, const Oidx& ind, M
     ml->set_value(o.cut_left(o[0] + 2));
 }
 
-void VacmViewTreeFamilyTable::row_activated(MibTableRow* row, const Oidx& ind, MibTable*)
+void VacmViewTreeFamilyTable::row_activated(MibTableRow* row, const Oidx& ind, MibTable* /*t*/)
 {
     // add row to the index
     OctetStr const viewName = ((SnmpAdminString*)row->first())->get();
@@ -655,7 +655,7 @@ void VacmViewTreeFamilyTable::row_activated(MibTableRow* row, const Oidx& ind, M
         viewNameIndex.add(new ViewNameIndex(viewName))->add(row);
 }
 
-void VacmViewTreeFamilyTable::row_deactivated(MibTableRow* row, const Oidx& ind, MibTable*)
+void VacmViewTreeFamilyTable::row_deactivated(MibTableRow* row, const Oidx& ind, MibTable* /*t*/)
 {
     ViewNameIndex* views = viewsOf(((SnmpAdminString*)row->first())->get());
     if (views)
@@ -692,7 +692,7 @@ int VacmViewTreeFamilyTable::isInMibView(const OctetStr& viewName, const Oidx& s
 {
     bool         found           = false;
     unsigned int foundSubtreeLen = 0;
-    MibTableRow* foundRow        = NULL;
+    MibTableRow* foundRow        = nullptr;
     Oidx         ind;
 
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 7);
@@ -808,7 +808,7 @@ bool VacmViewTreeFamilyTable::addNewRow(const OctetStr& viewName, const Oidx& su
         newRow->get_nth(4)->replace_value(new SnmpInt32(storageType));
         newRow->get_nth(5)->replace_value(new SnmpInt32(1));
 
-        row_activated(newRow, newIndex, 0);
+        row_activated(newRow, newIndex, nullptr);
         return true;
     }
 }
@@ -856,7 +856,7 @@ ViewNameIndex* VacmViewTreeFamilyTable::viewsOf(const OctetStr& viewName)
 
         if (cur.get()->name == vName) return cur.get();
     }
-    return 0;
+    return nullptr;
 }
 
 /*********************************************************************
@@ -875,12 +875,12 @@ VacmMIB::VacmMIB(Vacm::ClassPointers vcp) : MibGroup(oidVacmMIBObjects, "snmpVac
 
 Vacm::Vacm()
 {
-    vcp.contextTable            = 0;
-    vcp.securityToGroupTable    = 0;
-    vcp.accessTable             = 0;
-    vcp.viewTreeFamilyTable     = 0;
-    vcp.snmpUnknownContexts     = 0;
-    vcp.snmpUnavailableContexts = 0;
+    vcp.contextTable            = nullptr;
+    vcp.securityToGroupTable    = nullptr;
+    vcp.accessTable             = nullptr;
+    vcp.viewTreeFamilyTable     = nullptr;
+    vcp.snmpUnknownContexts     = nullptr;
+    vcp.snmpUnavailableContexts = nullptr;
 }
 
 Vacm::Vacm(Mib& mib)
@@ -896,7 +896,7 @@ Vacm::Vacm(Mib& mib)
     mib.add(vcp.snmpUnavailableContexts);
 }
 
-Vacm::~Vacm(void) { }
+Vacm::~Vacm() { }
 
 bool Vacm::addNewContext(const OctetStr& newContext)
 {

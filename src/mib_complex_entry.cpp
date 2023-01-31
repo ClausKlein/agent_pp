@@ -60,8 +60,8 @@ MibStaticTable::~MibStaticTable() { }
 void MibStaticTable::add(const MibStaticEntry& entry)
 {
     start_synch();
-    Oidx            tmpoid(entry.get_oid());
-    MibStaticEntry* newEntry = new MibStaticEntry(entry);
+    Oidx  tmpoid(entry.get_oid());
+    auto* newEntry = new MibStaticEntry(entry);
     // TODO: added here for backward compatibility, should be removed
     // later
     if (oid.is_root_of(tmpoid))
@@ -92,13 +92,13 @@ MibStaticEntry* MibStaticTable::get(const Oidx& o, bool suffixOnly)
     Oidx tmpoid(o);
     if (!suffixOnly)
     {
-        if (!oid.is_root_of(tmpoid)) return 0;
+        if (!oid.is_root_of(tmpoid)) return nullptr;
         tmpoid = tmpoid.cut_left(oid.len());
     }
     return contents.find(&tmpoid);
 }
 
-Oidx MibStaticTable::find_succ(const Oidx& o, Request*)
+Oidx MibStaticTable::find_succ(const Oidx& o, Request* /*req*/)
 {
     start_synch();
     Oidx tmpoid(o);

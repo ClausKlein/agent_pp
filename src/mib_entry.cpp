@@ -101,7 +101,7 @@ int MibEntry::operator==(const MibEntry& other) const { return (oid == other.oid
  */
 MibEntryPtr MibEntry::clone()
 {
-    MibEntryPtr          aClone = new MibEntry(oid, access);
+    auto                 aClone = new MibEntry(oid, access);
     ListCursor<MibEntry> cur;
     for (cur.init(&notifies); cur.get(); cur.next()) aClone->notifies.add(cur.get());
     return aClone;
@@ -159,7 +159,7 @@ void MibEntry::load_from_file(const char* fname)
     char* buf  = nullptr;
     int   size = 0, bytes = 0;
 
-    if ((f = fopen(fname, "rb")) == 0) return;
+    if ((f = fopen(fname, "rb")) == nullptr) return;
 
     size = AgentTools::file_size(f);
     if (size > 0)
@@ -181,12 +181,12 @@ void MibEntry::load_from_file(const char* fname)
 void MibEntry::save_to_file(const char* fname)
 {
     FILE* f     = nullptr;
-    char* buf   = 0;
+    char* buf   = nullptr;
     int   bytes = 0;
 
     if (serialize(buf, bytes))
     {
-        if ((f = fopen(fname, "wb")) == 0)
+        if ((f = fopen(fname, "wb")) == nullptr)
         {
             delete[] buf;
             return;
@@ -197,9 +197,9 @@ void MibEntry::save_to_file(const char* fname)
     }
 }
 
-bool MibEntry::serialize(char*&, int&) { return false; }
+bool MibEntry::serialize(char*& /*unused*/, int& /*unused*/) { return false; }
 
-bool MibEntry::deserialize(char*, int&) { return false; }
+bool MibEntry::deserialize(char* /*unused*/, int& /*unused*/) { return false; }
 
 bool MibEntry::is_volatile() { return false; }
 

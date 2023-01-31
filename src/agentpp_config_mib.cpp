@@ -118,7 +118,7 @@ void OperationTask::run()
  * will result in a wrongValue error."
  */
 
-agentppCfgSecSrcAddrValidation* agentppCfgSecSrcAddrValidation::instance = 0;
+agentppCfgSecSrcAddrValidation* agentppCfgSecSrcAddrValidation::instance = nullptr;
 
 agentppCfgSecSrcAddrValidation::agentppCfgSecSrcAddrValidation()
     : MibLeaf(oidAgentppCfgSecSrcAddrValidation, READWRITE, new SnmpInt32())
@@ -138,7 +138,7 @@ agentppCfgSecSrcAddrValidation::~agentppCfgSecSrcAddrValidation()
     //--AgentGen END
 
     // clear singleton reference
-    agentppCfgSecSrcAddrValidation::instance = 0;
+    agentppCfgSecSrcAddrValidation::instance = nullptr;
 }
 
 void agentppCfgSecSrcAddrValidation::get_request(Request* req, int ind)
@@ -397,7 +397,7 @@ agentppCfgStorageOperation::agentppCfgStorageOperation(const Oidx& id)
 {
     //--AgentGen BEGIN=agentppCfgStorageOperation::agentppCfgStorageOperation
 #        ifndef _NO_THREADS
-    operationTask = 0;
+    operationTask = nullptr;
 #        endif
     //--AgentGen END
 }
@@ -637,7 +637,7 @@ int agentppCfgStorageStatus::prepare_set_request(Request* req, int& ind)
  * of an AGENT++ agent configuration."
  */
 
-agentppCfgStorageEntry* agentppCfgStorageEntry::instance = 0;
+agentppCfgStorageEntry* agentppCfgStorageEntry::instance = nullptr;
 
 const index_info indAgentppCfgStorageEntry[1] = { { sNMP_SYNTAX_OCTETS, false, 0, 255 } };
 
@@ -666,7 +666,7 @@ agentppCfgStorageEntry::~agentppCfgStorageEntry()
 
     //--AgentGen END
     // clear singleton reference
-    agentppCfgStorageEntry::instance = 0;
+    agentppCfgStorageEntry::instance = nullptr;
 }
 
 void agentppCfgStorageEntry::get_request(Request* req, int ind)
@@ -764,7 +764,7 @@ agentpp_config_mib::agentpp_config_mib(Mib* backReference)
     add(new agentppCfgLogLevel(DEBUG_LOG, oidAgentppCfgLogLevelDebug));
     add(new agentppCfgSecSrcAddrValidation());
     add(new agentppCfgStorageEntry());
-    agentppCfgStorageEntry* storageTable = (agentppCfgStorageEntry*)content.last();
+    auto* storageTable = (agentppCfgStorageEntry*)content.last();
     storageTable->set_mib(backReference);
 }
 #        endif

@@ -174,7 +174,7 @@ OctetStr SnmpEngineID::create_engine_id(unsigned short p)
     }
     else
     {
-        time_t const   ct = time(0);
+        time_t const   ct = time(nullptr);
         char*          tp = ctime(&ct); // TODO: use ctime_s()! CK
         OctetStr const t((unsigned char*)tp, (strlen(tp) > 23) ? 23 : strlen(tp));
         engineID += t;
@@ -247,7 +247,7 @@ SnmpTagList::~SnmpTagList() { }
 
 MibEntryPtr SnmpTagList::clone()
 {
-    MibEntryPtr other = new SnmpTagList(oid, access, 0, get_value_mode());
+    MibEntryPtr other = new SnmpTagList(oid, access, nullptr, get_value_mode());
     ((SnmpTagList*)other)->replace_value(value->clone());
     ((SnmpTagList*)other)->set_reference_to_table(my_table);
     return other;
@@ -492,7 +492,7 @@ void StorageTable::reset()
 int StorageTable::prepare_set_request(Request* req, int& ind)
 {
     MibLeaf* o = nullptr;
-    if ((o = MibTable::find(req->get_oid(ind))) != 0)
+    if ((o = MibTable::find(req->get_oid(ind))) != nullptr)
     {
         int const storageType = get_storage_type(o->get_reference_to_row());
         if (storageType == storageType_readOnly) { return SNMP_ERROR_INCONSIST_VAL; }
@@ -556,7 +556,7 @@ OctetStrMinMax::OctetStrMinMax(const Oidx& o, mib_access _access, unsigned int _
 
 MibEntryPtr OctetStrMinMax::clone()
 {
-    MibEntryPtr other = new OctetStrMinMax(oid, access, 0, get_value_mode(), min, max);
+    MibEntryPtr other = new OctetStrMinMax(oid, access, nullptr, get_value_mode(), min, max);
     ((OctetStrMinMax*)other)->replace_value(value->clone());
     ((OctetStrMinMax*)other)->set_reference_to_table(my_table);
     return other;
@@ -643,11 +643,17 @@ TimeStampTable::TimeStampTable(const Oidx& o, const index_info* inf, unsigned in
     lastChange = lc;
 }
 
-TimeStampTable::~TimeStampTable() { lastChange = 0; }
+TimeStampTable::~TimeStampTable() { lastChange = nullptr; }
 
-void TimeStampTable::row_added(MibTableRow*, const Oidx&, MibTable*) { lastChange->update(); }
+void TimeStampTable::row_added(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/)
+{
+    lastChange->update();
+}
 
-void TimeStampTable::row_delete(MibTableRow*, const Oidx&, MibTable*) { lastChange->update(); }
+void TimeStampTable::row_delete(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/)
+{
+    lastChange->update();
+}
 
 void TimeStampTable::updated() { lastChange->update(); }
 
@@ -701,8 +707,8 @@ void DateAndTime::update()
         val += '+';
     else
         val += '-';
-    unsigned int const tz       = (unsigned int)abs(dt->tm_gmtoff);
-    long const         timezone = dt->tm_gmtoff;
+    auto const tz       = (unsigned int)abs(dt->tm_gmtoff);
+    long const timezone = dt->tm_gmtoff;
 #else
     // initialize timezone needed?
     // tzset();

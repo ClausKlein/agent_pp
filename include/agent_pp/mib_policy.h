@@ -80,7 +80,8 @@ public:
 
     ~MibTableSizePolicy() override { }
 
-    int is_transition_ok(MibTable*, MibTableRow*, const Oidx&, int, int) override;
+    int is_transition_ok(MibTable* /*unused*/, MibTableRow* /*unused*/, const Oidx& /*unused*/,
+        int /*unused*/, int /*unused*/) override;
 
     /**
      * Set a MibTable size policy.

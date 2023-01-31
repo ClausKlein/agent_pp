@@ -21,8 +21,8 @@
 #include "cmd_exe_mib.h"
 
 #include <agent_pp/system_group.h>
+#include <cstdlib>
 #include <snmp_pp/log.h>
-#include <stdlib.h>
 
 #ifdef SNMP_PP_NAMESPACE
 using namespace Snmp_pp;
@@ -41,7 +41,7 @@ void CmdThread::run()
     LOG("CmdExeMib: starting command thread");
     LOG_END;
 
-    MibTableRow* row = (MibTableRow*)row_ptr;
+    auto* row = (MibTableRow*)row_ptr;
     cmdExecutionCmdEntry::instance->start_synch();
 
     OctetStr cmd;
@@ -92,7 +92,7 @@ void CmdThread::run()
     fname += "exec_output.";
     fname += row->get_index().get_printable();
 
-    if ((f = fopen(fname.get_printable(), "r")) == 0)
+    if ((f = fopen(fname.get_printable(), "r")) == nullptr)
     {
         cmdExecutionOutputEntry::instance->end_synch();
         return;
@@ -113,9 +113,9 @@ void CmdThread::run()
             char*   nl  = buf;
             while ((ptr < buf + size) && (nl))
             {
-                nl             = strchr(ptr, '\n');
-                OctetStr* line = new OctetStr();
-                if (nl == 0) { *line = ptr; }
+                nl         = strchr(ptr, '\n');
+                auto* line = new OctetStr();
+                if (nl == nullptr) { *line = ptr; }
                 else
                 {
                     char* l = new char[nl - ptr + 1];
@@ -188,7 +188,7 @@ bool cmdExecutionCmdConfigLine::value_ok(const Vbx& vb)
  *
  */
 
-cmdExecutionCmdNextIndex* cmdExecutionCmdNextIndex::instance = 0;
+cmdExecutionCmdNextIndex* cmdExecutionCmdNextIndex::instance = nullptr;
 
 cmdExecutionCmdNextIndex::cmdExecutionCmdNextIndex()
     : MibLeaf("1.3.6.1.4.1.4976.6.1.2.2.1.0", READONLY, new SnmpInt32())
@@ -371,7 +371,7 @@ int cmdExecutionCmdRowStatus::set(const Vbx& vb)
     case rowCreateAndGo:
     case rowActive: {
 #ifdef _THREADS
-        CmdThread* ct = new CmdThread(my_row);
+        auto* ct = new CmdThread(my_row);
         ((cmdExecutionCmdEntry*)my_table)->threadPool->execute(ct);
 #else
 #    error "Please_compile_with _THREADS defined"
@@ -418,7 +418,7 @@ void cmdExecutionOutputLine::get_request(Request* req, int ind)
  *
  */
 
-cmdExecutionCmdConfigEntry* cmdExecutionCmdConfigEntry::instance = 0;
+cmdExecutionCmdConfigEntry* cmdExecutionCmdConfigEntry::instance = nullptr;
 
 cmdExecutionCmdConfigEntry::cmdExecutionCmdConfigEntry()
     : StorageTable("1.3.6.1.4.1.4976.6.1.2.1.1.1", 0, false)
@@ -502,7 +502,7 @@ OctetStr cmdExecutionCmdConfigEntry::get_command_line(const OctetStr& command)
  *
  */
 
-cmdExecutionCmdEntry* cmdExecutionCmdEntry::instance = 0;
+cmdExecutionCmdEntry* cmdExecutionCmdEntry::instance = nullptr;
 
 cmdExecutionCmdEntry::cmdExecutionCmdEntry() : MibTable("1.3.6.1.4.1.4976.6.1.2.2.2.1", 1, false)
 {
@@ -537,7 +537,7 @@ void cmdExecutionCmdEntry::row_delete(MibTableRow* row, const Oidx& index, MibTa
  *
  */
 
-cmdExecutionOutputEntry* cmdExecutionOutputEntry::instance = 0;
+cmdExecutionOutputEntry* cmdExecutionOutputEntry::instance = nullptr;
 
 cmdExecutionOutputEntry::cmdExecutionOutputEntry() : MibTable("1.3.6.1.4.1.4976.6.1.2.3.1.1", 0, false)
 {

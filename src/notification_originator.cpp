@@ -46,16 +46,16 @@ static const char* loggerModuleName = "agent++.notification_originator";
 NotificationOriginator::NotificationOriginator()
 {
 #ifdef _SNMPv3
-    localEngineID  = 0;
-    communityEntry = 0;
-    _nlmLogEntry   = 0;
-    v3mp           = 0;
+    localEngineID  = nullptr;
+    communityEntry = nullptr;
+    _nlmLogEntry   = nullptr;
+    v3mp           = nullptr;
 #endif
 
-    targetAddrEntry   = 0;
-    targetParamsEntry = 0;
-    notifyEntry       = 0;
-    notifyFilterEntry = 0;
+    targetAddrEntry   = nullptr;
+    targetParamsEntry = nullptr;
+    notifyEntry       = nullptr;
+    notifyFilterEntry = nullptr;
     mib               = Mib::instance;
 }
 
@@ -64,7 +64,7 @@ NotificationOriginator::~NotificationOriginator()
 #ifdef _SNMPv3
     if (localEngineID) delete localEngineID;
 #endif
-    mib = 0;
+    mib = nullptr;
 }
 
 void NotificationOriginator::generate(
@@ -124,7 +124,8 @@ int NotificationOriginator::generate(Vbx* vbs, int size, const Oidx& id, unsigne
     nlmLogEntry* logEntry = get_nlm_log_entry();
     if (logEntry)
     {
-        logEntry->add_notification(NULL, id, vbs, size, contextName, *localEngineID, *localEngineID);
+        logEntry->add_notification(
+            nullptr, id, vbs, size, contextName, *localEngineID, *localEngineID);
     }
 #endif
     for (cur.init(list); cur.get(); cur.next())
@@ -147,7 +148,7 @@ int NotificationOriginator::generate(Vbx* vbs, int size, const Oidx& id, unsigne
                 // determine notification type
                 typeCur.get()->get_nth(1)->get_value(notify);
 
-                nop.target = 0;
+                nop.target = nullptr;
                 if (check_access(cur, nop))
                 {
                     int const status = send_notify(cur, nop, notify);
@@ -268,8 +269,8 @@ bool NotificationOriginator::check_access(
     CTarget*& target = nop.target;
 #endif
 
-    snmpTargetAddrParams* paramsPtr = (snmpTargetAddrParams*)cur.get()->get_nth(5);
-    OctetStr              paramsStr;
+    auto*    paramsPtr = (snmpTargetAddrParams*)cur.get()->get_nth(5);
+    OctetStr paramsStr;
     paramsPtr->get_value(paramsStr);
 
     // Check whether trap oid passes filter
@@ -358,7 +359,7 @@ bool NotificationOriginator::check_access(
         return false;
     }
 
-    target                               = 0;
+    target                               = nullptr;
     snmpTargetAddrEntry* targetAddrEntry = get_snmp_target_addr_entry();
     if (targetAddrEntry)
     {

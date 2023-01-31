@@ -170,12 +170,12 @@ UdpAddress* snmpTargetAddrTAddress::getUdpAddress()
     case 1:
     case 101:
     case 102: {
-        UdpAddress* address = new UdpAddress();
-        *address            = (*(OctetStr*)value);
+        auto* address = new UdpAddress();
+        *address      = (*(OctetStr*)value);
         return address;
     }
     }
-    return 0;
+    return nullptr;
 }
 
 /**
@@ -264,7 +264,7 @@ bool snmpTargetAddrParams::value_ok(const Vbx& vb)
  *
  */
 
-snmpTargetAddrEntry* snmpTargetAddrEntry::instance = 0;
+snmpTargetAddrEntry* snmpTargetAddrEntry::instance = nullptr;
 
 snmpTargetAddrEntry::snmpTargetAddrEntry() : StorageTable(oidSnmpTargetAddrEntry, iSnmpAdminString, 1)
 {
@@ -282,7 +282,7 @@ snmpTargetAddrEntry::snmpTargetAddrEntry() : StorageTable(oidSnmpTargetAddrEntry
     add_col(new snmpRowStatus("9"));
 }
 
-snmpTargetAddrEntry::~snmpTargetAddrEntry() { instance = 0; }
+snmpTargetAddrEntry::~snmpTargetAddrEntry() { instance = nullptr; }
 
 void snmpTargetAddrEntry::set_row(MibTableRow* r, const Oidx& p0, const OctetStr& p1, int p2, int p3,
     const OctetStr& p4, const OctetStr& p5, int p6, int p7)
@@ -306,7 +306,7 @@ MibTableRow* snmpTargetAddrEntry::add_entry(const OctetStr& name, const Oidx& td
     if (r)
     {
         end_synch();
-        return 0;
+        return nullptr;
     }
     r = add_row(index);
     r->get_nth(0)->replace_value(new Oidx(tdomain));
@@ -365,7 +365,7 @@ Address* snmpTargetAddrEntry::get_address(MibTableRow* row)
         LOG_END;
     }
     }
-    return 0;
+    return nullptr;
 }
 
 #ifdef _SNMPv3
@@ -385,20 +385,20 @@ UTarget* snmpTargetAddrEntry::get_target(
         LOG(OctetStr(entry).get_printable());
         LOG((r) ? "no active row found" : "missing row");
         LOG_END;
-        return 0;
+        return nullptr;
     }
     Address* address = get_address(r);
     OctetStr params;
     r->get_nth(5)->get_value(params);
     end_synch();
-    if (!address) { return 0; }
-    UTarget* target = new UTarget(*address);
+    if (!address) { return nullptr; }
+    auto* target = new UTarget(*address);
     delete address;
 
     if (!paramInfo->get_target_params(params, *target, secLevel))
     {
         delete target;
-        return 0;
+        return nullptr;
     }
 
     return target;
@@ -409,7 +409,7 @@ List<MibTableRow>* snmpTargetAddrEntry::get_rows_cloned_for_tag(const OctetStr& 
 {
     const OctetStr&            myTag(tag);
     OidListCursor<MibTableRow> cur;
-    List<MibTableRow>*         list = new List<MibTableRow>();
+    auto*                      list = new List<MibTableRow>();
     start_synch();
     for (cur.init(&content); cur.get(); cur.next())
     {
@@ -438,7 +438,7 @@ bool snmpTargetAddrEntry::ready_for_service(Vbx* pvbs, int sz)
  *
  */
 
-snmpTargetParamsEntry* snmpTargetParamsEntry::instance = 0;
+snmpTargetParamsEntry* snmpTargetParamsEntry::instance = nullptr;
 
 snmpTargetParamsEntry::snmpTargetParamsEntry()
     : StorageTable(oidSnmpTargetParamsEntry, iSnmpAdminString, 1)
@@ -455,7 +455,7 @@ snmpTargetParamsEntry::snmpTargetParamsEntry()
     add_col(new snmpRowStatus("7"));
 }
 
-snmpTargetParamsEntry::~snmpTargetParamsEntry() { instance = 0; }
+snmpTargetParamsEntry::~snmpTargetParamsEntry() { instance = nullptr; }
 
 bool snmpTargetParamsEntry::contains(const OctetStr& name)
 {
@@ -486,7 +486,7 @@ MibTableRow* snmpTargetParamsEntry::add_entry(const OctetStr& name, const int mp
     if (r)
     {
         end_synch();
-        return 0;
+        return nullptr;
     }
     r = add_row(index);
     r->get_nth(0)->replace_value(new SnmpInt32(mpModel));

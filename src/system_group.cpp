@@ -115,7 +115,7 @@ sysServices::sysServices(const int s) : MibLeaf(oidSysServices, READONLY, new Sn
  *
  */
 
-sysOREntry* sysOREntry::instance = 0;
+sysOREntry* sysOREntry::instance = nullptr;
 
 const index_info indSysOREntry[1] = { { sNMP_SYNTAX_INT, false, 1, 1 } };
 
@@ -141,7 +141,7 @@ MibTableRow* sysOREntry::find(const Oidx& id)
         cur.get()->get_nth(0)->get_value(other);
         if (other == id) return cur.get();
     }
-    return 0;
+    return nullptr;
 }
 
 void sysOREntry::set_row(MibTableRow* r, const Oidx& id, const OctetStr& descr, int lastUpdate)
@@ -169,7 +169,7 @@ sysGroup::sysGroup(const char* descr, const Oidx& o, const int services, const c
     add(new SnmpDisplayString(oidSysName, READWRITE, new OctetStr(name ? name : "")));
     add(new SnmpDisplayString(oidSysLocation, READWRITE, new OctetStr(location ? location : "")));
     add(new sysServices(services));
-    TimeStamp* ptr = new TimeStamp(oidSysORLastChange, READONLY, VMODE_NONE);
+    auto* ptr = new TimeStamp(oidSysORLastChange, READONLY, VMODE_NONE);
     add(ptr);
     add(new sysOREntry(ptr));
 }

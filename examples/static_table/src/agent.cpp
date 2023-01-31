@@ -93,7 +93,7 @@ void init(Mib& mib, const NS_SNMP OctetStr& engineID)
 
     // An example usage of the MibStaticTable for a read-only table
     // implementation:
-    MibStaticTable* st = new MibStaticTable("1.3.6.1.4.1.4976.6.1.1");
+    auto* st = new MibStaticTable("1.3.6.1.4.1.4976.6.1.1");
     st->add(MibStaticEntry("2.224", SnmpInt32(1)));
     // an oldstyle entry with fully specified OID (deprecated)
     st->add(MibStaticEntry("1.3.6.1.4.1.4976.6.1.1.3.224", OctetStr("An oldstyle table text")));
@@ -102,7 +102,7 @@ void init(Mib& mib, const NS_SNMP OctetStr& engineID)
 
     // An example usage of the MibStaticTable for a read-only scalar
     // group:
-    MibStaticTable* ssg = new MibStaticTable("1.3.6.1.4.1.4976.6.1.2");
+    auto* ssg = new MibStaticTable("1.3.6.1.4.1.4976.6.1.2");
     ssg->add(MibStaticEntry("1.0", SnmpInt32(1)));
     ssg->add(MibStaticEntry("2.0", OctetStr("A scalar text object")));
     ssg->add(MibStaticEntry("3.0", Counter32(123456)));
@@ -112,7 +112,7 @@ void init(Mib& mib, const NS_SNMP OctetStr& engineID)
     mib.add(st);
 
 #ifdef _SNMPv3
-    UsmUserTable* uut = new UsmUserTable();
+    auto* uut = new UsmUserTable();
 
     uut->addNewRow(
         "unsecureUser", SNMP_AUTHPROTOCOL_NONE, SNMP_PRIVPROTOCOL_NONE, "", "", engineID, false);
@@ -240,7 +240,7 @@ int main(int argc, char* argv[])
     NS_SNMP OctetStr engineId;
 #endif
 
-    RequestList* reqList = new RequestList(mib);
+    auto* reqList = new RequestList(mib);
 
 #ifdef _SNMPv3
     // register v3MP
@@ -369,7 +369,7 @@ int main(int argc, char* argv[])
     vacm->addNewView("restricted", "1.3.6.1.6.3.15.1.1", "", view_included, storageType_nonVolatile);
 #endif
 
-    Vbx*                   vbs = 0;
+    Vbx*                   vbs = nullptr;
     coldStartOid const     coldOid;
     NotificationOriginator no;
     UdpAddress const       dest("127.0.0.1/162");

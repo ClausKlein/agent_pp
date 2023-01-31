@@ -172,7 +172,7 @@ public:
     ~nlmConfigLogOperStatus() override;
 
     MibEntryPtr clone() override;
-    void        get_request(Request*, int) override;
+    void        get_request(Request* /*unused*/, int /*unused*/) override;
 };
 
 //--AgentGen END
@@ -209,12 +209,12 @@ public:
 
     static nlmConfigGlobalEntryLimit* instance;
 
-    void             get_request(Request*, int) override;
+    void             get_request(Request* /*unused*/, int /*unused*/) override;
     virtual uint32_t get_state();
     virtual void     set_state(uint32_t);
-    int              set(const Vbx&) override;
-    int              prepare_set_request(Request*, int&) override;
-    bool             value_ok(const Vbx&) override;
+    int              set(const Vbx& /*vb*/) override;
+    int              prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    bool             value_ok(const Vbx& /*unused*/) override;
 
     //--AgentGen BEGIN=nlmConfigGlobalEntryLimit
     //--AgentGen END
@@ -245,12 +245,12 @@ public:
 
     static nlmConfigGlobalAgeOut* instance;
 
-    void             get_request(Request*, int) override;
+    void             get_request(Request* /*unused*/, int /*unused*/) override;
     virtual uint32_t get_state();
     virtual void     set_state(uint32_t);
-    int              set(const Vbx&) override;
-    int              prepare_set_request(Request*, int&) override;
-    bool             value_ok(const Vbx&) override;
+    int              set(const Vbx& /*vb*/) override;
+    int              prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    bool             value_ok(const Vbx& /*unused*/) override;
 
     //--AgentGen BEGIN=nlmConfigGlobalAgeOut
     //--AgentGen END
@@ -276,12 +276,12 @@ public:
     ~nlmConfigLogFilterName() override;
 
     MibEntryPtr              clone() override;
-    void                     get_request(Request*, int) override;
+    void                     get_request(Request* /*unused*/, int /*unused*/) override;
     virtual NS_SNMP OctetStr get_state();
     virtual void             set_state(const NS_SNMP OctetStr&);
-    int                      set(const Vbx&) override;
-    int                      prepare_set_request(Request*, int&) override;
-    bool                     value_ok(const Vbx&) override;
+    int                      set(const Vbx& /*vb*/) override;
+    int                      prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    bool                     value_ok(const Vbx& /*unused*/) override;
 
     //--AgentGen BEGIN=nlmConfigLogFilterName
     //--AgentGen END
@@ -311,12 +311,12 @@ public:
     ~nlmConfigLogEntryLimit() override;
 
     MibEntryPtr      clone() override;
-    void             get_request(Request*, int) override;
+    void             get_request(Request* /*unused*/, int /*unused*/) override;
     virtual uint32_t get_state();
     virtual void     set_state(uint32_t);
-    int              set(const Vbx&) override;
-    int              prepare_set_request(Request*, int&) override;
-    bool             value_ok(const Vbx&) override;
+    int              set(const Vbx& /*vb*/) override;
+    int              prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    bool             value_ok(const Vbx& /*unused*/) override;
 
     //--AgentGen BEGIN=nlmConfigLogEntryLimit
     //--AgentGen END
@@ -340,12 +340,12 @@ public:
     ~nlmConfigLogAdminStatus() override;
 
     MibEntryPtr     clone() override;
-    void            get_request(Request*, int) override;
+    void            get_request(Request* /*unused*/, int /*unused*/) override;
     virtual int32_t get_state();
     virtual void    set_state(int32_t);
-    int             set(const Vbx&) override;
-    int             prepare_set_request(Request*, int&) override;
-    bool            value_ok(const Vbx&) override;
+    int             set(const Vbx& /*vb*/) override;
+    int             prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    bool            value_ok(const Vbx& /*unused*/) override;
     enum labels { e_enabled = 1, e_disabled = 2 };
 
     //--AgentGen BEGIN=nlmConfigLogAdminStatus
@@ -365,12 +365,12 @@ public:
     ~nlmConfigLogStorageType() override;
 
     MibEntryPtr clone() override;
-    void        get_request(Request*, int) override;
+    void        get_request(Request* /*unused*/, int /*unused*/) override;
     int32_t     get_state() override;
-    void        set_state(int32_t) override;
-    int         set(const Vbx&) override;
-    int         prepare_set_request(Request*, int&) override;
-    bool        value_ok(const Vbx&) override;
+    void        set_state(int32_t /*unused*/) override;
+    int         set(const Vbx& /*vb*/) override;
+    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    bool        value_ok(const Vbx& /*unused*/) override;
     enum labels { e_other = 1, e_volatile = 2, e_nonVolatile = 3, e_permanent = 4, e_readOnly = 5 };
 
     //--AgentGen BEGIN=nlmConfigLogStorageType
@@ -399,8 +399,8 @@ public:
     MibEntryPtr     clone() override;
     virtual int32_t get_state();
     virtual void    set_state(int32_t);
-    int             set(const Vbx&) override;
-    int             prepare_set_request(Request*, int&) override;
+    int             set(const Vbx& /*unused*/) override;
+    int             prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
     enum labels {
         e_active        = 1,
         e_notInService  = 2,
@@ -411,7 +411,7 @@ public:
     };
 
     //--AgentGen BEGIN=nlmConfigLogEntryStatus
-    int commit_set_request(Request*, int) override;
+    int commit_set_request(Request* /*unused*/, int /*unused*/) override;
     //--AgentGen END
 };
 
@@ -431,7 +431,7 @@ public:
 
     static nlmStatsGlobalNotificationsLogged* instance;
 
-    void             get_request(Request*, int) override;
+    void             get_request(Request* /*unused*/, int /*unused*/) override;
     virtual uint32_t get_state();
     virtual void     set_state(uint32_t);
     virtual uint32_t inc();
@@ -457,7 +457,7 @@ public:
 
     static nlmStatsGlobalNotificationsBumped* instance;
 
-    void             get_request(Request*, int) override;
+    void             get_request(Request* /*unused*/, int /*unused*/) override;
     virtual uint32_t get_state();
     virtual void     set_state(uint32_t);
     virtual uint32_t inc();
@@ -483,9 +483,9 @@ public:
 
     static nlmConfigLogEntry* instance;
 
-    void         row_added(MibTableRow*, const Oidx&, MibTable*) override;
-    void         row_delete(MibTableRow*, const Oidx&, MibTable*) override;
-    void         row_init(MibTableRow*, const Oidx&, MibTable*) override;
+    void         row_added(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    void         row_delete(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    void         row_init(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
     virtual void set_row(MibTableRow* r, const NS_SNMP OctetStr& p0, uint32_t p1, int32_t p2,
         int32_t p3, int32_t p4, int32_t p5);
 
@@ -509,9 +509,9 @@ public:
 
     static nlmStatsLogEntry* instance;
 
-    void         row_added(MibTableRow*, const Oidx&, MibTable*) override;
-    void         row_delete(MibTableRow*, const Oidx&, MibTable*) override;
-    void         row_init(MibTableRow*, const Oidx&, MibTable*) override;
+    void         row_added(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    void         row_delete(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    void         row_init(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
     virtual void set_row(MibTableRow* r, uint32_t p0, uint32_t p1);
 
     //--AgentGen BEGIN=nlmStatsLogEntry
@@ -559,9 +559,9 @@ public:
 
     static nlmLogEntry* instance;
 
-    void         row_added(MibTableRow*, const Oidx&, MibTable*) override;
-    void         row_delete(MibTableRow*, const Oidx&, MibTable*) override;
-    void         row_init(MibTableRow*, const Oidx&, MibTable*) override;
+    void         row_added(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    void         row_delete(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    void         row_init(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
     virtual void set_row(MibTableRow* r, uint32_t p0, const NS_SNMP OctetStr& p1,
         const NS_SNMP OctetStr& p2, const NS_SNMP OctetStr& p3, const char* p4,
         const NS_SNMP OctetStr& p5, const NS_SNMP OctetStr& p6, const char* p7);
@@ -604,9 +604,9 @@ public:
 
     static nlmLogVariableEntry* instance;
 
-    void         row_added(MibTableRow*, const Oidx&, MibTable*) override;
-    void         row_delete(MibTableRow*, const Oidx&, MibTable*) override;
-    void         row_init(MibTableRow*, const Oidx&, MibTable*) override;
+    void         row_added(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    void         row_delete(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    void         row_init(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
     virtual void set_row(MibTableRow* r, const char* p0, int32_t p1, uint32_t p2, uint32_t p3,
         uint32_t p4, int32_t p5, const NS_SNMP OctetStr& p6, const char* p7, const char* p8,
         uint32_t p9hi, uint32_t p9lo, const NS_SNMP OctetStr& p10);

@@ -63,7 +63,7 @@ UdpAddress* snmpTargetAddrTMask::getUdpAddress()
         if (!r)
         {
             snmpTargetAddrEntry->end_synch();
-            return 0;
+            return nullptr;
         }
         int const domain = ((snmpTargetAddrTDomain*)r->get_nth(0))->get_state();
         snmpTargetAddrEntry->end_synch();
@@ -72,12 +72,12 @@ UdpAddress* snmpTargetAddrTMask::getUdpAddress()
         case 1:
         case 101:
         case 102:
-            UdpAddress* address = new UdpAddress();
-            *address            = (*(OctetStr*)value);
+            auto* address = new UdpAddress();
+            *address      = (*(OctetStr*)value);
             return address;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 int snmpTargetAddrTMask::prepare_set_request(Request* req, int& ind)
@@ -117,7 +117,7 @@ int snmpTargetAddrTMask::prepare_set_request(Request* req, int& ind)
  *
  */
 
-snmpCommunityEntry* snmpCommunityEntry::instance = 0;
+snmpCommunityEntry* snmpCommunityEntry::instance = nullptr;
 
 const index_info iSnmpCommunityEntry[1] = { { sNMP_SYNTAX_OCTETS, true, 1, 32 } };
 
@@ -146,7 +146,7 @@ snmpCommunityEntry::snmpCommunityEntry(Mib* mib)
     add_col(new snmpRowStatus("8", READCREATE));
 }
 
-snmpCommunityEntry::~snmpCommunityEntry() { instance = 0; }
+snmpCommunityEntry::~snmpCommunityEntry() { instance = nullptr; }
 
 void snmpCommunityEntry::set_row(MibTableRow* r, const OctetStr& p0, const OctetStr& p1,
     const OctetStr& p2, const OctetStr& p3, const OctetStr& p4, int p5, int p6)
@@ -230,7 +230,7 @@ bool snmpCommunityEntry::get_community(
  *
  */
 
-snmpTargetAddrExtEntry* snmpTargetAddrExtEntry::instance = 0;
+snmpTargetAddrExtEntry* snmpTargetAddrExtEntry::instance = nullptr;
 
 snmpTargetAddrExtEntry::snmpTargetAddrExtEntry()
     : snmpTargetAddrExtEntry(snmpTargetAddrEntry::instance)
@@ -259,7 +259,7 @@ snmpTargetAddrExtEntry::snmpTargetAddrExtEntry(snmpTargetAddrEntry* parentTable)
 
 snmpTargetAddrExtEntry::~snmpTargetAddrExtEntry()
 {
-    instance = 0;
+    instance = nullptr;
     // TODO: We cannot be sure that baseTable is still valid when this
     // destructor is being called!
     /*
@@ -271,8 +271,8 @@ snmpTargetAddrExtEntry::~snmpTargetAddrExtEntry()
 
 snmpTargetAddrExtEntry* snmpTargetAddrExtEntry::get_instance(Mib* mib)
 {
-    Oidx const              oid(oidSnmpTargetAddrExtEntry);
-    snmpTargetAddrExtEntry* entry = (snmpTargetAddrExtEntry*)mib->get(oid);
+    Oidx const oid(oidSnmpTargetAddrExtEntry);
+    auto*      entry = (snmpTargetAddrExtEntry*)mib->get(oid);
     if (entry) { return entry; }
     LOG_BEGIN(loggerModuleName, WARNING_LOG | 1);
     LOG("Please instantiate snmpTargetAddrEntry and add it to the supplied "
