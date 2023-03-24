@@ -733,7 +733,7 @@ void* thread_starter(void* t)
 #        ifndef NO_FAST_MUTEXES
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
     LOG("Thread: started (tid)");
-    LOG((AGENTPP_OPAQUE_PTHREAD_T)(thread->tid));
+    // XXX LOG((AGENTPP_OPAQUE_PTHREAD_T)(thread->tid));
     LOG_END;
 #        endif
 
@@ -742,7 +742,7 @@ void* thread_starter(void* t)
 #        ifndef NO_FAST_MUTEXES
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
     LOG("Thread: ended (tid)");
-    LOG((AGENTPP_OPAQUE_PTHREAD_T)(thread->tid));
+    // XXX LOG((AGENTPP_OPAQUE_PTHREAD_T)(thread->tid));
     LOG_END;
 #        endif
     Thread::threadList.remove(thread);
@@ -840,16 +840,18 @@ void Thread::join()
         status = IDLE;
         LOG_BEGIN(loggerModuleName, DEBUG_LOG | 4);
         LOG("Thread: joined thread successfully (tid)");
-        LOG((AGENTPP_OPAQUE_PTHREAD_T)tid); // FIXME: OSX error: cast from pointer to smaller type
-                                            // 'int' loses information
+        // XXX LOG((AGENTPP_OPAQUE_PTHREAD_T)tid); // FIXME: OSX error: cast from pointer to smaller
+        // type
+        //  'int' loses information
         LOG_END;
     }
     else
     {
         LOG_BEGIN(loggerModuleName, WARNING_LOG | 1);
         LOG("Thread: thread not running (tid)");
-        LOG((AGENTPP_OPAQUE_PTHREAD_T)tid); // FIXME: OSX error: cast from pointer to smaller type
-                                            // 'int' loses information
+        // XXX LOG((AGENTPP_OPAQUE_PTHREAD_T)tid); // FIXME: OSX error: cast from pointer to smaller
+        // type
+        //  'int' loses information
         LOG_END;
     }
 #    else
@@ -963,12 +965,12 @@ void Thread::nsleep(int secs, long nanos)
     DWORD millis = secs * 1000 + nanos / 1000000;
     Sleep(millis);
 #    else
-    long const s = secs + nanos / 1000000000;
-    long const n = nanos % 1000000000;
+    long const      s        = secs + nanos / 1000000000;
+    long const      n        = nanos % 1000000000;
 
 #        ifdef _POSIX_TIMERS
     struct timespec interval = {}, remainder = {};
-    interval.tv_sec = s;
+    interval.tv_sec  = s;
     interval.tv_nsec = n;
     if (nanosleep(&interval, &remainder) == -1)
     {

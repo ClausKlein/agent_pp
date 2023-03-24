@@ -1333,9 +1333,9 @@ public:
 
     int get_cursor() { return cursor; }
 
-    ArrayCursor() : cursor(0) { list = 0; };
-    ArrayCursor(const List<T>* l) : cursor(0) { list = l; };
-    ArrayCursor(const ArrayCursor<T>& c) : cursor(c.cursor) { list = c.list; };
+    ArrayCursor() : cursor(0) { list = 0; }
+    ArrayCursor(const List<T>* l) : cursor(0) { list = l; }
+    ArrayCursor(const ArrayCursor<T>& c) : cursor(c.cursor) { list = c.list; }
 
 protected:
     const Array<T>* list;

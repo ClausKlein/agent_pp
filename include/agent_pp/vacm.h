@@ -197,7 +197,7 @@ public:
 
     void               incUnknownContexts();
     NS_SNMP SnmpInt32  getUnknownContexts();
-    static const char* getErrorMsg(int nr) { return vacmErrs[nr]; };
+    static const char* getErrorMsg(int nr) { return vacmErrs[nr]; }
 
     /**
      * Add a new context to the VacmContextTable.

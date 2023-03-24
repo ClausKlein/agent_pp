@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21...3.25)
+cmake_minimum_required(VERSION 3.21...3.26)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -193,16 +193,8 @@ endif()
 
 option(USE_OUTPUT_PATH "build all libaries and runtime files at the bin directory" YES)
 if(USE_OUTPUT_PATH)
-  # -----------------------------------------------------------------------
-  # Where to put all the LIBRARY targets when built. This variable is used to initialize the
-  # LIBRARY_OUTPUT_DIRECTORY property on all the targets.
-  # -----------------------------------------------------------------------
+  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
-  # -----------------------------------------------------------------------
-  # Where to put all the RUNTIME targets when built. This variable is used to initialize the
-  # RUNTIME_OUTPUT_DIRECTORY property on all the targets.
-  # -----------------------------------------------------------------------
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 endif()
 
@@ -212,12 +204,13 @@ endif()
 include(CPM)
 
 set(SNMP_PP_VERSION 3.4.7)
+option(SNMP_PP_LOGGING "build all libaries with logging" YES)
 # see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.13.beta
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG 96ba002ae94addc05597771444b0ba1685d41d8b # VERSION ${SNMP_PP_VERSION}.13
+  GIT_TAG 6131008c4ce1578f8b8a9921d7f9a720826fd871 # VERSION ${SNMP_PP_VERSION}.13
   GITHUB_REPOSITORY ClausKlein/snmp_pp
-  OPTIONS "SNMP_PP_LOGGING NO" "SNMP_PP_EXAMPLES YES" "CMAKE_SKIP_INSTALL_RULES NO"
+  OPTIONS "SNMP_PP_EXAMPLES YES" "CMAKE_SKIP_INSTALL_RULES NO"
 )
 
 CPMAddPackage("gh:aminya/project_options@0.26.3")
@@ -312,7 +305,15 @@ if(OPTION_ENABLE_COVERAGE)
   set(ENABLE_COVERAGE "ENABLE_COVERAGE")
 endif()
 
-option(OPTION_ENABLE_UNITY "Enable Unity builds of projects" ON)
+if(SNMP_PP_LOGGING)
+  set(OPTION_ENABLE_UNITY
+      OFF
+      CACHE STRING "forced" FORCE
+  )
+else()
+  option(OPTION_ENABLE_UNITY "Enable Unity builds of projects" ON)
+endif()
+
 if(OPTION_ENABLE_UNITY)
   set(ENABLE_UNITY "ENABLE_UNITY")
 endif()
@@ -340,10 +341,10 @@ if(CMAKE_SKIP_INSTALL_RULES)
   add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
   target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_project_options ${PROJECT_NAME}_project_warnings)
 
-# target_link_libraries(
-#   ${PROJECT_NAME} PRIVATE $<BUILD_LOCAL_INTERFACE:${PROJECT_NAME}_project_options>
-#                           $<BUILD_LOCAL_INTERFACE:${PROJECT_NAME}_project_warnings>
-# )
+  # target_link_libraries(
+  #   ${PROJECT_NAME} PRIVATE $<BUILD_LOCAL_INTERFACE:${PROJECT_NAME}_project_options>
+  #                           $<BUILD_LOCAL_INTERFACE:${PROJECT_NAME}_project_warnings>
+  # )
 endif()
 set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ${OPTION_ENABLE_UNITY})
 
@@ -351,7 +352,10 @@ if(MSVC)
   target_compile_options(${PROJECT_NAME} PRIVATE /W3 /wd4251)
   target_compile_definitions(${PROJECT_NAME} PUBLIC _CRT_SECURE_NO_WARNINGS)
 else()
-  target_compile_options(${PROJECT_NAME} PUBLIC -Wno-conversion -Wshadow -Wno-unused-parameter -Wno-deprecated-declarations -Wno-old-style-cast -Wno-extra-semi)
+  target_compile_options(
+    ${PROJECT_NAME} PUBLIC -Wno-conversion -Wshadow -Wno-unused-parameter -Wno-deprecated-declarations -Wno-old-style-cast
+                           -Wno-extra-semi
+  )
 endif()
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE 1)
@@ -370,9 +374,10 @@ target_include_directories(
   ${PROJECT_NAME} SYSTEM BEFORE PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 target_include_directories(
-  ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-                         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/PackageProjectInclude>
-                         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>
+  ${PROJECT_NAME}
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/PackageProjectInclude>
+         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>
 )
 
 # Note: for SameMajorVersion upgrade stategy
@@ -452,11 +457,9 @@ foreach(EXE_BASE_DIR ${EXE_BASE_DIRS})
     target_include_directories(
       ${EXE_SUB_DIR} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/${EXE_BASE_DIR}/${EXE_SUB_DIR}/include/"
     )
-    set_target_properties(
-      ${EXE_SUB_DIR} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/${EXE_BASE_DIR}/${EXE_SUB_DIR}/src"
-    )
+    #XXX set_target_properties(${EXE_SUB_DIR} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/${EXE_BASE_DIR}/${EXE_SUB_DIR}/src")
     if(NOT ${EXE_BASE_DIR} STREQUAL "tools")
-      set_target_properties(${EXE_SUB_DIR} PROPERTIES OUTPUT_NAME "agent")
+      set_target_properties(${EXE_SUB_DIR} PROPERTIES OUTPUT_NAME "${EXE_SUB_DIR}_agent")
     endif()
 
   endforeach()
@@ -498,10 +501,10 @@ packageProject(
   # location of the target's public headers
   INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include
   # should match the target's INSTALL_INTERFACE include directory
-  INCLUDE_DESTINATION include
-  # (optional) option to install only header files with matching pattern
-  INCLUDE_HEADER_PATTERN "*.h"
-  # semicolon separated list of the project's dependencies
+  INCLUDE_DESTINATION
+    include # (optional) option to install only header files with matching pattern
+    INCLUDE_HEADER_PATTERN "*.h"
+    # semicolon separated list of the project's dependencies
   DEPENDENCIES "snmp_pp ${SNMP_PP_VERSION}"
   # (optional) create a header containing the version info
   # Note: that the path to headers should be lowercase

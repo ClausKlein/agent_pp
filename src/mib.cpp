@@ -1877,7 +1877,7 @@ bool MibTable::ready(Vbx* pvbs, int sz, MibTableRow* row)
             MibLeaf* c = row->get_nth(i);
             if ((c->get_access() > READONLY) && (pvbs[i].valid()) && // check if value is set
                 (!c->value_ok(pvbs[i])))
-            { // check if set value is ok
+            {                                                        // check if set value is ok
                 delete[] required;
 
                 LOG_BEGIN(loggerModuleName, DEBUG_LOG | 3);

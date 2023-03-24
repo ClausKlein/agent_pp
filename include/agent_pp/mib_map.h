@@ -61,29 +61,29 @@ public:
     int length() const // current number of items
     {
         return count;
-    };
-    int empty() const { return (count == 0); };
+    }
+    int empty() const { return (count == 0); }
 
-    virtual int contains(OidxPtr key); // is key mapped?
+    virtual int contains(OidxPtr key);                // is key mapped?
 
-    virtual void clear(); // delete all items
+    virtual void clear();                             // delete all items
 
     virtual MibEntryPtr& operator[](OidxPtr key) = 0; // access contents by key
 
-    virtual void del(OidxPtr key) = 0; // delete entry
+    virtual void del(OidxPtr key) = 0;                // delete entry
 
-    virtual Pix          first()         = 0; // Pix of first item or 0
-    virtual void         next(Pix& i)    = 0; // advance to next or 0
-    virtual OidxPtr&     key(Pix i)      = 0; // access key at i
-    virtual MibEntryPtr& contents(Pix i) = 0; // access contents at i
+    virtual Pix          first()         = 0;         // Pix of first item or 0
+    virtual void         next(Pix& i)    = 0;         // advance to next or 0
+    virtual OidxPtr&     key(Pix i)      = 0;         // access key at i
+    virtual MibEntryPtr& contents(Pix i) = 0;         // access contents at i
 
-    virtual int owns(Pix i);       // is i a valid Pix  ?
-    virtual Pix seek(OidxPtr key); // Pix of key
+    virtual int owns(Pix i);                          // is i a valid Pix  ?
+    virtual Pix seek(OidxPtr key);                    // Pix of key
 
-    MibEntryPtr& dflt() // access default val
+    MibEntryPtr& dflt()                               // access default val
     {
         return def;
-    };
+    }
 
     void        error(const char* msg);
     virtual int OK() = 0; // rep invariant

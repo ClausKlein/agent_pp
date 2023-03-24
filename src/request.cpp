@@ -1223,11 +1223,11 @@ Request* RequestList::receive(int sec)
     UTarget   target;
     int const status = snmp->receive(tvptr, pdu, target);
 #else
-    UdpAddress from;
+    UdpAddress   from;
     snmp_version version = version1;
-    OctetStr community;
+    OctetStr     community;
 
-    int status = snmp->receive(tvptr, pdu, from, version, community);
+    int     status = snmp->receive(tvptr, pdu, from, version, community);
     CTarget target(from);
     target.set_version(version);
     target.set_readcommunity(community);
@@ -1533,9 +1533,9 @@ Request* RequestList::receive(int sec)
         }
         } // switch
 
-#else  // #ifdef _SNMPv3
-       // access for GETNEXT and GETBULK can�t be checked here
-       // community_ok increments inBadCommunityUses
+#else     // #ifdef _SNMPv3
+          // access for GETNEXT and GETBULK can�t be checked here
+          // community_ok increments inBadCommunityUses
         if (!community_ok(pdu.get_type(), security_name))
         {
             LOG_BEGIN(loggerModuleName, EVENT_LOG | 1);
@@ -1550,7 +1550,7 @@ Request* RequestList::receive(int sec)
             return 0;
         }
         else
-#endif // _SNMPv3
+#endif    // _SNMPv3
         {
             auto* req = new Request(pdu, target);
 #ifdef _SNMPv3

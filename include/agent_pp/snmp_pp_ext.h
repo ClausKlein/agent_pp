@@ -190,7 +190,7 @@ public:
     }
 
     using NS_SNMP Oid::operator=;
-    virtual Oidx&      operator=(uint32_t l)
+    virtual Oidx& operator=(uint32_t l)
     {
         // delete the old value
         if (smival.value.oid.ptr)
@@ -205,7 +205,7 @@ public:
     }
 
     using NS_SNMP Oid::operator+=;
-    Oidx&              operator+=(NS_SNMP IpAddress const& ip)
+    Oidx&         operator+=(NS_SNMP IpAddress const& ip)
     {
         for (int i = 0; i < ip.get_length(); i++) *this += (uint32_t)ip[i];
         return *this;
@@ -411,9 +411,9 @@ public:
      * @return
      *    a copy of the oid value of the receiver.
      */
-    Oidx get_oid() const { return iv_vb_oid; };
+    Oidx get_oid() const { return iv_vb_oid; }
 
-    void get_oid(Oidx& oid) const { oid = iv_vb_oid; };
+    void get_oid(Oidx& oid) const { oid = iv_vb_oid; }
 
     /**
      * Clear the content of the variable binding. The content of

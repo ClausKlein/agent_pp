@@ -183,7 +183,7 @@ bool VacmSecurityToGroupTable::getGroupName(
 
     Oidx     o  = oid; // base
     OctetStr os = securityName;
-    o += 3; // col GroupName
+    o += 3;            // col GroupName
     o += securityModel;
     o += os.len();
     for (unsigned int i = 0; i < os.len(); i++) o += os[i];

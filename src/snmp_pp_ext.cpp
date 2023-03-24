@@ -655,7 +655,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             can_receive_ipv6 = true;
 #        endif // SNMP_PP_IPv6
 
-#    else // HAVE_POLL_SYSCALL
+#    else      // HAVE_POLL_SYSCALL
         nfound = select(max_fd + 1, &readfds, nullptr, nullptr, tvptr);
 
         if (nfound == -1)
@@ -813,7 +813,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             }
             return status; // Success! return
         }
-#    endif // SNMP_PP_IPv6
+#    endif                 // SNMP_PP_IPv6
     } while (true);
 }
 
@@ -830,32 +830,32 @@ int Snmpx::receive(
 
     long receive_buffer_len; // len of received data
 
-    SocketAddrType from_addr;
+    SocketAddrType   from_addr;
     SocketLengthType fromlen;
-    SnmpMessage snmpmsg;
+    SnmpMessage      snmpmsg;
 
-    int nfound = 0;
-    bool can_receive_ipv4 = false;
+    int           nfound           = 0;
+    bool          can_receive_ipv4 = false;
 #    ifdef SNMP_PP_IPv6
-    bool can_receive_ipv6 = false;
+    bool          can_receive_ipv6 = false;
 #    endif
 
 #    ifdef HAVE_POLL_SYSCALL
-    int nfds = 0;
+    int           nfds             = 0;
     struct pollfd readfds[2];
-    int timeout = tvptr ? (tvptr->tv_sec * 1000 + tvptr->tv_usec / 1000) : -1;
+    int           timeout = tvptr ? (tvptr->tv_sec * 1000 + tvptr->tv_usec / 1000) : -1;
 
     memset(readfds, 0, 2 * sizeof(struct pollfd));
     if (iv_snmp_session != INVALID_SOCKET)
     {
-        readfds[nfds].fd = iv_snmp_session;
+        readfds[nfds].fd     = iv_snmp_session;
         readfds[nfds].events = POLLIN;
         nfds++;
     }
 #        ifdef SNMP_PP_IPv6
     if (iv_snmp_session_ipv6 != INVALID_SOCKET)
     {
-        readfds[nfds].fd = iv_snmp_session_ipv6;
+        readfds[nfds].fd     = iv_snmp_session_ipv6;
         readfds[nfds].events = POLLIN;
         nfds++;
     }
@@ -903,7 +903,7 @@ int Snmpx::receive(
             can_receive_ipv6 = true;
 #        endif // SNMP_PP_IPv6
 
-#    else // HAVE_POLL_SYSCALL
+#    else      // HAVE_POLL_SYSCALL
         nfound = select(max_fd + 1, &readfds, 0, 0, tvptr);
 
         if (nfound == -1)
@@ -937,7 +937,7 @@ int Snmpx::receive(
 
             // copy fromaddress and remote port
             char* addr = inet_ntoa(((sockaddr_in&)from_addr).sin_addr);
-            fromaddr = addr;
+            fromaddr   = addr;
             fromaddr.set_port(ntohs(((sockaddr_in&)from_addr).sin_port));
 
             debugprintf(1, "++ AGENT++: data received from %s.", fromaddr.get_printable());
@@ -977,7 +977,7 @@ int Snmpx::receive(
             // return the status of unload method
             return snmpmsg.unload(pdu, community, version);
         }
-#    endif // SNMP_PP_IPv6
+#    endif     // SNMP_PP_IPv6
     } while (1);
 }
 
@@ -1102,8 +1102,8 @@ int Snmpx::send(
 #    ifdef _THREADS
     static ThreadManager smutex;
 #    endif
-    SnmpMessage snmpmsg;
-    int status;
+    SnmpMessage          snmpmsg;
+    int                  status;
     status = snmpmsg.load(pdu, community, version);
     if (status != SNMP_CLASS_SUCCESS) return status;
 

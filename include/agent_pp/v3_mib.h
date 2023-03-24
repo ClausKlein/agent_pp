@@ -162,7 +162,7 @@ public:
     {
         return addNewRow(
             engineID, userName, userName, authProtocol, authKey, privProtocol, privKey, add_to_usm);
-    };
+    }
 
     /**
      * Add a user to the table and to USM.
@@ -209,7 +209,7 @@ public:
     {
         return addNewRow(
             userName, userName, authProtocol, privProtocol, authPassword, privPassword, true);
-    };
+    }
 
     /**
      * Add a user to the table and to USM.
@@ -225,7 +225,7 @@ public:
     {
         return addNewRow(userName, userName, authProtocol, privProtocol, authPassword, privPassword,
             engineID, addPassWordsToUSM);
-    };
+    }
 
     /**
      * Delete a row from the table and from USM.
@@ -256,7 +256,7 @@ public:
      */
     void removeAllUsers();
 
-    MibTableRow* get_row(const Oidx& o) { return find_index(o); };
+    MibTableRow* get_row(const Oidx& o) { return find_index(o); }
 
     static const Oidx auth_base;
     static const Oidx priv_base;

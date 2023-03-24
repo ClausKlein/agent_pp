@@ -111,7 +111,7 @@ int main(int argc, char** argv)
     }
     Oid oid("1"); // default is beginning of MIB
     if (argc >= 4)
-    { // if 3 args, then use the callers Oid
+    {             // if 3 args, then use the callers Oid
         if (strstr(argv[3], "-") == 0)
         {
             oid = argv[3];
@@ -124,11 +124,11 @@ int main(int argc, char** argv)
     }
 
     //---------[ determine options to use ]-----------------------------------
-    snmp_version   srcVersion = version1;  // default is v1
-    int            srcRetries = 1;         // default retries is 1
-    int            srcTimeout = 100;       // default is 1 second
-    unsigned short srcPort    = 161;       // default snmp port is 161
-    OctetStr       srcCommunity("public"); // read community
+    snmp_version   srcVersion = version1;   // default is v1
+    int            srcRetries = 1;          // default retries is 1
+    int            srcTimeout = 100;        // default is 1 second
+    unsigned short srcPort    = 161;        // default snmp port is 161
+    OctetStr       srcCommunity("public");  // read community
 
     snmp_version   destVersion = version1;  // default is v1
     int            destRetries = 1;         // default retries is 1

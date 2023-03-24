@@ -918,7 +918,7 @@ int UsmCloneFrom::set(const Vbx& vb)
             if ((((Oid*)value)->len() != 2) || // CloneFrom was set
                 ((*(Oid*)value)[0] != 0) ||    // before ==>
                 ((*(Oid*)value)[1] != 0))
-            { // do nothing
+            {                                  // do nothing
                 LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
                 LOG("UsmCloneFrom: clonefrom can be called only once");
                 LOG_END;

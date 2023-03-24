@@ -610,4 +610,4 @@ int MibProxyV3::process_single(Pdux& pdu, Request* req)
 
 #    endif // _PROXY_FORWARDER
 
-#endif // _USE_PROXY
+#endif     // _USE_PROXY

@@ -48,10 +48,10 @@ static const char* loggerModuleName = "agent++.cmd_exe_mib";
 
 // globals:
 
-unsigned short port;
-Mib*           mib;
-RequestList*   reqList;
-bool           run = true;
+unsigned short port {};
+Mib*           mib { nullptr };
+RequestList*   reqList { nullptr };
+bool           run { true };
 
 static void sig(int signo)
 {
@@ -229,7 +229,9 @@ int main(int argc, char* argv[])
     int   stat = 0;
     v3MP* v3mp = new v3MP(engineId, snmpEngineBoots, stat);
 #endif
+
     reqList = new RequestList(mib);
+
 #ifdef _SNMPv3
     // register v3MP
     reqList->set_v3mp(v3mp);
@@ -286,7 +288,7 @@ int main(int argc, char* argv[])
     // level >= noAuthNoPriv within context "") would have full access
     // (read, write, notify) to all objects in view "newView".
     vacm->addNewAccessEntry("newGroup",
-        "other", // context
+        "other",     // context
         SNMP_SECURITY_MODEL_USM, SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV,
         match_exact, // context must mach exactly
         // alternatively: match_prefix
@@ -372,13 +374,20 @@ int main(int argc, char* argv[])
     Request* req = nullptr;
     while (run)
     {
-
         req = reqList->receive(2);
 
         if (req) { mib->process_request(req); }
         else { mib->cleanup(); }
     }
+
+    delete reqList;
     delete mib;
+
+#ifdef _SNMPv3
+    delete vacm;
+    delete v3mp;
+#endif
+
     Snmp::socket_cleanup(); // Shut down socket subsystem
     return 0;
 }

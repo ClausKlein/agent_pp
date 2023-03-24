@@ -60,26 +60,26 @@ public:
     OidxPtrEntryPtrMap(EntryPtr deflt) : count(0), def(deflt) {};
     virtual ~OidxPtrEntryPtrMap() {};
 
-    int  length() const { return count; }; // current number of items
-    bool empty() const { return (count == 0); };
+    int  length() const { return count; } // current number of items
+    bool empty() const { return (count == 0); }
 
-    virtual int contains(OidxPtr key) const; // is key mapped?
+    virtual int contains(OidxPtr key) const;       // is key mapped?
 
-    virtual void clear(); // delete all items
+    virtual void clear();                          // delete all items
 
     virtual EntryPtr& operator[](OidxPtr key) = 0; // access contents by key
 
-    virtual void del(OidxPtr key) = 0; // delete entry
+    virtual void del(OidxPtr key) = 0;             // delete entry
 
-    virtual Pix       first() const      = 0; // Pix of first item or 0
-    virtual void      next(Pix& i) const = 0; // advance to next or 0
-    virtual OidxPtr&  key(Pix i) const   = 0; // access key at i
-    virtual EntryPtr& contents(Pix i)    = 0; // access contents at i
+    virtual Pix       first() const      = 0;      // Pix of first item or 0
+    virtual void      next(Pix& i) const = 0;      // advance to next or 0
+    virtual OidxPtr&  key(Pix i) const   = 0;      // access key at i
+    virtual EntryPtr& contents(Pix i)    = 0;      // access contents at i
 
-    virtual int owns(Pix i);             // is i a valid Pix  ?
-    virtual Pix seek(OidxPtr key) const; // Pix of key
+    virtual int owns(Pix i);                       // is i a valid Pix  ?
+    virtual Pix seek(OidxPtr key) const;           // Pix of key
 
-    EntryPtr& dflt() { return def; }; // access default val
+    EntryPtr& dflt() { return def; }               // access default val
 
     void        error(const char* msg) const;
     virtual int OK() = 0; // rep invariant
