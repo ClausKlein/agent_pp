@@ -2207,7 +2207,7 @@ public:
 class AGENTPP_DECL MibConfigFormat {
 
 public:
-    virtual ~MibConfigFormat() {};
+    virtual ~MibConfigFormat() { }
 
     /**
      * Stores the persistent data in the supplied MibContext to disk.

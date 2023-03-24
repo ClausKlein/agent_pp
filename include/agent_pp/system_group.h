@@ -132,7 +132,7 @@ class AGENTPP_DECL sysORLastChange : public MibLeaf {
 
 public:
     sysORLastChange();
-    ~sysORLastChange() override {};
+    ~sysORLastChange() override { }
 
     static sysORLastChange* instance;
 

@@ -114,8 +114,9 @@ int agentppNotifyTest::prepare_set_request(Request* req, int& ind)
 //--AgentGen BEGIN=agentppNotifyTest
 void agentppNotifyTest::send_agentppNotifyTestAllTypes()
 {
-    Vbx* vbs = new Vbx[9];
-    int  n   = 0;
+    constexpr size_t LENGTH { 9 };
+    Vbx              vbs[LENGTH];
+    int              n = 0;
     vbs[n].set_oid("1.3.6.1.2.1.92.1.3.2.1.4.0.1");
     vbs[n++].set_value(Counter32(rand()));
     vbs[n].set_oid("1.3.6.1.2.1.92.1.3.2.1.5.0.1");
@@ -144,8 +145,8 @@ void agentppNotifyTest::send_agentppNotifyTestAllTypes()
     OpaqueStr const op(s);
     vbs[n++].set_value(op);
     agentppNotifyTestAllTypes no;
-    no.generate(vbs, 9, "");
-    for (int j = 0; j < 9; j++)
+    no.generate(vbs, LENGTH, "");
+    for (size_t j = 0; j < LENGTH; j++)
     {
         LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
         LOG("Test notification vb sent (#)(oid)(val)(syntax)");
@@ -155,7 +156,6 @@ void agentppNotifyTest::send_agentppNotifyTestAllTypes()
         LOG(vbs[j].get_syntax());
         LOG_END;
     }
-    delete[] vbs;
 }
 //--AgentGen END
 

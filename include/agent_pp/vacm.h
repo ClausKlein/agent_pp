@@ -415,7 +415,7 @@ protected:
 class AGENTPP_DECL VacmAccessTableStatus : public snmpRowStatus {
 public:
     VacmAccessTableStatus(const Oidx&, int);
-    ~VacmAccessTableStatus() override {};
+    ~VacmAccessTableStatus() override { }
 
     MibEntryPtr clone() override;
 

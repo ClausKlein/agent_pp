@@ -556,9 +556,9 @@ public:
 
     ListItem<T>* get_cursor() { return cursor; }
 
-    ListCursor() : cursor(0) {};
-    ListCursor(const List<T>* l) : cursor(l->head) {};
-    ListCursor(const ListCursor<T>& c) : cursor(c.cursor) {};
+    ListCursor() : cursor(0) { }
+    ListCursor(const List<T>* l) : cursor(l->head) { }
+    ListCursor(const ListCursor<T>& c) : cursor(c.cursor) { }
 
 protected:
     ListItem<T>* cursor;

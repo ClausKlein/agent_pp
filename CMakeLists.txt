@@ -208,7 +208,7 @@ option(SNMP_PP_LOGGING "build all libaries with logging" NO)
 # see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.13.beta
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG 6131008c4ce1578f8b8a9921d7f9a720826fd871 # VERSION ${SNMP_PP_VERSION}.13
+  GIT_TAG 91162c0d53a41d1b01f949ef3658b990f8f8abf7 # VERSION ${SNMP_PP_VERSION}.13
   GITHUB_REPOSITORY ClausKlein/snmp_pp
   OPTIONS "SNMP_PP_EXAMPLES YES" "CMAKE_SKIP_INSTALL_RULES NO"
 )
@@ -333,6 +333,7 @@ project_options(
 
 set(PROJECT_EXPORT_HEADER ${PROJECT_NAME}/export.h)
 add_library(${PROJECT_NAME} ${MY_HEADER_FILES} ${MY_HEADER_LIB_FILES} ${CMAKE_CURRENT_BINARY_DIR}/config.h ${MY_SRC_FILES})
+
 if(CMAKE_SKIP_INSTALL_RULES)
   include(GenerateExportHeader)
   generate_export_header(

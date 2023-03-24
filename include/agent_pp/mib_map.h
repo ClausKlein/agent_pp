@@ -55,8 +55,8 @@ protected:
     MibEntryPtr def;
 
 public:
-    OidxPtrMibEntryPtrMap(MibEntryPtr deflt) : count(0), def(deflt) {};
-    virtual ~OidxPtrMibEntryPtrMap() {};
+    OidxPtrMibEntryPtrMap(MibEntryPtr deflt) : count(0), def(deflt) { }
+    virtual ~OidxPtrMibEntryPtrMap() { }
 
     int length() const // current number of items
     {

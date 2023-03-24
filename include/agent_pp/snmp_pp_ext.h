@@ -687,7 +687,7 @@ public:
      * @param port
      *    an UDP port to be used for the session
      */
-    Snmpx(int& status, unsigned short port) : Snmp(status, port) {};
+    Snmpx(int& status, unsigned short port) : Snmp(status, port) { }
 
 #ifdef SNMP_PP_WITH_UDPADDR
     /**

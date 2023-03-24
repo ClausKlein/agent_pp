@@ -54,7 +54,7 @@ struct OidxPtrEntryPtrAVLNode {
     char                    stat;
     OidxPtrEntryPtrAVLNode(OidxPtr h, EntryPtr c, OidxPtrEntryPtrAVLNode* l = nullptr,
         OidxPtrEntryPtrAVLNode* r = nullptr);
-    ~OidxPtrEntryPtrAVLNode() {};
+    ~OidxPtrEntryPtrAVLNode() { }
 };
 
 inline OidxPtrEntryPtrAVLNode::OidxPtrEntryPtrAVLNode(

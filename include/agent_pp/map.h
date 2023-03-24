@@ -57,8 +57,8 @@ protected:
     EntryPtr def;
 
 public:
-    OidxPtrEntryPtrMap(EntryPtr deflt) : count(0), def(deflt) {};
-    virtual ~OidxPtrEntryPtrMap() {};
+    OidxPtrEntryPtrMap(EntryPtr deflt) : count(0), def(deflt) { }
+    virtual ~OidxPtrEntryPtrMap() { }
 
     int  length() const { return count; } // current number of items
     bool empty() const { return (count == 0); }

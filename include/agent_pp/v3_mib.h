@@ -271,7 +271,7 @@ private:
 class AGENTPP_DECL UsmCloneFrom : public MibLeaf {
 public:
     UsmCloneFrom(const Oidx& o, NS_SNMP USM* u);
-    ~UsmCloneFrom() override {};
+    ~UsmCloneFrom() override { }
     int         prepare_set_request(Request* req, int& ind) override;
     void        get_request(Request* req, int ind) override;
     int         set(const Vbx& vb) override;
@@ -309,10 +309,11 @@ protected:
 
 class AGENTPP_DECL UsmOwnKeyChange : public UsmKeyChange {
 public:
-    UsmOwnKeyChange(const Oidx& o, NS_SNMP USM* u) : UsmKeyChange(o, u) {};
+    UsmOwnKeyChange(const Oidx& o, NS_SNMP USM* u) : UsmKeyChange(o, u) { }
     UsmOwnKeyChange(
         const Oidx& o, int keylen, int hashfunction, int typeOfKey, UsmKeyChange* ukc, NS_SNMP USM* u)
-        : UsmKeyChange(o, keylen, hashfunction, typeOfKey, ukc, u) {};
+        : UsmKeyChange(o, keylen, hashfunction, typeOfKey, ukc, u)
+    { }
     ~UsmOwnKeyChange() override;
 
     int         prepare_set_request(Request* req, int& ind) override;

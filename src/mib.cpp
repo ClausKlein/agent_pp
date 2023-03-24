@@ -439,7 +439,7 @@ uint32_t Counter32MibLeaf::incrementColumnar(Mib* mib, const Oidx& columnOid, co
 uint32_t Counter32MibLeaf::incrementScalar(
     Mib* mib, const OctetStr& context, const Oidx& counterInstanceOid)
 {
-    Counter32MibLeaf* counter = get_instance(mib, counterInstanceOid);
+    Counter32MibLeaf* counter = get_instance(mib, context, counterInstanceOid);
     if (counter)
     {
         counter->increment();
@@ -453,7 +453,7 @@ uint32_t Counter32MibLeaf::incrementScalar(
 uint32_t Counter32MibLeaf::incrementColumnar(
     Mib* mib, const OctetStr& context, const Oidx& columnOid, const Oidx& indexRow)
 {
-    Counter32MibLeaf* counter = get_instance(mib, columnOid, indexRow);
+    Counter32MibLeaf* counter = get_instance(mib, context, columnOid, indexRow);
     if (counter)
     {
         counter->increment();
