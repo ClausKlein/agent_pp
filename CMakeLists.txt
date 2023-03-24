@@ -204,7 +204,7 @@ endif()
 include(CPM)
 
 set(SNMP_PP_VERSION 3.4.7)
-option(SNMP_PP_LOGGING "build all libaries with logging" YES)
+option(SNMP_PP_LOGGING "build all libaries with logging" NO)
 # see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.13.beta
 CPMAddPackage(
   NAME snmp_pp
