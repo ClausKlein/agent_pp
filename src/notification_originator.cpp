@@ -139,9 +139,10 @@ int NotificationOriginator::generate(Vbx* vbs, int size, const Oidx& id, unsigne
 
             OctetStr tag;
             typeCur.get()->first()->get_value(tag);
-            char* tagstr = new char[tag.len() + 1];
-            strlcpy(tagstr, (char*)tag.data(), tag.len());
-            tagstr[tag.len()] = 0; // OK, CK
+            int const len = tag.len();  // NOTE: without \0! CK
+            char* tagstr = new char[len + 1];
+            memcpy(tagstr, (char*)tag.data(), len);
+            tagstr[len] = 0; // OK, CK
 
             if (((SnmpTagList*)cur.get()->get_nth(4))->contains(tagstr))
             {

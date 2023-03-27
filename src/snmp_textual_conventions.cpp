@@ -281,9 +281,9 @@ bool SnmpTagList::contains(const char* tag)
 {
     if (!tag) return false;
 
-    int const len = ((OctetStr*)value)->len();
+    int const len = ((OctetStr*)value)->len();  // NOTE: without \0! CK
     char*     l   = new char[len + 1];
-    strlcpy(l, (char*)((OctetStr*)value)->data(), len);
+    memcpy(l, (char*)((OctetStr*)value)->data(), len);
     l[len] = 0; // OK, CK
 
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 10);
