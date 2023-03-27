@@ -197,7 +197,7 @@ void agentppNotifyTestAllTypes::generate(Vbx* vbs, int sz, const OctetStr& conte
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
         LOG("agentppNotifyTestAllTypes: wrong var bind (no.) (given) "
             "(expected)");
-        LOG(1l);
+        LOG(1L);
         LOG(vbs[0].get_printable_oid());
         LOG("1.3.6.1.2.1.92.1.3.2.1.4");
         LOG_END;
@@ -208,7 +208,7 @@ void agentppNotifyTestAllTypes::generate(Vbx* vbs, int sz, const OctetStr& conte
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
         LOG("agentppNotifyTestAllTypes: wrong var bind (no.) (given) "
             "(expected)");
-        LOG(2l);
+        LOG(2L);
         LOG(vbs[1].get_printable_oid());
         LOG("1.3.6.1.2.1.92.1.3.2.1.5");
         LOG_END;
@@ -219,7 +219,7 @@ void agentppNotifyTestAllTypes::generate(Vbx* vbs, int sz, const OctetStr& conte
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
         LOG("agentppNotifyTestAllTypes: wrong var bind (no.) (given) "
             "(expected)");
-        LOG(3l);
+        LOG(3L);
         LOG(vbs[2].get_printable_oid());
         LOG("1.3.6.1.2.1.92.1.3.2.1.6");
         LOG_END;
@@ -230,7 +230,7 @@ void agentppNotifyTestAllTypes::generate(Vbx* vbs, int sz, const OctetStr& conte
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
         LOG("agentppNotifyTestAllTypes: wrong var bind (no.) (given) "
             "(expected)");
-        LOG(4l);
+        LOG(4L);
         LOG(vbs[3].get_printable_oid());
         LOG("1.3.6.1.2.1.92.1.3.2.1.7");
         LOG_END;
@@ -241,7 +241,7 @@ void agentppNotifyTestAllTypes::generate(Vbx* vbs, int sz, const OctetStr& conte
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
         LOG("agentppNotifyTestAllTypes: wrong var bind (no.) (given) "
             "(expected)");
-        LOG(5l);
+        LOG(5L);
         LOG(vbs[4].get_printable_oid());
         LOG("1.3.6.1.2.1.92.1.3.2.1.8");
         LOG_END;
@@ -252,7 +252,7 @@ void agentppNotifyTestAllTypes::generate(Vbx* vbs, int sz, const OctetStr& conte
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
         LOG("agentppNotifyTestAllTypes: wrong var bind (no.) (given) "
             "(expected)");
-        LOG(6l);
+        LOG(6L);
         LOG(vbs[5].get_printable_oid());
         LOG("1.3.6.1.2.1.92.1.3.2.1.9");
         LOG_END;
@@ -263,7 +263,7 @@ void agentppNotifyTestAllTypes::generate(Vbx* vbs, int sz, const OctetStr& conte
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
         LOG("agentppNotifyTestAllTypes: wrong var bind (no.) (given) "
             "(expected)");
-        LOG(7l);
+        LOG(7L);
         LOG(vbs[6].get_printable_oid());
         LOG("1.3.6.1.2.1.92.1.3.2.1.10");
         LOG_END;
@@ -274,7 +274,7 @@ void agentppNotifyTestAllTypes::generate(Vbx* vbs, int sz, const OctetStr& conte
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
         LOG("agentppNotifyTestAllTypes: wrong var bind (no.) (given) "
             "(expected)");
-        LOG(8l);
+        LOG(8L);
         LOG(vbs[7].get_printable_oid());
         LOG("1.3.6.1.2.1.92.1.3.2.1.11");
         LOG_END;
@@ -285,7 +285,7 @@ void agentppNotifyTestAllTypes::generate(Vbx* vbs, int sz, const OctetStr& conte
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
         LOG("agentppNotifyTestAllTypes: wrong var bind (no.) (given) "
             "(expected)");
-        LOG(9l);
+        LOG(9L);
         LOG(vbs[8].get_printable_oid());
         LOG("1.3.6.1.2.1.92.1.3.2.1.12");
         LOG_END;

@@ -51,6 +51,7 @@ public:
 class AGENTPP_DECL V3SnmpEngineID : public MibLeaf {
 
 public:
+    V3SnmpEngineID() = delete;
     V3SnmpEngineID(const NS_SNMP v3MP* mp);
     void get_request(Request* /*unused*/, int /*unused*/) override;
 
@@ -61,6 +62,7 @@ private:
 class AGENTPP_DECL V3SnmpEngineBoots : public MibLeaf {
 
 public:
+    V3SnmpEngineBoots() = delete;
     V3SnmpEngineBoots(const NS_SNMP USM* u);
     void get_request(Request* /*unused*/, int /*unused*/) override;
 
@@ -71,6 +73,7 @@ private:
 class AGENTPP_DECL V3SnmpEngineTime : public MibLeaf {
 
 public:
+    V3SnmpEngineTime() = delete;
     V3SnmpEngineTime(const NS_SNMP USM* u);
     void get_request(Request* /*unused*/, int /*unused*/) override;
 
@@ -270,6 +273,7 @@ private:
 
 class AGENTPP_DECL UsmCloneFrom : public MibLeaf {
 public:
+    UsmCloneFrom() = delete;
     UsmCloneFrom(const Oidx& o, NS_SNMP USM* u);
     ~UsmCloneFrom() override { }
     int         prepare_set_request(Request* req, int& ind) override;
@@ -284,6 +288,7 @@ private:
 
 class AGENTPP_DECL UsmKeyChange : public MibLeaf {
 public:
+    UsmKeyChange() = delete;
     UsmKeyChange(
         const Oidx& o, int keylen, int hashfunction, int typeOfKey, UsmKeyChange* ukc, NS_SNMP USM* u);
     UsmKeyChange(const Oidx& o, NS_SNMP USM* u);
@@ -309,6 +314,7 @@ protected:
 
 class AGENTPP_DECL UsmOwnKeyChange : public UsmKeyChange {
 public:
+    UsmOwnKeyChange() = delete;
     UsmOwnKeyChange(const Oidx& o, NS_SNMP USM* u) : UsmKeyChange(o, u) { }
     UsmOwnKeyChange(
         const Oidx& o, int keylen, int hashfunction, int typeOfKey, UsmKeyChange* ukc, NS_SNMP USM* u)
@@ -331,6 +337,7 @@ private:
 class AGENTPP_DECL UsmStatsUnsupportedSecLevels : public MibLeaf {
 
 public:
+    UsmStatsUnsupportedSecLevels() = delete;
     UsmStatsUnsupportedSecLevels(const NS_SNMP USM* u);
     void get_request(Request* /*unused*/, int /*unused*/) override;
 
@@ -347,6 +354,7 @@ private:
 class AGENTPP_DECL UsmStatsNotInTimeWindows : public MibLeaf {
 
 public:
+    UsmStatsNotInTimeWindows() = delete;
     UsmStatsNotInTimeWindows(const NS_SNMP USM* u);
     void get_request(Request* /*unused*/, int /*unused*/) override;
 
@@ -363,6 +371,7 @@ private:
 class AGENTPP_DECL UsmStatsUnknownUserNames : public MibLeaf {
 
 public:
+    UsmStatsUnknownUserNames() = delete;
     UsmStatsUnknownUserNames(const NS_SNMP USM* u);
     void get_request(Request* /*unused*/, int /*unused*/) override;
 
@@ -379,6 +388,7 @@ private:
 class AGENTPP_DECL UsmStatsUnknownEngineIDs : public MibLeaf {
 
 public:
+    UsmStatsUnknownEngineIDs() = delete;
     UsmStatsUnknownEngineIDs(const NS_SNMP USM* u);
     void get_request(Request* /*unused*/, int /*unused*/) override;
 
@@ -395,6 +405,7 @@ private:
 class AGENTPP_DECL UsmStatsWrongDigests : public MibLeaf {
 
 public:
+    UsmStatsWrongDigests() = delete;
     UsmStatsWrongDigests(const NS_SNMP USM* u);
     void get_request(Request* /*unused*/, int /*unused*/) override;
 
@@ -411,6 +422,7 @@ private:
 class AGENTPP_DECL UsmStatsDecryptionErrors : public MibLeaf {
 
 public:
+    UsmStatsDecryptionErrors() = delete;
     UsmStatsDecryptionErrors(const NS_SNMP USM* u);
     void get_request(Request* /*unused*/, int /*unused*/) override;
 
@@ -434,6 +446,7 @@ public:
 class AGENTPP_DECL usm_mib : public MibGroup {
 
 public:
+    usm_mib() = delete;
     usm_mib(UsmUserTable*);
 };
 
@@ -447,6 +460,7 @@ public:
 class AGENTPP_DECL MPDGroupSnmpUnknownSecurityModels : public MibLeaf {
 
 public:
+    MPDGroupSnmpUnknownSecurityModels() = delete;
     MPDGroupSnmpUnknownSecurityModels(const NS_SNMP v3MP* mp);
     void get_request(Request* /*unused*/, int /*unused*/) override;
 
@@ -457,6 +471,7 @@ private:
 class AGENTPP_DECL MPDGroupSnmpInvalidMsgs : public MibLeaf {
 
 public:
+    MPDGroupSnmpInvalidMsgs() = delete;
     MPDGroupSnmpInvalidMsgs(const NS_SNMP v3MP* mp);
     void get_request(Request* /*unused*/, int /*unused*/) override;
 
@@ -467,6 +482,7 @@ private:
 class AGENTPP_DECL MPDGroupSnmpUnknownPDUHandlers : public MibLeaf {
 
 public:
+    MPDGroupSnmpUnknownPDUHandlers() = delete;
     MPDGroupSnmpUnknownPDUHandlers(const NS_SNMP v3MP* mp);
     void get_request(Request* /*unused*/, int /*unused*/) override;
 
@@ -477,6 +493,7 @@ private:
 class AGENTPP_DECL usmUserAuthProtocol : public MibLeaf {
 
 public:
+    usmUserAuthProtocol() = delete;
     usmUserAuthProtocol(const Oidx&, NS_SNMP USM* u);
     bool        value_ok(const Vbx& /*unused*/) override;
     MibEntryPtr clone() override;
@@ -488,6 +505,7 @@ private:
 class AGENTPP_DECL usmUserPrivProtocol : public MibLeaf {
 
 public:
+    usmUserPrivProtocol() = delete;
     usmUserPrivProtocol(const Oidx&, NS_SNMP USM* u);
     bool        value_ok(const Vbx& /*unused*/) override;
     int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;

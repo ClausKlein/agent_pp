@@ -281,7 +281,7 @@ bool SnmpTagList::contains(const char* tag)
 {
     if (!tag) return false;
 
-    int const len = ((OctetStr*)value)->len();  // NOTE: without \0! CK
+    int const len = ((OctetStr*)value)->len(); // NOTE: without \0! CK
     char*     l   = new char[len + 1];
     memcpy(l, (char*)((OctetStr*)value)->data(), len);
     l[len] = 0; // OK, CK

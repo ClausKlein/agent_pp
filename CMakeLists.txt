@@ -208,7 +208,7 @@ option(SNMP_PP_LOGGING "build all libaries with logging" NO)
 # see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.13.beta
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG 91162c0d53a41d1b01f949ef3658b990f8f8abf7 # VERSION ${SNMP_PP_VERSION}.13
+  GIT_TAG c27ad8ec97e1326d9f03f5e53a87254f26c7a991 # VERSION ${SNMP_PP_VERSION}.13
   GITHUB_REPOSITORY ClausKlein/snmp_pp
   OPTIONS "SNMP_PP_EXAMPLES YES" "CMAKE_SKIP_INSTALL_RULES NO"
 )

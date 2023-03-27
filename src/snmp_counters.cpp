@@ -31,5 +31,5 @@ MibIIsnmpCounters::MibIIsnmpCounters() { reset(); }
 
 void MibIIsnmpCounters::reset()
 {
-    for (int i = 0; i < SNMP_COUNTERS; i++) counter_snmp[i] = 0;
+    for (unsigned int& i : counter_snmp) i = 0;
 }

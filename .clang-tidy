@@ -23,6 +23,7 @@ cppcoreguidelines-explicit-virtual-functions,\
 hicpp-*,\
 -hicpp-braces-around-statements,\
 -hicpp-explicit-conversions,\
+-hicpp-member-init,\
 -hicpp-no-malloc,\
 -hicpp-signed-bitwise,\
 -hicpp-special-member-functions,\
@@ -34,6 +35,7 @@ misc-*,\
 -misc-no-recursion,\
 -misc-unused-parameters,\
 -misc-unconventional-assign-operator,\
+-misc-use-anonymous-namespace,\
 modernize-*,\
 -modernize-macro-to-enum,\
 -modernize-use-default-member-init,\
