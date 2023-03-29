@@ -24,7 +24,7 @@
 #include <agent_pp/agent++.h>
 
 #include <agent_pp/mib.h>
-#include <string.h>
+#include <cstring>
 
 #define oidSnmpGroup               "1.3.6.1.2.1.11"
 #define oidSnmpInPkts              "1.3.6.1.2.1.11.1.0"

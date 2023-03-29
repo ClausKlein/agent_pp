@@ -32,8 +32,8 @@
 #endif
 
 #include <agent_pp/List.h>
+#include <ctime>
 #include <sys/types.h>
-#include <time.h>
 
 #define MULTI_THREADED            true
 #define SINGLE_THREADED           false

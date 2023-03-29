@@ -27,7 +27,7 @@
 
 #include <agent_pp/mib.h>
 #include <agent_pp/snmp_textual_conventions.h>
-#include <string.h>
+#include <cstring>
 
 #define oidSysGroup    "1.3.6.1.2.1.1"
 #define oidSysDescr    "1.3.6.1.2.1.1.1.0"
