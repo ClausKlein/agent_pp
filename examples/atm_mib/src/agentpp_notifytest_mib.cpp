@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - agentpp_notifytest_mib.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - agentpp_notifytest_mib.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 //--AgentGen BEGIN=_BEGIN
 //--AgentGen END
@@ -61,7 +61,6 @@ agentppNotifyTest::agentppNotifyTest() : MibLeaf(oidAgentppNotifyTest, READWRITE
 
 agentppNotifyTest::~agentppNotifyTest()
 {
-
     //--AgentGen BEGIN=agentppNotifyTest::~agentppNotifyTest
     //--AgentGen END
 }
@@ -70,7 +69,6 @@ int32_t agentppNotifyTest::get_state() { return (int32_t) * ((SnmpInt32*)value);
 
 void agentppNotifyTest::set_state(int32_t l)
 {
-
     //--AgentGen BEGIN=agentppNotifyTest::set_state
     //--AgentGen END
     *((SnmpInt32*)value) = l;
@@ -78,9 +76,9 @@ void agentppNotifyTest::set_state(int32_t l)
 
 int agentppNotifyTest::set(const Vbx& vb)
 {
-
     //--AgentGen BEGIN=agentppNotifyTest::set
     int32_t v = 0;
+
     vb.get_value(v);
     switch (v)
     {
@@ -93,8 +91,12 @@ int agentppNotifyTest::set(const Vbx& vb)
 bool agentppNotifyTest::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if ((v != 1)) return false;
+    if ((v != 1))
+    {
+        return false;
+    }
 
     //--AgentGen BEGIN=agentppNotifyTest::value_ok
     //--AgentGen END
@@ -104,7 +106,11 @@ bool agentppNotifyTest::value_ok(const Vbx& vb)
 int agentppNotifyTest::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
+
+    if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
+        return status;
+    }
 
     //--AgentGen BEGIN=agentppNotifyTest::prepare_set_request
     //--AgentGen END
@@ -117,6 +123,7 @@ void agentppNotifyTest::send_agentppNotifyTestAllTypes()
     constexpr size_t LENGTH { 9 };
     Vbx              vbs[LENGTH];
     int              n = 0;
+
     vbs[n].set_oid("1.3.6.1.2.1.92.1.3.2.1.4.0.1");
     vbs[n++].set_value(Counter32(rand()));
     vbs[n].set_oid("1.3.6.1.2.1.92.1.3.2.1.5.0.1");
@@ -157,6 +164,7 @@ void agentppNotifyTest::send_agentppNotifyTestAllTypes()
         LOG_END;
     }
 }
+
 //--AgentGen END
 
 /**
@@ -166,21 +174,18 @@ void agentppNotifyTest::send_agentppNotifyTestAllTypes()
 
 agentppNotifyTestAllTypes::agentppNotifyTestAllTypes() : NotificationOriginator()
 {
-
     //--AgentGen BEGIN=agentppNotifyTestAllTypes::agentppNotifyTestAllTypes
     //--AgentGen END
 }
 
 agentppNotifyTestAllTypes::~agentppNotifyTestAllTypes()
 {
-
     //--AgentGen BEGIN=agentppNotifyTestAllTypes::~agentppNotifyTestAllTypes
     //--AgentGen END
 }
 
 void agentppNotifyTestAllTypes::generate(Vbx* vbs, int sz, const OctetStr& context)
 {
-
     //--AgentGen BEGIN=agentppNotifyTestAllTypes::generate
     //--AgentGen END
     if (sz < 9)
@@ -300,7 +305,6 @@ void agentppNotifyTestAllTypes::generate(Vbx* vbs, int sz, const OctetStr& conte
 agentpp_notifytest_mib::agentpp_notifytest_mib()
     : MibGroup("1.3.6.1.4.1.4976.6.2", "agentppNotifyTestMIB")
 {
-
     //--AgentGen BEGIN=agentpp_notifytest_mib::agentpp_notifytest_mib
     //--AgentGen END
     add(new agentppNotifyTest());

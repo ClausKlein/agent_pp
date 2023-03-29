@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - snmp_notification_mib.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - snmp_notification_mib.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include <agent_pp/mib_complex_entry.h>
 #include <agent_pp/snmp_notification_mib.h>
@@ -200,7 +200,6 @@ bool snmpNotifyFilterEntry::passes_filter(
     auto*                   oidmatches = new OidList<MibStaticEntry>[vb_count];
     for (cur.init(list); cur.get(); cur.next())
     {
-
         Oidx subtree = cur.get()->get_index();
         // no need to check: if (subtree.len()<3) continue;
         subtree = subtree.cut_left(subtree[0] + 1);
@@ -233,7 +232,6 @@ bool snmpNotifyFilterEntry::passes_filter(
         }
         else
         {
-
             LOG_BEGIN(loggerModuleName, INFO_LOG | 5);
             LOG("NotificationOriginator: filter: "
                 "(trapoid)(subtree)(filterMask)(filterType)(match)");
@@ -280,7 +278,7 @@ bool snmpNotifyFilterEntry::passes_filter(
         }
     }
     delete[] oidmatches;
-    return (pass == 1);
+    return pass == 1;
 }
 
 snmp_notification_mib::snmp_notification_mib() : MibGroup("1.3.6.1.6.3.13.1", "snmpNotificationMIB")
@@ -288,6 +286,7 @@ snmp_notification_mib::snmp_notification_mib() : MibGroup("1.3.6.1.6.3.13.1", "s
     auto* notifyEntry              = new snmpNotifyEntry();
     auto* notifyFilterProfileEntry = new snmpNotifyFilterProfileEntry();
     auto* notifyFilterEntry        = new snmpNotifyFilterEntry(notifyFilterProfileEntry);
+
     add(notifyEntry);
     add(notifyFilterProfileEntry);
     add(notifyFilterEntry);

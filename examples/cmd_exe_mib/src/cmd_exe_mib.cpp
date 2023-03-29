@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - cmd_exe_mib.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - cmd_exe_mib.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include "cmd_exe_mib.h"
 
@@ -107,7 +107,6 @@ void CmdThread::run()
 
         if (bytes == size)
         {
-
             int32_t i   = 1;
             char*   ptr = buf;
             char*   nl  = buf;
@@ -115,7 +114,10 @@ void CmdThread::run()
             {
                 nl         = strchr(ptr, '\n');
                 auto* line = new OctetStr();
-                if (nl == nullptr) { *line = ptr; }
+                if (nl == nullptr)
+                {
+                    *line = ptr;
+                }
                 else
                 {
                     char* l = new char[nl - ptr + 1];
@@ -159,6 +161,7 @@ cmdExecutionCmdConfigLine::~cmdExecutionCmdConfigLine() { }
 MibEntryPtr cmdExecutionCmdConfigLine::clone()
 {
     MibEntryPtr other = new cmdExecutionCmdConfigLine(oid);
+
     ((cmdExecutionCmdConfigLine*)other)->replace_value(value->clone());
     ((cmdExecutionCmdConfigLine*)other)->set_reference_to_table(my_table);
     return other;
@@ -223,6 +226,7 @@ cmdExecutionCmdName::~cmdExecutionCmdName() { }
 MibEntryPtr cmdExecutionCmdName::clone()
 {
     MibEntryPtr other = new cmdExecutionCmdName(oid);
+
     ((cmdExecutionCmdName*)other)->replace_value(value->clone());
     ((cmdExecutionCmdName*)other)->set_reference_to_table(my_table);
     return other;
@@ -237,9 +241,12 @@ void cmdExecutionCmdName::get_request(Request* req, int ind)
 int cmdExecutionCmdName::set(const Vbx& vb)
 {
     OctetStr name;
+
     vb.get_value(name);
     if (!cmdExecutionCmdConfigEntry::instance->contains(Oidx::from_string(name)))
+    {
         return SNMP_ERROR_INCONSIST_VAL;
+    }
     return MibLeaf::set(vb);
 }
 
@@ -258,6 +265,7 @@ cmdExecutionCmdStatus::~cmdExecutionCmdStatus() { }
 MibEntryPtr cmdExecutionCmdStatus::clone()
 {
     MibEntryPtr other = new cmdExecutionCmdStatus(oid);
+
     ((cmdExecutionCmdStatus*)other)->replace_value(value->clone());
     ((cmdExecutionCmdStatus*)other)->set_reference_to_table(my_table);
     return other;
@@ -290,6 +298,7 @@ cmdExecutionCmdRunTime::~cmdExecutionCmdRunTime() { }
 MibEntryPtr cmdExecutionCmdRunTime::clone()
 {
     MibEntryPtr other = new cmdExecutionCmdRunTime(oid);
+
     ((cmdExecutionCmdRunTime*)other)->replace_value(value->clone());
     ((cmdExecutionCmdRunTime*)other)->set_reference_to_table(my_table);
     return other;
@@ -299,9 +308,14 @@ void cmdExecutionCmdRunTime::get_request(Request* req, int ind)
 {
     if (start_time > 0)
     {
-        if (end_time > 0) { set_state((end_time - start_time) * 100); }
+        if (end_time > 0)
+        {
+            set_state((end_time - start_time) * 100);
+        }
         else
+        {
             set_state((sysUpTime::get_currentTime() - start_time) * 100);
+        }
     }
     MibLeaf::get_request(req, ind);
 }
@@ -330,6 +344,7 @@ cmdExecutionCmdRowStatus::~cmdExecutionCmdRowStatus() { }
 MibEntryPtr cmdExecutionCmdRowStatus::clone()
 {
     MibEntryPtr other = new cmdExecutionCmdRowStatus(oid);
+
     ((cmdExecutionCmdRowStatus*)other)->replace_value(value->clone());
     ((cmdExecutionCmdRowStatus*)other)->set_reference_to_table(my_table);
     return other;
@@ -343,18 +358,27 @@ int cmdExecutionCmdRowStatus::prepare_set_request(Request* req, int& ind)
 {
     Vbx const    vb = req->get_value(ind);
     unsigned int l  = 0;
-    if (vb.get_value(l) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
+
+    if (vb.get_value(l) != SNMP_CLASS_SUCCESS)
+    {
+        return SNMP_ERROR_WRONG_TYPE;
+    }
 
     switch (l)
     {
     case rowNotInService: {
         if (((cmdExecutionCmdStatus*)my_row->get_nth(1))->get_state() == 2)
+        {
             return SNMP_ERROR_INCONSIST_VAL;
+        }
         break;
     }
+
     case rowDestroy: {
         if (((cmdExecutionCmdStatus*)my_row->get_nth(1))->get_state() == 2)
+        {
             return SNMP_ERROR_INCONSIST_VAL;
+        }
         break;
     }
     }
@@ -364,7 +388,11 @@ int cmdExecutionCmdRowStatus::prepare_set_request(Request* req, int& ind)
 int cmdExecutionCmdRowStatus::set(const Vbx& vb)
 {
     unsigned int l = 0;
-    if (vb.get_value(l) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
+
+    if (vb.get_value(l) != SNMP_CLASS_SUCCESS)
+    {
+        return SNMP_ERROR_WRONG_TYPE;
+    }
 
     switch (l)
     {
@@ -378,9 +406,11 @@ int cmdExecutionCmdRowStatus::set(const Vbx& vb)
 #endif
         break;
     }
+
     case rowNotInService: {
         break;
     }
+
     case rowDestroy: {
         cmdExecutionOutputEntry::instance->remove_all(my_row->get_index());
         break;
@@ -402,6 +432,7 @@ cmdExecutionOutputLine::~cmdExecutionOutputLine() { }
 MibEntryPtr cmdExecutionOutputLine::clone()
 {
     MibEntryPtr other = new cmdExecutionOutputLine(oid);
+
     ((cmdExecutionOutputLine*)other)->replace_value(value->clone());
     ((cmdExecutionOutputLine*)other)->set_reference_to_table(my_table);
     return other;
@@ -437,6 +468,7 @@ cmdExecutionCmdConfigEntry::~cmdExecutionCmdConfigEntry() { }
 bool cmdExecutionCmdConfigEntry::deserialize(char* buf, int& sz)
 {
     bool const b = MibTable::deserialize(buf, sz);
+
     if (!b)
     {
         add_row("2.108.108");
@@ -467,6 +499,7 @@ void cmdExecutionCmdConfigEntry::set_row(int index, const char* p0, int p1, int 
 bool cmdExecutionCmdConfigEntry::contains(const Oidx& index)
 {
     OidListCursor<MibTableRow> cur;
+
     for (cur.init(&content); cur.get(); cur.next())
     {
         if (strcmp(cur.get()->get_index().get_printable(), index.get_printable()) == 0)
@@ -482,13 +515,13 @@ OctetStr cmdExecutionCmdConfigEntry::get_command_line(const OctetStr& command)
     OctetStr                   cmdline;
     Oidx const                 index(Oidx::from_string(command));
     OidListCursor<MibTableRow> cur;
+
     for (cur.init(&content); cur.get(); cur.next())
     {
         if (((snmpRowStatus*)cur.get()->get_nth(2))->get() == rowActive)
         {
             if (strcmp(cur.get()->get_index().get_printable(), index.get_printable()) == 0)
             {
-
                 cur.get()->get_nth(0)->get_value(cmdline);
                 break;
             }
@@ -570,6 +603,7 @@ void cmdExecutionOutputEntry::set_row(int index, char* p0)
 void cmdExecutionOutputEntry::remove_all(const Oidx& index)
 {
     OidListCursor<MibTableRow> cur;
+
     for (cur.init(&content); cur.get();)
     {
         if (cur.get()->get_index()[0] == index[0])

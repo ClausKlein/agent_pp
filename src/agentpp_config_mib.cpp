@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - agentpp_config_mib.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - agentpp_config_mib.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include <libagent.h>
 
@@ -59,6 +59,7 @@ static const char* loggerModuleName = "agent++.agentpp_config_mib";
 void OperationTask::run()
 {
     Mib* mib = ((agentppCfgStorageEntry*)initiator->my_table)->get_mib();
+
     if (!mib)
     {
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
@@ -84,6 +85,7 @@ void OperationTask::run()
         }
         break;
     }
+
     case agentppCfgStorageOperation::e_restore: {
         if (mib->load(format, path))
         {
@@ -95,10 +97,12 @@ void OperationTask::run()
         }
         break;
     }
+
     default: break;
     }
     initiator->set_state(agentppCfgStorageOperation::e_idle);
 }
+
 #        endif
 //--AgentGen END
 
@@ -110,7 +114,7 @@ void OperationTask::run()
  * "Specifies whether SNMPv1/v2c source address
  * validation via the snmpTargetAddrExtTable and
  * the snmpCommunityTable is enabled or disabled.
-
+ *
  * If the value of this object is notAvailable(3), then at
  * least one of the necessary MIB modules are not
  * implemented for this agent instance and an attempt
@@ -133,7 +137,6 @@ agentppCfgSecSrcAddrValidation::agentppCfgSecSrcAddrValidation()
 
 agentppCfgSecSrcAddrValidation::~agentppCfgSecSrcAddrValidation()
 {
-
     //--AgentGen BEGIN=agentppCfgSecSrcAddrValidation::~agentppCfgSecSrcAddrValidation
     //--AgentGen END
 
@@ -146,7 +149,11 @@ void agentppCfgSecSrcAddrValidation::get_request(Request* req, int ind)
     //--AgentGen BEGIN=agentppCfgSecSrcAddrValidation::get_request
     snmpCommunityEntry* _snmpCommunityEntry =
         (snmpCommunityEntry*)mibReference->get(req->get_context(), oidSnmpCommunityEntry);
-    if (!_snmpCommunityEntry) { set_state(3); }
+
+    if (!_snmpCommunityEntry)
+    {
+        set_state(3);
+    }
     else if (mibReference->get_request_list()->get_address_validation())
     {
         set_state(1);
@@ -177,11 +184,19 @@ int agentppCfgSecSrcAddrValidation::set(const Vbx& vb)
 {
     //--AgentGen BEGIN=agentppCfgSecSrcAddrValidation::set
     int32_t v = 0;
-    if (vb.get_value(v) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
+
+    if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
+    {
+        return SNMP_ERROR_WRONG_TYPE;
+    }
     if (v == 1)
+    {
         mibReference->get_request_list()->set_address_validation(true);
+    }
     else
+    {
         mibReference->get_request_list()->set_address_validation(false);
+    }
     //--AgentGen END
     return MibLeaf::set(vb);
 }
@@ -189,9 +204,19 @@ int agentppCfgSecSrcAddrValidation::set(const Vbx& vb)
 bool agentppCfgSecSrcAddrValidation::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
-    if (vb.get_value(v) != SNMP_CLASS_SUCCESS) return false;
-    if ((get_state() == 3) && (v == 1)) { return false; }
-    if ((v != 1) && (v != 2) && (v != 3)) return false;
+
+    if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
+    {
+        return false;
+    }
+    if ((get_state() == 3) && (v == 1))
+    {
+        return false;
+    }
+    if ((v != 1) && (v != 2) && (v != 3))
+    {
+        return false;
+    }
     //--AgentGen BEGIN=agentppCfgSecSrcAddrValidation::value_ok
     //--AgentGen END
     return true;
@@ -219,7 +244,6 @@ agentppCfgStoragePath::agentppCfgStoragePath(const Oidx& id)
 
 agentppCfgStoragePath::~agentppCfgStoragePath()
 {
-
     //--AgentGen BEGIN=agentppCfgStoragePath::~agentppCfgStoragePath
     //--AgentGen END
 }
@@ -227,6 +251,7 @@ agentppCfgStoragePath::~agentppCfgStoragePath()
 MibEntryPtr agentppCfgStoragePath::clone()
 {
     MibEntryPtr other = new agentppCfgStoragePath(oid);
+
     ((agentppCfgStoragePath*)other)->replace_value(value->clone());
     ((agentppCfgStoragePath*)other)->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppCfgStoragePath::clone
@@ -247,6 +272,7 @@ NS_SNMP OctetStr agentppCfgStoragePath::get_state()
     //--AgentGen END
     return *((NS_SNMP OctetStr*)value);
 }
+
 void agentppCfgStoragePath::set_state(const NS_SNMP OctetStr& s)
 {
     //--AgentGen BEGIN=agentppCfgStoragePath::set_state
@@ -257,26 +283,47 @@ void agentppCfgStoragePath::set_state(const NS_SNMP OctetStr& s)
 int agentppCfgStoragePath::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
+
     if ((status = SnmpDisplayString::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
 
     Vb const         vb(req->get_value(ind));
     NS_SNMP OctetStr v;
-    if (vb.get_value(v) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
-    if (!((v.len() <= 255))) return SNMP_ERROR_WRONG_LENGTH;
+    if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
+    {
+        return SNMP_ERROR_WRONG_TYPE;
+    }
+    if (!((v.len() <= 255)))
+    {
+        return SNMP_ERROR_WRONG_LENGTH;
+    }
     //--AgentGen BEGIN=agentppCfgStoragePath::prepare_set_request
     if (((agentppCfgStorageEntry*)my_table)->is_secure_paths())
     {
-        if ((v.len() == 0) || (v[0] == '/') || (v[0] == '\\')) { return SNMP_ERROR_BAD_VALUE; }
+        if ((v.len() == 0) || (v[0] == '/') || (v[0] == '\\'))
+        {
+            return SNMP_ERROR_BAD_VALUE;
+        }
         for (unsigned int i = 0; i < v.len(); i++)
         {
-            if (v[i] == '.') { return SNMP_ERROR_BAD_VALUE; }
+            if (v[i] == '.')
+            {
+                return SNMP_ERROR_BAD_VALUE;
+            }
         }
-        if ((v[v.len() - 1] != '/') && (v[v.len() - 1] != '\\')) { return SNMP_ERROR_BAD_VALUE; }
+        if ((v[v.len() - 1] != '/') && (v[v.len() - 1] != '\\'))
+        {
+            return SNMP_ERROR_BAD_VALUE;
+        }
     }
 #        ifndef WIN32
     status = mkdir(v.get_printable(), 700);
-    if ((status == -1) && (errno != EEXIST)) { return SNMP_ERROR_BAD_VALUE; }
+    if ((status == -1) && (errno != EEXIST))
+    {
+        return SNMP_ERROR_BAD_VALUE;
+    }
     else if (status != -1)
     {
         rmdir(v.get_printable());
@@ -294,10 +341,14 @@ int agentppCfgStoragePath::commit_set_request(Request* req, int ind)
     NS_SNMP OctetStr v;
     vb.get_value(v);
     int const status = mkdir(v.get_printable(), S_IRWXU);
-    if ((status == -1) && (errno != EEXIST)) { return SNMP_ERROR_COMMITFAIL; }
+    if ((status == -1) && (errno != EEXIST))
+    {
+        return SNMP_ERROR_COMMITFAIL;
+    }
 #        endif
     return SnmpDisplayString::commit_set_request(req, ind);
 }
+
 //--AgentGen END
 
 /**
@@ -318,7 +369,6 @@ agentppCfgStorageFormat::agentppCfgStorageFormat(const Oidx& id)
 
 agentppCfgStorageFormat::~agentppCfgStorageFormat()
 {
-
     //--AgentGen BEGIN=agentppCfgStorageFormat::~agentppCfgStorageFormat
     //--AgentGen END
 }
@@ -326,6 +376,7 @@ agentppCfgStorageFormat::~agentppCfgStorageFormat()
 MibEntryPtr agentppCfgStorageFormat::clone()
 {
     MibEntryPtr other = new agentppCfgStorageFormat(oid);
+
     ((agentppCfgStorageFormat*)other)->replace_value(value->clone());
     ((agentppCfgStorageFormat*)other)->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppCfgStorageFormat::clone
@@ -357,8 +408,15 @@ void agentppCfgStorageFormat::set_state(int32_t l)
 bool agentppCfgStorageFormat::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
-    if (vb.get_value(v) != SNMP_CLASS_SUCCESS) return false;
-    if (v != 1) return false;
+
+    if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
+    {
+        return false;
+    }
+    if (v != 1)
+    {
+        return false;
+    }
     //--AgentGen BEGIN=agentppCfgStorageFormat::value_ok
     if (!((agentppCfgStorageEntry*)my_table)->get_mib()->get_config_format((unsigned int)v))
     {
@@ -371,7 +429,11 @@ bool agentppCfgStorageFormat::value_ok(const Vbx& vb)
 int agentppCfgStorageFormat::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
+
+    if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
+        return status;
+    }
 
     //--AgentGen BEGIN=agentppCfgStorageFormat::prepare_set_request
     //--AgentGen END
@@ -387,7 +449,7 @@ int agentppCfgStorageFormat::prepare_set_request(Request* req, int& ind)
  * "The states 'idle(1)' and 'inProgress(2)'  can only be
  * read, whereas the states 'store(3)' and 'restore(4)' can
  * only be written.
-
+ *
  * Setting this object to 'store(3)' will save the agent's
  * configuration to the location identified by
  * agentppCfgStoragePath. Setting this object to
@@ -396,7 +458,7 @@ int agentppCfgStorageFormat::prepare_set_request(Request* req, int& ind)
  * While the two operations above are in progress,
  * this object returns 'inProgress(2)' on get requests.
  * Otherwise 'idle(1)' is returned on get requests.
-
+ *
  * While its state is 'inProgress' any set request returns
  * a 'resourceUnavailable(13)' error."
  */
@@ -413,10 +475,12 @@ agentppCfgStorageOperation::agentppCfgStorageOperation(const Oidx& id)
 
 agentppCfgStorageOperation::~agentppCfgStorageOperation()
 {
-
     //--AgentGen BEGIN=agentppCfgStorageOperation::~agentppCfgStorageOperation
 #        ifndef _NO_THREADS
-    if (operationTask) { delete operationTask; }
+    if (operationTask)
+    {
+        delete operationTask;
+    }
 #        endif
     //--AgentGen END
 }
@@ -424,6 +488,7 @@ agentppCfgStorageOperation::~agentppCfgStorageOperation()
 MibEntryPtr agentppCfgStorageOperation::clone()
 {
     MibEntryPtr other = new agentppCfgStorageOperation(oid);
+
     ((agentppCfgStorageOperation*)other)->replace_value(value->clone());
     ((agentppCfgStorageOperation*)other)->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppCfgStorageOperation::clone
@@ -459,14 +524,20 @@ int agentppCfgStorageOperation::set(const Vbx& vb)
     if ((!operationTask) || (!operationTask->is_alive()))
     {
         int operation = 0;
-        if (vb.get_value(operation) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
+        if (vb.get_value(operation) != SNMP_CLASS_SUCCESS)
+        {
+            return SNMP_ERROR_WRONG_TYPE;
+        }
 
         LOG_BEGIN(loggerModuleName, EVENT_LOG | 1);
         LOG("agentppCfgStorageEntry: Starting storage (operation)");
         LOG(operation);
         LOG_END;
 
-        if (operationTask) { delete operationTask; }
+        if (operationTask)
+        {
+            delete operationTask;
+        }
         operationTask = new OperationTask(operation, this);
         operationTask->start();
         set_state(agentppCfgStorageOperation::e_inProgress);
@@ -484,8 +555,15 @@ int agentppCfgStorageOperation::set(const Vbx& vb)
 bool agentppCfgStorageOperation::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
-    if (vb.get_value(v) != SNMP_CLASS_SUCCESS) return false;
-    if ((v != -1) && (v != 1) && (v != 2) && (v != 3) && (v != 4)) return false;
+
+    if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
+    {
+        return false;
+    }
+    if ((v != -1) && (v != 1) && (v != 2) && (v != 3) && (v != 4))
+    {
+        return false;
+    }
     //--AgentGen BEGIN=agentppCfgStorageOperation::value_ok
     //--AgentGen END
     return true;
@@ -494,10 +572,17 @@ bool agentppCfgStorageOperation::value_ok(const Vbx& vb)
 int agentppCfgStorageOperation::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
+
+    if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
+        return status;
+    }
 
     //--AgentGen BEGIN=agentppCfgStorageOperation::prepare_set_request
-    if (get_state() >= 2) { return SNMP_ERROR_INCONSIST_VAL; }
+    if (get_state() >= 2)
+    {
+        return SNMP_ERROR_INCONSIST_VAL;
+    }
     //--AgentGen END
     return SNMP_ERROR_SUCCESS;
 }
@@ -520,7 +605,6 @@ agentppCfgStorageStorageType::agentppCfgStorageStorageType(const Oidx& id) : Sto
 
 agentppCfgStorageStorageType::~agentppCfgStorageStorageType()
 {
-
     //--AgentGen BEGIN=agentppCfgStorageStorageType::~agentppCfgStorageStorageType
     //--AgentGen END
 }
@@ -528,6 +612,7 @@ agentppCfgStorageStorageType::~agentppCfgStorageStorageType()
 MibEntryPtr agentppCfgStorageStorageType::clone()
 {
     MibEntryPtr other = new agentppCfgStorageStorageType(oid);
+
     ((agentppCfgStorageStorageType*)other)->replace_value(value->clone());
     ((agentppCfgStorageStorageType*)other)->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppCfgStorageStorageType::clone
@@ -566,7 +651,11 @@ int agentppCfgStorageStorageType::set(const Vbx& vb)
 int agentppCfgStorageStorageType::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = StorageType::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
+
+    if ((status = StorageType::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
+        return status;
+    }
 
     //--AgentGen BEGIN=agentppCfgStorageStorageType::prepare_set_request
     //--AgentGen END
@@ -591,7 +680,6 @@ agentppCfgStorageStatus::agentppCfgStorageStatus(const Oidx& id) : snmpRowStatus
 
 agentppCfgStorageStatus::~agentppCfgStorageStatus()
 {
-
     //--AgentGen BEGIN=agentppCfgStorageStatus::~agentppCfgStorageStatus
     //--AgentGen END
 }
@@ -599,6 +687,7 @@ agentppCfgStorageStatus::~agentppCfgStorageStatus()
 MibEntryPtr agentppCfgStorageStatus::clone()
 {
     MibEntryPtr other = new agentppCfgStorageStatus(oid);
+
     ((agentppCfgStorageStatus*)other)->replace_value(value->clone());
     ((agentppCfgStorageStatus*)other)->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppCfgStorageStatus::clone
@@ -630,7 +719,11 @@ int agentppCfgStorageStatus::set(const Vbx& vb)
 int agentppCfgStorageStatus::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = snmpRowStatus::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS) return status;
+
+    if ((status = snmpRowStatus::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
+        return status;
+    }
 
     //--AgentGen BEGIN=agentppCfgStorageStatus::prepare_set_request
     //--AgentGen END
@@ -739,12 +832,16 @@ void agentppCfgStorageEntry::set_mib(Mib* m)
     NS_SNMP OctetStr primaryRow("primary");
     Oidx const       primaryRowIndex(Oidx::from_string(primaryRow));
     MibTableRow*     primary = find_index(primaryRowIndex);
-    if (!primary) { primary = add_row(primaryRowIndex); }
+    if (!primary)
+    {
+        primary = add_row(primaryRowIndex);
+    }
     set_row(primary, mib->get_persistent_objects_path(), agentppCfgStorageFormat::e_agentppBER, 0, 0,
         agentppCfgStorageOperation::e_idle, agentppCfgStorageStorageType::e_permanent, rowActive);
     primary->set_access(READONLY);
     primary->get_nth(nAgentppCfgStorageOperation)->set_access(READWRITE);
 }
+
 //--AgentGen END
 
 // Notifications
@@ -779,6 +876,7 @@ agentpp_config_mib::agentpp_config_mib(Mib* backReference)
     auto* storageTable = (agentppCfgStorageEntry*)content.last();
     storageTable->set_mib(backReference);
 }
+
 #        endif
 //--AgentGen END
 
@@ -787,14 +885,20 @@ agentppCfgLogLevel::agentppCfgLogLevel(int lc, const Oidx& oid)
     : MibLeaf(oid, READWRITE, new SnmpInt32())
 {
     logClass = lc;
-    if (DefaultLog::log()) set_state(DefaultLog::log()->get_filter(logClass));
+    if (DefaultLog::log())
+    {
+        set_state(DefaultLog::log()->get_filter(logClass));
+    }
 }
 
 agentppCfgLogLevel::~agentppCfgLogLevel() { }
 
 void agentppCfgLogLevel::get_request(Request* req, int ind)
 {
-    if (DefaultLog::log()) set_state(DefaultLog::log()->get_filter(logClass));
+    if (DefaultLog::log())
+    {
+        set_state(DefaultLog::log()->get_filter(logClass));
+    }
     MibLeaf::get_request(req, ind);
 }
 
@@ -805,24 +909,40 @@ void agentppCfgLogLevel::set_state(int32_t l) { *((SnmpInt32*)value) = l; }
 int agentppCfgLogLevel::commit_set_request(Request* req, int ind)
 {
     int const status = MibLeaf::commit_set_request(req, ind);
-    if (DefaultLog::log()) DefaultLog::log()->set_filter(logClass, get_state() % 255);
+
+    if (DefaultLog::log())
+    {
+        DefaultLog::log()->set_filter(logClass, get_state() % 255);
+    }
     return status;
 }
 
 int agentppCfgLogLevel::undo_set_request(Request* req, int& ind)
 {
     int32_t const undoValue = *((SnmpInt32*)undo);
-    if (DefaultLog::log()) DefaultLog::log()->set_filter(logClass, undoValue);
+
+    if (DefaultLog::log())
+    {
+        DefaultLog::log()->set_filter(logClass, undoValue);
+    }
     return MibLeaf::undo_set_request(req, ind);
 }
 
 bool agentppCfgLogLevel::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
-    if (vb.get_value(v) != SNMP_CLASS_SUCCESS) return false;
-    if (!(((v >= 0) && (v <= 15)))) return false;
+
+    if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
+    {
+        return false;
+    }
+    if (!(((v >= 0) && (v <= 15))))
+    {
+        return false;
+    }
     return true;
 }
+
 //--AgentGen END
 
 #        ifdef AGENTPP_NAMESPACE

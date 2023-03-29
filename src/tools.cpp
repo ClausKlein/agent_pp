@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - tools.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - tools.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include <agent_pp/tools.h>
 #include <libagent.h>
@@ -44,6 +44,7 @@ char* AgentTools::make_concatenation(const char* prefix, const char* suffix)
 {
     size_t const len    = strlen(prefix) + strlen(suffix) + 1;
     char*        retval = new char[len];
+
     strlcpy(retval, prefix, len);
     strlcat(retval, suffix, len);
     return retval;
@@ -69,6 +70,7 @@ bool AgentTools::make_path(const std::string& path)
 {
     bool      result = true;
     int const rc     = mkdir(path.c_str(), 0775);
+
     if (rc == -1)
     {
         switch (errno)
@@ -83,9 +85,11 @@ bool AgentTools::make_path(const std::string& path)
                 result = false;
             }
             break;
+
         case EEXIST:
             // done
             break;
+
         default: result = false; break;
         }
     }
@@ -97,27 +101,39 @@ bool AgentTools::make_path(const std::string& path)
 bool Timer::in_time()
 {
     time_t now = 0;
+
     time(&now);
 
-    if (lifetime > 0) return (now <= timestamp + lifetime);
+    if (lifetime > 0)
+    {
+        return now <= timestamp + lifetime;
+    }
     return true;
 }
 
 time_t Timer::due_time()
 {
     time_t now = 0;
+
     time(&now);
 
-    if (now <= timestamp + lifetime) return (timestamp + lifetime - now);
+    if (now <= timestamp + lifetime)
+    {
+        return timestamp + lifetime - now;
+    }
     return 0;
 }
 
 bool Timer::in_time(int frac)
 {
     time_t now = 0;
+
     time(&now);
 
-    if (lifetime > 0) return (now <= timestamp + lifetime / frac);
+    if (lifetime > 0)
+    {
+        return now <= timestamp + lifetime / frac;
+    }
     return true;
 }
 

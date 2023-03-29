@@ -13,9 +13,9 @@ AlignConsecutiveAssignments: Consecutive
 AlignConsecutiveDeclarations: Consecutive
 AlignConsecutiveMacros: Consecutive
 AlignEscapedNewlines: Left
-AlignTrailingComments: true
-#   Kind: Always
-#   OverEmptyLines: 2
+AlignTrailingComments:
+   Kind: Always
+   OverEmptyLines: 2
 AllowAllArgumentsOnNextLine: true
 AllowAllConstructorInitializersOnNextLine: true
 AllowAllParametersOfDeclarationOnNextLine: true
@@ -25,7 +25,7 @@ AllowShortFunctionsOnASingleLine: All
 AllowShortEnumsOnASingleLine: true
 AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: true
-AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortIfStatementsOnASingleLine: Never # WithoutElse
 AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakAfterReturnType: None
 AlwaysBreakTemplateDeclarations: Yes

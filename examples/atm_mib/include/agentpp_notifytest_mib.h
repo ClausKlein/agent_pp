@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - agentpp_notifytest_mib.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - agentpp_notifytest_mib.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 //--AgentGen BEGIN=_BEGIN
 //--AgentGen END
@@ -49,7 +49,6 @@ namespace Agentpp
  */
 
 class agentppNotifyTest : public MibLeaf {
-
 public:
     agentppNotifyTest();
     ~agentppNotifyTest() override;
@@ -61,10 +60,12 @@ public:
     int             set(const Vbx& /*vb*/) override;
     int             prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool            value_ok(const Vbx& /*unused*/ /*vb*/) override;
+
     enum labels { e_agentppNotifyTestAllTypes = 1 };
 
     //--AgentGen BEGIN=agentppNotifyTest
     void send_agentppNotifyTestAllTypes();
+
     //--AgentGen END
 };
 
@@ -75,7 +76,6 @@ public:
  */
 
 class agentppNotifyTestAllTypes : public NotificationOriginator {
-
 public:
     agentppNotifyTestAllTypes();
     ~agentppNotifyTestAllTypes() override;

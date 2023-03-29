@@ -1,26 +1,27 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - notification_log_mib.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - notification_log_mib.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 //--AgentGen BEGIN=_BEGIN
 #include <agent_pp/agent++.h>
 #ifdef _SNMPv3
+
 #    include <agent_pp/mib_complex_entry.h>
 //--AgentGen END
 
@@ -166,7 +167,6 @@ using namespace Snmp_pp;
 #        endif
 
 class AGENTPP_DECL nlmConfigLogOperStatus : public MibLeaf {
-
 public:
     nlmConfigLogOperStatus(const Oidx&);
     ~nlmConfigLogOperStatus() override;
@@ -202,7 +202,6 @@ public:
  */
 
 class AGENTPP_DECL nlmConfigGlobalEntryLimit : public MibLeaf {
-
 public:
     nlmConfigGlobalEntryLimit();
     ~nlmConfigGlobalEntryLimit() override;
@@ -238,7 +237,6 @@ public:
  */
 
 class AGENTPP_DECL nlmConfigGlobalAgeOut : public MibLeaf {
-
 public:
     nlmConfigGlobalAgeOut();
     ~nlmConfigGlobalAgeOut() override;
@@ -270,7 +268,6 @@ public:
  */
 
 class AGENTPP_DECL nlmConfigLogFilterName : public MibLeaf {
-
 public:
     nlmConfigLogFilterName(const Oidx&);
     ~nlmConfigLogFilterName() override;
@@ -305,7 +302,6 @@ public:
  */
 
 class AGENTPP_DECL nlmConfigLogEntryLimit : public MibLeaf {
-
 public:
     nlmConfigLogEntryLimit(const Oidx&);
     ~nlmConfigLogEntryLimit() override;
@@ -334,7 +330,6 @@ public:
  */
 
 class AGENTPP_DECL nlmConfigLogAdminStatus : public MibLeaf {
-
 public:
     nlmConfigLogAdminStatus(const Oidx&);
     ~nlmConfigLogAdminStatus() override;
@@ -346,6 +341,7 @@ public:
     int             set(const Vbx& /*vb*/) override;
     int             prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
     bool            value_ok(const Vbx& /*unused*/) override;
+
     enum labels { e_enabled = 1, e_disabled = 2 };
 
     //--AgentGen BEGIN=nlmConfigLogAdminStatus
@@ -359,7 +355,6 @@ public:
  */
 
 class AGENTPP_DECL nlmConfigLogStorageType : public StorageType {
-
 public:
     nlmConfigLogStorageType(const Oidx&);
     ~nlmConfigLogStorageType() override;
@@ -371,6 +366,7 @@ public:
     int         set(const Vbx& /*vb*/) override;
     int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/) override;
+
     enum labels { e_other = 1, e_volatile = 2, e_nonVolatile = 3, e_permanent = 4, e_readOnly = 5 };
 
     //--AgentGen BEGIN=nlmConfigLogStorageType
@@ -391,7 +387,6 @@ public:
  */
 
 class AGENTPP_DECL nlmConfigLogEntryStatus : public snmpRowStatus {
-
 public:
     nlmConfigLogEntryStatus(const Oidx&);
     ~nlmConfigLogEntryStatus() override;
@@ -401,6 +396,7 @@ public:
     virtual void    set_state(int32_t);
     int             set(const Vbx& /*unused*/) override;
     int             prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+
     enum labels {
         e_active        = 1,
         e_notInService  = 2,
@@ -412,6 +408,7 @@ public:
 
     //--AgentGen BEGIN=nlmConfigLogEntryStatus
     int commit_set_request(Request* /*unused*/, int /*unused*/) override;
+
     //--AgentGen END
 };
 
@@ -424,7 +421,6 @@ public:
  */
 
 class AGENTPP_DECL nlmStatsGlobalNotificationsLogged : public Counter32MibLeaf {
-
 public:
     nlmStatsGlobalNotificationsLogged();
     ~nlmStatsGlobalNotificationsLogged() override;
@@ -450,7 +446,6 @@ public:
  */
 
 class AGENTPP_DECL nlmStatsGlobalNotificationsBumped : public Counter32MibLeaf {
-
 public:
     nlmStatsGlobalNotificationsBumped();
     ~nlmStatsGlobalNotificationsBumped() override;
@@ -502,7 +497,6 @@ protected:
  */
 
 class AGENTPP_DECL nlmStatsLogEntry : public MibTable {
-
 public:
     nlmStatsLogEntry(nlmConfigLogEntry*);
     ~nlmStatsLogEntry() override;
@@ -597,7 +591,6 @@ protected:
  */
 
 class AGENTPP_DECL nlmLogVariableEntry : public MibTable {
-
 public:
     nlmLogVariableEntry();
     ~nlmLogVariableEntry() override;
@@ -613,7 +606,9 @@ public:
 
     //--AgentGen BEGIN=nlmLogVariableEntry
     bool is_volatile() override { return true; }
+
     void add_variable(const Oidx&, unsigned int, const Vbx&);
+
     //--AgentGen END
 };
 

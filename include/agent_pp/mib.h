@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - mib.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - mib.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #ifndef mib_h_
 #define mib_h_
@@ -237,6 +237,7 @@ public:
      *         value of the receiver.
      */
     virtual Vbx get_value() const;
+
     /**
      * Get the value of the receiver.
      *
@@ -245,6 +246,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success.
      */
     virtual int get_value(NS_SNMP SnmpSyntax& s) const { return get_value().get_value(s); }
+
     /**
      * Get the value of the receiver.
      *
@@ -252,6 +254,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success.
      */
     virtual int get_value(int32_t& i) const { return get_value().get_value(i); }
+
     /**
      * Get the value of the receiver.
      *
@@ -259,6 +262,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success.
      */
     virtual int get_value(uint32_t& i) const { return get_value().get_value(i); }
+
     /**
      * Get the value of the receiver.
      *
@@ -267,6 +271,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success.
      */
     virtual int get_value(uint64_t& i) const { return get_value().get_value(i); }
+
     /**
      * Get the value of the receiver.
      *
@@ -301,6 +306,7 @@ public:
      *         SNMP_ERROR_WRONG_TYPE or SNMP_ERROR_BAD_VALUE otherwise.
      */
     virtual int set_value(const Vbx&);
+
     /**
      * Set the value of the receiver by reference.
      *
@@ -394,6 +400,7 @@ public:
      *         SNMP_ERROR_WRONG_TYPE or SNMP_ERROR_BAD_VALUE otherwise.
      */
     virtual int set(const Vbx& vb);
+
     /**
      * Undo a previous set.
      *
@@ -409,6 +416,7 @@ public:
      *         scalar managed object return 0.
      */
     MibTable* get_reference_to_table() { return my_table; }
+
     /**
      * Return a pointer to the row the receiver belongs to.
      *
@@ -434,14 +442,14 @@ public:
      *
      * @return true if the receiver has a default value, false otherwise.
      */
-    bool has_default() { return ((value_mode & VMODE_DEFAULT) > 0); }
+    bool has_default() { return (value_mode & VMODE_DEFAULT) > 0; }
 
     /**
      * Return whether the receiver has a default value.
      *
      * @return true if the receiver has a default value, false otherwise.
      */
-    bool is_locked() { return ((value_mode & VMODE_LOCKED) > 0); }
+    bool is_locked() { return (value_mode & VMODE_LOCKED) > 0; }
 
     /**
      * Set the receiver's reference to its table.
@@ -449,6 +457,7 @@ public:
      * @param t - A pointer to a MibTable instance.
      */
     void set_reference_to_table(MibTable* t) { my_table = t; }
+
     /**
      * Set the receiver's reference to its row.
      *
@@ -553,6 +562,7 @@ public:
     static Counter32MibLeaf* get_instance(Mib* mib, const Oidx& oid, const Oidx& ind = Oidx());
     static Counter32MibLeaf* get_instance(
         Mib* mib, const OctetStr& context, const Oidx& oid, const Oidx& ind = Oidx());
+
     /**
      * Increment a scalar counter with the given instance OID (with .0 suffix)
      * associated with the default context.
@@ -623,7 +633,8 @@ public:
         Mib* mib, const OctetStr& context, const Oidx& columnOid, const Oidx& rowIndex);
 
     virtual void increment();
-    bool         is_volatile() override { return true; }
+
+    bool is_volatile() override { return true; }
 };
 
 /*--------------------------- class snmpRowStatus ------------------------*/
@@ -648,7 +659,6 @@ public:
  */
 
 class AGENTPP_DECL snmpRowStatus : public MibLeaf {
-
 public:
     /**
      * Default constructor
@@ -1070,6 +1080,7 @@ protected:
      * @param t - The MibTable object the reciever belongs to.
      */
     void set_reference_to_table(MibTable*);
+
     /**
      * Set a reference to the receiver in all of its columns.
      */
@@ -1102,6 +1113,7 @@ protected:
 class AGENTPP_DECL MibTableVoter {
 public:
     MibTableVoter() { }
+
     virtual ~MibTableVoter() { }
 
     /**
@@ -1558,6 +1570,7 @@ public:
     {
         (void)t;
     }
+
     /**
      * Is called before a row is deleted by MibTable
      *
@@ -1832,7 +1845,7 @@ public:
      *	true if there is at least one listener attached to this
      *      table via ::add_listener, false otherwise.
      */
-    bool has_listeners() const { return (listeners.size() > 0); }
+    bool has_listeners() const { return listeners.size() > 0; }
 
     /**
      * Removes all rows from this table.
@@ -2092,7 +2105,10 @@ protected:
 
 inline Oidx MibLeaf::get_oid() const
 {
-    if ((!my_table) || (!my_row)) { return oid; }
+    if ((!my_table) || (!my_row))
+    {
+        return oid;
+    }
     else
     {
         Oidx o(*my_table->key());
@@ -2205,7 +2221,6 @@ public:
  * @since 3.5.22
  */
 class AGENTPP_DECL MibConfigFormat {
-
 public:
     virtual ~MibConfigFormat() { }
 
@@ -2247,7 +2262,6 @@ public:
  * @since 3.5.22
  */
 class AGENTPP_DECL MibConfigBER : public MibConfigFormat {
-
 public:
     MibConfigBER() { }
 
@@ -2400,6 +2414,7 @@ public:
 #else
     static void          set_request_list(RequestList*);
 #endif
+
     /**
      * Gets the request list associated with all Mib instances.
      *
@@ -2411,6 +2426,7 @@ public:
 #else
     static RequestList*  get_request_list() { return requestList; }
 #endif
+
     /**
      * Process a request. If multi-threading is activated, start a
      * thread to actually process the request.
@@ -2728,7 +2744,7 @@ public:
      * @return
      *    true if persistent storage is activated.
      */
-    bool is_persistency_activated() const { return (persistent_objects_path != nullptr); }
+    bool is_persistency_activated() const { return persistent_objects_path != nullptr; }
 
     /**
      * Check whether a node (a MIB object) is complex, i.e.
@@ -2744,7 +2760,7 @@ public:
      * @param entry
      *    a pointer to a node (MIB object).
      */
-    bool is_table_node(const MibEntryPtr& e) { return (e->type() == AGENTPP_TABLE); }
+    bool is_table_node(const MibEntryPtr& e) { return e->type() == AGENTPP_TABLE; }
 
     /**
      * Check whether a node (a MIB object) is a leaf node.
@@ -2752,7 +2768,7 @@ public:
      * @param entry
      *    a pointer to a node (MIB object).
      */
-    bool is_leaf_node(const MibEntryPtr& e) { return (e->type() == AGENTPP_LEAF); }
+    bool is_leaf_node(const MibEntryPtr& e) { return e->type() == AGENTPP_LEAF; }
 
     // Pointer to the singleton instance of the Mib class.
     static Mib* instance;
@@ -2880,6 +2896,7 @@ public:
      *    the ProxyForwarder::pdu_type of the proxy.
      */
     void unregister_proxy(const NS_SNMP OctetStr&, ProxyForwarder::pdu_type);
+
     /**
      * Set the local engine ID used by the proxy forwarder application.
      * The local engine ID is automatically set if the v3MP has been
@@ -2914,7 +2931,10 @@ public:
      */
     void delete_thread_pool()
     {
-        if (threadPool) delete threadPool;
+        if (threadPool)
+        {
+            delete threadPool;
+        }
         threadPool = nullptr;
     }
 
@@ -3044,7 +3064,7 @@ public:
      */
     MibConfigFormat* get_config_format(unsigned int format)
     {
-        return (configFormats.getNth(format - 1));
+        return configFormats.getNth(format - 1);
     }
 
 protected:
@@ -3143,8 +3163,10 @@ private:
 #    ifndef AGENTPP_USE_THREAD_POOL
 #        ifdef _WIN32THREADS
 void mib_method_routine_caller(void*);
+
 #        else
 void* mib_method_routine_caller(void*);
+
 #        endif
 #    endif
 #endif

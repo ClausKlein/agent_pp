@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - threads.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - threads.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include <agent_pp/mib.h>
 #include <agent_pp/mib_entry.h>
@@ -48,7 +48,10 @@ ThreadManager::ThreadManager() { }
 ThreadManager::~ThreadManager()
 {
 #if defined(_THREADS) && !defined(NO_FAST_MUTEXES)
-    if (trylock() == LOCKED) { unlock(); }
+    if (trylock() == LOCKED)
+    {
+        unlock();
+    }
 #endif
 }
 
@@ -235,33 +238,46 @@ void Synchronized::wait()
 int Synchronized::cond_timed_wait(const struct timespec* ts)
 {
     int result = 0;
-    isLocked   = false;
+
+    isLocked = false;
     if (ts)
+    {
         result = pthread_cond_timedwait(&cond, &monitor, ts);
+    }
     else
+    {
         result = pthread_cond_wait(&cond, &monitor);
+    }
     isLocked = true;
     return result;
 }
+
 #    endif
 
 bool Synchronized::wait(long timeout)
 {
     bool timeoutOccurred = false;
+
 #    ifdef POSIX_THREADS
     struct timespec ts = {};
 #        ifdef HAVE_CLOCK_GETTIME
     clock_gettime(CLOCK_REALTIME, &ts);
     ts.tv_sec += (time_t)timeout / 1000;
     int const millis = ts.tv_nsec / 1000000 + (timeout % 1000);
-    if (millis >= 1000) { ts.tv_sec += 1; }
+    if (millis >= 1000)
+    {
+        ts.tv_sec += 1;
+    }
     ts.tv_nsec = (millis % 1000) * 1000000;
 #        else
     struct timeval tv = {};
     gettimeofday(&tv, 0);
     ts.tv_sec  = tv.tv_sec + (time_t)timeout / 1000;
     int millis = tv.tv_usec / 1000 + (timeout % 1000);
-    if (millis >= 1000) { ts.tv_sec += 1; }
+    if (millis >= 1000)
+    {
+        ts.tv_sec += 1;
+    }
     ts.tv_nsec = (millis % 1000) * 1000000;
 #        endif
 
@@ -276,7 +292,9 @@ bool Synchronized::wait(long timeout)
             LOG("Synchronized: wait with timeout returned (error)");
             LOG(err);
             LOG_END;
+
         case ETIMEDOUT: timeoutOccurred = true; break;
+
         default:
             LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
             LOG("Synchronized: wait with timeout returned (error)");
@@ -304,6 +322,7 @@ bool Synchronized::wait(long timeout)
         LOG_END;
         timeoutOccurred = true;
         break;
+
     case WAIT_ABANDONED:
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 2);
         LOG("Synchronized: waiting for event failed");
@@ -362,12 +381,14 @@ void Synchronized::notify_all()
 #        ifdef WIN32
     numNotifies = (char)0x80;
     while (numNotifies--)
+    {
         if (!SetEvent(semEvent))
         {
             LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
             LOG("Synchronized: notify failed");
             LOG_END;
         }
+    }
 #        endif
 #    endif
 }
@@ -395,10 +416,8 @@ bool Synchronized::lock()
 #        else
     if (!err)
     {
-
         if (isLocked)
         {
-
 #            if 0
             // This thread owns already the lock, but
             // we do not like recursive locking. Thus
@@ -472,21 +491,26 @@ bool Synchronized::lock()
 
 bool Synchronized::lock(long timeout)
 {
-
 #    ifdef POSIX_THREADS
     struct timespec ts = {};
 #        ifdef HAVE_CLOCK_GETTIME
     clock_gettime(CLOCK_REALTIME, &ts);
     ts.tv_sec += (time_t)timeout / 1000;
     int const millis = ts.tv_nsec / 1000000 + (timeout % 1000);
-    if (millis >= 1000) { ts.tv_sec += 1; }
+    if (millis >= 1000)
+    {
+        ts.tv_sec += 1;
+    }
     ts.tv_nsec = (millis % 1000) * 1000000;
 #        else
     struct timeval tv = {};
     gettimeofday(&tv, 0);
     ts.tv_sec  = tv.tv_sec + (time_t)timeout / 1000;
     int millis = tv.tv_usec / 1000 + (timeout % 1000);
-    if (millis >= 1000) { ts.tv_sec += 1; }
+    if (millis >= 1000)
+    {
+        ts.tv_sec += 1;
+    }
     ts.tv_nsec            = (millis % 1000) * 1000000;
 #        endif
 
@@ -513,7 +537,6 @@ bool Synchronized::lock(long timeout)
 #        else
         if (isLocked)
         {
-
 #            if 0
             // This thread owns already the lock, but
             // we do not like recursive locking. Thus
@@ -587,7 +610,8 @@ bool Synchronized::lock(long timeout)
 bool Synchronized::unlock()
 {
     bool const wasLocked = isLocked;
-    isLocked             = false;
+
+    isLocked = false;
 #    ifdef POSIX_THREADS
     int const err = pthread_mutex_unlock(&monitor);
     if (err != 0)
@@ -650,7 +674,6 @@ Synchronized::TryLockResult Synchronized::trylock()
     {
         if (isLocked)
         {
-
 #            if 0
             // This thread owns already the lock, but
             // we do not like true recursive locking. Thus
@@ -740,6 +763,7 @@ ThreadList Thread::threadList;
 void* thread_starter(void* t)
 {
     auto* thread = (Thread*)t;
+
     Thread::threadList.add(thread);
 
 #        ifndef NO_FAST_MUTEXES
@@ -762,11 +786,13 @@ void* thread_starter(void* t)
 
     return t;
 }
+
 #    else
 #        ifdef WIN32
 DWORD thread_starter(LPDWORD lpdwParam)
 {
     Thread* thread = (Thread*)lpdwParam;
+
     Thread::threadList.add(thread);
 
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
@@ -788,6 +814,7 @@ DWORD thread_starter(LPDWORD lpdwParam)
 
     return 0;
 }
+
 #        endif
 #    endif
 
@@ -822,7 +849,10 @@ void Thread::run()
 
 Thread::~Thread()
 {
-    if (status != IDLE) { join(); }
+    if (status != IDLE)
+    {
+        join();
+    }
 #    ifdef WIN32
     ::CloseHandle(threadEndEvent);
     if (threadHandle != INVALID_HANDLE_VALUE)
@@ -909,7 +939,9 @@ void Thread::start()
             status = IDLE;
         }
         else
+        {
             status = RUNNING;
+        }
         pthread_attr_destroy(&attr);
     }
     else
@@ -924,7 +956,6 @@ void Thread::start()
 
     if (status == IDLE)
     {
-
         if (threadHandle != INVALID_HANDLE_VALUE)
         {
             ::CloseHandle(threadHandle);
@@ -980,12 +1011,12 @@ void Thread::nsleep(int secs, long nanos)
     DWORD millis = secs * 1000 + nanos / 1000000;
     Sleep(millis);
 #    else
-    long const s = secs + nanos / 1000000000;
-    long const n = nanos % 1000000000;
+    long const      s        = secs + nanos / 1000000000;
+    long const      n        = nanos % 1000000000;
 
 #        ifdef _POSIX_TIMERS
     struct timespec interval = {}, remainder = {};
-    interval.tv_sec = s;
+    interval.tv_sec  = s;
     interval.tv_nsec = n;
     if (nanosleep(&interval, &remainder) == -1)
     {
@@ -1056,7 +1087,10 @@ void TaskManager::run()
             delete task;
             task = nullptr;
             unlock();
-            if (threadPool->is_one_time_execution()) { return; }
+            if (threadPool->is_one_time_execution())
+            {
+                return;
+            }
             threadPool->idle_notification();
             lock();
         }
@@ -1115,7 +1149,10 @@ void ThreadPool::execute(Runnable* t)
                 LOG_END;
 
                 unlock();
-                if (tm->set_task(t)) { return; }
+                if (tm->set_task(t))
+                {
+                    return;
+                }
                 else
                 {
                     // task could not be assigned
@@ -1125,7 +1162,10 @@ void ThreadPool::execute(Runnable* t)
             }
             tm = nullptr;
         }
-        if (!tm) wait(1000);
+        if (!tm)
+        {
+            wait(1000);
+        }
     }
     unlock();
 }
@@ -1178,6 +1218,7 @@ void ThreadPool::terminate()
 void ThreadPool::join()
 {
     Array<TaskManager> joined;
+
     lock();
     ArrayCursor<TaskManager> cur;
     for (cur.init(&taskList); cur.get(); cur.next())
@@ -1231,6 +1272,7 @@ void QueuedThreadPool::assign(Runnable* t)
 {
     TaskManager*             tm = nullptr;
     ArrayCursor<TaskManager> cur;
+
     for (cur.init(&taskList); cur.get(); cur.next())
     {
         tm = cur.get();
@@ -1263,7 +1305,10 @@ void QueuedThreadPool::assign(Runnable* t)
 void QueuedThreadPool::execute(Runnable* t)
 {
     Thread::lock();
-    if (queue.empty()) { assign(t); }
+    if (queue.empty())
+    {
+        assign(t);
+    }
     else
     {
         queue.add(t);
@@ -1278,7 +1323,10 @@ void QueuedThreadPool::run()
     while (go)
     {
         Runnable* t = queue.removeFirst();
-        if (t) { assign(t); }
+        if (t)
+        {
+            assign(t);
+        }
         Thread::wait(1000);
     }
     Thread::unlock();
@@ -1333,7 +1381,10 @@ LockQueue::~LockQueue()
     LOG_END;
 
     // join thread here, before pending list is deleted
-    if (is_alive()) join();
+    if (is_alive())
+    {
+        join();
+    }
 
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
     LOG("LockQueue: queue stopped");
@@ -1446,7 +1497,7 @@ void LockQueue::release(LockRequest* r)
 #        endif // NO_FAST_MUTEXES
 
 #    endif
-#endif // _THREADS
+#endif         // _THREADS
 
 #ifdef AGENTPP_NAMESPACE
 }

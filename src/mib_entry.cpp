@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - mib_entry.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - mib_entry.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include <agent_pp/mib_entry.h>
 #include <agent_pp/tools.h>
@@ -87,11 +87,11 @@ mib_type MibEntry::type() const { return AGENTPP_NONE; }
  */
 OidxPtr MibEntry::key() { return &oid; }
 
-int MibEntry::operator<(const MibEntry& other) const { return (oid < other.oid); }
+int MibEntry::operator<(const MibEntry& other) const { return oid < other.oid; }
 
-int MibEntry::operator>(const MibEntry& other) const { return (oid > other.oid); }
+int MibEntry::operator>(const MibEntry& other) const { return oid > other.oid; }
 
-int MibEntry::operator==(const MibEntry& other) const { return (oid == other.oid); }
+int MibEntry::operator==(const MibEntry& other) const { return oid == other.oid; }
 
 /**
  * Return a clone of the receiver.
@@ -102,7 +102,8 @@ MibEntryPtr MibEntry::clone()
 {
     auto                 aClone = new MibEntry(oid, access);
     ListCursor<MibEntry> cur;
-    for (cur.init(&notifies); cur.get(); cur.next()) aClone->notifies.add(cur.get());
+
+    for (cur.init(&notifies); cur.get(); cur.next()) { aClone->notifies.add(cur.get()); }
     return aClone;
 }
 
@@ -117,15 +118,15 @@ Oidx* MibEntry::max_key() { return &oid; }
  */
 mib_access MibEntry::get_access() { return access; }
 
-int MibEntry::operator>(const Oidx& other) const { return (oid > other); }
+int MibEntry::operator>(const Oidx& other) const { return oid > other; }
 
-int MibEntry::operator<(const Oidx& other) const { return (oid < other); }
+int MibEntry::operator<(const Oidx& other) const { return oid < other; }
 
-int MibEntry::operator>=(const Oidx& other) const { return (oid >= other); }
+int MibEntry::operator>=(const Oidx& other) const { return oid >= other; }
 
-int MibEntry::operator<=(const Oidx& other) const { return (oid <= other); }
+int MibEntry::operator<=(const Oidx& other) const { return oid <= other; }
 
-int MibEntry::operator==(const Oidx& other) const { return (oid == other); }
+int MibEntry::operator==(const Oidx& other) const { return oid == other; }
 
 void MibEntry::set_oid(const Oidx& o) { oid = o; }
 
@@ -147,9 +148,12 @@ void MibEntry::register_for_notifications(MibEntry* entry) { notifies.add(entry)
  */
 void MibEntry::notify_change(const Oidx& o, mib_change change)
 {
-    if (notifies.empty()) return;
+    if (notifies.empty())
+    {
+        return;
+    }
     ListCursor<MibEntry> cur;
-    for (cur.init(&notifies); cur.get(); cur.next()) cur.get()->change_notification(o, change);
+    for (cur.init(&notifies); cur.get(); cur.next()) { cur.get()->change_notification(o, change); }
 }
 
 void MibEntry::load_from_file(const char* fname)
@@ -158,7 +162,10 @@ void MibEntry::load_from_file(const char* fname)
     char* buf  = nullptr;
     int   size = 0, bytes = 0;
 
-    if ((f = fopen(fname, "rb")) == nullptr) return;
+    if ((f = fopen(fname, "rb")) == nullptr)
+    {
+        return;
+    }
 
     size = AgentTools::file_size(f);
     if (size > 0)

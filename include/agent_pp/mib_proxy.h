@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - mib_proxy.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - mib_proxy.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #ifndef mib_proxy_h_
 #define mib_proxy_h_
@@ -62,7 +62,6 @@ using namespace Snmp_pp;
  */
 
 class AGENTPP_DECL MibProxy : public MibEntry {
-
 public:
     /**
      * Default constructor
@@ -165,7 +164,7 @@ public:
      */
     virtual bool is_empty()
     {
-        return ((find_succ(*key()).len() == 0) || (lastNext.get_oid() >= *max_key()));
+        return (find_succ(*key()).len() == 0) || (lastNext.get_oid() >= *max_key());
     }
 
     virtual void get_request(Request*, int);
@@ -225,7 +224,6 @@ protected:
  */
 
 class AGENTPP_DECL MibProxyV3 : public MibEntry {
-
 public:
     /**
      * Default constructor

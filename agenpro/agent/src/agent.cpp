@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - agent.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - agent.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include "module_includes.h"
 #include "module_init.h"
@@ -53,7 +53,6 @@ static void sig(int signo)
 {
     if ((signo == SIGTERM) || (signo == SIGINT) || (signo == SIGSEGV))
     {
-
         printf("\n");
 
         switch (signo)
@@ -62,6 +61,7 @@ static void sig(int signo)
             printf("Segmentation fault, aborting.\n");
             exit(1);
         }
+
         case SIGTERM:
         case SIGINT: {
             if (run)
@@ -84,6 +84,7 @@ void init_signals()
 void init(Mib& mib, const NS_SNMP OctetStr& engineID)
 {
     OctetStr sysDescr("AGENT++v");
+
     sysDescr += AGENTPP_VERSION_STRING;
     sysDescr += " agent";
     mib.add(new sysGroup(sysDescr.get_printable(), "1.3.6.1.4.1.4976", 10));
@@ -162,9 +163,13 @@ void init(Mib& mib, const NS_SNMP OctetStr& engineID)
 int main(int argc, char* argv[])
 {
     if (argc > 1)
+    {
         port = atoi(argv[1]);
+    }
     else
+    {
         port = 4700;
+    }
 
 #ifndef _NO_LOGGING
     DefaultLog::log()->set_filter(ERROR_LOG, 5);
@@ -179,7 +184,6 @@ int main(int argc, char* argv[])
 
     if (status == SNMP_CLASS_SUCCESS)
     {
-
         LOG_BEGIN(loggerModuleName, EVENT_LOG | 1);
         LOG("main: SNMP listen port");
         LOG(port);
@@ -289,13 +293,13 @@ int main(int argc, char* argv[])
     // level >= noAuthNoPriv within context "") would have full access
     // (read, write, notify) to all objects in view "newView".
     vacm->addNewAccessEntry("newGroup",
-        "other", // context
+        "other",     // context
         SNMP_SECURITY_MODEL_USM, SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV,
         match_exact, // context must mach exactly
-        // alternatively: match_prefix
-        "newView", // readView
-        "newView", // writeView
-        "newView", // notifyView
+                     // alternatively: match_prefix
+        "newView",   // readView
+        "newView",   // writeView
+        "newView",   // notifyView
         storageType_nonVolatile);
     vacm->addNewAccessEntry("testGroup", "", SNMP_SECURITY_MODEL_USM, SNMP_SECURITY_LEVEL_AUTH_PRIV,
         match_prefix, "testView", "testView", "testView", storageType_nonVolatile);
@@ -321,7 +325,7 @@ int main(int argc, char* argv[])
 
     // remove an AccessEntry with:
     // vacm->deleteAccessEntry("newGroup",
-    //	      		"",
+    //	            "",
     //			SNMP_SECURITY_MODEL_USM,
     //			SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV);
 
@@ -360,18 +364,19 @@ int main(int argc, char* argv[])
     vacm->addNewView("restricted", "1.3.6.1.6.3.15.1.1", "", view_included, storageType_nonVolatile);
 
     // add SNMPv1/v2c community to v3 security name mapping
+
     /*
-    snmpCommunityEntry* communityEntry =
-            snmpCommunityEntry::get_instance(mib);
-    if (communityEntry) {
-        OctetStr co("public");
-        MibTableRow* row = communityEntry->add_row(Oidx::from_string(co,
-    false)); OctetStr tag("v1v2cPermittedManagers");
-        communityEntry->set_row(row, co, co,
-                    reqList->get_v3mp()->get_local_engine_id(),
-                    "", tag, 3, 1);
-    }
-    */
+     * snmpCommunityEntry* communityEntry =
+     *      snmpCommunityEntry::get_instance(mib);
+     * if (communityEntry) {
+     *  OctetStr co("public");
+     *  MibTableRow* row = communityEntry->add_row(Oidx::from_string(co,
+     * false)); OctetStr tag("v1v2cPermittedManagers");
+     *  communityEntry->set_row(row, co, co,
+     *              reqList->get_v3mp()->get_local_engine_id(),
+     *              "", tag, 3, 1);
+     * }
+     */
 #endif
 
     Vbx*         vbs = 0;
@@ -383,10 +388,12 @@ int main(int argc, char* argv[])
     Request* req;
     while (run)
     {
-
         req = reqList->receive(2);
 
-        if (req) { mib->process_request(req); }
+        if (req)
+        {
+            mib->process_request(req);
+        }
         else
         {
             mib->cleanup();

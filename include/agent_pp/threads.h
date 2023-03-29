@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - threads.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - threads.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #ifndef multi_h_
 #define multi_h_
@@ -32,6 +32,7 @@
 #endif
 
 #include <agent_pp/List.h>
+#include <atomic>
 #include <ctime>
 #include <sys/types.h>
 
@@ -60,7 +61,6 @@ typedef void (Mib::*mib_method_t)(Request*);
 // The MibMethodCall class stores function pointers of the class Mib
 
 class AGENTPP_DECL MibMethodCall {
-
 public:
     MibMethodCall(Mib* c, void (Mib::*m)(Request*), Request* r)
         :
@@ -70,7 +70,6 @@ public:
 
     MibMethodCall(const MibMethodCall& other)
     {
-
         called_class = other.called_class;
         method       = other.method;
         req          = other.req;
@@ -120,9 +119,9 @@ void* method_routine_caller(void*);
  */
 
 class AGENTPP_DECL Runnable {
-
 public:
     Runnable() { }
+
     virtual ~Runnable() { }
 
     /**
@@ -172,6 +171,7 @@ public:
      * object's monitor.
      */
     void notify();
+
     /**
      * Wakes up all threads that are waiting on this object's
      * monitor.
@@ -231,7 +231,8 @@ private:
     unsigned int        id;
 #    endif
 #    ifdef POSIX_THREADS
-    int             cond_timed_wait(const timespec*);
+    int cond_timed_wait(const timespec*);
+
     pthread_cond_t  cond;
     pthread_mutex_t monitor;
 #    else
@@ -283,9 +284,13 @@ public:
     void wait(long timeout)
     {
         if (timeout < 0)
+        {
             sync.wait();
+        }
         else
+        {
             sync.wait(timeout);
+        }
     }
 
     /**
@@ -317,7 +322,6 @@ class AGENTPP_DECL ThreadList;
  * @version 3.5.7
  */
 class AGENTPP_DECL Thread : public Synchronized, public Runnable {
-
     enum ThreadStatus { IDLE, RUNNING, FINISHED };
 
     friend class Synchronized;
@@ -412,7 +416,7 @@ public:
      * @return
      *    Returns true if the thread is running; otherwise false.
      */
-    bool is_alive() { return (status == RUNNING); }
+    bool is_alive() { return status == RUNNING; }
 
     /**
      * Clone this thread. This method must not be called on
@@ -421,9 +425,9 @@ public:
     Thread* clone() { return new Thread(get_runnable()); }
 
 private:
-    Runnable*    runnable;
-    ThreadStatus status;
-    long         stackSize;
+    Runnable*                 runnable;
+    std::atomic<ThreadStatus> status;
+    long                      stackSize;
 #    ifdef POSIX_THREADS
     pthread_t tid;
 #    else
@@ -452,6 +456,7 @@ AGENTPP_DECL_TEMPL template class AGENTPP_DECL Array<Thread>;
 class AGENTPP_DECL ThreadList : public Synchronized {
 public:
     ThreadList() { }
+
     ~ThreadList() { list.clear(); /* do no delete threads */ }
 
     void add(Thread* t)
@@ -460,13 +465,16 @@ public:
         list.add(t);
         unlock();
     }
+
     void remove(Thread* t)
     {
         lock();
         list.remove(t);
         unlock();
     }
-    int     size() const { return list.size(); }
+
+    int size() const { return list.size(); }
+
     Thread* last()
     {
         lock();
@@ -496,7 +504,6 @@ AGENTPP_DECL_TEMPL template class AGENTPP_DECL Array<TaskManager>;
  * @version 3.5.19
  */
 class AGENTPP_DECL ThreadPool : public Synchronized {
-
 protected:
     Array<TaskManager> taskList;
     int                stackSize;
@@ -636,9 +643,8 @@ AGENTPP_DECL_TEMPL template class AGENTPP_DECL List<Runnable>;
  * @version 3.5.18
  */
 class AGENTPP_DECL QueuedThreadPool : public ThreadPool, public Thread {
-
-    List<Runnable> queue;
-    bool           go;
+    List<Runnable>    queue;
+    std::atomic<bool> go;
 
 public:
     /**
@@ -761,7 +767,7 @@ public:
      *    true if there is a task assigned this TaskManager.
      * @since 4.3.0
      */
-    bool is_busy() { return (task); }
+    bool is_busy() { return task; }
 
     /**
      * Start thread execution.
@@ -811,7 +817,8 @@ protected:
     ThreadPool* threadPool;
     Runnable*   task;
     void        run() override;
-    bool        go;
+
+    std::atomic<bool> go;
 };
 
 #    endif // AGENTPP_USE_THREAD_POOL
@@ -826,6 +833,7 @@ protected:
 class AGENTPP_DECL MibTask : public Runnable {
 public:
     MibTask(MibMethodCall* call) { task = call; }
+
     ~MibTask() override { delete task; }
 
     void run() override;
@@ -857,14 +865,16 @@ public:
     ~LockRequest();
 
     Synchronized* target;
+
     /**
      * If waitForLock is false, the lock request will return immediately and
      * will provide the lock result in the tryLockResult value. By default,
      * waitForLock is true;
      */
     bool waitForLock;
+
     /**
-     * Returns the lock result if tryĹock was set to true before the lock
+     * Returns the lock result if tryLock was set to true before the lock
      * was acquired. Otherwise always LOCKED will be returned.
      */
     TryLockResult tryLockResult;
@@ -915,7 +925,7 @@ public:
 protected:
     List<LockRequest> pendingLock;
     List<LockRequest> pendingRelease;
-    bool              go;
+    std::atomic<bool> go;
 };
 #    endif
 
@@ -950,6 +960,7 @@ public:
      * Start synchronized execution.
      */
     void start_synch();
+
     /**
      * End synchronized execution.
      */
@@ -959,6 +970,7 @@ public:
      * Start global synchronized execution.
      */
     static void start_global_synch();
+
     /**
      * End global synchronized execution.
      */

@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - agentpp_test_mib.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - agentpp_test_mib.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 //--AgentGen BEGIN=_BEGIN
 //--AgentGen END
@@ -124,7 +124,6 @@ namespace Agentpp
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestTimeout : public MibLeaf {
-
 public:
     agentppTestTimeout();
     ~agentppTestTimeout() override;
@@ -150,7 +149,6 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSharedTableCreationTime : public DateAndTime {
-
 public:
     agentppTestSharedTableCreationTime(const Oidx& /*id*/);
     ~agentppTestSharedTableCreationTime() override;
@@ -169,7 +167,6 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSharedTableDelay : public MibLeaf {
-
 public:
     agentppTestSharedTableDelay(const Oidx& /*id*/);
     ~agentppTestSharedTableDelay() override;
@@ -188,7 +185,6 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSharedTableSession : public MibLeaf {
-
 public:
     agentppTestSharedTableSession(const Oidx& /*id*/);
     ~agentppTestSharedTableSession() override;
@@ -206,12 +202,12 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSharedTableRowStatus : public snmpRowStatus {
-
 public:
     agentppTestSharedTableRowStatus(const Oidx& /*id*/);
     ~agentppTestSharedTableRowStatus() override;
 
     MibEntryPtr clone() override;
+
     enum labels {
         e_active        = 1,
         e_notInService  = 2,
@@ -235,7 +231,6 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestRowCreation : public MibLeaf {
-
 public:
     agentppTestRowCreation(const Oidx& /*id*/);
     ~agentppTestRowCreation() override;
@@ -255,7 +250,6 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSparseCol1 : public MibLeaf {
-
 public:
     agentppTestSparseCol1(const Oidx& /*id*/);
     ~agentppTestSparseCol1() override;
@@ -281,7 +275,6 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSparseCol2 : public MibLeaf {
-
 public:
     agentppTestSparseCol2(const Oidx& /*id*/);
     ~agentppTestSparseCol2() override;
@@ -307,7 +300,6 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSparseCol3 : public MibLeaf {
-
 public:
     agentppTestSparseCol3(const Oidx& /*id*/);
     ~agentppTestSparseCol3() override;
@@ -331,7 +323,6 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSparseRowStatus : public snmpRowStatus {
-
 public:
     agentppTestSparseRowStatus(const Oidx& /*id*/);
     ~agentppTestSparseRowStatus() override;
@@ -341,6 +332,7 @@ public:
     virtual void    set_state(int32_t /*l*/);
     int             set(const Vbx& /*unused*/ /*vb*/) override;
     int             prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+
     enum labels {
         e_active        = 1,
         e_notInService  = 2,
@@ -364,7 +356,6 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSharedEntry : public MibTable {
-
 public:
     agentppTestSharedEntry();
     ~agentppTestSharedEntry() override;
@@ -383,7 +374,6 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSessionsEntry : public MibTable {
-
 public:
     agentppTestSessionsEntry();
     ~agentppTestSessionsEntry() override;
@@ -402,7 +392,6 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSparseEntry : public MibTable {
-
 public:
     agentppTestSparseEntry();
     ~agentppTestSparseEntry() override;
@@ -411,6 +400,7 @@ public:
 
     void get_request(Request* /*req*/ /*unused*/, int /*ind*/ /*unused*/) override;
     int  prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+
     //--AgentGen BEGIN=agentppTestSparseEntry
     //--AgentGen END
 };
@@ -425,6 +415,7 @@ class AGENTPP_TEST_MIB_DECL agentpp_test_mib : public MibGroup {
 public:
     agentpp_test_mib();
     ~agentpp_test_mib() override { }
+
     //--AgentGen BEGIN=agentpp_test_mib
     //--AgentGen END
 };

@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - v3_mib.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - v3_mib.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 #ifndef v3_mib_h_
 #define v3_mib_h_
 
@@ -42,14 +42,12 @@ using namespace Snmp_pp;
  **********************************************************************/
 
 class AGENTPP_DECL V3SnmpEngine : public MibGroup {
-
 public:
     V3SnmpEngine();
     V3SnmpEngine(NS_SNMP v3MP* mp);
 };
 
 class AGENTPP_DECL V3SnmpEngineID : public MibLeaf {
-
 public:
     V3SnmpEngineID() = delete;
     V3SnmpEngineID(const NS_SNMP v3MP* mp);
@@ -60,7 +58,6 @@ private:
 };
 
 class AGENTPP_DECL V3SnmpEngineBoots : public MibLeaf {
-
 public:
     V3SnmpEngineBoots() = delete;
     V3SnmpEngineBoots(const NS_SNMP USM* u);
@@ -71,7 +68,6 @@ private:
 };
 
 class AGENTPP_DECL V3SnmpEngineTime : public MibLeaf {
-
 public:
     V3SnmpEngineTime() = delete;
     V3SnmpEngineTime(const NS_SNMP USM* u);
@@ -82,7 +78,6 @@ private:
 };
 
 class AGENTPP_DECL V3SnmpEngineMaxMessageSize : public MibLeaf {
-
 public:
     V3SnmpEngineMaxMessageSize();
 };
@@ -276,6 +271,7 @@ public:
     UsmCloneFrom() = delete;
     UsmCloneFrom(const Oidx& o, NS_SNMP USM* u);
     ~UsmCloneFrom() override { }
+
     int         prepare_set_request(Request* req, int& ind) override;
     void        get_request(Request* req, int ind) override;
     int         set(const Vbx& vb) override;
@@ -316,10 +312,12 @@ class AGENTPP_DECL UsmOwnKeyChange : public UsmKeyChange {
 public:
     UsmOwnKeyChange() = delete;
     UsmOwnKeyChange(const Oidx& o, NS_SNMP USM* u) : UsmKeyChange(o, u) { }
+
     UsmOwnKeyChange(
         const Oidx& o, int keylen, int hashfunction, int typeOfKey, UsmKeyChange* ukc, NS_SNMP USM* u)
         : UsmKeyChange(o, keylen, hashfunction, typeOfKey, ukc, u)
     { }
+
     ~UsmOwnKeyChange() override;
 
     int         prepare_set_request(Request* req, int& ind) override;
@@ -335,7 +333,6 @@ private:
  **********************************************************************/
 
 class AGENTPP_DECL UsmStatsUnsupportedSecLevels : public MibLeaf {
-
 public:
     UsmStatsUnsupportedSecLevels() = delete;
     UsmStatsUnsupportedSecLevels(const NS_SNMP USM* u);
@@ -352,7 +349,6 @@ private:
  **********************************************************************/
 
 class AGENTPP_DECL UsmStatsNotInTimeWindows : public MibLeaf {
-
 public:
     UsmStatsNotInTimeWindows() = delete;
     UsmStatsNotInTimeWindows(const NS_SNMP USM* u);
@@ -369,7 +365,6 @@ private:
  **********************************************************************/
 
 class AGENTPP_DECL UsmStatsUnknownUserNames : public MibLeaf {
-
 public:
     UsmStatsUnknownUserNames() = delete;
     UsmStatsUnknownUserNames(const NS_SNMP USM* u);
@@ -386,7 +381,6 @@ private:
  **********************************************************************/
 
 class AGENTPP_DECL UsmStatsUnknownEngineIDs : public MibLeaf {
-
 public:
     UsmStatsUnknownEngineIDs() = delete;
     UsmStatsUnknownEngineIDs(const NS_SNMP USM* u);
@@ -403,7 +397,6 @@ private:
  **********************************************************************/
 
 class AGENTPP_DECL UsmStatsWrongDigests : public MibLeaf {
-
 public:
     UsmStatsWrongDigests() = delete;
     UsmStatsWrongDigests(const NS_SNMP USM* u);
@@ -420,7 +413,6 @@ private:
  **********************************************************************/
 
 class AGENTPP_DECL UsmStatsDecryptionErrors : public MibLeaf {
-
 public:
     UsmStatsDecryptionErrors() = delete;
     UsmStatsDecryptionErrors(const NS_SNMP USM* u);
@@ -437,28 +429,24 @@ private:
  **********************************************************************/
 
 class AGENTPP_DECL UsmStats : public MibGroup {
-
 public:
     UsmStats();
     UsmStats(NS_SNMP v3MP*);
 };
 
 class AGENTPP_DECL usm_mib : public MibGroup {
-
 public:
     usm_mib() = delete;
     usm_mib(UsmUserTable*);
 };
 
 class AGENTPP_DECL MPDGroup : public MibGroup {
-
 public:
     MPDGroup();
     MPDGroup(NS_SNMP v3MP*);
 };
 
 class AGENTPP_DECL MPDGroupSnmpUnknownSecurityModels : public MibLeaf {
-
 public:
     MPDGroupSnmpUnknownSecurityModels() = delete;
     MPDGroupSnmpUnknownSecurityModels(const NS_SNMP v3MP* mp);
@@ -469,7 +457,6 @@ private:
 };
 
 class AGENTPP_DECL MPDGroupSnmpInvalidMsgs : public MibLeaf {
-
 public:
     MPDGroupSnmpInvalidMsgs() = delete;
     MPDGroupSnmpInvalidMsgs(const NS_SNMP v3MP* mp);
@@ -480,7 +467,6 @@ private:
 };
 
 class AGENTPP_DECL MPDGroupSnmpUnknownPDUHandlers : public MibLeaf {
-
 public:
     MPDGroupSnmpUnknownPDUHandlers() = delete;
     MPDGroupSnmpUnknownPDUHandlers(const NS_SNMP v3MP* mp);
@@ -491,7 +477,6 @@ private:
 };
 
 class AGENTPP_DECL usmUserAuthProtocol : public MibLeaf {
-
 public:
     usmUserAuthProtocol() = delete;
     usmUserAuthProtocol(const Oidx&, NS_SNMP USM* u);
@@ -503,7 +488,6 @@ private:
 };
 
 class AGENTPP_DECL usmUserPrivProtocol : public MibLeaf {
-
 public:
     usmUserPrivProtocol() = delete;
     usmUserPrivProtocol(const Oidx&, NS_SNMP USM* u);

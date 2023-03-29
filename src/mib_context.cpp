@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - mib_context.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - mib_context.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include <agent_pp/mib_context.h>
 #include <agent_pp/tools.h>
@@ -48,7 +48,10 @@ MibGroup::MibGroup(const Oidx& o, const OctetStr& p) : MibEntry(o, NOACCESS)
 
 MibGroup::~MibGroup()
 {
-    if (persistencyName) delete persistencyName;
+    if (persistencyName)
+    {
+        delete persistencyName;
+    }
     content.clear();
 }
 
@@ -65,19 +68,20 @@ MibEntryPtr MibGroup::add(MibEntryPtr item)
         LOG_END;
         return nullptr;
     }
+
     /* This has been removed in v3.5.15 because it had more drawbacks than
-       use.
-    // check if item is in subtree of this group
-    // if not we assume that the oid of item is a sub id to this group
-    if (!(item->key()->in_subtree_of(oid))) {
-            LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
-            LOG("MibGroup: cannot add MIB object with (oid) to (group)");
-            LOG(item->key()->get_printable());
-            LOG(oid.get_printable());
-            LOG_END;
-            return 0;
-    }
-    */
+     * use.
+     * // check if item is in subtree of this group
+     * // if not we assume that the oid of item is a sub id to this group
+     * if (!(item->key()->in_subtree_of(oid))) {
+     *      LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
+     *      LOG("MibGroup: cannot add MIB object with (oid) to (group)");
+     *      LOG(item->key()->get_printable());
+     *      LOG(oid.get_printable());
+     *      LOG_END;
+     *      return 0;
+     * }
+     */
     if (item->type() == AGENTPP_GROUP)
     {
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
@@ -107,6 +111,7 @@ MibEntryPtr MibGroup::add(MibEntryPtr item)
 void MibGroup::remove(const Oidx& o)
 {
     ListCursor<MibEntry> cur;
+
     for (cur.init(&content); cur.get(); cur.next())
     {
         if (*cur.get()->key() == o)
@@ -128,7 +133,10 @@ void MibGroup::load_from_file(const char* fname)
     long  size = 0, bytes = 0;
     char  header[16];
 
-    if ((f = fopen(fname, "rb")) == nullptr) return;
+    if ((f = fopen(fname, "rb")) == nullptr)
+    {
+        return;
+    }
 
     size = AgentTools::file_size(f);
     if (size <= 0)
@@ -142,9 +150,11 @@ void MibGroup::load_from_file(const char* fname)
     ListCursor<MibEntry> cur;
     for (cur.init(&content); ((cur.get()) && (size > 0)); cur.next(), n++)
     {
-
         // skip volatile objects
-        if (cur.get()->is_volatile()) continue;
+        if (cur.get()->is_volatile())
+        {
+            continue;
+        }
 
         // read ASN.1 sequence header
         bytes = fread(header, sizeof(char), 2, f);
@@ -162,14 +172,16 @@ void MibGroup::load_from_file(const char* fname)
         }
         bytes     = 0;
         char hlen = header[1];
-        int  sz   = size; // sz must be total amount of data readable
+        int  sz   = size;          // sz must be total amount of data readable
         if (hlen & ASN_LONG_LEN)
         {
             hlen &= ~ASN_LONG_LEN; /* turn MSb off */
             bytes = fread(header + 2, sizeof(char), hlen, f);
         }
         else
+        {
             hlen = 0;
+        }
         unsigned char type = 0;
         asn_parse_header((unsigned char*)header, &sz, &type);
         if ((bytes != hlen) || (type != (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR)))
@@ -230,7 +242,10 @@ void MibGroup::save_to_file(const char* fname)
     for (cur.init(&content); cur.get(); cur.next())
     {
         // skip volatile objects
-        if (cur.get()->is_volatile()) continue;
+        if (cur.get()->is_volatile())
+        {
+            continue;
+        }
 
         if ((cur.get()->serialize(buf, bytes)) && (buf))
         {
@@ -268,7 +283,10 @@ MibContext::~MibContext() TS_SYNCHRONIZED({
 
     bool MibContext::init_from(const OctetStr& p)
 {
-    if (persistencyPath) delete persistencyPath;
+    if (persistencyPath)
+    {
+        delete persistencyPath;
+    }
     persistencyPath = new OctetStr(p);
     OidListCursor<MibGroup> cur;
     for (cur.init(&groups); cur.get(); cur.next())
@@ -288,6 +306,7 @@ MibContext::~MibContext() TS_SYNCHRONIZED({
 bool MibContext::load_from(const OctetStr& p)
 {
     OidListCursor<MibGroup> cur;
+
     for (cur.init(&groups); cur.get(); cur.next())
     {
         if (cur.get()->is_persistent())
@@ -316,6 +335,7 @@ bool MibContext::load_from(const OctetStr& p)
 bool MibContext::save_to(const OctetStr& p)
 {
     OidListCursor<MibGroup> cur;
+
     for (cur.init(&groups); cur.get(); cur.next())
     {
         if (cur.get()->is_persistent())
@@ -335,7 +355,10 @@ OidxPtr MibContext::key() { return &contextKey; }
 int MibContext::find(const Oidx& oid, MibEntryPtr& entry) TS_SYNCHRONIZED({
     Oidx      tmpoid(oid);
     MibEntry* e = content.find(&tmpoid);
-    if (!e) return sNMP_SYNTAX_NOSUCHOBJECT;
+    if (!e)
+    {
+        return sNMP_SYNTAX_NOSUCHOBJECT;
+    }
     entry = e;
     return SNMP_ERROR_SUCCESS;
 })
@@ -348,7 +371,10 @@ int MibContext::find(const Oidx& oid, MibEntryPtr& entry) TS_SYNCHRONIZED({
         int MibContext::find_lower(const Oidx& oid, MibEntryPtr& entry) TS_SYNCHRONIZED({
             Oidx      tmpoid(oid);
             MibEntry* e = content.find_lower(&tmpoid);
-            if (!e) return sNMP_SYNTAX_NOSUCHOBJECT;
+            if (!e)
+            {
+                return sNMP_SYNTAX_NOSUCHOBJECT;
+            }
             entry = e;
             return SNMP_ERROR_SUCCESS;
         })
@@ -356,7 +382,10 @@ int MibContext::find(const Oidx& oid, MibEntryPtr& entry) TS_SYNCHRONIZED({
             int MibContext::find_upper(const Oidx& oid, MibEntryPtr& entry) TS_SYNCHRONIZED({
                 Oidx      tmpoid(oid);
                 MibEntry* e = content.find_upper(&tmpoid);
-                if (!e) return sNMP_SYNTAX_NOSUCHOBJECT;
+                if (!e)
+                {
+                    return sNMP_SYNTAX_NOSUCHOBJECT;
+                }
                 entry = e;
                 return SNMP_ERROR_SUCCESS;
             })
@@ -376,6 +405,7 @@ OidListCursor<MibGroup> MibContext::get_groups() { return { &groups }; }
 MibEntry* MibContext::add(MibEntry* item)
 {
     ThreadSynchronize const _ts_synchronize(*this);
+
     if ((item->type() == AGENTPP_LEAF) && (item->get_access() == NOACCESS))
     {
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
@@ -416,7 +446,7 @@ MibEntry* MibContext::add(MibEntry* item)
             return nullptr;
         }
         ListCursor<MibEntry> cur(mg->get_content());
-        for (; cur.get(); cur.next()) content.add(cur.get());
+        for (; cur.get(); cur.next()) { content.add(cur.get()); }
         groups.add(mg);
     }
     else
@@ -429,7 +459,10 @@ MibEntry* MibContext::add(MibEntry* item)
 MibEntry* MibContext::remove(const Oidx& oid) TS_SYNCHRONIZED({
     Oidx      tmpoid(oid);
     MibEntry* victim = content.find(&tmpoid);
-    if (victim) return content.remove(victim);
+    if (victim)
+    {
+        return content.remove(victim);
+    }
     return nullptr;
 })
 
@@ -441,6 +474,7 @@ MibEntry* MibContext::remove(const Oidx& oid) TS_SYNCHRONIZED({
         MibGroup* MibContext::find_group(const Oidx& oid)
 {
     Oidx tmpoid(oid);
+
     return groups.find(&tmpoid);
 }
 
@@ -453,7 +487,10 @@ bool MibContext::remove_group(const Oidx& oid) TS_SYNCHRONIZED({
         for (; cur.get(); cur.next())
         {
             MibEntry* v = content.find(cur.get()->key());
-            if (v) delete content.remove(v);
+            if (v)
+            {
+                delete content.remove(v);
+            }
         }
         delete groups.remove(victim);
         return true;
@@ -465,6 +502,7 @@ bool MibContext::remove_group(const Oidx& oid) TS_SYNCHRONIZED({
 {
     // const Oidx& tmpoid(oid);
     OidListCursor<MibGroup> cur;
+
     for (cur.init(&groups); cur.get(); cur.next())
     {
         if (oid.in_subtree_of(*cur.get()->key()))
@@ -472,7 +510,10 @@ bool MibContext::remove_group(const Oidx& oid) TS_SYNCHRONIZED({
             ListCursor<MibEntry> c(cur.get()->get_content());
             for (; c.get(); c.next())
             {
-                if (*c.get()->key() == oid) return cur.get();
+                if (*c.get()->key() == oid)
+                {
+                    return cur.get();
+                }
             }
         }
     }

@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - proxy_forwarder.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - proxy_forwarder.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include <agent_pp/proxy_forwarder.h>
 #include <agent_pp/snmp_proxy_mib.h>
@@ -46,7 +46,10 @@ ProxyForwarder::ProxyForwarder(Mib* mib, const OctetStr& contextEngineID, pdu_ty
 
 ProxyForwarder::~ProxyForwarder()
 {
-    if (snmp) delete snmp;
+    if (snmp)
+    {
+        delete snmp;
+    }
 }
 
 void ProxyForwarder::initialize(Mib* mib)
@@ -82,6 +85,7 @@ OidList<MibTableRow>* ProxyForwarder::get_matches(Request* req)
     List<MibTableRow>*      list    = _snmpProxyEntry->get_rows_cloned(true);
     auto*                   matches = new OidList<MibTableRow>;
     ListCursor<MibTableRow> cur;
+
     for (cur.init(list); cur.get(); cur.next())
     {
         int const type  = req->get_type();
@@ -95,7 +99,9 @@ OidList<MibTableRow>* ProxyForwarder::get_matches(Request* req)
             && (!((type == sNMP_PDU_SET) && (state == 2)))
             && (!(((type == sNMP_PDU_TRAP) || (type == sNMP_PDU_V1TRAP)) && (state == 3)))
             && (!((type == sNMP_PDU_INFORM) && (state == 4))))
+        {
             continue;
+        }
 
         LOG_BEGIN(loggerModuleName, DEBUG_LOG | 6);
         LOG("ProxyForwarder: matched proxy (pdu type)(type)");
@@ -118,7 +124,10 @@ OidList<MibTableRow>* ProxyForwarder::get_matches(Request* req)
         LOG(contextID.len());
         LOG_END;
 
-        if (cid != contextID) continue;
+        if (cid != contextID)
+        {
+            continue;
+        }
 
         LOG_BEGIN(loggerModuleName, DEBUG_LOG | 6);
         LOG("ProxyForwarder: matched (context name)(match)");
@@ -128,9 +137,15 @@ OidList<MibTableRow>* ProxyForwarder::get_matches(Request* req)
 
         OctetStr cname;
         req->get_pdu()->get_context_name(cname);
-        if (cname != contextName) continue;
+        if (cname != contextName)
+        {
+            continue;
+        }
 
-        if (!match_target_params(req, paramsIn)) continue;
+        if (!match_target_params(req, paramsIn))
+        {
+            continue;
+        }
         matches->add(cur.get()->clone());
     }
     delete list;
@@ -144,7 +159,6 @@ bool ProxyForwarder::match_target_params(Request* req, const OctetStr& paramsIn)
 
     if ((!paramsRow) || (paramsRow->get_row_status()->get() != rowActive))
     {
-
         _snmpTargetParamsEntry->end_synch();
 
         LOG_BEGIN(loggerModuleName, WARNING_LOG | 3);
@@ -176,9 +190,18 @@ bool ProxyForwarder::match_target_params(Request* req, const OctetStr& paramsIn)
     LOG(secLevel);
     LOG_END;
 
-    if ((req->get_address()->get_version() == version1) && (mpModel != 0)) return false;
-    if ((req->get_address()->get_version() == version2c) && (mpModel != 1)) return false;
-    if ((req->get_address()->get_version() == version3) && (mpModel != 3)) return false;
+    if ((req->get_address()->get_version() == version1) && (mpModel != 0))
+    {
+        return false;
+    }
+    if ((req->get_address()->get_version() == version2c) && (mpModel != 1))
+    {
+        return false;
+    }
+    if ((req->get_address()->get_version() == version3) && (mpModel != 3))
+    {
+        return false;
+    }
 
     OctetStr sname;
     req->get_address()->get_security_name(sname);
@@ -189,16 +212,29 @@ bool ProxyForwarder::match_target_params(Request* req, const OctetStr& paramsIn)
     LOG(secName.get_printable());
     LOG_END;
 
-    if (sname != secName) return false;
-    if ((secModel != 0) && (req->get_address()->get_security_model() != secModel)) return false;
-    if (req->get_pdu()->get_security_level() != secLevel) return false;
+    if (sname != secName)
+    {
+        return false;
+    }
+    if ((secModel != 0) && (req->get_address()->get_security_model() != secModel))
+    {
+        return false;
+    }
+    if (req->get_pdu()->get_security_level() != secLevel)
+    {
+        return false;
+    }
     return true;
 }
 
 bool ProxyForwarder::process_multiple(Pdux& pdu, Request* req)
 {
     OidList<MibTableRow>* matches = get_matches(req);
-    if (!matches) return false;
+
+    if (!matches)
+    {
+        return false;
+    }
 
     bool                       OK = false;
     OidListCursor<MibTableRow> cur;
@@ -216,7 +252,6 @@ bool ProxyForwarder::process_multiple(Pdux& pdu, Request* req)
         ListCursor<MibTableRow> tcur;
         for (tcur.init(targets); tcur.get(); tcur.next())
         {
-
             OctetStr targetOut;
             OctetStr params;
 
@@ -231,12 +266,18 @@ bool ProxyForwarder::process_multiple(Pdux& pdu, Request* req)
             LOG(params.get_printable());
             LOG_END;
 
-            if (params.len() == 0) continue;
+            if (params.len() == 0)
+            {
+                continue;
+            }
 
             int      secLevel = 0;
             UTarget* target =
                 _snmpTargetAddrEntry->get_target(targetOut, _snmpTargetParamsEntry, secLevel);
-            if (!target) continue;
+            if (!target)
+            {
+                continue;
+            }
             GenAddress addr;
             target->get_address(addr);
 
@@ -258,7 +299,10 @@ bool ProxyForwarder::process_multiple(Pdux& pdu, Request* req)
             LOG(status);
             LOG_END;
             delete target;
-            if (status != SNMP_ERROR_SUCCESS) { break; }
+            if (status != SNMP_ERROR_SUCCESS)
+            {
+                break;
+            }
 
             OK = true; // TODO: may not right! CK
         }
@@ -271,7 +315,11 @@ bool ProxyForwarder::process_multiple(Pdux& pdu, Request* req)
 bool ProxyForwarder::process_single(Pdux& pdu, Request* req)
 {
     OidList<MibTableRow>* matches = get_matches(req);
-    if (!matches) return false;
+
+    if (!matches)
+    {
+        return false;
+    }
 
     MibTableRow* match = matches->first();
     if (!match)
@@ -335,6 +383,7 @@ bool ProxyForwarder::process_single(Pdux& pdu, Request* req)
 bool ProxyForwarder::process_request(Request* req)
 {
     Pdux pdu(*req->get_pdu());
+
     switch (pdu.get_type())
     {
     case sNMP_PDU_GET:

@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - snmp_request.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - snmp_request.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include "agent_pp/snmp_group.h"
 
@@ -51,7 +51,7 @@ static void* inform_caller(void* ptr)
     LOG_END;
     int status = 0;
     status     = SnmpRequest::process_trap(
-            callInfo->target, callInfo->vbs, callInfo->sz, callInfo->oid, "", true);
+        callInfo->target, callInfo->vbs, callInfo->sz, callInfo->oid, "", true);
 #    ifdef _NO_LOGGING
     (void)status;
 #    endif
@@ -74,7 +74,7 @@ InformInfo::InformInfo(CTarget& t, Vbx* v, int s, const Oidx& o)
     vbs    = new Vbx[s];
     // deep copy here because v may be delete while inform thread
     // is running
-    for (int i = 0; i < s; i++) vbs[i] = v[i];
+    for (int i = 0; i < s; i++) { vbs[i] = v[i]; }
     sz  = s;
     oid = o;
 }
@@ -84,7 +84,10 @@ InformInfo::~InformInfo() { delete[] vbs; }
 int SnmpRequest::process(int rtype, const UdpAddress& address, Vbx* vbs, int& sz, Vbx* out,
     int& errindex, const OctetStr& community, const int non_repeaters, const int max_reps)
 {
-    if (!address.valid()) { return SNMP_CLASS_INVALID_ADDRESS; }
+    if (!address.valid())
+    {
+        return SNMP_CLASS_INVALID_ADDRESS;
+    }
     CTarget target(address);
 
     int const retries = DEFAULT_RETRIES;
@@ -97,20 +100,25 @@ int SnmpRequest::process(int rtype, const UdpAddress& address, Vbx* vbs, int& sz
         timeout *= 2;
     }
     else
+    {
         version = version1;
+    }
 
     int status = 0;
 
     Snmpx* snmp = get_new_snmp(Mib::instance->get_request_list()->get_snmp(), status);
     if (status != SNMP_CLASS_SUCCESS)
     {
-        if (snmp) delete snmp;
+        if (snmp)
+        {
+            delete snmp;
+        }
         return status;
     }
     Pdux pdu;
     // the request id is set by Snmpx
 
-    for (int i = 0; i < sz; i++) pdu += vbs[i];
+    for (int i = 0; i < sz; i++) { pdu += vbs[i]; }
 
     target.set_version(version);         // set the SNMP version SNMPV1 or V2
     target.set_retry(retries);           // set the number of auto retries
@@ -120,11 +128,14 @@ int SnmpRequest::process(int rtype, const UdpAddress& address, Vbx* vbs, int& sz
     switch (rtype)
     {
     case sNMP_PDU_GET: status = snmp->get(pdu, target); break;
+
     case sNMP_PDU_GETBULK:
         status = snmp->get_bulk(pdu, target, non_repeaters, max_reps);
         sz     = pdu.get_vb_count();
         break;
+
     case sNMP_PDU_GETNEXT: status = snmp->get_next(pdu, target); break;
+
     case sNMP_PDU_SET:
         target.set_writecommunity(community);
         status = snmp->set(pdu, target);
@@ -132,7 +143,10 @@ int SnmpRequest::process(int rtype, const UdpAddress& address, Vbx* vbs, int& sz
     }
 
     Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpOutPkts);
-    if (status != SNMP_CLASS_TIMEOUT) Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpInPkts);
+    if (status != SNMP_CLASS_TIMEOUT)
+    {
+        Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpInPkts);
+    }
 
     switch (pdu.get_error_status())
     {
@@ -140,17 +154,22 @@ int SnmpRequest::process(int rtype, const UdpAddress& address, Vbx* vbs, int& sz
         Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpInNoSuchNames);
         break;
     }
+
     case SNMP_ERROR_BAD_VALUE: {
         Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpInBadValues);
         break;
     }
+
     case SNMP_ERROR_TOO_BIG: {
         Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpInTooBigs);
         break;
     }
+
     default: {
         if (pdu.get_error_status() != SNMP_ERROR_SUCCESS)
+        {
             Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpInGenErrs);
+        }
         break;
     }
     }
@@ -168,26 +187,34 @@ int SnmpRequest::process_trap(
     int status = 0;
 
     Snmpx* snmp = get_new_snmp(Mib::instance->get_request_list()->get_snmp(), status);
+
     // check construction status
 
     if (status != SNMP_CLASS_SUCCESS)
     {
-        if (snmp) delete snmp;
+        if (snmp)
+        {
+            delete snmp;
+        }
         return status;
     }
     Pdux pdu;
     // the request id is set by Snmpx
 
-    for (int i = 0; i < sz; i++) pdu += vbs[i];
+    for (int i = 0; i < sz; i++) { pdu += vbs[i]; }
 
     pdu.set_notify_timestamp(sysUpTime::get());
     pdu.set_notify_id(oid);
     pdu.set_notify_enterprise(enterprise);
 
     if (ack)
+    {
         status = snmp->inform(pdu, target);
+    }
     else
+    {
         status = snmp->trap(pdu, target);
+    }
 
     if (status == SNMP_CLASS_SUCCESS)
     {
@@ -289,7 +316,7 @@ int SnmpRequest::gettable(const UdpAddress& address, Vbx* vbs, int sz, Vbx* buf,
     Vbx* out = new Vbx[max_reps * sz];
     Vbx* in  = new Vbx[sz];
 
-    for (int j = 0; j < sz; j++) in[j] = vbs[j];
+    for (int j = 0; j < sz; j++) { in[j] = vbs[j]; }
 
     int bufptr = 0;
     int osz    = 0;
@@ -307,14 +334,22 @@ int SnmpRequest::gettable(const UdpAddress& address, Vbx* vbs, int sz, Vbx* buf,
             int i = 0;
             for (i = 0; i < osz; i++, bufptr++)
             {
-
-                if (!out[i].get_oid().in_subtree_of(vbs[i % sz].get_oid())) break;
+                if (!out[i].get_oid().in_subtree_of(vbs[i % sz].get_oid()))
+                {
+                    break;
+                }
 
                 buf[bufptr] = out[i];
 
-                if (out[i].get_syntax() == sNMP_SYNTAX_ENDOFMIBVIEW) break;
+                if (out[i].get_syntax() == sNMP_SYNTAX_ENDOFMIBVIEW)
+                {
+                    break;
+                }
             }
-            if (i < osz) break;
+            if (i < osz)
+            {
+                break;
+            }
             for (int k = 0; k < sz; k++) { in[k] = buf[bufptr - sz + k]; }
         }
     }
@@ -361,7 +396,8 @@ SnmpRequestV3::SnmpRequestV3() : SnmpRequestV3(Mib::instance) { }
 SnmpRequestV3::SnmpRequestV3(Mib* mib) : mib(mib)
 {
     int status = 0;
-    snmp       = SnmpRequest::get_new_snmp(mib->get_request_list()->get_snmp(), status);
+
+    snmp = SnmpRequest::get_new_snmp(mib->get_request_list()->get_snmp(), status);
     if (status != 0)
     {
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 0);
@@ -373,18 +409,26 @@ SnmpRequestV3::SnmpRequestV3(Mib* mib) : mib(mib)
 
 SnmpRequestV3::~SnmpRequestV3()
 {
-    if (snmp) delete snmp;
+    if (snmp)
+    {
+        delete snmp;
+    }
 }
 
 int SnmpRequestV3::send(UTarget& target, Pdux& pdu) { return send(Mib::instance, target, pdu); }
+
 int SnmpRequestV3::send(Mib* mib, UTarget& target, Pdux& pdu)
 {
     int status = 0;
 
     Snmpx* snmp = SnmpRequest::get_new_snmp(mib->get_request_list()->get_snmp(), status);
+
     if (status != SNMP_CLASS_SUCCESS)
     {
-        if (snmp) delete snmp;
+        if (snmp)
+        {
+            delete snmp;
+        }
         return status;
     }
 
@@ -395,30 +439,37 @@ int SnmpRequestV3::send(Mib* mib, UTarget& target, Pdux& pdu)
         status = snmp->get(pdu, target);
         break;
     }
+
     case sNMP_PDU_GETNEXT:
     case sNMP_PDU_GETBULK: {
         Counter32MibLeaf::incrementScalar(mib, oidSnmpOutGetNexts);
         status = snmp->get_next(pdu, target);
         break;
     }
+
     case sNMP_PDU_SET: {
         Counter32MibLeaf::incrementScalar(mib, oidSnmpOutSetRequests);
         status = snmp->set(pdu, target);
         break;
     }
+
     case sNMP_PDU_V1TRAP:
     case sNMP_PDU_TRAP: {
         Counter32MibLeaf::incrementScalar(mib, oidSnmpOutTraps);
         status = snmp->trap(pdu, target);
         break;
     }
+
     case sNMP_PDU_INFORM: {
         Counter32MibLeaf::incrementScalar(mib, oidSnmpOutTraps);
         status = snmp->inform(pdu, target);
         break;
     }
     }
-    if (status == SNMP_CLASS_SUCCESS) { Counter32MibLeaf::incrementScalar(mib, oidSnmpOutPkts); }
+    if (status == SNMP_CLASS_SUCCESS)
+    {
+        Counter32MibLeaf::incrementScalar(mib, oidSnmpOutPkts);
+    }
     delete snmp;
 
     return status;
@@ -428,6 +479,7 @@ int SnmpRequestV3::send_request(
     UTarget& target, Pdux& pdu, const int non_repeaters, const int repetitions)
 {
     int status = SNMP_CLASS_INVALID_PDU;
+
     switch (pdu.get_type())
     {
     case sNMP_PDU_GET: {
@@ -435,37 +487,49 @@ int SnmpRequestV3::send_request(
         status = snmp->get(pdu, target);
         break;
     }
+
     case sNMP_PDU_GETNEXT: {
         Counter32MibLeaf::incrementScalar(mib, oidSnmpOutGetNexts);
         status = snmp->get_next(pdu, target);
         break;
     }
+
     case sNMP_PDU_GETBULK: {
         Counter32MibLeaf::incrementScalar(mib, oidSnmpOutGetNexts);
         if (target.get_version() == version1)
+        {
             status = snmp->get_next(pdu, target);
+        }
         else
+        {
             status = snmp->get_bulk(pdu, target, non_repeaters, repetitions);
+        }
         break;
     }
+
     case sNMP_PDU_SET: {
         Counter32MibLeaf::incrementScalar(mib, oidSnmpOutSetRequests);
         status = snmp->set(pdu, target);
         break;
     }
+
     case sNMP_PDU_V1TRAP:
     case sNMP_PDU_TRAP: {
         Counter32MibLeaf::incrementScalar(mib, oidSnmpOutTraps);
         status = snmp->trap(pdu, target);
         break;
     }
+
     case sNMP_PDU_INFORM: {
         Counter32MibLeaf::incrementScalar(mib, oidSnmpOutTraps);
         status = snmp->inform(pdu, target);
         break;
     }
     }
-    if (status == SNMP_CLASS_SUCCESS) { Counter32MibLeaf::incrementScalar(mib, oidSnmpOutPkts); }
+    if (status == SNMP_CLASS_SUCCESS)
+    {
+        Counter32MibLeaf::incrementScalar(mib, oidSnmpOutPkts);
+    }
     return status;
 }
 

@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - agent.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - agent.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include "agentpp_notifytest_mib.h"
 #include "agentpp_test_mib.h"
@@ -70,7 +70,6 @@ static void sig(int signo)
 {
     if ((signo == SIGTERM) || (signo == SIGINT) || (signo == SIGSEGV))
     {
-
         printf("\n");
 
         switch (signo)
@@ -79,6 +78,7 @@ static void sig(int signo)
             printf("Segmentation fault, aborting.\n");
             exit(1);
         }
+
         case SIGTERM:
         case SIGINT: {
             if (run)
@@ -101,6 +101,7 @@ void init_signals()
 void init(Mib& mib, const NS_SNMP OctetStr& engineID)
 {
     OctetStr sysDescr("AGENT++v");
+
     sysDescr += AGENTPP_VERSION_STRING;
     sysDescr += " ATM Simulation Agent";
     mib.add(new sysGroup(sysDescr.get_printable(), "1.3.6.1.4.1.4976", 10));
@@ -160,7 +161,10 @@ void init(Mib& mib, const NS_SNMP OctetStr& engineID)
 
     MibTableRow* r = uut->addNewRow("SHAAES128", SNMP_AUTHPROTOCOL_HMACSHA, SNMP_PRIVPROTOCOL_AES128,
         "SHAAES128UserAuthPassword", "SHAAES128UserPrivPassword", engineID, false);
-    if (r) { uut->set_storage_type(r, storageType_permanent); }
+    if (r)
+    {
+        uut->set_storage_type(r, storageType_permanent);
+    }
 
     uut->addNewRow("MD5AES192", SNMP_AUTHPROTOCOL_HMACMD5, SNMP_PRIVPROTOCOL_AES192,
         "MD5AES192UserAuthPassword", "MD5AES192UserPrivPassword", engineID, false);
@@ -170,7 +174,10 @@ void init(Mib& mib, const NS_SNMP OctetStr& engineID)
 
     r = uut->addNewRow("MD5AES256", SNMP_AUTHPROTOCOL_HMACMD5, SNMP_PRIVPROTOCOL_AES256,
         "MD5AES256UserAuthPassword", "MD5AES256UserPrivPassword", engineID, false);
-    if (r) { uut->set_storage_type(r, storageType_readOnly); }
+    if (r)
+    {
+        uut->set_storage_type(r, storageType_readOnly);
+    }
 
     uut->addNewRow("SHAAES256", SNMP_AUTHPROTOCOL_HMACSHA, SNMP_PRIVPROTOCOL_AES256,
         "SHAAES256UserAuthPassword", "SHAAES256UserPrivPassword", engineID, false);
@@ -201,9 +208,13 @@ void init(Mib& mib, const NS_SNMP OctetStr& engineID)
 int main(int argc, char* argv[])
 {
     if (argc > 1)
+    {
         port = std::stoi(argv[1]);
+    }
     else
+    {
         port = 4700;
+    }
 
 #ifndef _NO_LOGGING
     DefaultLog::log()->set_filter(ERROR_LOG, 5);
@@ -228,7 +239,6 @@ int main(int argc, char* argv[])
 
     if (status == SNMP_CLASS_SUCCESS)
     {
-
         LOG_BEGIN(loggerModuleName, EVENT_LOG | 1);
         LOG("main: SNMP listen port");
         LOG(port);
@@ -338,13 +348,13 @@ int main(int argc, char* argv[])
     // level >= noAuthNoPriv within context "") would have full access
     // (read, write, notify) to all objects in view "newView".
     vacm->addNewAccessEntry("newGroup",
-        "other", // context
+        "other",     // context
         SNMP_SECURITY_MODEL_USM, SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV,
         match_exact, // context must mach exactly
-        // alternatively: match_prefix
-        "newView", // readView
-        "newView", // writeView
-        "newView", // notifyView
+                     // alternatively: match_prefix
+        "newView",   // readView
+        "newView",   // writeView
+        "newView",   // notifyView
         storageType_nonVolatile);
     vacm->addNewAccessEntry("testGroup", "", SNMP_SECURITY_MODEL_USM, SNMP_SECURITY_LEVEL_AUTH_PRIV,
         match_prefix, "testView", "testView", "testView", storageType_nonVolatile);
@@ -370,7 +380,7 @@ int main(int argc, char* argv[])
 
     // remove an AccessEntry with:
     // vacm->deleteAccessEntry("newGroup",
-    //	      		"",
+    //	            "",
     //			SNMP_SECURITY_MODEL_USM,
     //			SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV);
 
@@ -414,7 +424,6 @@ int main(int argc, char* argv[])
     OctetStr const tag("v1v2cPermittedManagers");
     snmpCommunityEntry::instance->set_row(
         row, co, co, reqList->get_v3mp()->get_local_engine_id(), "", tag, 3, 1);
-
 #endif
 
 #ifdef _SNMPv3
@@ -438,7 +447,10 @@ int main(int argc, char* argv[])
     {
         req = reqList->receive(2);
 
-        if (req) { mib->process_request(req); }
+        if (req)
+        {
+            mib->process_request(req);
+        }
         else
         {
             mib->cleanup();

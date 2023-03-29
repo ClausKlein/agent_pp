@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - notification_originator.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - notification_originator.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #ifndef _notification_originator_h_
 #define _notification_originator_h_
@@ -52,7 +52,6 @@ using namespace Snmp_pp;
  */
 
 class AGENTPP_DECL NotificationOriginator : public NotificationSender {
-
 public:
     /**
      * Constructs a notification originator instance for using a static
@@ -156,6 +155,7 @@ public:
         const NS_SNMP OctetStr& tag, const NS_SNMP OctetStr& community);
     virtual bool add_v3_trap_destination(const NS_SNMP UdpAddress& addr, const NS_SNMP OctetStr& name,
         const NS_SNMP OctetStr& tag, const NS_SNMP OctetStr& secName, const int secLevel);
+
     /**@} */
 
 #ifdef _SNMPv3
@@ -167,7 +167,10 @@ public:
      */
     void set_local_engine_id(const NS_SNMP OctetStr& id)
     {
-        if (localEngineID) { delete localEngineID; }
+        if (localEngineID)
+        {
+            delete localEngineID;
+        }
         localEngineID = new NS_SNMP OctetStr(id);
     }
 #endif

@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - vacm.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - vacm.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 #ifndef vacm_h_
 #define vacm_h_
 
@@ -195,8 +195,9 @@ public:
         const int securityLevel, const int viewType, const NS_SNMP OctetStr& context,
         NS_SNMP OctetStr& viewName);
 
-    void               incUnknownContexts();
-    NS_SNMP SnmpInt32  getUnknownContexts();
+    void              incUnknownContexts();
+    NS_SNMP SnmpInt32 getUnknownContexts();
+
     static const char* getErrorMsg(int nr) { return vacmErrs[nr]; }
 
     /**
@@ -337,12 +338,11 @@ public:
 };
 
 /*********************************************************************
-
- VacmContextTable
-
+ *
+ * VacmContextTable
+ *
  ********************************************************************/
 class AGENTPP_DECL VacmContextTable : public MibTable {
-
 public:
     VacmContextTable();
     ~VacmContextTable() override;
@@ -362,12 +362,11 @@ public:
 };
 
 /*********************************************************************
-
- VacmSecurityToGroupTable
-
+ *
+ * VacmSecurityToGroupTable
+ *
  ********************************************************************/
 class AGENTPP_DECL VacmSecurityToGroupTable : public StorageTable {
-
 public:
     VacmSecurityToGroupTable();
     ~VacmSecurityToGroupTable() override;
@@ -384,12 +383,11 @@ public:
 };
 
 /*********************************************************************
-
- VacmAccessTable
-
+ *
+ * VacmAccessTable
+ *
  ********************************************************************/
 class AGENTPP_DECL VacmAccessTable : public StorageTable {
-
 public:
     VacmAccessTable(VacmSecurityToGroupTable*);
     ~VacmAccessTable() override;
@@ -424,16 +422,18 @@ protected:
 };
 
 class AGENTPP_DECL ViewNameIndex {
-
 public:
     ViewNameIndex(const NS_SNMP OctetStr& vname) : name(vname) { }
+
     ~ViewNameIndex()
     { /* avoid deletion of original rows: */
         views.clear();
     }
 
     void add(MibTableRow* row) { views.add(row); }
+
     void remove(MibTableRow* row) { views.remove(row); }
+
     bool isEmpty() { return views.empty(); }
 
     NS_SNMP OctetStr  name;
@@ -441,9 +441,9 @@ public:
 };
 
 /*********************************************************************
-
- VacmViewTreeFamilyTable
-
+ *
+ * VacmViewTreeFamilyTable
+ *
  ********************************************************************/
 #if !defined(AGENTPP_DECL_TEMPL_LIST_VIEWNAMEINDEX)
 #    define AGENTPP_DECL_TEMPL_LIST_VIEWNAMEINDEX
@@ -468,11 +468,13 @@ public:
     bool addNewRow(const NS_SNMP OctetStr& viewName, const Oidx& subtree, const NS_SNMP OctetStr& mask,
         const int type, const int storageType);
     void deleteRow(const NS_SNMP OctetStr& viewName, const Oidx& subtree);
+
     void clear() override
     {
         StorageTable::clear();
         buildViewNameIndex();
     }
+
     void reset() override
     {
         StorageTable::reset();
@@ -491,6 +493,7 @@ class AGENTPP_DECL VacmViewTreeFamilyTableStatus : public snmpRowStatus {
 public:
     VacmViewTreeFamilyTableStatus(const Oidx&, int);
     ~VacmViewTreeFamilyTableStatus() override { }
+
     int         set(const Vbx& /*unused*/) override;
     MibEntryPtr clone() override;
 
@@ -499,12 +502,11 @@ protected:
 };
 
 /*********************************************************************
-
- VacmMIB
-
+ *
+ * VacmMIB
+ *
  ********************************************************************/
 class AGENTPP_DECL VacmMIB : public MibGroup {
-
 public:
     VacmMIB(Vacm::ClassPointers);
 };

@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - snmp_proxy.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - snmp_proxy.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include <agent_pp/agent++.h>
 
@@ -65,7 +65,6 @@ static void sig(int signo)
 {
     if ((signo == SIGTERM) || (signo == SIGINT) || (signo == SIGQUIT) || (signo == SIGSEGV))
     {
-
         printf("\n");
 
         switch (signo)
@@ -74,10 +73,14 @@ static void sig(int signo)
             printf("Segmentation fault, aborting.\n");
             exit(1);
         }
+
         case SIGTERM:
         case SIGINT:
         case SIGQUIT: {
-            if (run) printf("User abort\n");
+            if (run)
+            {
+                printf("User abort\n");
+            }
             run = false;
         }
         }
@@ -143,22 +146,35 @@ void init(Mib& mib, UdpAddress& src)
 
 main(int argc, char* argv[])
 {
-
     if (argc > 1)
+    {
         port = atoi(argv[1]);
+    }
     else
+    {
         port = 4700;
+    }
 
     if (port == 0)
 #ifdef _SNMPv3
+    {
         printf("usage: %s [port [remote hostname [remote port]]]\n", argv[0]);
+    }
 #else
+    {
         printf("usage: %s [port]\n", argv[0]);
+    }
 #endif
     source.set_port(161);
-    if (argc > 2) source = argv[2];
+    if (argc > 2)
+    {
+        source = argv[2];
+    }
 
-    if (argc > 3) source.set_port(atoi(argv[3]));
+    if (argc > 3)
+    {
+        source.set_port(atoi(argv[3]));
+    }
 
     DefaultLog::log()->set_filter(ERROR_LOG, 2);
     DefaultLog::log()->set_filter(WARNING_LOG, 4);
@@ -171,7 +187,6 @@ main(int argc, char* argv[])
 
     if (status == SNMP_CLASS_SUCCESS)
     {
-
         LOG_BEGIN(loggerModuleName, EVENT_LOG | 1);
         LOG("main: SNMP listen port");
         LOG(port);
@@ -218,7 +233,6 @@ main(int argc, char* argv[])
 
     v3mp->get_usm()->add_usm_user(
         "public", SNMPv3_usmNoAuthProtocol, SNMPv3_usmNoPrivProtocol, "", "");
-
 #endif
 
     mib         = new Mib();
@@ -272,13 +286,13 @@ main(int argc, char* argv[])
     // level >= noAuthNoPriv within context "") would have full access
     // (read, write, notify) to all objects in view "newView".
     vacm->addNewAccessEntry("newGroup",
-        "other", // context
+        "other",     // context
         SNMP_SECURITY_MODEL_USM, SecurityLevel_noAuthNoPriv,
         match_exact, // context must mach exactly
-        // alternatively: match_prefix
-        "newView", // readView
-        "newView", // writeView
-        "newView", // notifyView
+                     // alternatively: match_prefix
+        "newView",   // readView
+        "newView",   // writeView
+        "newView",   // notifyView
         storageType_nonVolatile);
     vacm->addNewAccessEntry("testGroup", "", SNMP_SECURITY_MODEL_USM, SecurityLevel_authPriv,
         match_prefix, "testView", "testView", "testView", storageType_nonVolatile);
@@ -299,7 +313,7 @@ main(int argc, char* argv[])
 
     // remove an AccessEntry with:
     // vacm->deleteAccessEntry("newGroup",
-    //	      		"",
+    //	            "",
     //			SNMP_SECURITY_MODEL_USM,
     //			SecurityLevel_noAuthNoPriv);
 
@@ -336,7 +350,6 @@ main(int argc, char* argv[])
     vacm->addNewView("restricted", "1.3.6.1.6.3.10.2.1", "", view_included, storageType_nonVolatile);
     vacm->addNewView("restricted", "1.3.6.1.6.3.11.2.1", "", view_included, storageType_nonVolatile);
     vacm->addNewView("restricted", "1.3.6.1.6.3.15.1.1", "", view_included, storageType_nonVolatile);
-
 #endif
 
     requestList->set_snmp(&snmp);
@@ -350,7 +363,10 @@ main(int argc, char* argv[])
     while (run)
     {
         req = requestList->receive(2);
-        if (req) { mib->process_request(req); }
+        if (req)
+        {
+            mib->process_request(req);
+        }
         else
         {
             mib->cleanup();

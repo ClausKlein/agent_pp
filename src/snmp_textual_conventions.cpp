@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - snmp_textual_conventions.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - snmp_textual_conventions.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include "agent_pp/vacm.h"
 
@@ -62,6 +62,7 @@ MibEntryPtr SnmpDisplayString::clone()
 {
     MibEntryPtr other =
         new SnmpDisplayString(oid, access, (OctetStr*)value->clone(), (value_mode == VMODE_DEFAULT));
+
     ((SnmpDisplayString*)other)->set_reference_to_table(my_table);
     return other;
 }
@@ -69,26 +70,49 @@ MibEntryPtr SnmpDisplayString::clone()
 int SnmpDisplayString::prepare_set_request(Request* req, int& ind)
 {
     int const s = MibLeaf::prepare_set_request(req, ind);
-    if (s != SNMP_ERROR_SUCCESS) return s;
+
+    if (s != SNMP_ERROR_SUCCESS)
+    {
+        return s;
+    }
     OctetStr  ostr;
     Vbx const vb(req->get_value(ind));
-    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
-    if ((ostr.len() < min_size) || (ostr.len() > max_size)) return SNMP_ERROR_WRONG_LENGTH;
+    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS)
+    {
+        return SNMP_ERROR_WRONG_TYPE;
+    }
+    if ((ostr.len() < min_size) || (ostr.len() > max_size))
+    {
+        return SNMP_ERROR_WRONG_LENGTH;
+    }
     return SNMP_ERROR_SUCCESS;
 }
 
 bool SnmpDisplayString::value_ok(const Vbx& vb)
 {
     OctetStr ostr;
-    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return false;
+
+    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS)
+    {
+        return false;
+    }
     for (unsigned int i = 0; i < ostr.len(); i++)
     {
-        if (ostr[i] > 127u) return false;
+        if (ostr[i] > 127u)
+        {
+            return false;
+        }
         // check for CR NULL or CR LF
         if (ostr[i] == '\r')
         {
-            if (i + 1 == ostr.len()) return false;
-            if ((ostr[i + 1] != 0) && (ostr[i + 1] != '\n')) return false;
+            if (i + 1 == ostr.len())
+            {
+                return false;
+            }
+            if ((ostr[i + 1] != 0) && (ostr[i + 1] != '\n'))
+            {
+                return false;
+            }
         }
     }
     return true;
@@ -115,6 +139,7 @@ MibEntryPtr SnmpAdminString::clone()
 {
     MibEntryPtr other =
         new SnmpAdminString(oid, access, (OctetStr*)value->clone(), value_mode, min, max);
+
     ((SnmpAdminString*)other)->set_reference_to_table(my_table);
     return other;
 }
@@ -132,6 +157,7 @@ SnmpEngineID::~SnmpEngineID() { }
 MibEntryPtr SnmpEngineID::clone()
 {
     MibEntryPtr other = new SnmpEngineID(oid, access, (OctetStr*)value->clone(), value_mode);
+
     ((SnmpEngineID*)other)->set_reference_to_table(my_table);
     return other;
 }
@@ -139,12 +165,22 @@ MibEntryPtr SnmpEngineID::clone()
 int SnmpEngineID::prepare_set_request(Request* req, int& ind)
 {
     int const s = MibLeaf::prepare_set_request(req, ind);
-    if (s != SNMP_ERROR_SUCCESS) return s;
+
+    if (s != SNMP_ERROR_SUCCESS)
+    {
+        return s;
+    }
 
     OctetStr  ostr;
     Vbx const vb(req->get_value(ind));
-    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
-    if ((ostr.len() < 5) || (ostr.len() > 32)) return SNMP_ERROR_WRONG_LENGTH;
+    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS)
+    {
+        return SNMP_ERROR_WRONG_TYPE;
+    }
+    if ((ostr.len() < 5) || (ostr.len() > 32))
+    {
+        return SNMP_ERROR_WRONG_LENGTH;
+    }
     return SNMP_ERROR_SUCCESS;
 }
 
@@ -152,6 +188,7 @@ OctetStr SnmpEngineID::create_engine_id(const OctetStr& userText)
 {
     // 8 = v3EngineID, 1370h = 4976 = AGENT++ enterprise ID
     OctetStr engineID((const unsigned char*)"\x80\x00\x13\x70\x05", 5);
+
     engineID += userText;
     return engineID;
 }
@@ -161,6 +198,7 @@ OctetStr SnmpEngineID::create_engine_id(unsigned short p)
     // 8 = v3EngineID, 1370h = 4976 = AGENT++ enterprise ID
     OctetStr      engineID((const unsigned char*)"\x80\x00\x13\x70\x05", 5);
     unsigned char port[3] {};
+
     port[0] = p / 256;
     port[1] = p % 256;
     port[2] = 0;
@@ -200,6 +238,7 @@ SnmpTagValue::~SnmpTagValue() { }
 MibEntryPtr SnmpTagValue::clone()
 {
     MibEntryPtr other = new SnmpTagValue(oid);
+
     ((SnmpTagValue*)other)->replace_value(value->clone());
     ((SnmpTagValue*)other)->set_reference_to_table(my_table);
     return other;
@@ -208,29 +247,52 @@ MibEntryPtr SnmpTagValue::clone()
 bool SnmpTagValue::value_ok(const Vbx& vb)
 {
     OctetStr ostr;
-    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return false;
+
+    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS)
+    {
+        return false;
+    }
     int const length = ostr.len();
-    if (length == 0) return true;
-    if ((length < 0) || (length > 255)) return false;
+    if (length == 0)
+    {
+        return true;
+    }
+    if ((length < 0) || (length > 255))
+    {
+        return false;
+    }
 
     for (int i = 0; i < length; i++)
     {
-        if (is_delimiter(ostr[i])) return false;
+        if (is_delimiter(ostr[i]))
+        {
+            return false;
+        }
     }
     return true;
 }
 
-bool SnmpTagValue::is_delimiter(char c) { return ((c == 32) || (c == 9) || (c == 13) || (c == 11)); }
+bool SnmpTagValue::is_delimiter(char c) { return (c == 32) || (c == 9) || (c == 13) || (c == 11); }
 
 int SnmpTagValue::prepare_set_request(Request* req, int& ind)
 {
     int const s = MibLeaf::prepare_set_request(req, ind);
-    if (s != SNMP_ERROR_SUCCESS) return s;
+
+    if (s != SNMP_ERROR_SUCCESS)
+    {
+        return s;
+    }
 
     OctetStr  ostr;
     Vbx const vb(req->get_value(ind));
-    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
-    if (ostr.len() > 255) return SNMP_ERROR_WRONG_LENGTH;
+    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS)
+    {
+        return SNMP_ERROR_WRONG_TYPE;
+    }
+    if (ostr.len() > 255)
+    {
+        return SNMP_ERROR_WRONG_LENGTH;
+    }
     return SNMP_ERROR_SUCCESS;
 }
 
@@ -248,6 +310,7 @@ SnmpTagList::~SnmpTagList() { }
 MibEntryPtr SnmpTagList::clone()
 {
     MibEntryPtr other = new SnmpTagList(oid, access, nullptr, get_value_mode());
+
     ((SnmpTagList*)other)->replace_value(value->clone());
     ((SnmpTagList*)other)->set_reference_to_table(my_table);
     return other;
@@ -256,22 +319,37 @@ MibEntryPtr SnmpTagList::clone()
 bool SnmpTagList::value_ok(const Vbx& vb)
 {
     OctetStr ostr;
-    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return false;
+
+    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS)
+    {
+        return false;
+    }
 
     // pointer into ostr!
     char* s = (char*)ostr.data();
     if (s)
     {
         int const length = ostr.len();
-        if (length > 255) return false;
+        if (length > 255)
+        {
+            return false;
+        }
 
-        if ((length > 0) && (SnmpTagValue::is_delimiter(s[0]))) return false;
-        if ((length > 0) && (SnmpTagValue::is_delimiter(s[length - 1]))) return false;
+        if ((length > 0) && (SnmpTagValue::is_delimiter(s[0])))
+        {
+            return false;
+        }
+        if ((length > 0) && (SnmpTagValue::is_delimiter(s[length - 1])))
+        {
+            return false;
+        }
         for (int i = 0; i < length; i++)
         {
             if ((SnmpTagValue::is_delimiter(s[i]))
                 && ((i + 1 < length) && (SnmpTagValue::is_delimiter(s[i + 1]))))
+            {
                 return false;
+            }
         }
     }
     return true;
@@ -279,12 +357,15 @@ bool SnmpTagList::value_ok(const Vbx& vb)
 
 bool SnmpTagList::contains(const char* tag)
 {
-    if (!tag) return false;
+    if (!tag)
+    {
+        return false;
+    }
 
     int const len = ((OctetStr*)value)->len(); // NOTE: without \0! CK
     char*     l   = new char[len + 1];
     memcpy(l, (char*)((OctetStr*)value)->data(), len);
-    l[len] = 0; // OK, CK
+    l[len] = 0;                                // OK, CK
 
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 10);
     LOG("SnmpTagList: contains: (taglist)(tag)");
@@ -295,7 +376,6 @@ bool SnmpTagList::contains(const char* tag)
     char* start = l;
     while ((l + strlen(l) - start >= (int)strlen(tag)) && (start = strstr(start, tag)))
     {
-
         if (((start == l) || (SnmpTagValue::is_delimiter(*(start - 1))))
             && ((l + strlen(l) - start == (int)strlen(tag))
                 || (SnmpTagValue::is_delimiter(*(start + strlen(tag))))))
@@ -327,7 +407,11 @@ int TestAndIncr::set(const Vbx& vb)
     // place code for handling operations triggered
     // by this set here
     int const status = MibLeaf::set(vb);
-    if (get_state() == 2147483647) { set_state(0); }
+
+    if (get_state() == 2147483647)
+    {
+        set_state(0);
+    }
     else
     {
         set_state(get_state() + 1);
@@ -338,16 +422,30 @@ int TestAndIncr::set(const Vbx& vb)
 int TestAndIncr::prepare_set_request(Request* req, int& reqind)
 {
     int32_t v = 0;
-    if (req->get_value(reqind).get_value(v) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
-    if (v != get_state()) return SNMP_ERROR_INCONSIST_VAL;
+
+    if (req->get_value(reqind).get_value(v) != SNMP_CLASS_SUCCESS)
+    {
+        return SNMP_ERROR_WRONG_TYPE;
+    }
+    if (v != get_state())
+    {
+        return SNMP_ERROR_INCONSIST_VAL;
+    }
     return SNMP_ERROR_SUCCESS;
 }
 
 bool TestAndIncr::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
-    if (vb.get_value(v) != SNMP_CLASS_SUCCESS) return false;
-    if ((v < 0) || (v > 2147483647)) return false;
+
+    if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
+    {
+        return false;
+    }
+    if ((v < 0) || (v > 2147483647))
+    {
+        return false;
+    }
     return true;
 }
 
@@ -360,6 +458,7 @@ StorageType::StorageType(const Oidx& o, int def)
 MibEntryPtr StorageType::clone()
 {
     MibEntryPtr other = new StorageType(oid, get_state());
+
     ((StorageType*)other)->replace_value(value->clone());
     ((StorageType*)other)->set_reference_to_table(my_table);
     return other;
@@ -368,19 +467,34 @@ MibEntryPtr StorageType::clone()
 bool StorageType::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
-    if (vb.get_value(v) != SNMP_CLASS_SUCCESS) return false;
-    if ((v < 1) || (v > 5)) return false;
-    if ((valid()) && (get_state() < storageType_permanent) && (v >= storageType_permanent))
+
+    if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
+    {
         return false;
-    if ((valid()) && (get_state() >= storageType_readOnly)) return false;
+    }
+    if ((v < 1) || (v > 5))
+    {
+        return false;
+    }
+    if ((valid()) && (get_state() < storageType_permanent) && (v >= storageType_permanent))
+    {
+        return false;
+    }
+    if ((valid()) && (get_state() >= storageType_readOnly))
+    {
+        return false;
+    }
     return true;
 }
 
-bool StorageType::row_is_volatile() { return (get_state() <= 2); }
+bool StorageType::row_is_volatile() { return get_state() <= 2; }
 
 void StorageType::set_state(int32_t state)
 {
-    if ((state >= 1) && (state <= 5)) { *((SnmpInt32*)value) = state; }
+    if ((state >= 1) && (state <= 5))
+    {
+        *((SnmpInt32*)value) = state;
+    }
 }
 
 int32_t StorageType::get_state() { return (int32_t) * ((SnmpInt32*)value); }
@@ -391,10 +505,17 @@ int StorageTypeVoter::is_transition_ok(
     MibTable* t, MibTableRow* row, const Oidx& oid, int curState, int newState)
 {
     int const storageType = ((StorageTable*)t)->get_storage_type(row);
-    if (storageType == 5) { return SNMP_ERROR_INCONSIST_VAL; }
+
+    if (storageType == 5)
+    {
+        return SNMP_ERROR_INCONSIST_VAL;
+    }
     if (((curState == rowNotInService) || (curState == rowActive)) && (newState == rowDestroy))
     {
-        if (storageType == 4) { return SNMP_ERROR_INCONSIST_VAL; }
+        if (storageType == 4)
+        {
+            return SNMP_ERROR_INCONSIST_VAL;
+        }
     }
     return SNMP_ERROR_SUCCESS;
 }
@@ -434,7 +555,10 @@ StorageTable::StorageTable(const Oidx& o, const index_info* istruc, unsigned int
 
 StorageTable::~StorageTable()
 {
-    if (storage_type_voter) { delete storage_type_voter; }
+    if (storage_type_voter)
+    {
+        delete storage_type_voter;
+    }
 }
 
 void StorageTable::register_row_status_voting()
@@ -447,7 +571,10 @@ bool StorageTable::is_persistent(MibTableRow* row)
 {
     if (row->get_nth(storage_type))
     {
-        if (((StorageType*)(row->get_nth(storage_type)))->row_is_volatile()) { return false; }
+        if (((StorageType*)(row->get_nth(storage_type)))->row_is_volatile())
+        {
+            return false;
+        }
     }
     return true;
 }
@@ -469,6 +596,7 @@ void StorageTable::set_storage_type(MibTableRow* row, int storageType)
 int StorageTable::get_storage_type(MibTableRow* row)
 {
     int storageType = 0;
+
     if (row->get_nth(storage_type))
     {
         storageType = ((StorageType*)(row->get_nth(storage_type)))->get_state();
@@ -479,6 +607,7 @@ int StorageTable::get_storage_type(MibTableRow* row)
 void StorageTable::reset()
 {
     OidListCursor<MibTableRow> cur;
+
     for (cur.init(&content); cur.get();)
     {
         long const type = ((StorageType*)(cur.get()->get_nth(storage_type)))->get_state();
@@ -498,10 +627,14 @@ void StorageTable::reset()
 int StorageTable::prepare_set_request(Request* req, int& ind)
 {
     MibLeaf* o = nullptr;
+
     if ((o = MibTable::find(req->get_oid(ind))) != nullptr)
     {
         int const storageType = get_storage_type(o->get_reference_to_row());
-        if (storageType == storageType_readOnly) { return SNMP_ERROR_INCONSIST_VAL; }
+        if (storageType == storageType_readOnly)
+        {
+            return SNMP_ERROR_INCONSIST_VAL;
+        }
     }
     return MibTable::prepare_set_request(req, ind);
 }
@@ -526,6 +659,7 @@ SnmpInt32MinMax::SnmpInt32MinMax(const Oidx& o, mib_access _access, int _min, in
 MibEntryPtr SnmpInt32MinMax::clone()
 {
     MibEntryPtr other = new SnmpInt32MinMax(oid, access, 0, get_value_mode(), min, max);
+
     ((SnmpInt32MinMax*)other)->replace_value(value->clone());
     ((SnmpInt32MinMax*)other)->set_reference_to_table(my_table);
     return other;
@@ -534,8 +668,15 @@ MibEntryPtr SnmpInt32MinMax::clone()
 bool SnmpInt32MinMax::value_ok(const Vbx& v)
 {
     SnmpInt32 si;
-    if (v.get_value(si) != SNMP_CLASS_SUCCESS) return false;
-    if (((int)si < min) || ((int)si > max)) return false;
+
+    if (v.get_value(si) != SNMP_CLASS_SUCCESS)
+    {
+        return false;
+    }
+    if (((int)si < min) || ((int)si > max))
+    {
+        return false;
+    }
     return true;
 }
 
@@ -563,6 +704,7 @@ OctetStrMinMax::OctetStrMinMax(const Oidx& o, mib_access _access, unsigned int _
 MibEntryPtr OctetStrMinMax::clone()
 {
     MibEntryPtr other = new OctetStrMinMax(oid, access, nullptr, get_value_mode(), min, max);
+
     ((OctetStrMinMax*)other)->replace_value(value->clone());
     ((OctetStrMinMax*)other)->set_reference_to_table(my_table);
     return other;
@@ -572,8 +714,15 @@ int OctetStrMinMax::prepare_set_request(Request* req, int& ind)
 {
     OctetStr  ostr;
     Vbx const vb(req->get_value(ind));
-    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
-    if ((ostr.len() < min) || (ostr.len() > max)) return SNMP_ERROR_WRONG_LENGTH;
+
+    if (vb.get_value(ostr) != SNMP_CLASS_SUCCESS)
+    {
+        return SNMP_ERROR_WRONG_TYPE;
+    }
+    if ((ostr.len() < min) || (ostr.len() > max))
+    {
+        return SNMP_ERROR_WRONG_LENGTH;
+    }
     return MibLeaf::prepare_set_request(req, ind);
 }
 
@@ -588,6 +737,7 @@ SnmpMessageProcessingModel::~SnmpMessageProcessingModel() { }
 MibEntryPtr SnmpMessageProcessingModel::clone()
 {
     MibEntryPtr other = new SnmpMessageProcessingModel(oid, access, 0, get_value_mode());
+
     ((SnmpMessageProcessingModel*)other)->replace_value(value->clone());
     ((SnmpMessageProcessingModel*)other)->set_reference_to_table(my_table);
     return other;
@@ -604,6 +754,7 @@ SnmpSecurityLevel::~SnmpSecurityLevel() { }
 MibEntryPtr SnmpSecurityLevel::clone()
 {
     MibEntryPtr other = new SnmpSecurityLevel(oid, access, 0, get_value_mode());
+
     ((SnmpSecurityLevel*)other)->replace_value(value->clone());
     ((SnmpSecurityLevel*)other)->set_reference_to_table(my_table);
     return other;
@@ -620,6 +771,7 @@ SnmpSecurityModel::~SnmpSecurityModel() { }
 MibEntryPtr SnmpSecurityModel::clone()
 {
     MibEntryPtr other = new SnmpSecurityModel(oid, access, 0, get_value_mode());
+
     ((SnmpSecurityModel*)other)->replace_value(value->clone());
     ((SnmpSecurityModel*)other)->set_reference_to_table(my_table);
     return other;
@@ -636,6 +788,7 @@ void TimeStamp::update() TS_SYNCHRONIZED({ *((TimeTicks*)value) = sysUpTime::get
     MibEntryPtr TimeStamp::clone()
 {
     MibEntryPtr other = new TimeStamp(oid, access, value_mode);
+
     ((TimeStamp*)other)->replace_value(value->clone());
     ((TimeStamp*)other)->set_reference_to_table(my_table);
     return other;
@@ -675,6 +828,7 @@ DateAndTime::~DateAndTime() { }
 MibEntryPtr DateAndTime::clone()
 {
     MibEntryPtr other = new DateAndTime(oid, access, value_mode);
+
     ((DateAndTime*)other)->replace_value(value->clone());
     ((DateAndTime*)other)->set_reference_to_table(my_table);
     return other;
@@ -696,8 +850,10 @@ void DateAndTime::update()
     dt = localtime(&c); // TODO: use localtime_s()! CK
 #endif
 
-    if (!dt) return; // TODO: possibly log an error;
-
+    if (!dt)
+    {
+        return; // TODO: possibly log an error;
+    }
     OctetStr val;
     val += (unsigned char)((dt->tm_year + 1900) >> 8) & 0xFF;
     val += (unsigned char)(dt->tm_year + 1900) & 0xFF;
@@ -710,9 +866,13 @@ void DateAndTime::update()
 
 #if defined __FreeBSD__ || defined __APPLE__
     if (dt->tm_gmtoff >= 0)
+    {
         val += '+';
+    }
     else
+    {
         val += '-';
+    }
     auto const tz       = (unsigned int)abs(dt->tm_gmtoff);
     long const timezone = dt->tm_gmtoff;
 #else
@@ -722,9 +882,13 @@ void DateAndTime::update()
     long timezone = _timezone; // TODO: use _get_timezone! CK
 #    endif
     if (timezone < 0)
+    {
         val += '+';
+    }
     else
+    {
         val += '-';
+    }
     unsigned int tz = std::abs(timezone);
 #endif
 

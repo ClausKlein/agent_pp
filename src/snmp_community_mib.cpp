@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - snmp_community_mib.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - snmp_community_mib.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include <agent_pp/snmp_community_mib.h>
 #include <agent_pp/snmp_target_mib.h>
@@ -48,6 +48,7 @@ snmpTargetAddrTMask::~snmpTargetAddrTMask() { }
 MibEntryPtr snmpTargetAddrTMask::clone()
 {
     MibEntryPtr other = new snmpTargetAddrTMask(oid);
+
     ((snmpTargetAddrTMask*)other)->replace_value(value->clone());
     ((snmpTargetAddrTMask*)other)->set_reference_to_table(my_table);
     return other;
@@ -56,6 +57,7 @@ MibEntryPtr snmpTargetAddrTMask::clone()
 UdpAddress* snmpTargetAddrTMask::getUdpAddress()
 {
     snmpTargetAddrEntry* snmpTargetAddrEntry = ((snmpTargetAddrExtEntry*)my_table)->baseTable;
+
     if (snmpTargetAddrEntry)
     {
         snmpTargetAddrEntry->start_synch();
@@ -84,19 +86,32 @@ int snmpTargetAddrTMask::prepare_set_request(Request* req, int& ind)
 {
     Vb const vb(req->get_value(ind));
     OctetStr v;
-    if (vb.get_value(v) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
-    if (!(v.len() <= 255)) return SNMP_ERROR_WRONG_LENGTH;
+
+    if (vb.get_value(v) != SNMP_CLASS_SUCCESS)
+    {
+        return SNMP_ERROR_WRONG_TYPE;
+    }
+    if (!(v.len() <= 255))
+    {
+        return SNMP_ERROR_WRONG_LENGTH;
+    }
     // check if snmpTargetAddrTMask has same length as
     // snmp anmpTargetAddrTAddress
     snmpTargetAddrEntry* snmpTargetAddrEntry = ((snmpTargetAddrExtEntry*)my_table)->baseTable;
     if (snmpTargetAddrEntry)
     {
-        if (req->lock_index(snmpTargetAddrEntry) < 0) { snmpTargetAddrEntry->start_synch(); }
+        if (req->lock_index(snmpTargetAddrEntry) < 0)
+        {
+            snmpTargetAddrEntry->start_synch();
+        }
         MibTableRow*  r = snmpTargetAddrEntry->find_index(my_row->get_index());
         OctetStr      addr;
         int32_t const status = ((snmpRowStatus*)r->get_nth(7))->get();
         r->get_nth(1)->get_value(addr);
-        if (req->lock_index(snmpTargetAddrEntry) < 0) { snmpTargetAddrEntry->end_synch(); }
+        if (req->lock_index(snmpTargetAddrEntry) < 0)
+        {
+            snmpTargetAddrEntry->end_synch();
+        }
         if ((status == 1) || ((v.len() != 0) && (addr.len() != v.len())))
         {
             LOG_BEGIN(loggerModuleName, DEBUG_LOG | 7);
@@ -166,13 +181,13 @@ bool snmpCommunityEntry::get_v3_info(OctetStr& security_name, OctetStr& context_
     OctetStr const          community(security_name);
     List<MibTableRow>*      list = get_rows_cloned(true);
     ListCursor<MibTableRow> cur;
+
     for (cur.init(list); cur.get(); cur.next())
     {
         OctetStr entry;
         cur.get()->get_nth(0)->get_value(entry);
         if (entry == community)
         {
-
             cur.get()->get_nth(1)->get_value(security_name);
             cur.get()->get_nth(2)->get_value(context_engine_id);
             cur.get()->get_nth(3)->get_value(context_name);
@@ -198,6 +213,7 @@ bool snmpCommunityEntry::get_community(
 {
     List<MibTableRow>*      list = get_rows_cloned(true);
     ListCursor<MibTableRow> cur;
+
     for (cur.init(list); cur.get(); cur.next())
     {
         OctetStr sname;
@@ -208,7 +224,6 @@ bool snmpCommunityEntry::get_community(
         cur.get()->get_nth(3)->get_value(cname);
         if ((sname == security_name) && (eid == context_engine_id) && (cname == context_name))
         {
-
             cur.get()->get_nth(0)->get_value(security_name);
 
             LOG_BEGIN(loggerModuleName, INFO_LOG | 2);
@@ -247,7 +262,10 @@ snmpTargetAddrExtEntry::snmpTargetAddrExtEntry(snmpTargetAddrEntry* parentTable)
     add_col(new snmpTargetAddrTMask("1"));
     add_col(new SnmpInt32MinMax("2", READCREATE, 484, VMODE_DEFAULT, 484, 2147483647));
 
-    if (baseTable) { baseTable->add_listener(this); }
+    if (baseTable)
+    {
+        baseTable->add_listener(this);
+    }
     else
     {
         LOG_BEGIN(loggerModuleName, WARNING_LOG | 1);
@@ -262,10 +280,11 @@ snmpTargetAddrExtEntry::~snmpTargetAddrExtEntry()
     instance = nullptr;
     // TODO: We cannot be sure that baseTable is still valid when this
     // destructor is being called!
+
     /*
-            if (baseTable) {
-                    baseTable->remove_listener(this);
-            }
+     *      if (baseTable) {
+     *              baseTable->remove_listener(this);
+     *      }
      */
 }
 
@@ -273,7 +292,11 @@ snmpTargetAddrExtEntry* snmpTargetAddrExtEntry::get_instance(Mib* mib)
 {
     Oidx const oid(oidSnmpTargetAddrExtEntry);
     auto*      entry = (snmpTargetAddrExtEntry*)mib->get(oid);
-    if (entry) { return entry; }
+
+    if (entry)
+    {
+        return entry;
+    }
     LOG_BEGIN(loggerModuleName, WARNING_LOG | 1);
     LOG("Please instantiate snmpTargetAddrEntry and add it to the supplied "
         "Mib instance before calling snmpTargetAddrExtEntry::get_instance");
@@ -283,23 +306,33 @@ snmpTargetAddrExtEntry* snmpTargetAddrExtEntry::get_instance(Mib* mib)
 
 void snmpTargetAddrExtEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* source)
 {
-    if (source) add_row(index);
+    if (source)
+    {
+        add_row(index);
+    }
 }
 
 void snmpTargetAddrExtEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable* source)
 {
-    if (source) remove_row(index);
+    if (source)
+    {
+        remove_row(index);
+    }
 }
 
 int snmpTargetAddrExtEntry::prepare_set_request(Request* req, int& ind)
 {
     Oidx const oid(req->get_oid(ind));
+
     if (!find(oid))
     {
         Oidx rs("1.3.6.1.6.3.12.1.2.1.9");
         rs += index(oid);
         Vbx* status = req->search_value(rs);
-        if (!status) return SNMP_ERROR_INCONSIS_NAME;
+        if (!status)
+        {
+            return SNMP_ERROR_INCONSIS_NAME;
+        }
         SnmpInt32 value = 0;
         if (status->get_value(value) != SNMP_CLASS_SUCCESS)
         {
@@ -324,11 +357,20 @@ void snmpTargetAddrExtEntry::set_row(MibTableRow* r, const OctetStr& p0, int p1)
 #    ifdef _SNMPv3
 bool snmpTargetAddrExtEntry::passes_filter(const OctetStr& tag, const UTarget& addr)
 {
-    if (!baseTable) return true;
-    if (tag.len() == 0) return true;
+    if (!baseTable)
+    {
+        return true;
+    }
+    if (tag.len() == 0)
+    {
+        return true;
+    }
     GenAddress gen;
     addr.get_address(gen);
-    if (gen.get_type() != Address::type_udp) return false;
+    if (gen.get_type() != Address::type_udp)
+    {
+        return false;
+    }
     UdpAddress const u(gen);
 
     start_synch();
@@ -375,12 +417,19 @@ bool snmpTargetAddrExtEntry::passes_filter(const OctetStr& tag, const UTarget& a
     delete list;
     return false;
 }
+
 #    endif
 
 bool snmpTargetAddrExtEntry::passes_filter(const OctetStr& taddress, const OctetStr& tag)
 {
-    if (!baseTable) return true;
-    if (tag.len() == 0) return true;
+    if (!baseTable)
+    {
+        return true;
+    }
+    if (tag.len() == 0)
+    {
+        return true;
+    }
 
     start_synch();
     List<MibTableRow>*      list = baseTable->get_rows_cloned_for_tag(tag);
@@ -397,7 +446,10 @@ bool snmpTargetAddrExtEntry::passes_filter(const OctetStr& taddress, const Octet
             ((snmpTargetAddrTMask*)ext->get_nth(0))->get_value(mask);
             for (unsigned int i = 0; i < mask.len(); i++)
             {
-                if (i < taddressAllowed.len()) { taddressAllowed[i] = taddressAllowed[i] & mask[i]; }
+                if (i < taddressAllowed.len())
+                {
+                    taddressAllowed[i] = taddressAllowed[i] & mask[i];
+                }
                 if (i < taddressRequested.len())
                 {
                     taddressRequested[i] = taddressRequested[i] & mask[i];
@@ -464,20 +516,29 @@ void snmp_community_mib::add_public(Mib* mib)
     }
     Oidx         ind = Oidx::from_string("public", false);
     MibTableRow* r   = snmpCommunityEntry->find_index(ind);
-    if (!r) r = snmpCommunityEntry->add_row(ind);
+    if (!r)
+    {
+        r = snmpCommunityEntry->add_row(ind);
+    }
     snmpCommunityEntry->set_row(r, OctetStr("public"), OctetStr("public"),
         mib->get_request_list()->get_v3mp()->get_local_engine_id(), OctetStr(""), OctetStr("access"),
         3, 1);
 
     ind = Oidx::from_string("localAccess", false);
     r   = snmpTargetAddrEntry->find_index(ind);
-    if (!r) r = snmpTargetAddrEntry->add_row(ind);
+    if (!r)
+    {
+        r = snmpTargetAddrEntry->add_row(ind);
+    }
     snmpTargetAddrEntry->set_row(r, "1.3.6.1.6.1.1", OctetStr::from_hex_string("7F 00 00 01 00 A1"),
         1500, 3, "access", "localAccess", 3, 1);
 
     ind = Oidx::from_string("localAccess", false);
     r   = snmpTargetAddrExtEntry->find_index(ind);
-    if (!r) r = snmpTargetAddrExtEntry->add_row(ind);
+    if (!r)
+    {
+        r = snmpTargetAddrExtEntry->add_row(ind);
+    }
     snmpTargetAddrExtEntry->set_row(r, "\xFF\xFF\xFF\xFF\xFF\xFF", 1500);
 }
 
