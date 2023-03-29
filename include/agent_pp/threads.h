@@ -40,7 +40,7 @@
 #define AGENTPP_DEFAULT_STACKSIZE 0x20000
 
 #ifdef __linux__
-#    undef AGENTPP_PTHREAD_RECURSIVE
+#    define AGENTPP_PTHREAD_RECURSIVE
 #    define NO_FAST_MUTEXES
 #endif
 

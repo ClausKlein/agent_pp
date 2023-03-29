@@ -374,7 +374,8 @@ int main(int argc, char* argv[])
     coldStartOid const     coldOid;
     NotificationOriginator no;
     UdpAddress const       dest("127.0.0.1/162");
-    if (no.add_v2_trap_destination(dest, "defaultV2Trap", "v2trap", "public")) {
+    if (no.add_v2_trap_destination(dest, "defaultV2Trap", "v2trap", "public"))
+    {
         no.generate(vbs, 0, coldOid, "", "");
     }
 

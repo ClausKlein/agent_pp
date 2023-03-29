@@ -33,10 +33,6 @@ namespace Agentpp
 static const char* loggerModuleName = "agent++.threads";
 #endif
 
-#ifndef AGENTPP_SYNCHRONIZED_UNLOCK_RETRIES
-#    define AGENTPP_SYNCHRONIZED_UNLOCK_RETRIES 1000
-#endif
-
 #ifdef _THREADS
 Synchronized ThreadManager::global_lock;
 #endif
@@ -200,6 +196,7 @@ Synchronized::~Synchronized()
                 return;
             }
         }
+        assert(false);
         return; // NOTE: We give it up! CK
     }
 #        endif
@@ -398,8 +395,11 @@ bool Synchronized::lock()
 #        else
     if (!err)
     {
+
         if (isLocked)
         {
+
+#            if 0
             // This thread owns already the lock, but
             // we do not like recursive locking. Thus
             // release it immediately and print a warning!
@@ -417,12 +417,14 @@ bool Synchronized::lock()
                 LOG(id);
                 LOG_END;
             }
+#            endif
         }
         else
         {
             isLocked = true;
             // no logging because otherwise deep (virtual endless) recursion
         }
+
         return true;
     }
 #        endif
@@ -511,6 +513,8 @@ bool Synchronized::lock(long timeout)
 #        else
         if (isLocked)
         {
+
+#            if 0
             // This thread owns already the lock, but
             // we do not like recursive locking. Thus
             // release it immediately and print a warning!
@@ -528,6 +532,7 @@ bool Synchronized::lock(long timeout)
                 LOG(id);
                 LOG_END;
             }
+#            endif
         }
         else
         {
@@ -645,6 +650,8 @@ Synchronized::TryLockResult Synchronized::trylock()
     {
         if (isLocked)
         {
+
+#            if 0
             // This thread owns already the lock, but
             // we do not like true recursive locking. Thus
             // release it immediately and print a warning!
@@ -665,6 +672,8 @@ Synchronized::TryLockResult Synchronized::trylock()
                 LOG((long)this);
                 LOG_END;
             }
+#            endif
+
             return OWNED;
         }
         else
