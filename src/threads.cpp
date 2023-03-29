@@ -52,8 +52,7 @@ ThreadManager::ThreadManager() { }
 ThreadManager::~ThreadManager()
 {
 #if defined(_THREADS) && !defined(NO_FAST_MUTEXES)
-    trylock();
-    unlock();
+    if (trylock() == LOCKED) { unlock(); }
 #endif
 }
 
@@ -188,21 +187,24 @@ Synchronized::~Synchronized()
         LOG((unsigned long)this);
         LOG_END;
     }
-    result = pthread_mutex_destroy(&monitor);
+
 #        ifdef NO_FAST_MUTEXES
-    if (result == EBUSY)
     {
-        // wait for other threads ...
-        if (EBUSY == pthread_mutex_trylock(&monitor))
-            pthread_mutex_lock(&monitor); // another thread owns the mutex, let's wait ...
-        int retries = 0;
-        do {
-            pthread_mutex_unlock(&monitor);
-            result = pthread_mutex_destroy(&monitor);
-        } while (EBUSY == result && (retries++ < AGENTPP_SYNCHRONIZED_UNLOCK_RETRIES));
+        // if another thread owns the mutex, let's wait ...
+        if (lock(1))
+        {
+            if (pthread_mutex_unlock(&monitor) == 0)
+            {
+                result = pthread_mutex_destroy(&monitor);
+                assert(result == 0);
+                return;
+            }
+        }
+        return; // NOTE: We give it up! CK
     }
 #        endif
-    isLocked = false;
+
+    result = pthread_mutex_destroy(&monitor);
     if (result)
     {
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 2);
@@ -215,9 +217,10 @@ Synchronized::~Synchronized()
 #        ifdef WIN32
     CloseHandle(semEvent);
     CloseHandle(semMutex);
-    isLocked = false;
 #        endif
 #    endif
+
+    isLocked = false;
 }
 
 void Synchronized::wait()
@@ -929,7 +932,10 @@ void Thread::start()
             LOG_END;
             status = IDLE;
         }
-        else { status = RUNNING; }
+        else
+        {
+            status = RUNNING;
+        }
     }
     else
     {
@@ -965,12 +971,12 @@ void Thread::nsleep(int secs, long nanos)
     DWORD millis = secs * 1000 + nanos / 1000000;
     Sleep(millis);
 #    else
-    long const      s        = secs + nanos / 1000000000;
-    long const      n        = nanos % 1000000000;
+    long const s = secs + nanos / 1000000000;
+    long const n = nanos % 1000000000;
 
 #        ifdef _POSIX_TIMERS
     struct timespec interval = {}, remainder = {};
-    interval.tv_sec  = s;
+    interval.tv_sec = s;
     interval.tv_nsec = n;
     if (nanosleep(&interval, &remainder) == -1)
     {
@@ -1045,7 +1051,10 @@ void TaskManager::run()
             threadPool->idle_notification();
             lock();
         }
-        else { wait(); }
+        else
+        {
+            wait();
+        }
     }
     if (task)
     {
@@ -1246,7 +1255,10 @@ void QueuedThreadPool::execute(Runnable* t)
 {
     Thread::lock();
     if (queue.empty()) { assign(t); }
-    else { queue.add(t); }
+    else
+    {
+        queue.add(t);
+    }
     Thread::unlock();
 }
 
@@ -1374,7 +1386,10 @@ void LockQueue::run()
                 r->unlock();
                 pending--;
             }
-            else { pendingLock.addLast(r); }
+            else
+            {
+                pendingLock.addLast(r);
+            }
         }
         LOG_BEGIN(loggerModuleName, DEBUG_LOG | 9);
         LOG("LockQueue: waiting for next event (pending)");

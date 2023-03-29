@@ -419,7 +419,10 @@ MibEntry* MibContext::add(MibEntry* item)
         for (; cur.get(); cur.next()) content.add(cur.get());
         groups.add(mg);
     }
-    else { return content.add(item); }
+    else
+    {
+        return content.add(item);
+    }
     return item;
 }
 

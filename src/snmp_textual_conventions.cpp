@@ -328,7 +328,10 @@ int TestAndIncr::set(const Vbx& vb)
     // by this set here
     int const status = MibLeaf::set(vb);
     if (get_state() == 2147483647) { set_state(0); }
-    else { set_state(get_state() + 1); }
+    else
+    {
+        set_state(get_state() + 1);
+    }
     return status;
 }
 
@@ -485,7 +488,10 @@ void StorageTable::reset()
             cur.next();
             delete content.remove(victim);
         }
-        else { cur.next(); }
+        else
+        {
+            cur.next();
+        }
     }
 }
 

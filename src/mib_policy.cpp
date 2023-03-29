@@ -41,7 +41,10 @@ void MibTableSizePolicy::set_policy(const Oidx& tid, unsigned int l)
     Oidx            id(tid);
     MibStaticEntry* e = policies.find(&id);
     if (e) { e->set_value(Gauge32(l)); }
-    else { policies.add(new MibStaticEntry(id, Gauge32(l))); }
+    else
+    {
+        policies.add(new MibStaticEntry(id, Gauge32(l)));
+    }
 }
 
 void MibTableSizePolicy::remove_policy(const Oidx& tid)
@@ -77,7 +80,10 @@ void MibTableSizePolicy::register_policy(MibContext* context, MibTableSizePolicy
         if (cur.get()->type() == AGENTPP_TABLE)
         {
             if (p->defaultLimit > 0) { ((MibTable*)cur.get())->add_voter(p); }
-            else if (p->policies.find(cur.get()->key())) { ((MibTable*)cur.get())->add_voter(p); }
+            else if (p->policies.find(cur.get()->key()))
+            {
+                ((MibTable*)cur.get())->add_voter(p);
+            }
         }
     }
 }

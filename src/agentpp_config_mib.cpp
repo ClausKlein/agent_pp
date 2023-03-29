@@ -147,8 +147,14 @@ void agentppCfgSecSrcAddrValidation::get_request(Request* req, int ind)
     snmpCommunityEntry* _snmpCommunityEntry =
         (snmpCommunityEntry*)mibReference->get(req->get_context(), oidSnmpCommunityEntry);
     if (!_snmpCommunityEntry) { set_state(3); }
-    else if (mibReference->get_request_list()->get_address_validation()) { set_state(1); }
-    else { set_state(2); }
+    else if (mibReference->get_request_list()->get_address_validation())
+    {
+        set_state(1);
+    }
+    else
+    {
+        set_state(2);
+    }
     //--AgentGen END
     MibLeaf::get_request(req, ind);
 }
@@ -271,7 +277,10 @@ int agentppCfgStoragePath::prepare_set_request(Request* req, int& ind)
 #        ifndef WIN32
     status = mkdir(v.get_printable(), 700);
     if ((status == -1) && (errno != EEXIST)) { return SNMP_ERROR_BAD_VALUE; }
-    else if (status != -1) { rmdir(v.get_printable()); }
+    else if (status != -1)
+    {
+        rmdir(v.get_printable());
+    }
 #        endif
     //--AgentGen END
     return SNMP_ERROR_SUCCESS;
@@ -463,7 +472,10 @@ int agentppCfgStorageOperation::set(const Vbx& vb)
         set_state(agentppCfgStorageOperation::e_inProgress);
         return SNMP_ERROR_SUCCESS;
     }
-    else { return SNMP_ERROR_COMMITFAIL; }
+    else
+    {
+        return SNMP_ERROR_COMMITFAIL;
+    }
 #        endif
     //--AgentGen END
     return MibLeaf::set(vb);

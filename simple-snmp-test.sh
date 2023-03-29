@@ -3,6 +3,7 @@
 dir_name=`dirname "$0"`
 export MIBDIRS=+${dir_name}/mibs
 export MIBS=ALL
+export TSAN_OPTIONS=second_deadlock_stack=1 
 
 set -u
 set -e
@@ -63,7 +64,7 @@ ${test_app} 127.0.0.1 get
 
 # pkill agent
 kill -s TERM %%
-wait
+wait %%
 
 ls -lrta config
 
@@ -84,7 +85,7 @@ snmpwalk -v3 -l noAuthNoPriv -u MD5DES -n "" localhost:4700 SNMPv2-MIB::snmpOutT
 
 # pkill agent
 kill -s TERM %%
-wait
+wait %%
 
 echo done
 

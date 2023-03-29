@@ -67,7 +67,10 @@ void nlmConfigLogOperStatus::get_request(Request* req, int ind)
         {
             List<MibTableRow>* r = snmpNotifyFilterEntry->get_rows_cloned(&index, true);
             if (r->size() > 0) { l = 2; }
-            else { l = 3; }
+            else
+            {
+                l = 3;
+            }
             delete r;
         }
     }
@@ -979,7 +982,10 @@ void nlmLogEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* src)
         // add log index
         logIndexes.add(new MibStaticEntry(vb));
     }
-    else { entries.add(row); }
+    else
+    {
+        entries.add(row);
+    }
     //--AgentGen END
 }
 
@@ -993,7 +999,10 @@ void nlmLogEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable* src)
         Oidx ind(index);
         logIndexes.remove(&ind);
     }
-    else { entries.remove(row); }
+    else
+    {
+        entries.remove(row);
+    }
     //--AgentGen END
 }
 

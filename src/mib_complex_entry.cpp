@@ -104,7 +104,10 @@ Oidx MibStaticTable::find_succ(const Oidx& o, Request* /*req*/)
     Oidx tmpoid(o);
     Oidx retval;
     if (tmpoid <= oid) { tmpoid = Oidx(); }
-    else if (tmpoid.len() >= oid.len()) { tmpoid = tmpoid.cut_left(oid.len()); }
+    else if (tmpoid.len() >= oid.len())
+    {
+        tmpoid = tmpoid.cut_left(oid.len());
+    }
     else
     {
         end_synch();

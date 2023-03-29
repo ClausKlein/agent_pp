@@ -40,7 +40,7 @@ namespace Agentpp
 static const char* loggerModuleName = "agent++.v3_mib";
 #    endif
 const index_info   iUsmUserTable[2] = { { sNMP_SYNTAX_OCTETS, false, 5, 32 },
-      { sNMP_SYNTAX_OCTETS, false, 1, 32 } };
+    { sNMP_SYNTAX_OCTETS, false, 1, 32 } };
 const unsigned int lUsmUserTable    = 2;
 
 /**********************************************************************
@@ -918,7 +918,7 @@ int UsmCloneFrom::set(const Vbx& vb)
             if ((((Oid*)value)->len() != 2) || // CloneFrom was set
                 ((*(Oid*)value)[0] != 0) ||    // before ==>
                 ((*(Oid*)value)[1] != 0))
-            {                                  // do nothing
+            { // do nothing
                 LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
                 LOG("UsmCloneFrom: clonefrom can be called only once");
                 LOG_END;
@@ -1323,20 +1323,20 @@ bool UsmKeyChange::process_key_change(OctetStr& os)
     LOG_END;
 
 #    if 0
-  // append random component to old_key and hash over it
-  int i;
-  for (i=0; i< key_len; i++)
-    old_key += os[i];
+    // append random component to old_key and hash over it
+    int i;
+    for (i=0; i< key_len; i++)
+        old_key += os[i];
 
 
-  auth->hash(old_key.data(), old_key.len(), digest);
+    auth->hash(old_key.data(), old_key.len(), digest);
 
-  // XOR digest with with random-component
-  for (i = 0; i < key_len; i++) 
-    digest[i] ^= os[key_len+i];
+    // XOR digest with with random-component
+    for (i = 0; i < key_len; i++)
+        digest[i] ^= os[key_len+i];
 
-  // set new value
-  ((OctetStr*)value)->set_data(digest, key_len);
+    // set new value
+    ((OctetStr*)value)->set_data(digest, key_len);
 
 #    else
     int const iterations = (key_len - 1) / auth->get_hash_len(); /*integer division*/

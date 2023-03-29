@@ -78,7 +78,10 @@ bool AgentTools::make_path(const std::string& path)
             {
                 result = 0 == mkdir(path.c_str(), 0775);
             }
-            else { result = false; }
+            else
+            {
+                result = false;
+            }
             break;
         case EEXIST:
             // done

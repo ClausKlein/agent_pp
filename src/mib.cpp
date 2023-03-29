@@ -277,9 +277,15 @@ void MibLeaf::get_request(Request* req, int ind)
             vb.set_syntax(sNMP_SYNTAX_NOSUCHINSTANCE);
             req->finish(ind, vb);
         }
-        else { req->finish(ind, get_value()); }
+        else
+        {
+            req->finish(ind, get_value());
+        }
     }
-    else { req->error(ind, SNMP_ERROR_NO_ACCESS); }
+    else
+    {
+        req->error(ind, SNMP_ERROR_NO_ACCESS);
+    }
 }
 
 void MibLeaf::get_next_request(Request* req, int ind)
@@ -1228,7 +1234,7 @@ bool MibTable::serialize(char*& buf, int& sz)
     buf                = new char[size + 10];
     int            len = size + 10;
     unsigned char* cp  = asn_build_header(
-        (unsigned char*)buf, &len, (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR), size);
+         (unsigned char*)buf, &len, (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR), size);
     memcpy(cp, stream.data(), size);
     sz = ((size + 10) - len) + stream.len();
     return true;
@@ -1877,7 +1883,7 @@ bool MibTable::ready(Vbx* pvbs, int sz, MibTableRow* row)
             MibLeaf* c = row->get_nth(i);
             if ((c->get_access() > READONLY) && (pvbs[i].valid()) && // check if value is set
                 (!c->value_ok(pvbs[i])))
-            {                                                        // check if set value is ok
+            { // check if set value is ok
                 delete[] required;
 
                 LOG_BEGIN(loggerModuleName, DEBUG_LOG | 3);
@@ -3057,7 +3063,10 @@ int Mib::next_access_control(Request* req, MibEntry* entry, Oidx& oid, const Oid
     case AGENTPP_PROXY: {
         // reuse provided OID for the first iteration (if not empty)
         if (nextOid.len() > 0) { oid = nextOid; }
-        else { oid = entry->find_succ(oid, req); }
+        else
+        {
+            oid = entry->find_succ(oid, req);
+        }
         do {
             if (oid.len() <= 0)
             {
@@ -3197,7 +3206,10 @@ bool Mib::process_request(Request* req, int reqind)
             Oidx nextoid;
             nextoid = entry->find_succ(tmpoid, req);
             if (!nextoid.valid()) { goto reprocess; }
-            else { tmpoid = nextoid; }
+            else
+            {
+                tmpoid = nextoid;
+            }
             break;
         }
         case AGENTPP_PROXY: {
@@ -3336,7 +3348,10 @@ void Mib::proxy_request(Request* req)
         req->get_pdu()->set_vblist(&vb, 1);
         if (requestList != nullptr) requestList->report(req);
     }
-    else if (requestList != nullptr) { requestList->answer(req); }
+    else if (requestList != nullptr)
+    {
+        requestList->answer(req);
+    }
     delete_request(req);
 }
 #    endif
@@ -3717,7 +3732,10 @@ void Mib::process_get_bulk_request(Request* req)
             Oidx nextoid;
             nextoid = entry->find_succ(tmpoid, req);
             if (!nextoid.valid()) { goto reprocess; }
-            else { tmpoid = nextoid; }
+            else
+            {
+                tmpoid = nextoid;
+            }
             break;
         }
         case AGENTPP_PROXY: {
@@ -3853,7 +3871,10 @@ void Mib::process_get_bulk_request(Request* req)
                     Oidx nextoid;
                     nextoid = entry->find_succ(tmpoid);
                     if (nextoid.valid()) { tmpoid = nextoid; }
-                    else { goto repeating; }
+                    else
+                    {
+                        goto repeating;
+                    }
                     break;
                 }
                 case AGENTPP_PROXY: {

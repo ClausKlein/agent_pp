@@ -111,7 +111,7 @@ int NotificationOriginator::generate(Vbx* vbs, int size, const Oidx& id, unsigne
             LOG_END;
 
             return SNMP_ERROR_RESOURCE_UNAVAIL; // TODO: is this the right
-                                                // status value? CK
+            // status value? CK
         }
         localEngineID = new OctetStr(mp->get_local_engine_id());
     }
@@ -249,7 +249,10 @@ nlmLogEntry* NotificationOriginator::get_nlm_log_entry()
 v3MP* NotificationOriginator::get_v3mp()
 {
     if (mib) { return mib->get_request_list()->get_v3mp(); }
-    else { return v3MP::instance; }
+    else
+    {
+        return v3MP::instance;
+    }
 }
 #endif
 
@@ -529,22 +532,22 @@ bool NotificationOriginator::add_v1_trap_destination(
     address += (addr.get_port() & 0x00FF);
 
     if (!get_snmp_target_addr_entry() || !get_snmp_target_params_entry()) { return false; }
-    if (get_snmp_target_params_entry()->add_entry(name,                           // row index
-            mpV1,                                                                 // mpModel
+    if (get_snmp_target_params_entry()->add_entry(name, // row index
+            mpV1,                                       // mpModel
             SNMP_SECURITY_MODEL_V1,
-            community,                                                            // secName
+            community, // secName
             1))
-    {                                                                             // secLevel
-        get_snmp_notify_entry()->add_entry(name,                                  // row index
-            tag,                                                                  // tag
-            TRAP);                                                                // type (trap)
+    {                                            // secLevel
+        get_snmp_notify_entry()->add_entry(name, // row index
+            tag,                                 // tag
+            TRAP);                               // type (trap)
     }
     if (get_snmp_target_addr_entry()->add_entry(UdpAddress(addr).get_printable(), // row index
             Oidx("1.3.6.1.6.1.1"),                                                // UDP domain
             address,                                                              // target address
             tag,                                                                  // tag
             name))
-    {                                                                             // params entry
+    { // params entry
         return true;
     }
     return false;
@@ -560,15 +563,15 @@ bool NotificationOriginator::add_v2_trap_destination(
     address += (addr.get_port() & 0x00FF);
 
     if (!get_snmp_target_addr_entry() || !get_snmp_target_params_entry()) { return false; }
-    if (get_snmp_target_params_entry()->add_entry(name,                           // row index
-            mpV2c,                                                                // mpModel
+    if (get_snmp_target_params_entry()->add_entry(name, // row index
+            mpV2c,                                      // mpModel
             SNMP_SECURITY_MODEL_V2,
-            community,                                                            // secName
+            community, // secName
             1))
-    {                                                                             // secLevel
-        get_snmp_notify_entry()->add_entry(name,                                  // row index
-            tag,                                                                  // tag
-            TRAP);                                                                // type (trap)
+    {                                            // secLevel
+        get_snmp_notify_entry()->add_entry(name, // row index
+            tag,                                 // tag
+            TRAP);                               // type (trap)
     }
     if (get_snmp_target_addr_entry()->add_entry(UdpAddress(addr).get_printable(), // row index
             Oidx("1.3.6.1.6.1.1"),                                                // UDP domain
@@ -595,9 +598,9 @@ bool NotificationOriginator::add_v3_trap_destination(const UdpAddress& addr, con
             mpV3,                                       // mpModel
             SNMP_SECURITY_MODEL_USM, secName, secLevel))
     {
-        notifyEntry->add_entry(name,                                 // row index
-            tag,                                                     // tag
-            TRAP);                                                   // type (trap)
+        notifyEntry->add_entry(name, // row index
+            tag,                     // tag
+            TRAP);                   // type (trap)
     }
     if (targetAddrEntry->add_entry(UdpAddress(addr).get_printable(), // row index
             Oidx("1.3.6.1.6.1.1"),                                   // UDP domain

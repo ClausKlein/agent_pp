@@ -34,19 +34,19 @@ static const char* loggerModuleName = "agent++.vacm";
 #endif
 
 const index_info   iVacmSecurityToGroupTable[2] = { { sNMP_SYNTAX_INT, false, 1, 1 },
-      { sNMP_SYNTAX_OCTETS, false, 1, 32 } };
+    { sNMP_SYNTAX_OCTETS, false, 1, 32 } };
 const unsigned int lVacmSecurityToGroupTable    = 2;
 
 const index_info   iVacmContextTable[1] = { { sNMP_SYNTAX_OCTETS, false, 0, 32 } };
 const unsigned int lVacmContextTable    = 1;
 
 const index_info   iVacmAccessTable[4] = { { sNMP_SYNTAX_OCTETS, false, 1, 32 },
-      { sNMP_SYNTAX_OCTETS, false, 0, 32 }, { sNMP_SYNTAX_INT, false, 1, 1 },
-      { sNMP_SYNTAX_INT, false, 1, 1 } };
+    { sNMP_SYNTAX_OCTETS, false, 0, 32 }, { sNMP_SYNTAX_INT, false, 1, 1 },
+    { sNMP_SYNTAX_INT, false, 1, 1 } };
 const unsigned int lVacmAccessTable    = 4;
 
 const index_info   iVacmViewTreeFamilyTable[2] = { { sNMP_SYNTAX_OCTETS, false, 1, 32 },
-      { sNMP_SYNTAX_OID, false, 0, 95 } };
+    { sNMP_SYNTAX_OID, false, 0, 95 } };
 const unsigned int lVacmViewTreeFamilyTable    = 2;
 
 SnmpUnavailableContexts::SnmpUnavailableContexts()
@@ -183,7 +183,7 @@ bool VacmSecurityToGroupTable::getGroupName(
 
     Oidx     o  = oid; // base
     OctetStr os = securityName;
-    o += 3;            // col GroupName
+    o += 3; // col GroupName
     o += securityModel;
     o += os.len();
     for (unsigned int i = 0; i < os.len(); i++) o += os[i];

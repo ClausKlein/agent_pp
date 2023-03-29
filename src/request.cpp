@@ -713,7 +713,10 @@ void Request::trim_bulk_response()
         {
             end++;
             if ((j == 0) && (i < originalSize)) { (*pdu)[i].set_oid(originalVbs[i].get_oid()); }
-            else { (*pdu)[i].set_oid(Request::get_oid(i - rep)); }
+            else
+            {
+                (*pdu)[i].set_oid(Request::get_oid(i - rep));
+            }
         }
         if (end >= rep)
         {
@@ -1223,11 +1226,11 @@ Request* RequestList::receive(int sec)
     UTarget   target;
     int const status = snmp->receive(tvptr, pdu, target);
 #else
-    UdpAddress   from;
+    UdpAddress from;
     snmp_version version = version1;
-    OctetStr     community;
+    OctetStr community;
 
-    int     status = snmp->receive(tvptr, pdu, from, version, community);
+    int status = snmp->receive(tvptr, pdu, from, version, community);
     CTarget target(from);
     target.set_version(version);
     target.set_readcommunity(community);
@@ -1485,7 +1488,10 @@ Request* RequestList::receive(int sec)
                 Counter32MibLeaf::incrementScalar(mib, oidSnmpOutPkts);
                 snmp->send(pdu, &target);
             }
-            else { Counter32MibLeaf::incrementScalar(mib, oidSnmpInBadCommunityNames); }
+            else
+            {
+                Counter32MibLeaf::incrementScalar(mib, oidSnmpInBadCommunityNames);
+            }
 
             authenticationFailure(context_name, target.get_address(), vacmErrorCode);
 
@@ -1533,9 +1539,9 @@ Request* RequestList::receive(int sec)
         }
         } // switch
 
-#else     // #ifdef _SNMPv3
-          // access for GETNEXT and GETBULK can�t be checked here
-          // community_ok increments inBadCommunityUses
+#else  // #ifdef _SNMPv3
+       // access for GETNEXT and GETBULK can�t be checked here
+       // community_ok increments inBadCommunityUses
         if (!community_ok(pdu.get_type(), security_name))
         {
             LOG_BEGIN(loggerModuleName, EVENT_LOG | 1);
@@ -1550,7 +1556,7 @@ Request* RequestList::receive(int sec)
             return 0;
         }
         else
-#endif    // _SNMPv3
+#endif // _SNMPv3
         {
             auto* req = new Request(pdu, target);
 #ifdef _SNMPv3
@@ -1611,10 +1617,10 @@ Request* RequestList::receive(int sec)
         }
         case SNMPv3_MP_MAX_ERROR:
 #endif
-            /* this case is handled above
-                            case SNMP_ERROR_TOO_BIG: {
-                            }
-            */
+        /* this case is handled above
+                        case SNMP_ERROR_TOO_BIG: {
+                        }
+        */
         default:
             Counter32MibLeaf* incInASNParseErrs =
                 snmpInASNParseErrs::get_instance(mib, oidSnmpInASNParseErrs);

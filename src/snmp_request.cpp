@@ -51,7 +51,7 @@ static void* inform_caller(void* ptr)
     LOG_END;
     int status = 0;
     status     = SnmpRequest::process_trap(
-        callInfo->target, callInfo->vbs, callInfo->sz, callInfo->oid, "", true);
+            callInfo->target, callInfo->vbs, callInfo->sz, callInfo->oid, "", true);
 #    ifdef _NO_LOGGING
     (void)status;
 #    endif

@@ -153,7 +153,7 @@ int Vbx::to_asn1(Vbx* vbs, int sz, unsigned char*& buf, int& length)
     buf = new unsigned char[length + 4];
     len = length + 4;
     cp  = asn_build_long_len_sequence(
-        buf, &len, (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR), length, 3);
+         buf, &len, (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR), length, 3);
     if (cp == nullptr)
     {
         delete[] buf;
@@ -288,7 +288,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
         vp->name          = nullptr;
         vp->name_length   = ASN_MAX_NAME_LEN;
         data              = snmp_parse_var_op(
-            data, objid, &vp->name_length, &vp->type, &vp->val_len, &var_val, (int*)&seqLength);
+                         data, objid, &vp->name_length, &vp->type, &vp->val_len, &var_val, (int*)&seqLength);
         if (data == nullptr)
         {
             snmp_free_pdu(pdu);
@@ -372,7 +372,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
         switch (vp->type)
         {
 
-            // octet string
+        // octet string
         case sNMP_SYNTAX_OPAQUE: {
             OpaqueStr const octets((unsigned char*)vp->val.string, (uint32_t)vp->val_len);
             vbs[i].set_value(octets);
@@ -384,14 +384,14 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
         }
         break;
 
-            // object id
+        // object id
         case sNMP_SYNTAX_OID: {
             Oid const oid((SmiLPUINT32)vp->val.objid, (int)vp->val_len);
             vbs[i].set_value(oid);
         }
         break;
 
-            // timeticks
+        // timeticks
         case sNMP_SYNTAX_TIMETICKS: {
             // FIXME: Warning C6011 Dereferencing NULL pointer! CK
             TimeTicks const timeticks((uint32_t) * (vp->val.integer));
@@ -399,21 +399,21 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
         }
         break;
 
-            // 32 bit counter
+        // 32 bit counter
         case sNMP_SYNTAX_CNTR32: {
             Counter32 const counter32((uint32_t) * (vp->val.integer));
             vbs[i].set_value(counter32);
         }
         break;
 
-            // 32 bit gauge
+        // 32 bit gauge
         case sNMP_SYNTAX_GAUGE32: {
             Gauge32 const gauge32((uint32_t) * (vp->val.integer));
             vbs[i].set_value(gauge32);
         }
         break;
 
-            // ip address
+        // ip address
         case sNMP_SYNTAX_IPADDR: {
             char buffer[20] {};
             // FIXME: Warning C6011 Dereferencing NULL pointer! CK
@@ -424,14 +424,14 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
         }
         break;
 
-            // 32 bit integer
+        // 32 bit integer
         case sNMP_SYNTAX_INT: {
             SnmpInt32 const int32((long)*(vp->val.integer));
             vbs[i].set_value(int32);
         }
         break;
 
-            // v2 counter 64's
+        // v2 counter 64's
         case sNMP_SYNTAX_CNTR64: { // Frank Fock (was empty before)
             // FIXME: Warning C6011 Dereferencing NULL pointer! CK
             Counter64 const c64(
@@ -439,11 +439,9 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
             vbs[i].set_value(c64);
             break;
         }
-        case sNMP_SYNTAX_NULL:
-            vbs[i].set_null();
-            break;
+        case sNMP_SYNTAX_NULL: vbs[i].set_null(); break;
 
-            // v2 vb exceptions
+        // v2 vb exceptions
         case sNMP_SYNTAX_NOSUCHOBJECT:
         case sNMP_SYNTAX_NOSUCHINSTANCE:
         case sNMP_SYNTAX_ENDOFMIBVIEW:
@@ -507,11 +505,11 @@ int Oidx::compare(const Oidx& other, unsigned int wildcard) const
 #if 0
 uint32_t Oidx::first() const
 {
-  // check for len == 0
-  if ((!Oid::valid()) || (smival.value.oid.len < 1))
-    return 0;
+    // check for len == 0
+    if ((!Oid::valid()) || (smival.value.oid.len < 1))
+        return 0;
 
-  return smival.value.oid.ptr[0];
+    return smival.value.oid.ptr[0];
 }
 #endif
 
@@ -655,7 +653,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             can_receive_ipv6 = true;
 #        endif // SNMP_PP_IPv6
 
-#    else      // HAVE_POLL_SYSCALL
+#    else // HAVE_POLL_SYSCALL
         nfound = select(max_fd + 1, &readfds, nullptr, nullptr, tvptr);
 
         if (nfound == -1)
@@ -813,7 +811,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             }
             return status; // Success! return
         }
-#    endif                 // SNMP_PP_IPv6
+#    endif // SNMP_PP_IPv6
     } while (true);
 }
 
@@ -830,32 +828,32 @@ int Snmpx::receive(
 
     long receive_buffer_len; // len of received data
 
-    SocketAddrType   from_addr;
+    SocketAddrType from_addr;
     SocketLengthType fromlen;
-    SnmpMessage      snmpmsg;
+    SnmpMessage snmpmsg;
 
-    int           nfound           = 0;
-    bool          can_receive_ipv4 = false;
+    int nfound = 0;
+    bool can_receive_ipv4 = false;
 #    ifdef SNMP_PP_IPv6
-    bool          can_receive_ipv6 = false;
+    bool can_receive_ipv6 = false;
 #    endif
 
 #    ifdef HAVE_POLL_SYSCALL
-    int           nfds             = 0;
+    int nfds = 0;
     struct pollfd readfds[2];
-    int           timeout = tvptr ? (tvptr->tv_sec * 1000 + tvptr->tv_usec / 1000) : -1;
+    int timeout = tvptr ? (tvptr->tv_sec * 1000 + tvptr->tv_usec / 1000) : -1;
 
     memset(readfds, 0, 2 * sizeof(struct pollfd));
     if (iv_snmp_session != INVALID_SOCKET)
     {
-        readfds[nfds].fd     = iv_snmp_session;
+        readfds[nfds].fd = iv_snmp_session;
         readfds[nfds].events = POLLIN;
         nfds++;
     }
 #        ifdef SNMP_PP_IPv6
     if (iv_snmp_session_ipv6 != INVALID_SOCKET)
     {
-        readfds[nfds].fd     = iv_snmp_session_ipv6;
+        readfds[nfds].fd = iv_snmp_session_ipv6;
         readfds[nfds].events = POLLIN;
         nfds++;
     }
@@ -903,7 +901,7 @@ int Snmpx::receive(
             can_receive_ipv6 = true;
 #        endif // SNMP_PP_IPv6
 
-#    else      // HAVE_POLL_SYSCALL
+#    else // HAVE_POLL_SYSCALL
         nfound = select(max_fd + 1, &readfds, 0, 0, tvptr);
 
         if (nfound == -1)
@@ -937,7 +935,7 @@ int Snmpx::receive(
 
             // copy fromaddress and remote port
             char* addr = inet_ntoa(((sockaddr_in&)from_addr).sin_addr);
-            fromaddr   = addr;
+            fromaddr = addr;
             fromaddr.set_port(ntohs(((sockaddr_in&)from_addr).sin_port));
 
             debugprintf(1, "++ AGENT++: data received from %s.", fromaddr.get_printable());
@@ -977,7 +975,7 @@ int Snmpx::receive(
             // return the status of unload method
             return snmpmsg.unload(pdu, community, version);
         }
-#    endif     // SNMP_PP_IPv6
+#    endif // SNMP_PP_IPv6
     } while (1);
 }
 
@@ -1102,8 +1100,8 @@ int Snmpx::send(
 #    ifdef _THREADS
     static ThreadManager smutex;
 #    endif
-    SnmpMessage          snmpmsg;
-    int                  status;
+    SnmpMessage snmpmsg;
+    int status;
     status = snmpmsg.load(pdu, community, version);
     if (status != SNMP_CLASS_SUCCESS) return status;
 

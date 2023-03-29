@@ -363,13 +363,13 @@ void SnmpAgent::run()
     // level >= noAuthNoPriv within context "") would have full access
     // (read, write, notify) to all objects in view "newView".
     vacm->addNewAccessEntry("newGroup",
-        "other",     // context
+        "other", // context
         SNMP_SECURITY_MODEL_USM, SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV,
         match_exact, // context must mach exactly
-                     // alternatively: match_prefix
-        "newView",   // readView
-        "newView",   // writeView
-        "newView",   // notifyView
+        // alternatively: match_prefix
+        "newView", // readView
+        "newView", // writeView
+        "newView", // notifyView
         storageType_nonVolatile);
     vacm->addNewAccessEntry("testGroup", "", SNMP_SECURITY_MODEL_USM, SNMP_SECURITY_LEVEL_AUTH_PRIV,
         match_prefix, "testView", "testView", "testView", storageType_nonVolatile);
@@ -467,7 +467,10 @@ void SnmpAgent::run()
     {
         req = reqList->receive(2);
         if (req) { mib->process_request(req); }
-        else { mib->cleanup(); }
+        else
+        {
+            mib->cleanup();
+        }
     }
     delete reqList;
     delete mib;

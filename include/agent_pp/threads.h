@@ -39,6 +39,11 @@
 #define SINGLE_THREADED           false
 #define AGENTPP_DEFAULT_STACKSIZE 0x20000
 
+#ifdef __linux__
+#    undef AGENTPP_PTHREAD_RECURSIVE
+#    define NO_FAST_MUTEXES
+#endif
+
 #ifdef AGENTPP_NAMESPACE
 namespace Agentpp
 {

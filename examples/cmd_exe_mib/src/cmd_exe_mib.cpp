@@ -578,7 +578,10 @@ void cmdExecutionOutputEntry::remove_all(const Oidx& index)
             cur.next();
             delete content.remove(victim);
         }
-        else { cur.next(); }
+        else
+        {
+            cur.next();
+        }
     }
 }
 
