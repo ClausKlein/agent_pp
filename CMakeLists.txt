@@ -402,7 +402,9 @@ macro(subdirlist result curdir)
     # message(STATUS " ## check ${child}")
     if(IS_DIRECTORY ${curdir}/${child})
       # message(STATUS " ### Add ${child}")
-      list(APPEND dirlist ${child})
+      if(NOT "${child}" STREQUAL "multi_agent")
+        list(APPEND dirlist ${child})
+      endif()
     endif()
   endforeach()
   set(${result} ${dirlist})
@@ -410,8 +412,14 @@ endmacro()
 
 set(EXE_BASE_DIRS)
 
-if(AGENT_PP_EXAMPLES)
-  list(APPEND EXE_BASE_DIRS examples)
+option(BUILD_TESTING "Enable testing support" ${PROJECT_IS_TOP_LEVEL})
+if(BUILD_TESTING)
+  enable_testing()
+  add_subdirectory(tests)
+
+  if(AGENT_PP_EXAMPLES)
+    list(APPEND EXE_BASE_DIRS examples)
+  endif()
 endif()
 
 if(AGENT_PP_TOOLS)
@@ -425,6 +433,7 @@ endif()
 foreach(EXE_BASE_DIR ${EXE_BASE_DIRS})
   message(STATUS " # Process dir ${EXE_BASE_DIR}")
   subdirlist(EXE_SUB_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/${EXE_BASE_DIR})
+
   foreach(EXE_SUB_DIR ${EXE_SUB_DIRS})
     message(STATUS " ## Process executable in ${EXE_SUB_DIR}")
 
@@ -453,37 +462,23 @@ foreach(EXE_BASE_DIR ${EXE_BASE_DIRS})
 
     # NOTE: all examples are named agent! CK
     add_executable(${EXE_SUB_DIR} ${EXE_SRC})
-    target_link_libraries(${EXE_SUB_DIR} ${PROJECT_NAME} snmp_pp::snmp_pp)
+    target_link_libraries(${EXE_SUB_DIR} ${PROJECT_NAME})
     target_include_directories(${EXE_SUB_DIR} SYSTEM BEFORE PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
     target_include_directories(
       ${EXE_SUB_DIR} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/${EXE_BASE_DIR}/${EXE_SUB_DIR}/include/"
     )
-    #XXX set_target_properties(${EXE_SUB_DIR} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/${EXE_BASE_DIR}/${EXE_SUB_DIR}/src")
+
     if(NOT ${EXE_BASE_DIR} STREQUAL "tools")
-      set_target_properties(${EXE_SUB_DIR} PROPERTIES OUTPUT_NAME "${EXE_SUB_DIR}_agent")
+      set_target_properties(${EXE_SUB_DIR} PROPERTIES OUTPUT_NAME "${EXE_SUB_DIR}")
+      add_test(
+        NAME ${EXE_SUB_DIR}-test
+        COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/simple-snmp-test.sh $<TARGET_FILE:${EXE_SUB_DIR}> $<TARGET_FILE:test_app>
+        WORKING_DIRECTORY $<TARGET_FILE_DIR:test_app>
+      )
     endif()
 
   endforeach()
 endforeach()
-
-if(AGENT_PP_EXAMPLES)
-  enable_testing()
-
-  if(${BUILD_SHARED_LIBS} AND $<TARGET_RUNTIME_DLLS:test_app>)
-    add_custom_command(
-      TARGET test_app
-      POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:test_app> $<TARGET_FILE_DIR:test_app>
-      COMMAND_EXPAND_LISTS
-    )
-  endif()
-
-  add_test(
-    NAME simple-snmp-test
-    COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/simple-snmp-test.sh $<TARGET_FILE:static_table> $<TARGET_FILE:test_app>
-    WORKING_DIRECTORY $<TARGET_FILE_DIR:test_app>
-  )
-endif()
 
 if(CMAKE_SKIP_INSTALL_RULES)
   return()
@@ -502,10 +497,10 @@ packageProject(
   # location of the target's public headers
   INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include
   # should match the target's INSTALL_INTERFACE include directory
-  INCLUDE_DESTINATION
-    include # (optional) option to install only header files with matching pattern
-    INCLUDE_HEADER_PATTERN "*.h"
-    # semicolon separated list of the project's dependencies
+  INCLUDE_DESTINATION include
+  # (optional) option to install only header files with matching pattern
+  INCLUDE_HEADER_PATTERN "*.h"
+  # semicolon separated list of the project's dependencies
   DEPENDENCIES "snmp_pp ${SNMP_PP_VERSION}"
   # (optional) create a header containing the version info
   # Note: that the path to headers should be lowercase

@@ -1311,19 +1311,19 @@ MibTable::MibTable(const Oidx& o, int ilen, bool a) : MibEntry(o, NOACCESS)
     if (ilen > 0)
     {
         istruc[0].min = istruc[0].max = ilen;
-        istruc[0].implied             = false;
+        istruc[0].implied             = a; // TODO(CK): was false;
     }
     else if (ilen == 0)
     {
         istruc[0].min     = 0;
         istruc[0].max     = 127;
-        istruc[0].implied = false;
+        istruc[0].implied = a; // TODO(CK): was false;
     }
     else
     {
         istruc[0].min     = 0;
         istruc[0].max     = 127;
-        istruc[0].implied = true;
+        istruc[0].implied = a; // TODO(CK): was true;
     }
     init(o, istruc, 1);
     delete[] istruc;

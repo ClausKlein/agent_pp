@@ -371,6 +371,11 @@ int main(int argc, char* argv[])
     Vbx*                   vbs = nullptr;
     coldStartOid const     coldOid;
     NotificationOriginator notification_originator;
+    // add an example destination
+    UdpAddress const dest("127.0.0.1/162");
+    notification_originator.add_v2_trap_destination(dest, "defaultV2Trap", "v2trap", "public");
+    notification_originator.add_v3_trap_destination(
+        dest, "defaultV3Trap", "v3trap", "unsecureUser", SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV);
     notification_originator.generate(vbs, 0, coldOid, "", "");
 
     Request* req = nullptr;

@@ -194,13 +194,17 @@ Synchronized::~Synchronized()
         {
             if (pthread_mutex_unlock(&monitor) == 0)
             {
-                result = pthread_mutex_destroy(&monitor);
+                isLocked = false;
+                result   = pthread_mutex_destroy(&monitor);
                 assert(result == 0);
                 return;
             }
         }
-        assert(false);
-        return; // NOTE: We give it up! CK
+        assert(isLocked);
+        if (isLocked)
+        {
+            return; // NOTE: We give it up! CK
+        }
     }
 #        endif
 

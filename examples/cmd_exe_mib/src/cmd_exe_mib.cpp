@@ -21,6 +21,7 @@
 #include "cmd_exe_mib.h"
 
 #include <agent_pp/system_group.h>
+#include <cstdio>
 #include <cstdlib>
 #include <snmp_pp/log.h>
 
@@ -41,47 +42,53 @@ void CmdThread::run()
     LOG("CmdExeMib: starting command thread");
     LOG_END;
 
-    auto* row = (MibTableRow*)row_ptr;
-    cmdExecutionCmdEntry::instance->start_synch();
-
-    OctetStr cmd;
-    ((cmdExecutionCmdName*)row->get_nth(0))->get_value(cmd);
-    ((cmdExecutionCmdStatus*)row->get_nth(1))->set_state(2);
-    ((cmdExecutionCmdRunTime*)row->get_nth(2))->start();
-
+    auto*    row = (MibTableRow*)row_ptr;
     OctetStr cmdline;
-    cmdExecutionCmdConfigEntry::instance->start_synch();
-    cmdline = cmdExecutionCmdConfigEntry::instance->get_command_line(cmd);
-    cmdExecutionCmdConfigEntry::instance->end_synch();
 
-    if (cmdline.len() == 0)
     {
-        ((cmdExecutionCmdStatus*)row->get_nth(1))->set_state(4);
-        ((cmdExecutionCmdRunTime*)row->get_nth(2))->end();
-        cmdExecutionCmdEntry::instance->end_synch();
-        return;
+        Lock tmp(*cmdExecutionCmdEntry::instance);
+
+        OctetStr cmd;
+        ((cmdExecutionCmdName*)row->get_nth(0))->get_value(cmd);
+        ((cmdExecutionCmdStatus*)row->get_nth(1))->set_state(2); // running
+        ((cmdExecutionCmdRunTime*)row->get_nth(2))->start();
+
+        cmdExecutionCmdConfigEntry::instance->start_synch();
+        cmdline = cmdExecutionCmdConfigEntry::instance->get_command_line(cmd);
+        cmdExecutionCmdConfigEntry::instance->end_synch();
+
+        if (cmdline.len() == 0)
+        {
+            ((cmdExecutionCmdStatus*)row->get_nth(1))->set_state(4); // error
+            ((cmdExecutionCmdRunTime*)row->get_nth(2))->end();
+
+            LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
+            LOG("CmdExeMib: error at command thread");
+            LOG_END;
+            return;
+        }
+
+        cmdline += " > ";
+        cmdline += Mib::instance->get_persistent_objects_path();
+        cmdline += "exec_output.";
+        cmdline += row->get_index().get_printable();
+
+        LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
+        LOG("Execution command (cmdline)");
+        LOG(cmdline.get_printable());
+        LOG_END;
     }
-    cmdline += " > ";
-    cmdline += Mib::instance->get_persistent_objects_path();
-    cmdline += "exec_output.";
-    cmdline += row->get_index().get_printable();
-
-    LOG_BEGIN(loggerModuleName, DEBUG_LOG | 8);
-    LOG("Execution command (cmdline)");
-    LOG(cmdline.get_printable());
-    LOG_END;
-
-    cmdExecutionCmdEntry::instance->end_synch();
 
     int const err = system(cmdline.get_printable()); // NOLINT(cert-env33-c)
 
-    cmdExecutionCmdEntry::instance->start_synch();
-    ((cmdExecutionCmdStatus*)row->get_nth(1))->set_state((err != 0) ? 4 : 3);
-    ((cmdExecutionCmdRunTime*)row->get_nth(2))->end();
-    ((cmdExecutionCmdRowStatus*)row->get_nth(3))->set_state(rowNotInService);
-    cmdExecutionCmdEntry::instance->end_synch();
+    {
+        Lock tmp(*cmdExecutionCmdEntry::instance);
+        ((cmdExecutionCmdStatus*)row->get_nth(1))->set_state((err != 0) ? 4 : 3); // error or finished
+        ((cmdExecutionCmdRunTime*)row->get_nth(2))->end();
+        ((cmdExecutionCmdRowStatus*)row->get_nth(3))->set_state(rowNotInService);
+    }
 
-    cmdExecutionOutputEntry::instance->start_synch();
+    Lock tmp(*cmdExecutionOutputEntry::instance);
 
     FILE*   f    = nullptr;
     char*   buf  = nullptr;
@@ -94,7 +101,7 @@ void CmdThread::run()
 
     if ((f = fopen(fname.get_printable(), "r")) == nullptr)
     {
-        cmdExecutionOutputEntry::instance->end_synch();
+        std::perror("fopen");
         return;
     }
 
@@ -132,7 +139,7 @@ void CmdThread::run()
                 MibTableRow* r = cmdExecutionOutputEntry::instance->add_row(index);
                 r->get_nth(0)->replace_value(line);
 
-                LOG_BEGIN(loggerModuleName, DEBUG_LOG | 9);
+                LOG_BEGIN(loggerModuleName, DEBUG_LOG | 2);
                 LOG("Added ouput (line)(output)");
                 LOG(index.get_printable());
                 LOG(line->get_printable());
@@ -141,7 +148,6 @@ void CmdThread::run()
         }
         delete[] buf;
     }
-    cmdExecutionOutputEntry::instance->end_synch();
 
     fclose(f);
     remove(fname.get_printable());
@@ -201,7 +207,7 @@ cmdExecutionCmdNextIndex::cmdExecutionCmdNextIndex()
     instance = this;
 }
 
-cmdExecutionCmdNextIndex::~cmdExecutionCmdNextIndex() { }
+cmdExecutionCmdNextIndex::~cmdExecutionCmdNextIndex() { instance = nullptr; }
 
 void cmdExecutionCmdNextIndex::get_request(Request* req, int ind)
 {
@@ -257,7 +263,8 @@ bool cmdExecutionCmdName::value_ok(const Vbx& vb) { return true; }
  *
  */
 
-cmdExecutionCmdStatus::cmdExecutionCmdStatus(const Oidx& id) : MibLeaf(id, READONLY, new SnmpInt32(1))
+cmdExecutionCmdStatus::cmdExecutionCmdStatus(const Oidx& id)
+    : MibLeaf(id, READONLY, new SnmpInt32(1)) // idle
 { }
 
 cmdExecutionCmdStatus::~cmdExecutionCmdStatus() { }
@@ -356,10 +363,15 @@ void cmdExecutionCmdRowStatus::set_state(int32_t l) { *((SnmpInt32*)value) = l; 
 
 int cmdExecutionCmdRowStatus::prepare_set_request(Request* req, int& ind)
 {
-    Vbx const    vb = req->get_value(ind);
-    unsigned int l  = 0;
+    int status = 0;
+    if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
+        return status;
+    }
 
-    if (vb.get_value(l) != SNMP_CLASS_SUCCESS)
+    Vbx const vb = req->get_value(ind);
+    int32_t   l  = 0;
+    if (vb.get_value(l) != SNMP_ERROR_SUCCESS)
     {
         return SNMP_ERROR_WRONG_TYPE;
     }
@@ -367,7 +379,7 @@ int cmdExecutionCmdRowStatus::prepare_set_request(Request* req, int& ind)
     switch (l)
     {
     case rowNotInService: {
-        if (((cmdExecutionCmdStatus*)my_row->get_nth(1))->get_state() == 2)
+        if (((cmdExecutionCmdStatus*)my_row->get_nth(1))->get_state() == 2) // running
         {
             return SNMP_ERROR_INCONSIST_VAL;
         }
@@ -375,7 +387,7 @@ int cmdExecutionCmdRowStatus::prepare_set_request(Request* req, int& ind)
     }
 
     case rowDestroy: {
-        if (((cmdExecutionCmdStatus*)my_row->get_nth(1))->get_state() == 2)
+        if (((cmdExecutionCmdStatus*)my_row->get_nth(1))->get_state() == 2) // running
         {
             return SNMP_ERROR_INCONSIST_VAL;
         }
@@ -387,9 +399,9 @@ int cmdExecutionCmdRowStatus::prepare_set_request(Request* req, int& ind)
 
 int cmdExecutionCmdRowStatus::set(const Vbx& vb)
 {
-    unsigned int l = 0;
+    int32_t l = 0;
 
-    if (vb.get_value(l) != SNMP_CLASS_SUCCESS)
+    if (vb.get_value(l) != SNMP_ERROR_SUCCESS)
     {
         return SNMP_ERROR_WRONG_TYPE;
     }
@@ -463,17 +475,21 @@ cmdExecutionCmdConfigEntry::cmdExecutionCmdConfigEntry()
     add_col(new snmpRowStatus("4", READCREATE));
 }
 
-cmdExecutionCmdConfigEntry::~cmdExecutionCmdConfigEntry() { }
+cmdExecutionCmdConfigEntry::~cmdExecutionCmdConfigEntry() { instance = nullptr; }
 
 bool cmdExecutionCmdConfigEntry::deserialize(char* buf, int& sz)
 {
-    bool const b = MibTable::deserialize(buf, sz);
+    LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
+    LOG("Execution cmdExecutionCmdConfigEntry::deserialize()");
+    LOG_END;
 
+    bool const b = MibTable::deserialize(buf, sz);
     if (!b)
     {
-        add_row("2.108.108");
-        set_row(0, "ls -la", 3, 1);
+        add_row("2.108.115");       // NOTE: "ls" with implied length! CK
+        set_row(0, "ls -la", 3, 1); // add active row(0)
     }
+
     return b;
 }
 
@@ -498,8 +514,12 @@ void cmdExecutionCmdConfigEntry::set_row(int index, const char* p0, int p1, int 
 
 bool cmdExecutionCmdConfigEntry::contains(const Oidx& index)
 {
-    OidListCursor<MibTableRow> cur;
+    LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
+    LOG("Execution cmdExecutionCmdConfigEntry::contains(index)");
+    LOG(index.get_printable());
+    LOG_END;
 
+    OidListCursor<MibTableRow> cur;
     for (cur.init(&content); cur.get(); cur.next())
     {
         if (strcmp(cur.get()->get_index().get_printable(), index.get_printable()) == 0)
@@ -507,6 +527,7 @@ bool cmdExecutionCmdConfigEntry::contains(const Oidx& index)
             return true;
         }
     }
+
     return false;
 }
 
@@ -527,6 +548,7 @@ OctetStr cmdExecutionCmdConfigEntry::get_command_line(const OctetStr& command)
             }
         }
     }
+
     return cmdline;
 }
 
@@ -537,7 +559,8 @@ OctetStr cmdExecutionCmdConfigEntry::get_command_line(const OctetStr& command)
 
 cmdExecutionCmdEntry* cmdExecutionCmdEntry::instance = nullptr;
 
-cmdExecutionCmdEntry::cmdExecutionCmdEntry() : MibTable("1.3.6.1.4.1.4976.6.1.2.2.2.1", 1, false)
+cmdExecutionCmdEntry::cmdExecutionCmdEntry()
+    : MibTable("1.3.6.1.4.1.4976.6.1.2.2.2.1", 1, false) // NOTE: indexlen is 1! CK
 {
     // This table object is a singleton. In order to access it use
     // the static pointer cmdExecutionCmdEntry::instance.
@@ -551,7 +574,11 @@ cmdExecutionCmdEntry::cmdExecutionCmdEntry() : MibTable("1.3.6.1.4.1.4976.6.1.2.
     threadPool = new ThreadPool(2);
 }
 
-cmdExecutionCmdEntry::~cmdExecutionCmdEntry() { delete threadPool; }
+cmdExecutionCmdEntry::~cmdExecutionCmdEntry()
+{
+    delete threadPool;
+    instance = nullptr;
+}
 
 void cmdExecutionCmdEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* t)
 {
@@ -581,7 +608,7 @@ cmdExecutionOutputEntry::cmdExecutionOutputEntry() : MibTable("1.3.6.1.4.1.4976.
     add_col(new cmdExecutionOutputLine("2"));
 }
 
-cmdExecutionOutputEntry::~cmdExecutionOutputEntry() { }
+cmdExecutionOutputEntry::~cmdExecutionOutputEntry() { instance = nullptr; }
 
 void cmdExecutionOutputEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* t)
 {
@@ -602,8 +629,9 @@ void cmdExecutionOutputEntry::set_row(int index, char* p0)
 
 void cmdExecutionOutputEntry::remove_all(const Oidx& index)
 {
-    OidListCursor<MibTableRow> cur;
+    Lock tmp(*this);
 
+    OidListCursor<MibTableRow> cur;
     for (cur.init(&content); cur.get();)
     {
         if (cur.get()->get_index()[0] == index[0])
