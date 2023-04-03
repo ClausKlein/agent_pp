@@ -1413,7 +1413,10 @@ bool MibTable::serialize(char*& buf, int& sz)
     int            len = size + 10;
     unsigned char* cp  = asn_build_header(
         (unsigned char*)buf, &len, (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR), size);
-    memcpy(cp, stream.data(), size);
+    if (size > 0)
+    {
+        memcpy(cp, stream.data(), size);
+    }
     sz = ((size + 10) - len) + stream.len();
     return true;
 }
