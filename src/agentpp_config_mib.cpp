@@ -98,7 +98,9 @@ void OperationTask::run()
         break;
     }
 
-    default: break;
+    default: {
+        break;
+    }
     }
     initiator->set_state(agentppCfgStorageOperation::e_idle);
 }

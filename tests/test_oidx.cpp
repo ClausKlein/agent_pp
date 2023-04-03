@@ -109,6 +109,7 @@ getRowIndicesCloned(const Agentpp::Oidx& index)
     auto* idx = new Agentpp::Array<Agentpp::Oidx>();
 
     uint32_t pos = 0;
+
     for (unsigned int i = 0; i < INDEX_LEN; i++)
     {
         assert(pos < index.len());

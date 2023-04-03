@@ -1128,13 +1128,16 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, con
         switch (target->get_type())
         {
         case SnmpTarget::type_ctarget:
-        case SnmpTarget::type_utarget: break;
+        case SnmpTarget::type_utarget: {
+            break;
+        }
 
-        case SnmpTarget::type_base:
+        case SnmpTarget::type_base: {
             LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
             LOG("nlmLogEntry: invalid target given");
             LOG_END;
             return;
+        }
         }
         GenAddress addr;
         target->get_address(addr);
@@ -1432,37 +1435,45 @@ void nlmLogVariableEntry::add_variable(const Oidx& index, unsigned int i, const 
 
     switch (vb.get_syntax())
     {
-    case sNMP_SYNTAX_INT32:
+    case sNMP_SYNTAX_INT32: {
         r->get_nth(nNlmLogVariableInteger32Val)->replace_value(vb.clone_value());
         r->get_nth(nNlmLogVariableInteger32Val)->set_access(READONLY);
         r->get_nth(nNlmLogVariableValueType)->set_value(4);
         break;
-    case sNMP_SYNTAX_TIMETICKS:
+    }
+    case sNMP_SYNTAX_TIMETICKS: {
         r->get_nth(nNlmLogVariableTimeTicksVal)->replace_value(vb.clone_value());
         r->get_nth(nNlmLogVariableTimeTicksVal)->set_access(READONLY);
         r->get_nth(nNlmLogVariableValueType)->set_value(3);
         break;
-    case sNMP_SYNTAX_CNTR32:
+    }
+    case sNMP_SYNTAX_CNTR32: {
         r->get_nth(nNlmLogVariableCounter32Val)->replace_value(vb.clone_value());
         r->get_nth(nNlmLogVariableCounter32Val)->set_access(READONLY);
         r->get_nth(nNlmLogVariableValueType)->set_value(1);
         break;
-    case sNMP_SYNTAX_GAUGE32:
+    }
+    case sNMP_SYNTAX_GAUGE32: {
         r->get_nth(nNlmLogVariableUnsigned32Val)->replace_value(vb.clone_value());
         r->get_nth(nNlmLogVariableUnsigned32Val)->set_access(READONLY);
         r->get_nth(nNlmLogVariableValueType)->set_value(2);
         break;
-    case sNMP_SYNTAX_CNTR64:
+    }
+    case sNMP_SYNTAX_CNTR64: {
         r->get_nth(nNlmLogVariableCounter64Val)->replace_value(vb.clone_value());
         r->get_nth(nNlmLogVariableCounter64Val)->set_access(READONLY);
         r->get_nth(nNlmLogVariableValueType)->set_value(8);
         break;
-    case sNMP_SYNTAX_OCTETS:
-    case sNMP_SYNTAX_BITS:
+    }
+    case sNMP_SYNTAX_OCTETS: {
+        [[fallthrough]];
+    }
+    case sNMP_SYNTAX_BITS : {
         r->get_nth(nNlmLogVariableOctetStringVal)->replace_value(vb.clone_value());
         r->get_nth(nNlmLogVariableOctetStringVal)->set_access(READONLY);
         r->get_nth(nNlmLogVariableValueType)->set_value(6);
         break;
+    }
     case sNMP_SYNTAX_OPAQUE: {
         auto* opaque = new OpaqueStr();
         vb.get_value(*opaque);
@@ -1471,17 +1482,21 @@ void nlmLogVariableEntry::add_variable(const Oidx& index, unsigned int i, const 
         r->get_nth(nNlmLogVariableValueType)->set_value(9);
         break;
     }
-    case sNMP_SYNTAX_IPADDR:
+    case sNMP_SYNTAX_IPADDR: {
         r->get_nth(nNlmLogVariableIpAddressVal)->replace_value(vb.clone_value());
         r->get_nth(nNlmLogVariableIpAddressVal)->set_access(READONLY);
         r->get_nth(nNlmLogVariableValueType)->set_value(5);
         break;
-    case sNMP_SYNTAX_OID:
+    }
+    case sNMP_SYNTAX_OID: {
         r->get_nth(nNlmLogVariableOidVal)->replace_value(vb.clone_value());
         r->get_nth(nNlmLogVariableOidVal)->set_access(READONLY);
         r->get_nth(nNlmLogVariableValueType)->set_value(7);
         break;
-    case sNMP_SYNTAX_NULL: break;
+    }
+    case sNMP_SYNTAX_NULL: {
+        break;
+    }
     }
 }
 //--AgentGen END

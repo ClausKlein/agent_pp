@@ -75,7 +75,7 @@ bool AgentTools::make_path(const std::string& path)
     {
         switch (errno)
         {
-        case ENOENT:
+        case ENOENT: {
             if (make_path(path.substr(0, path.find_last_of('/'))))
             {
                 result = 0 == mkdir(path.c_str(), 0775);
@@ -85,12 +85,17 @@ bool AgentTools::make_path(const std::string& path)
                 result = false;
             }
             break;
+        }
 
-        case EEXIST:
+        case EEXIST: {
             // done
             break;
+        }
 
-        default: result = false; break;
+        default: {
+            result = false;
+            break;
+        }
         }
     }
     return result;

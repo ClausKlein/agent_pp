@@ -162,31 +162,62 @@ void MibLeaf::set_syntax(SmiUINT32 syntax)
 
     switch (syntax)
     {
-    case sNMP_SYNTAX_INT32: value = new SnmpInt32(); break;
+    case sNMP_SYNTAX_INT32: {
+        value = new SnmpInt32();
+        break;
+    }
 
-    case sNMP_SYNTAX_TIMETICKS: value = new TimeTicks(); break;
+    case sNMP_SYNTAX_TIMETICKS: {
+        value = new TimeTicks();
+        break;
+    }
 
-    case sNMP_SYNTAX_CNTR32: value = new Counter32(); break;
+    case sNMP_SYNTAX_CNTR32: {
+        value = new Counter32();
+        break;
+    }
 
-    case sNMP_SYNTAX_GAUGE32: value = new Gauge32(); break;
+    case sNMP_SYNTAX_GAUGE32: {
+        value = new Gauge32();
+        break;
+    }
 
-    case sNMP_SYNTAX_CNTR64: value = new Counter64(); break;
+    case sNMP_SYNTAX_CNTR64: {
+        value = new Counter64();
+        break;
+    }
 
     case sNMP_SYNTAX_OCTETS:
-    case sNMP_SYNTAX_BITS: value = new OctetStr(); break;
+    case sNMP_SYNTAX_BITS: {
+        value = new OctetStr();
+        break;
+    }
 
-    case sNMP_SYNTAX_OPAQUE: value = new OpaqueStr(); break;
+    case sNMP_SYNTAX_OPAQUE: {
+        value = new OpaqueStr();
+        break;
+    }
 
-    case sNMP_SYNTAX_IPADDR: value = new IpAddress(); break;
+    case sNMP_SYNTAX_IPADDR: {
+        value = new IpAddress();
+        break;
+    }
 
-    case sNMP_SYNTAX_OID: value = new Oid(); break;
+    case sNMP_SYNTAX_OID: {
+        value = new Oid();
+        break;
+    }
 
     case sNMP_SYNTAX_NULL:
     case sNMP_SYNTAX_NOSUCHINSTANCE:
     case sNMP_SYNTAX_NOSUCHOBJECT:
-    case sNMP_SYNTAX_ENDOFMIBVIEW: break;
+    case sNMP_SYNTAX_ENDOFMIBVIEW: {
+        break;
+    }
 
-    case sNMP_SYNTAX_SEQUENCE: break;
+    case sNMP_SYNTAX_SEQUENCE: {
+        break;
+    }
     }
 }
 
@@ -601,15 +632,25 @@ bool snmpRowStatus::transition_ok(const Vbx& v)
     {
         switch (get())
         {
-        case rowEmpty: return (l == rowCreateAndGo) || (l == rowCreateAndWait) || (l == rowDestroy);
+        case rowEmpty: {
+            return (l == rowCreateAndGo) || (l == rowCreateAndWait) || (l == rowDestroy);
+        }
 
-        case rowNotReady: return (l == rowDestroy) || (l == rowActive) || (l == rowNotInService);
+        case rowNotReady: {
+            return (l == rowDestroy) || (l == rowActive) || (l == rowNotInService);
+        }
 
-        case rowActive: return (l == rowActive) || (l == rowNotInService) || (l == rowDestroy);
+        case rowActive: {
+            return (l == rowActive) || (l == rowNotInService) || (l == rowDestroy);
+        }
 
-        case rowNotInService: return (l == rowNotInService) || (l == rowActive) || (l == rowDestroy);
+        case rowNotInService: {
+            return (l == rowNotInService) || (l == rowActive) || (l == rowDestroy);
+        }
 
-        default: return l == rowDestroy;
+        default: {
+            return l == rowDestroy;
+        }
         }
     }
     else
@@ -681,7 +722,9 @@ bool snmpRowStatus::check_state_change(const Vbx& v, Request* req)
             }
         }
 
-        default: return transition_ok(v);
+        default: {
+            return transition_ok(v);
+        }
         }
     }
     else
@@ -719,20 +762,27 @@ int snmpRowStatus::set(const Vbx& vb)
     }
 
     case rowActive:
-    case rowCreateAndGo:
+    case rowCreateAndGo: {
         set_value(rowActive);
         my_table->fire_row_changed(rowActive, my_row, my_row->get_index());
         break;
+    }
 
-    case rowCreateAndWait: set_value(rowNotReady); break;
+    case rowCreateAndWait: {
+        set_value(rowNotReady);
+        break;
+    }
 
-    case rowDestroy:
+    case rowDestroy: {
         set_value(rs);
         delete undo; // No undo of row destroy!
         undo = nullptr;
         break;
+    }
 
-    default: set_value(rs);
+    default: {
+        set_value(rs);
+    }
     }
     return SNMP_ERROR_SUCCESS;
 }
@@ -752,7 +802,7 @@ int snmpRowStatus::unset()
 
         switch (rs)
         {
-        case rowEmpty:
+        case rowEmpty: {
             if ((get() == rowActive) || (get() == rowCreateAndGo))
             {
                 my_table->fire_row_changed(rowDestroy, my_row, my_row->get_index());
@@ -764,8 +814,9 @@ int snmpRowStatus::unset()
             value = undo;
             undo  = nullptr;
             break;
+        }
 
-        case rowActive:
+        case rowActive: {
             my_table->fire_row_changed(rowActive, my_row, my_row->get_index());
             if (value)
             {
@@ -774,9 +825,10 @@ int snmpRowStatus::unset()
             value = undo;
             undo  = nullptr;
             break;
+        }
 
         case rowNotInService:
-        case rowNotReady:
+        case rowNotReady: {
             if (get() == rowActive)
             {
                 my_table->fire_row_changed(rowNotInService, my_row, my_row->get_index());
@@ -788,6 +840,7 @@ int snmpRowStatus::unset()
             value = undo;
             undo  = nullptr;
             break;
+        }
 
         case rowCreateAndGo: {
             set_value(rowNotReady);
@@ -806,7 +859,7 @@ int snmpRowStatus::unset()
             break;
         }
 
-        case rowCreateAndWait:
+        case rowCreateAndWait: {
             if (get() == rowActive)
             {
                 my_table->fire_row_changed(rowDestroy, my_row, my_row->get_index());
@@ -815,14 +868,16 @@ int snmpRowStatus::unset()
             delete undo;
             undo = nullptr;
             break;
+        }
 
-        default:
+        default: {
             if (value)
             {
                 delete value;
             }
             value = undo;
             undo  = nullptr;
+        }
         }
     }
     return SNMP_ERROR_SUCCESS;
@@ -1524,11 +1579,19 @@ int MibTable::set_value(Request* req, int reqind)
             }
             switch (rs)
             {
-            case rowCreateAndGo: new_value = rowActive; break;
+            case rowCreateAndGo: {
+                new_value = rowActive;
+                break;
+            }
 
-            case rowCreateAndWait: new_value = rowNotReady; break;
+            case rowCreateAndWait: {
+                new_value = rowNotReady;
+                break;
+            }
 
-            default: new_value = rs;
+            default: {
+                new_value = rs;
+            }
             }
 
             if (new_value == rowDestroy)
@@ -2375,31 +2438,38 @@ int MibTable::check_creation(Request* req, int& ind)
             switch (new_row_status)
             {
             case rowActive:
-            case rowNotInService:
+            case rowNotInService: {
                 ind = i;
 
                 delete[] fulfilled;
                 delete[] required;
                 delete[] pvbs;
                 return SNMP_ERROR_INCONSIST_VAL;
+            }
 
-            case rowCreateAndGo: ok = true; break;
+            case rowCreateAndGo: {
+                ok = true;
+                break;
+            }
 
-            case rowCreateAndWait:
+            case rowCreateAndWait: {
                 ok   = true;
                 wait = true;
                 break;
+            }
 
-            case rowDestroy:
+            case rowDestroy: {
                 ok     = true;
                 ignore = true;
                 break;
+            }
 
-            default:
+            default: {
                 delete[] fulfilled;
                 delete[] required;
                 delete[] pvbs;
                 return SNMP_ERROR_WRONG_VALUE;
+            }
             }
             break;
         }
@@ -2749,6 +2819,7 @@ void MibTable::remove_obsolete_rows(OrderedList<Oidx>& confirmed_rows)
 void MibTable::remove_unused_rows()
 {
     Lock start_synch(*this);
+
     if ((row_status) && (!(row_timeout.in_time())))
     {
         OrderedListCursor<MibTableRow> cur;
@@ -2829,6 +2900,7 @@ void MibTable::remove_unused_rows()
 void MibTable::get_contents(Vbx**& contents, int& rows, int& cols, int discriminator)
 {
     Lock start_synch(*this);
+
     if (!contents)
     {
         rows     = content.size();
@@ -2849,6 +2921,7 @@ void MibTable::get_contents(Vbx**& contents, int& rows, int& cols, int discrimin
 }
 
 #if 0
+
 /**
  * Return all (active) rows as a list of pointers to the
  * corresponding MibTableRow instances. If the receiver table
@@ -2864,13 +2937,14 @@ void MibTable::get_contents(Vbx**& contents, int& rows, int& cols, int discrimin
  *    means all active rows are returned. If the discriminator is
  *    rowEnmpty(0), all rows are returned.
  */
-List<MibTableRow>* MibTable::get_rows(int discriminator)
+List <MibTableRow> * MibTable::get_rows(int discriminator)
 {
-    OidListCursor<MibTableRow> cur;
-    auto*                      list = new List<MibTableRow>;
+    OidListCursor <MibTableRow> cur;
+    auto *list = new List <MibTableRow>;
+
     for (cur.init(&content); cur.get(); cur.next())
     {
-        snmpRowStatus* status = cur.get()->get_row_status();
+        snmpRowStatus *status = cur.get()->get_row_status();
         if ((!status) || (discriminator == 0) || ((status) && (status->get() == discriminator)))
         {
             list->add(cur.get());
@@ -2878,6 +2952,7 @@ List<MibTableRow>* MibTable::get_rows(int discriminator)
     }
     return list;
 }
+
 #endif
 
 /**
@@ -2907,6 +2982,7 @@ List<MibTableRow>* MibTable::get_rows_cloned(const Oidx* prefix, int discriminat
     Lock                       start_synch(*this);
     OidListCursor<MibTableRow> cur;
     auto*                      list = new List<MibTableRow>();
+
     for (cur.init(&content); cur.get(); cur.next())
     {
         snmpRowStatus* status = cur.get()->get_row_status();

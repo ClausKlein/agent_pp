@@ -84,7 +84,10 @@ int agentppNotifyTest::set(const Vbx& vb)
     vb.get_value(v);
     switch (v)
     {
-    case e_agentppNotifyTestAllTypes: send_agentppNotifyTestAllTypes(); break;
+    case e_agentppNotifyTestAllTypes: {
+        send_agentppNotifyTestAllTypes();
+        break;
+    }
     }
     //--AgentGen END
     return MibLeaf::set(vb);

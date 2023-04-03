@@ -969,10 +969,9 @@ uint32_t RequestList::get_request_id(const Vbx& vb) TS_SYNCHRONIZED({
 {
 #ifdef SNMPv3
     return true;
-#else
     switch (pdutype)
     {
-    case sNMP_PDU_SET:
+    case sNMP_PDU_SET: {
         if (*write_community == community)
         {
             return true;
@@ -985,6 +984,7 @@ uint32_t RequestList::get_request_id(const Vbx& vb) TS_SYNCHRONIZED({
             }
             return false;
         }
+    }
     }
     if ((*read_community == community) || (*write_community == community))
     {
@@ -1125,16 +1125,25 @@ void RequestList::answer(Request* req)
         case SNMP_ERROR_NO_ACCESS:
         case SNMP_ERROR_NO_CREATION:
         case SNMP_ERROR_INCONSIS_NAME:
-        case SNMP_ERROR_AUTH_ERR: pdu->set_error_status(SNMP_ERROR_NO_SUCH_NAME); break;
+        case SNMP_ERROR_AUTH_ERR: {
+            pdu->set_error_status(SNMP_ERROR_NO_SUCH_NAME);
+            break;
+        }
 
         case SNMP_ERROR_RESOURCE_UNAVAIL:
         case SNMP_ERROR_COMMITFAIL:
-        case SNMP_ERROR_UNDO_FAIL: pdu->set_error_status(SNMP_ERROR_GENERAL_VB_ERR); break;
+        case SNMP_ERROR_UNDO_FAIL: {
+            pdu->set_error_status(SNMP_ERROR_GENERAL_VB_ERR);
+            break;
+        }
 
         case SNMP_ERROR_WRONG_VALUE:
         case SNMP_ERROR_WRONG_LENGTH:
         case SNMP_ERROR_INCONSIST_VAL:
-        case SNMP_ERROR_WRONG_TYPE: pdu->set_error_status(SNMP_ERROR_BAD_VALUE); break;
+        case SNMP_ERROR_WRONG_TYPE: {
+            pdu->set_error_status(SNMP_ERROR_BAD_VALUE);
+            break;
+        }
         }
     }
     for (int i = 0; ((i < req->subrequests()) && (i < pdu->get_vb_count())); i++)
@@ -1178,7 +1187,7 @@ void RequestList::answer(Request* req)
             break;
         }
 
-        default:
+        default: {
             if (pdu->get_type() == sNMP_PDU_SET)
             {
                 Counter32MibLeaf::incrementScalar(mib, oidSnmpInTotalSetVars);
@@ -1187,6 +1196,7 @@ void RequestList::answer(Request* req)
             {
                 Counter32MibLeaf::incrementScalar(mib, oidSnmpInTotalReqVars);
             }
+        }
         }
     }
 
@@ -1769,10 +1779,11 @@ Request* RequestList::receive(int sec)
             break;
         }
 
-        case SNMPv3_MP_INVALID_ENGINEID:
-            // RFC 3414 � 3.2 (3b),4:
+        case SNMPv3_MP_INVALID_ENGINEID: {
+            // RFC 3414 ch. 3.2 (3b),4:
             // snmpInvalidMsgs must not be incremented
             break;
+        }
 
         case SNMPv3_USM_AUTHENTICATION_ERROR:
         case SNMPv3_USM_AUTHENTICATION_FAILURE: {
@@ -1787,13 +1798,14 @@ Request* RequestList::receive(int sec)
          *              case SNMP_ERROR_TOO_BIG: {
          *              }
          */
-        default:
+        default: {
             Counter32MibLeaf* incInASNParseErrs =
                 snmpInASNParseErrs::get_instance(mib, oidSnmpInASNParseErrs);
             if (incInASNParseErrs)
             {
                 incInASNParseErrs->increment();
             }
+        }
         }
     }
     return nullptr;

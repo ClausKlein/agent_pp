@@ -322,36 +322,40 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
         int len = MAX_SNMP_PACKET;
         switch ((short)vp->type)
         {
-        case ASN_INTEGER:
+        case ASN_INTEGER: {
             vp->val.integer = (SmiINT32*)malloc(sizeof(SmiINT32));
             vp->val_len     = sizeof(SmiINT32);
             asn_parse_int(var_val, &len, &vp->type, vp->val.integer);
             break;
+        }
 
         case SMI_COUNTER:
         case SMI_GAUGE:
         case SMI_TIMETICKS:
-        case SMI_UINTEGER:
+        case SMI_UINTEGER: {
             vp->val.integer = (SmiINT32*)malloc(sizeof(SmiINT32));
             vp->val_len     = sizeof(SmiINT32);
             asn_parse_unsigned_int(var_val, &len, &vp->type, vp->val.integer);
             break;
+        }
 
-        case SMI_COUNTER64:
+        case SMI_COUNTER64: {
             vp->val.counter64 = (struct counter64*)malloc(sizeof(struct counter64));
             vp->val_len       = sizeof(struct counter64);
             asn_parse_unsigned_int64(var_val, &len, &vp->type, vp->val.counter64);
             break;
+        }
 
         case ASN_OCTET_STR:
         case SMI_IPADDRESS:
         case SMI_OPAQUE:
-        case SMI_NSAP:
+        case SMI_NSAP: {
             vp->val.string = (unsigned char*)malloc((unsigned)vp->val_len);
             asn_parse_string(var_val, &len, &vp->type, vp->val.string, &vp->val_len);
             break;
+        }
 
-        case ASN_OBJECT_ID:
+        case ASN_OBJECT_ID: {
             vp->val_len = ASN_MAX_NAME_LEN;
             asn_parse_objid(var_val, &len, &vp->type, objid, &vp->val_len);
             // vp->val_len *= sizeof(oid_t);
@@ -359,19 +363,25 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
             // fixed
             memcpy((char*)vp->val.objid, (char*)objid, vp->val_len * sizeof(oid_t));
             break;
+        }
 
         case SNMP_NOSUCHOBJECT:
         case SNMP_NOSUCHINSTANCE:
         case SNMP_ENDOFMIBVIEW:
-        case ASN_NULL: break;
+        case ASN_NULL: {
+            break;
+        }
 
-        default: ASNERROR("bad type returned "); snmp_free_pdu(pdu);
+        default: {
+            ASNERROR("bad type returned ");
+            snmp_free_pdu(pdu);
 #ifdef _SNMPv3
             return SNMP_CLASS_ASN1ERROR;
 #else
             return SNMP_CLASS_ERROR;
 #endif
             break;
+        }
         }
     }
     // build vbs
@@ -455,20 +465,26 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
             break;
         }
 
-        case sNMP_SYNTAX_NULL: vbs[i].set_null(); break;
+        case sNMP_SYNTAX_NULL: {
+            vbs[i].set_null();
+            break;
+        }
 
         // v2 vb exceptions
         case sNMP_SYNTAX_NOSUCHOBJECT:
         case sNMP_SYNTAX_NOSUCHINSTANCE:
-        case sNMP_SYNTAX_ENDOFMIBVIEW:
+        case sNMP_SYNTAX_ENDOFMIBVIEW: {
 #ifdef SNMP_PP_V3
             vbs[i].set_exception_status(vp->type);
 #else
             set_exception_status(&vbs[i], vp->type);
 #endif
             break;
+        }
 
-        default: vbs[i].set_null();
+        default: {
+            vbs[i].set_null();
+        }
         } // end switch
     }
 
@@ -1124,20 +1140,28 @@ int Snmpx::send(Pdux const& pdu, SnmpTarget* target)
 
     switch (target->get_type())
     {
-    case SnmpTarget::type_ctarget: ctarget = (CTarget*)target; break;
+    case SnmpTarget::type_ctarget: {
+        ctarget = (CTarget*)target;
+        break;
+    }
 
-    case SnmpTarget::type_utarget: utarget = (UTarget*)target; break;
+    case SnmpTarget::type_utarget: {
+        utarget = (UTarget*)target;
+        break;
+    }
 
-    case SnmpTarget::type_base:
+    case SnmpTarget::type_base: {
         debugprintf(0,
             "-- SNMP++, do not use SnmpTarget,"
             " use a  CTarget or UTarget");
         return SNMP_CLASS_INVALID_TARGET;
+    }
 
-    default:
+    default: {
         // target is not known
         debugprintf(0, "-- SNMP++, type of target is unknown!");
         return SNMP_CLASS_UNSUPPORTED;
+    }
     }
 
     if (ctarget) // is it a CTarget?

@@ -127,19 +127,27 @@ int SnmpRequest::process(int rtype, const UdpAddress& address, Vbx* vbs, int& sz
 
     switch (rtype)
     {
-    case sNMP_PDU_GET: status = snmp->get(pdu, target); break;
+    case sNMP_PDU_GET: {
+        status = snmp->get(pdu, target);
+        break;
+    }
 
-    case sNMP_PDU_GETBULK:
+    case sNMP_PDU_GETBULK: {
         status = snmp->get_bulk(pdu, target, non_repeaters, max_reps);
         sz     = pdu.get_vb_count();
         break;
+    }
 
-    case sNMP_PDU_GETNEXT: status = snmp->get_next(pdu, target); break;
+    case sNMP_PDU_GETNEXT: {
+        status = snmp->get_next(pdu, target);
+        break;
+    }
 
-    case sNMP_PDU_SET:
+    case sNMP_PDU_SET: {
         target.set_writecommunity(community);
         status = snmp->set(pdu, target);
         break;
+    }
     }
 
     Counter32MibLeaf::incrementScalar(Mib::instance, oidSnmpOutPkts);

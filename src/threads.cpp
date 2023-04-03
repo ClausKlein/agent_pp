@@ -291,21 +291,27 @@ bool Synchronized::wait(long timeout)
     {
         switch (err)
         {
-        case EINVAL:
+        case EINVAL: {
             LOG_BEGIN(loggerModuleName, WARNING_LOG | 1);
             LOG("Synchronized: wait with timeout returned (error)");
             LOG(err);
             LOG_END;
 
             [[fallthrough]];
-        case ETIMEDOUT: timeoutOccurred = true; break;
+        }
 
-        default:
+        case ETIMEDOUT: {
+            timeoutOccurred = true;
+            break;
+        }
+
+        default: {
             LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
             LOG("Synchronized: wait with timeout returned (error)");
             LOG(err);
             LOG_END;
             break;
+        }
         }
     }
 #    else
@@ -321,17 +327,19 @@ bool Synchronized::wait(long timeout)
     err = WaitForSingleObject(semEvent, timeout);
     switch (err)
     {
-    case WAIT_TIMEOUT:
+    case WAIT_TIMEOUT: {
         LOG_BEGIN(loggerModuleName, EVENT_LOG | 8);
         LOG("Synchronized: timeout on wait");
         LOG_END;
         timeoutOccurred = true;
         break;
+    }
 
-    case WAIT_ABANDONED:
+    case WAIT_ABANDONED: {
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 2);
         LOG("Synchronized: waiting for event failed");
         LOG_END;
+    }
     }
     if (WaitForSingleObject(semMutex, INFINITE) != WAIT_OBJECT_0)
     {

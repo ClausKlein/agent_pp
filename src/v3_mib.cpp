@@ -167,13 +167,17 @@ int UsmUserTableStatus::set(const Vbx& vb)
     }
 
     case rowActive:
-    case rowCreateAndGo:
+    case rowCreateAndGo: {
         set_value(rowActive);
         my_table->row_activated(my_row, my_row->get_index());
         addUsmUser();
         break;
+    }
 
-    case rowCreateAndWait: set_value(rowNotReady); break;
+    case rowCreateAndWait: {
+        set_value(rowNotReady);
+        break;
+    }
 
     default: {
         deleteUsmUser();
@@ -198,7 +202,7 @@ int UsmUserTableStatus::unset()
 
         switch (rs)
         {
-        case rowEmpty:
+        case rowEmpty: {
             if ((get() == rowActive) || (get() == rowCreateAndGo))
             {
                 deleteUsmUser();
@@ -210,8 +214,9 @@ int UsmUserTableStatus::unset()
             value = undo;
             undo  = nullptr;
             break;
+        }
 
-        case rowActive:
+        case rowActive: {
             addUsmUser();
             if (value)
             {
@@ -220,9 +225,10 @@ int UsmUserTableStatus::unset()
             value = undo;
             undo  = nullptr;
             break;
+        }
 
         case rowNotInService:
-        case rowNotReady:
+        case rowNotReady: {
             if (get() == rowActive)
             {
                 deleteUsmUser();
@@ -234,6 +240,7 @@ int UsmUserTableStatus::unset()
             value = undo;
             undo  = nullptr;
             break;
+        }
 
         case rowCreateAndGo: {
             set_value(rowNotReady);
@@ -250,21 +257,23 @@ int UsmUserTableStatus::unset()
             break;
         }
 
-        case rowCreateAndWait:
+        case rowCreateAndWait: {
             if (get() == rowActive)
             {
                 deleteUsmUser();
             }
             set_value(rowNotReady);
             break;
+        }
 
-        default:
+        default: {
             if (value)
             {
                 delete value;
             }
             value = undo;
             undo  = nullptr;
+        }
         }
     }
     return SNMP_ERROR_SUCCESS;

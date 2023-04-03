@@ -172,48 +172,54 @@ int snmpTargetAddrTAddress::prepare_set_request(Request* req, int& ind)
     switch (state)
     {
     case 1: // UDP Address
-    case 101:
+    case 101: {
         if (length == 6)
         {
             return SNMP_ERROR_SUCCESS;
         }
         break;
+    }
 
-    case 102:
+    case 102: {
         if (length == 18)
         {
             return SNMP_ERROR_SUCCESS;
         }
         break;
+    }
 
-    case 105:
+    case 105: {
         if (length == 6)
         {
             return SNMP_ERROR_SUCCESS;
         }
         break;
+    }
 
     case 2:
-    case 3: // OSI Address
+    case 3: { // OSI Address
         if ((length == 1) || ((length >= 4) && (length <= 85)))
         {
             return SNMP_ERROR_SUCCESS;
         }
         break;
+    }
 
-    case 4:
+    case 4: {
         if ((length >= 3) && (length <= 99))
         {
             return SNMP_ERROR_SUCCESS;
         }
         break;
+    }
 
-    case 5:
+    case 5: {
         if (length == 12)
         {
             return SNMP_ERROR_SUCCESS;
         }
         break;
+    }
     }
     return SNMP_ERROR_INCONSIST_VAL;
 }

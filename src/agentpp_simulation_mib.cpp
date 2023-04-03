@@ -49,9 +49,15 @@ void agentppSimMode::init(SnmpSyntax* v, int m)
     {
         switch (get_state())
         {
-        case 1: SimMibLeaf::unset_config_mode(); break;
+        case 1: {
+            SimMibLeaf::unset_config_mode();
+            break;
+        }
 
-        case 2: SimMibLeaf::set_config_mode(); break;
+        case 2: {
+            SimMibLeaf::set_config_mode();
+            break;
+        }
         }
     }
 }
@@ -63,9 +69,15 @@ void agentppSimMode::set_state(int32_t l)
     *((SnmpInt32*)value) = l;
     switch (l)
     {
-    case 1: SimMibLeaf::unset_config_mode(); break;
+    case 1: {
+        SimMibLeaf::unset_config_mode();
+        break;
+    }
 
-    case 2: SimMibLeaf::set_config_mode(); break;
+    case 2: {
+        SimMibLeaf::set_config_mode();
+        break;
+    }
     }
 }
 
@@ -79,9 +91,15 @@ int agentppSimMode::set(const Vbx& vb)
     }
     switch (l)
     {
-    case 1: SimMibLeaf::unset_config_mode(); break;
+    case 1: {
+        SimMibLeaf::unset_config_mode();
+        break;
+    }
 
-    case 2: SimMibLeaf::set_config_mode(); break;
+    case 2: {
+        SimMibLeaf::set_config_mode();
+        break;
+    }
     }
     return MibLeaf::set(vb);
 }

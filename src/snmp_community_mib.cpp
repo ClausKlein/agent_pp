@@ -73,10 +73,11 @@ UdpAddress* snmpTargetAddrTMask::getUdpAddress()
         {
         case 1:
         case 101:
-        case 102:
+        case 102: {
             auto* address = new UdpAddress();
             *address      = (*(OctetStr*)value);
             return address;
+        }
         }
     }
     return nullptr;

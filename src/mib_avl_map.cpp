@@ -255,12 +255,16 @@ void OidxPtrMibEntryPtrAVLMap::_add(OidxPtrMibEntryPtrAVLNode*& t)
         {
             switch (bf(t))
             {
-            case AVLRIGHTHEAVY:
+            case AVLRIGHTHEAVY: {
                 set_bf(t, AVLBALANCED);
                 _need_rebalancing = 0;
                 return;
+            }
 
-            case AVLBALANCED: set_bf(t, AVLLEFTHEAVY); return;
+            case AVLBALANCED: {
+                set_bf(t, AVLLEFTHEAVY);
+                return;
+            }
 
             case AVLLEFTHEAVY: {
                 OidxPtrMibEntryPtrAVLNode* l = t->lt;
@@ -354,12 +358,16 @@ void OidxPtrMibEntryPtrAVLMap::_add(OidxPtrMibEntryPtrAVLNode*& t)
         {
             switch (bf(t))
             {
-            case AVLLEFTHEAVY:
+            case AVLLEFTHEAVY: {
                 set_bf(t, AVLBALANCED);
                 _need_rebalancing = 0;
                 return;
+            }
 
-            case AVLBALANCED: set_bf(t, AVLRIGHTHEAVY); return;
+            case AVLBALANCED: {
+                set_bf(t, AVLRIGHTHEAVY);
+                return;
+            }
 
             case AVLRIGHTHEAVY: {
                 OidxPtrMibEntryPtrAVLNode* r = t->rt;
@@ -538,18 +546,22 @@ void OidxPtrMibEntryPtrAVLMap::_del(OidxPtrMibEntryPtrAVLNode* par, OidxPtrMibEn
         }
         switch (bf(t))
         {
-        case AVLLEFTHEAVY: set_bf(t, AVLBALANCED); return;
+        case AVLLEFTHEAVY: {
+            set_bf(t, AVLBALANCED);
+            return;
+        }
 
-        case AVLBALANCED:
+        case AVLBALANCED: {
             set_bf(t, AVLRIGHTHEAVY);
             _need_rebalancing = 0;
             return;
+        }
 
         case AVLRIGHTHEAVY: {
             OidxPtrMibEntryPtrAVLNode* r = t->rt;
             switch (bf(r))
             {
-            case AVLBALANCED:
+            case AVLBALANCED: {
                 if (lthread(r))
                 {
                     t->rt = r;
@@ -566,8 +578,9 @@ void OidxPtrMibEntryPtrAVLMap::_del(OidxPtrMibEntryPtrAVLNode* par, OidxPtrMibEn
                 _need_rebalancing = 0;
                 t                 = r;
                 return;
+            }
 
-            case AVLRIGHTHEAVY:
+            case AVLRIGHTHEAVY: {
                 if (lthread(r))
                 {
                     t->rt = r;
@@ -583,6 +596,7 @@ void OidxPtrMibEntryPtrAVLMap::_del(OidxPtrMibEntryPtrAVLNode* par, OidxPtrMibEn
                 set_bf(r, AVLBALANCED);
                 t = r;
                 return;
+            }
 
             case AVLLEFTHEAVY: {
                 OidxPtrMibEntryPtrAVLNode* l = r->lt;
@@ -645,18 +659,22 @@ void OidxPtrMibEntryPtrAVLMap::_del(OidxPtrMibEntryPtrAVLNode* par, OidxPtrMibEn
         }
         switch (bf(t))
         {
-        case AVLRIGHTHEAVY: set_bf(t, AVLBALANCED); return;
+        case AVLRIGHTHEAVY: {
+            set_bf(t, AVLBALANCED);
+            return;
+        }
 
-        case AVLBALANCED:
+        case AVLBALANCED: {
             set_bf(t, AVLLEFTHEAVY);
             _need_rebalancing = 0;
             return;
+        }
 
         case AVLLEFTHEAVY: {
             OidxPtrMibEntryPtrAVLNode* l = t->lt;
             switch (bf(l))
             {
-            case AVLBALANCED:
+            case AVLBALANCED: {
                 if (rthread(l))
                 {
                     t->lt = l;
@@ -673,8 +691,9 @@ void OidxPtrMibEntryPtrAVLMap::_del(OidxPtrMibEntryPtrAVLNode* par, OidxPtrMibEn
                 _need_rebalancing = 0;
                 t                 = l;
                 return;
+            }
 
-            case AVLLEFTHEAVY:
+            case AVLLEFTHEAVY: {
                 if (rthread(l))
                 {
                     t->lt = l;
@@ -690,6 +709,7 @@ void OidxPtrMibEntryPtrAVLMap::_del(OidxPtrMibEntryPtrAVLNode* par, OidxPtrMibEn
                 set_bf(l, AVLBALANCED);
                 t = l;
                 return;
+            }
 
             case AVLRIGHTHEAVY: {
                 OidxPtrMibEntryPtrAVLNode* r = l->rt;

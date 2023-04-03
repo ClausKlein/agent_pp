@@ -365,6 +365,7 @@ void cmdExecutionCmdRowStatus::set_state(int32_t l) { *((SnmpInt32*)value) = l; 
 int cmdExecutionCmdRowStatus::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
+
     if ((status = MibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
     {
         return status;
@@ -635,6 +636,7 @@ void cmdExecutionOutputEntry::remove_all(const Oidx& index)
     Lock tmp(*this);
 
     OidListCursor<MibTableRow> cur;
+
     for (cur.init(&content); cur.get();)
     {
         if (cur.get()->get_index()[0] == index[0])
