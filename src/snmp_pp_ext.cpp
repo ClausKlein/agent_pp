@@ -144,8 +144,8 @@ int Vbx::to_asn1(Vbx* vbs, int sz, unsigned char*& buf, int& length)
     // cp = packet;
     for (vp = pdu->variables; vp; vp = vp->next_variable)
     {
-        cp = snmp_build_var_op(cp, vp->name, &vp->name_length, vp->type, vp->val_len,
-            (unsigned char*)vp->val.string, &len);
+        cp = snmp_build_var_op(
+            cp, vp->name, &vp->name_length, vp->type, vp->val_len, vp->val.string, &len);
         if (cp == nullptr)
         {
             snmp_free_pdu(pdu);
@@ -398,20 +398,20 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
         {
         // octet string
         case sNMP_SYNTAX_OPAQUE: {
-            OpaqueStr const octets((unsigned char*)vp->val.string, (uint32_t)vp->val_len);
+            OpaqueStr const octets(vp->val.string, (uint32_t)vp->val_len);
             vbs[i].set_value(octets);
         }
         break;
 
         case sNMP_SYNTAX_OCTETS: {
-            OctetStr const octets((unsigned char*)vp->val.string, (uint32_t)vp->val_len);
+            OctetStr const octets(vp->val.string, (uint32_t)vp->val_len);
             vbs[i].set_value(octets);
         }
         break;
 
         // object id
         case sNMP_SYNTAX_OID: {
-            Oid const oid((SmiLPUINT32)vp->val.objid, (int)vp->val_len);
+            Oid const oid((SmiLPUINT32)vp->val.objid, vp->val_len);
             vbs[i].set_value(oid);
         }
         break;
@@ -831,7 +831,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
         {
             fromlen = sizeof((from_addr));
             do {
-                receive_buffer_len = (long)recvfrom(iv_snmp_session_ipv6, (char*)receive_buffer,
+                receive_buffer_len = recvfrom(iv_snmp_session_ipv6, (char*)receive_buffer,
                     MAX_SNMP_PACKET, 0, (struct sockaddr*)&from_addr, &fromlen);
             } while (receive_buffer_len < 0 && EINTR == errno);
 

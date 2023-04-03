@@ -162,7 +162,7 @@ snmpNotifyFilterEntry::snmpNotifyFilterEntry(snmpNotifyFilterProfileEntry* profi
 snmpNotifyFilterEntry::~snmpNotifyFilterEntry() { }
 
 bool snmpNotifyFilterEntry::passes_filter(
-    const Oidx& target, const Oidx& oid, const Vbx* vbs, unsigned int vb_count)
+    const Oidx& target, const Oidx& _oid, const Vbx* vbs, unsigned int vb_count)
 {
     _snmpNotifyFilterProfileEntry->start_synch();
     MibTableRow* found = _snmpNotifyFilterProfileEntry->find_index(target);
@@ -212,12 +212,12 @@ bool snmpNotifyFilterEntry::passes_filter(
 
         // check if oid is in the filter specified by filterMask
         // and subtree.
-        if (subtree.compare(oid, filterMask) >= 0)
+        if (subtree.compare(_oid, filterMask) >= 0)
         {
             Oidx sid;
             sid += subtree.len();
             sid += subtree;
-            auto* match = new MibStaticEntry(sid, SnmpInt32(filterType));
+            auto* match = new MibStaticEntry(sid, filterType);
             matches.add(match);
 
             LOG_BEGIN(loggerModuleName, INFO_LOG | 4);
@@ -249,7 +249,7 @@ bool snmpNotifyFilterEntry::passes_filter(
                 Oidx sid;
                 sid += subtree.len();
                 sid += subtree;
-                auto* match = new MibStaticEntry(sid, SnmpInt32(filterType));
+                auto* match = new MibStaticEntry(sid, filterType);
                 oidmatches[i].add(match);
             }
         }

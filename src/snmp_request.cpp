@@ -401,7 +401,7 @@ Snmpx* SnmpRequest::get_new_snmp(Snmpx* snmp, int& status)
 
 SnmpRequestV3::SnmpRequestV3() : SnmpRequestV3(Mib::instance) { }
 
-SnmpRequestV3::SnmpRequestV3(Mib* mib) : mib(mib)
+SnmpRequestV3::SnmpRequestV3(Mib* _mib) : mib(_mib)
 {
     int status = 0;
 
