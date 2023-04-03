@@ -202,11 +202,11 @@ OctetStr SnmpEngineID::create_engine_id(unsigned short p)
     port[0] = p / 256;
     port[1] = p % 256;
     port[2] = 0;
-    char         hname[255];
-    size_t const len = 255;
-    if (gethostname(hname, len) == 0)
+    constexpr size_t LEN { 255 };
+    char             hname[LEN];
+    if (gethostname(hname, LEN) == 0)
     {
-        OctetStr const host((unsigned char*)hname, (strlen(hname) > 23) ? 23 : strlen(hname));
+        OctetStr const host((unsigned char*)hname, std::min(strlen(hname), 23UL));
         engineID += OctetStr(host);
         engineID += OctetStr(port, 2);
     }
@@ -214,7 +214,7 @@ OctetStr SnmpEngineID::create_engine_id(unsigned short p)
     {
         time_t const   ct = time(nullptr);
         char*          tp = ctime(&ct); // TODO: use ctime_s()! CK
-        OctetStr const t((unsigned char*)tp, (strlen(tp) > 23) ? 23 : strlen(tp));
+        OctetStr const t((unsigned char*)tp, std::min(strlen(hname), 23UL));
         engineID += t;
         engineID += OctetStr(port, 2);
     }
@@ -363,7 +363,7 @@ bool SnmpTagList::contains(const char* tag)
     }
 
     int const len = ((OctetStr*)value)->len(); // NOTE: without \0! CK
-    char*     l   = new char[len + 1];
+    char*     l   = new char[len + 1];         // TODO(CK): use std::array<char>
     memcpy(l, (char*)((OctetStr*)value)->data(), len);
     l[len] = 0;                                // OK, CK
 
@@ -502,7 +502,7 @@ int32_t StorageType::get_state() { return (int32_t) * ((SnmpInt32*)value); }
 /*--------------------------- class StorageTypeVoter ------------------------*/
 
 int StorageTypeVoter::is_transition_ok(
-    MibTable* t, MibTableRow* row, const Oidx& oid, int curState, int newState)
+    MibTable* t, MibTableRow* row, const Oidx& /*oid*/, int curState, int newState)
 {
     int const storageType = ((StorageTable*)t)->get_storage_type(row);
 
@@ -873,8 +873,8 @@ void DateAndTime::update()
     {
         val += '-';
     }
-    auto const tz       = (unsigned int)abs(dt->tm_gmtoff);
-    long const timezone = dt->tm_gmtoff;
+    auto const tz           = (unsigned int)abs(dt->tm_gmtoff);
+    /*long const*/ timezone = dt->tm_gmtoff;
 #else
     // initialize timezone needed?
     // tzset();

@@ -9,8 +9,9 @@ static const Agentpp::index_info index_struct[INDEX_LEN] = {
     { sNMP_SYNTAX_OCTETS, false, 3, 32 }, // NOTE: subindex with min length set to > 1!
     { sNMP_SYNTAX_INT, false, 1, 1 },
     { sNMP_SYNTAX_OCTETS, false, 0, 2 },  // NOTE: subindex withLength!
-    { sNMP_SYNTAX_INT, false, 1, 1 }, { sNMP_SYNTAX_IPADDR, false, 4, 4 }, // NOTE: fix length is 4
-    { sNMP_SYNTAX_OCTETS, true, 1, 32 } // XXX "1.3.6.1.6.3.13.1.2.1"
+    { sNMP_SYNTAX_INT, false, 1, 1 },     //
+    { sNMP_SYNTAX_IPADDR, false, 4, 4 },  // NOTE: fix length is 4
+    { sNMP_SYNTAX_OCTETS, true, 1, 32 }   // XXX "1.3.6.1.6.3.13.1.2.1"
     // NOTE: implied set! no subindex length used, only as last subindex usable!
 };
 
@@ -107,7 +108,7 @@ getRowIndicesCloned(const Agentpp::Oidx& index)
 
     auto* idx = new Agentpp::Array<Agentpp::Oidx>();
 
-    unsigned int pos = 0;
+    uint32_t pos = 0;
     for (unsigned int i = 0; i < INDEX_LEN; i++)
     {
         assert(pos < index.len());
@@ -136,8 +137,8 @@ getRowIndicesCloned(const Agentpp::Oidx& index)
             else if (index_struct[i].type == sNMP_SYNTAX_OCTETS)
             {
                 // NOTE: the first subid is the strlen!
-                unsigned long strlen = index[pos];
-                *cur                 = index.cut_left(pos).cut_right(index.len() - (pos + strlen + 1));
+                uint32_t strlen = index[pos];
+                *cur            = index.cut_left(pos).cut_right(index.len() - (pos + strlen + 1));
                 pos += (strlen + 1); // pos after this string
             }
             else
@@ -175,7 +176,7 @@ int main()
         assert(third->len() == 1);                          // subindex min len is 0
         assert(third->last() == 0);                         // strlen is 0 too in this case
         assert(std::string("")
-            == third->as_string(true).get_printable());     // get empty string without length!
+            == third->as_string(true).get_printable());     // get empty string withoutLength == true!
         delete defaults_indices;
     }
 
@@ -191,10 +192,10 @@ int main()
     Agentpp::Oidx StringIndex = Agentpp::Oidx::from_string(firstTestString, withLength); // add the len
 
     assert(std::string(firstTestString)
-        == StringIndex.as_string(true).get_printable());         // get back without length!
+        == StringIndex.as_string(true).get_printable());         // get back withoutLength == true!
 
     Agentpp::Oidx ImpliedStringIndex =
-        Agentpp::Oidx::from_string(firstTestString, false);      // without Length, implied!
+        Agentpp::Oidx::from_string(firstTestString, false);      // NOTE: without Length!
     assert(std::string(firstTestString)
         == ImpliedStringIndex.as_string(false).get_printable()); // NOTE: the symmetry!
 
@@ -241,13 +242,14 @@ int main()
      * handling with variable string subindex with explicit len at oid[0]
      **/
     std::cout << "Oidx::as_string().get_printable_clear():" << std::endl;
-    std::cout << first->as_string().get_printable_clear() << std::endl;   // ".context"; withLength
+    std::cout << first->as_string().get_printable_clear() << std::endl; // ".context"; with length
     assert(StringIndex.len() == (StringIndex[0] + 1));
     assert(strlen(firstTestString)
-        == strlen(first->cut_left(1).as_string().get_printable_clear())); // FIXME get without the
-                                                                          // first subid: the len
+        == strlen(
+            first->cut_left(1).as_string().get_printable_clear())); // NOTE: with length:
+                                                                    // The first subid is the strlen
     assert(strlen(firstTestString)
-        == strlen(first->as_string(true).get_printable_clear()));         // NOTE: without len
+        == strlen(first->as_string(true).get_printable_clear()));   // NOTE: withoutLength == true
     assert(StringIndex == *first);
 
     std::cout << second->as_string().get_printable_clear() << std::endl;
@@ -261,7 +263,7 @@ int main()
     assert(std::string(testOidWithLen) == third->get_printable());
     assert((strlen(testOidWithoutLen) / 2 + 2) == third->len());
     assert(std::string(testOidWithoutLen)
-        == third->cut_left(1).get_printable()); // FIXME get without the first subid: the len
+        == third->cut_left(1).get_printable()); // NOTE: get without the first subid: the strlen
 
     std::cout << fourth->as_string().get_printable_clear() << std::endl;
     assert(4 == (*fourth)[0]);
@@ -281,9 +283,8 @@ int main()
         // XXX NS_SNMP IpAddress ipaddr;
         ipaddr = address;
 
-        void*   addr = &address[0];
-        char    ipstr[INET6_ADDRSTRLEN];
-        uint8_t buf[sizeof(struct in6_addr)];
+        void* addr = &address[0];
+        char  ipstr[INET6_ADDRSTRLEN];
         if (ipaddr.valid() && ipaddr.get_inet_address_type() == NS_SNMP Address::e_ipv6)
         {
             std::cout << address.get_printable_hex() << "  ->\t  " << ipaddr.get_printable()

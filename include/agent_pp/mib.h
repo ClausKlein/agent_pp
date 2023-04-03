@@ -1713,7 +1713,7 @@ public:
      *    means all active rows are returned. If the discriminator is
      *    rowEmpty(0), all rows are returned.
      */
-    virtual List<MibTableRow>* get_rows(int = rowActive);
+    // XXX virtual List<MibTableRow>* get_rows(int = rowActive);
 
     /**
      * Return all (active) rows as a list of pointers to the

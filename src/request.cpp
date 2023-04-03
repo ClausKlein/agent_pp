@@ -699,9 +699,9 @@ void Request::set_locked(int i, MibEntry* entry)
     if (lock_index(entry) < 0)
     {
 #ifdef NO_FAST_MUTEXES
-        LockRequest r(entry);
-        lockQueue->acquire(&r);
-        r.wait();
+        LockRequest r1(entry);
+        lockQueue->acquire(&r1);
+        r1.wait();
 #else
         entry->start_synch();
 #endif
@@ -716,9 +716,9 @@ void Request::set_locked(int i, MibEntry* entry)
                 if (lock_index(cur->get()) < 0)
                 {
 #ifdef NO_FAST_MUTEXES
-                    LockRequest r(cur->get());
-                    lockQueue->acquire(&r);
-                    r.wait();
+                    LockRequest r2(cur->get());
+                    lockQueue->acquire(&r2);
+                    r2.wait();
 #else
                     cur->get()->start_synch();
 #endif
@@ -1846,7 +1846,7 @@ void RequestList::set_write_community(const OctetStr& wc)
 #endif
 
 void RequestList::authenticationFailure(
-    const OctetStr& context, const GenAddress& sourceAddress, int status)
+    const OctetStr& context, const GenAddress& /*sourceAddress*/, int status)
 {
 #ifdef _SNMPv3
     if (status == SNMPv3_MP_NOT_IN_TIME_WINDOW)

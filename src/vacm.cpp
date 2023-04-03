@@ -144,7 +144,7 @@ VacmSecurityToGroupTable::VacmSecurityToGroupTable()
 
 VacmSecurityToGroupTable::~VacmSecurityToGroupTable() { }
 
-bool VacmSecurityToGroupTable::ready_for_service(Vbx* pvbs, int sz)
+bool VacmSecurityToGroupTable::ready_for_service(Vbx* pvbs, int /*sz*/)
 {
     // check if GroupName is set
 
@@ -332,7 +332,7 @@ VacmAccessTable::VacmAccessTable(VacmSecurityToGroupTable* stogt)
 
 VacmAccessTable::~VacmAccessTable() { }
 
-bool VacmAccessTable::ready_for_service(Vbx* pvbs, int sz)
+bool VacmAccessTable::ready_for_service(Vbx* /*pvbs*/, int /*sz*/)
 {
     // A row is always ready for service
     return true;
@@ -704,7 +704,7 @@ VacmViewTreeFamilyTable::VacmViewTreeFamilyTable()
 
 VacmViewTreeFamilyTable::~VacmViewTreeFamilyTable() { }
 
-bool VacmViewTreeFamilyTable::ready_for_service(Vbx* pvbs, int sz)
+bool VacmViewTreeFamilyTable::ready_for_service(Vbx* /*pvbs*/, int /*sz*/)
 {
     // Defaultwerte sind ok!
     return true;
@@ -726,7 +726,7 @@ void VacmViewTreeFamilyTable::row_added(MibTableRow* new_row, const Oidx& ind, M
     ml->set_value(o.cut_left(o[0] + 2));
 }
 
-void VacmViewTreeFamilyTable::row_activated(MibTableRow* row, const Oidx& ind, MibTable* /*t*/)
+void VacmViewTreeFamilyTable::row_activated(MibTableRow* row, const Oidx& /*ind*/, MibTable* /*t*/)
 {
     // add row to the index
     OctetStr const viewName = ((SnmpAdminString*)row->first())->get();
@@ -743,7 +743,7 @@ void VacmViewTreeFamilyTable::row_activated(MibTableRow* row, const Oidx& ind, M
     }
 }
 
-void VacmViewTreeFamilyTable::row_deactivated(MibTableRow* row, const Oidx& ind, MibTable* /*t*/)
+void VacmViewTreeFamilyTable::row_deactivated(MibTableRow* row, const Oidx& /*ind*/, MibTable* /*t*/)
 {
     ViewNameIndex* views = viewsOf(((SnmpAdminString*)row->first())->get());
 

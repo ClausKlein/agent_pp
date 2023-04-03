@@ -143,10 +143,10 @@ int NotificationOriginator::generate(Vbx* vbs, int size, const Oidx& id, unsigne
         {
             OctetStr tag;
             typeCur.get()->first()->get_value(tag);
-            int const len    = tag.len(); // NOTE: without \0! CK
-            char*     tagstr = new char[len + 1];
+            int const len    = tag.len();         // NOTE: without \0! CK
+            char*     tagstr = new char[len + 1]; // TODO(CK): use std::array<char>
             memcpy(tagstr, (char*)tag.data(), len);
-            tagstr[len] = 0;              // OK, CK
+            tagstr[len] = 0;                      // OK, CK
 
             if (((SnmpTagList*)cur.get()->get_nth(4))->contains(tagstr))
             {
@@ -300,8 +300,8 @@ bool NotificationOriginator::check_access(
 
     // Check whether trap oid passes filter
     Oidx const             targetOid(Oidx::from_string(paramsStr, false));
-    snmpNotifyFilterEntry* notifyFilterEntry = get_snmp_notify_filter_entry();
-    if (!notifyFilterEntry || !notifyFilterEntry->passes_filter(targetOid, id, vbs, size))
+    snmpNotifyFilterEntry* myNotifyFilterEntry = get_snmp_notify_filter_entry();
+    if (!myNotifyFilterEntry || !myNotifyFilterEntry->passes_filter(targetOid, id, vbs, size))
     {
         LOG_BEGIN(loggerModuleName, INFO_LOG | 2);
         LOG("NotificationOriginator: generate: event did not pass "
@@ -315,17 +315,17 @@ bool NotificationOriginator::check_access(
     OctetStr targetAddress;
     cur.get()->get_nth(1)->get_value(targetAddress);
 
-    snmpTargetParamsEntry* targetParamsEntry = get_snmp_target_params_entry();
-    if (!targetParamsEntry)
+    snmpTargetParamsEntry* myTargetParamsEntry = get_snmp_target_params_entry();
+    if (!myTargetParamsEntry)
     {
         return false;
     }
-    targetParamsEntry->start_synch();
-    MibTableRow* paramsRow = targetParamsEntry->find_index(Oidx::from_string(paramsStr, false));
+    myTargetParamsEntry->start_synch();
+    MibTableRow* paramsRow = myTargetParamsEntry->find_index(Oidx::from_string(paramsStr, false));
 
     if ((!paramsRow) || (paramsRow->get_row_status()->get() != rowActive))
     {
-        targetParamsEntry->end_synch();
+        myTargetParamsEntry->end_synch();
         LOG_BEGIN(loggerModuleName, WARNING_LOG | 3);
         LOG("NotificationOriginator: generate: target addr parameter row not "
             "found.");
@@ -340,7 +340,7 @@ bool NotificationOriginator::check_access(
     paramsRow->get_nth(1)->get_value(securityModel);
     paramsRow->get_nth(3)->get_value(securityLevel);
 
-    targetParamsEntry->end_synch();
+    myTargetParamsEntry->end_synch();
 
     bool accessAllowed = true;
 #ifdef _SNMPv3
@@ -384,11 +384,11 @@ bool NotificationOriginator::check_access(
         return false;
     }
 
-    target                               = nullptr;
-    snmpTargetAddrEntry* targetAddrEntry = get_snmp_target_addr_entry();
-    if (targetAddrEntry)
+    target                                 = nullptr;
+    snmpTargetAddrEntry* myTargetAddrEntry = get_snmp_target_addr_entry();
+    if (myTargetAddrEntry)
     {
-        Address* address = targetAddrEntry->get_address(cur.get());
+        Address* address = myTargetAddrEntry->get_address(cur.get());
         if (address)
         {
 #ifdef _SNMPv3

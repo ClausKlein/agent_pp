@@ -1250,7 +1250,7 @@ MibTable::MibTable(const MibTable& other) : MibEntry(other.oid, other.access)
  */
 MibTable::MibTable(const Oidx& o) : MibEntry(o, NOACCESS)
 {
-    auto* istruc = new index_info[1];
+    auto* istruc = new index_info[1]; // FIXME(CK): prevent this!
 
     istruc[0].min     = 0;
     istruc[0].max     = 127;
@@ -1268,7 +1268,7 @@ MibTable::MibTable(const Oidx& o) : MibEntry(o, NOACCESS)
  */
 MibTable::MibTable(const Oidx& o, int ilen) : MibEntry(o, NOACCESS)
 {
-    auto* istruc = new index_info[1];
+    auto* istruc = new index_info[1]; // FIXME(CK): prevent this!
 
     istruc[0].type = sNMP_SYNTAX_OID;
     if (ilen > 0)
@@ -1305,7 +1305,7 @@ MibTable::MibTable(const Oidx& o, int ilen) : MibEntry(o, NOACCESS)
  */
 MibTable::MibTable(const Oidx& o, int ilen, bool a) : MibEntry(o, NOACCESS)
 {
-    auto* istruc = new index_info[1];
+    auto* istruc = new index_info[1]; // FIXME(CK): prevent this!
 
     istruc[0].type = sNMP_SYNTAX_OID;
     if (ilen > 0)
@@ -2745,7 +2745,7 @@ void MibTable::remove_obsolete_rows(OrderedList<Oidx>& confirmed_rows)
  */
 void MibTable::remove_unused_rows()
 {
-    start_synch();
+    Lock start_synch(*this);
     if ((row_status) && (!(row_timeout.in_time())))
     {
         OrderedListCursor<MibTableRow> cur;
@@ -2800,7 +2800,6 @@ void MibTable::remove_unused_rows()
         }
         notready_rows.clear();
     }
-    end_synch();
 }
 
 /**
@@ -2826,7 +2825,7 @@ void MibTable::remove_unused_rows()
  */
 void MibTable::get_contents(Vbx**& contents, int& rows, int& cols, int discriminator)
 {
-    start_synch();
+    Lock start_synch(*this);
     if (!contents)
     {
         rows     = content.size();
@@ -2844,9 +2843,9 @@ void MibTable::get_contents(Vbx**& contents, int& rows, int& cols, int discrimin
             cur.get()->get_vblist(contents[n++], cols);
         }
     }
-    end_synch();
 }
 
+#if 0
 /**
  * Return all (active) rows as a list of pointers to the
  * corresponding MibTableRow instances. If the receiver table
@@ -2855,7 +2854,6 @@ void MibTable::get_contents(Vbx**& contents, int& rows, int& cols, int discrimin
  * @note Don't use this method for tables where rows are deleted,
  *       because you only get references, that then may point to
  *       nowhere.
- *
  *
  * @param discriminator
  *    if the receiver table has a snmpRowStatus, the discriminator
@@ -2867,7 +2865,6 @@ List<MibTableRow>* MibTable::get_rows(int discriminator)
 {
     OidListCursor<MibTableRow> cur;
     auto*                      list = new List<MibTableRow>;
-
     for (cur.init(&content); cur.get(); cur.next())
     {
         snmpRowStatus* status = cur.get()->get_row_status();
@@ -2878,6 +2875,7 @@ List<MibTableRow>* MibTable::get_rows(int discriminator)
     }
     return list;
 }
+#endif
 
 /**
  * Return all (active) rows as a list of pointers to the
@@ -2903,7 +2901,7 @@ List<MibTableRow>* MibTable::get_rows_cloned(int discriminator)
 
 List<MibTableRow>* MibTable::get_rows_cloned(const Oidx* prefix, int discriminator)
 {
-    start_synch();
+    Lock                       start_synch(*this);
     OidListCursor<MibTableRow> cur;
     auto*                      list = new List<MibTableRow>();
     for (cur.init(&content); cur.get(); cur.next())
@@ -2915,7 +2913,6 @@ List<MibTableRow>* MibTable::get_rows_cloned(const Oidx* prefix, int discriminat
             list->add(new MibTableRow(*cur.get()));
         }
     }
-    end_synch();
     return list;
 }
 

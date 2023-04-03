@@ -54,7 +54,9 @@ using namespace Agentpp;
 
 // globals:
 
+#ifndef _NO_LOGGING
 static const char* loggerModuleName = "agent++.proxy_forwarder";
+#endif
 
 unsigned short port;
 Mib*           mib;

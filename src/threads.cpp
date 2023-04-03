@@ -297,6 +297,7 @@ bool Synchronized::wait(long timeout)
             LOG(err);
             LOG_END;
 
+            [[fallthrough]];
         case ETIMEDOUT: timeoutOccurred = true; break;
 
         default:
@@ -1459,6 +1460,7 @@ void LockQueue::run()
         LOG("LockQueue: waiting for next event (pending)");
         LOG(pending);
         LOG_END;
+        (void)pending;
 
         // do not wait forever because we cannot
         // be sure that all instrumentation code notifies

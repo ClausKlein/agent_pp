@@ -170,7 +170,7 @@ void MibEntry::load_from_file(const char* fname)
     size = AgentTools::file_size(f);
     if (size > 0)
     {
-        buf   = new char[size + 1];
+        buf   = new char[size + 1]; // TODO(CK): use std::array<char>
         bytes = fread(buf, sizeof(char), size, f);
         if (bytes != size)
         {

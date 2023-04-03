@@ -140,7 +140,7 @@ int nlmConfigGlobalEntryLimit::set(const Vbx& vb)
     return MibLeaf::set(vb);
 }
 
-bool nlmConfigGlobalEntryLimit::value_ok(const Vbx& vb)
+bool nlmConfigGlobalEntryLimit::value_ok(const Vbx& /*vb*/)
 {
     //--AgentGen BEGIN=nlmConfigGlobalEntryLimit::value_ok
     //--AgentGen END
@@ -211,7 +211,7 @@ int nlmConfigGlobalAgeOut::set(const Vbx& vb)
     return MibLeaf::set(vb);
 }
 
-bool nlmConfigGlobalAgeOut::value_ok(const Vbx& vb)
+bool nlmConfigGlobalAgeOut::value_ok(const Vbx& /*vb*/)
 {
     //--AgentGen BEGIN=nlmConfigGlobalAgeOut::value_ok
     //--AgentGen END
@@ -382,7 +382,7 @@ int nlmConfigLogEntryLimit::set(const Vbx& vb)
     return MibLeaf::set(vb);
 }
 
-bool nlmConfigLogEntryLimit::value_ok(const Vbx& vb)
+bool nlmConfigLogEntryLimit::value_ok(const Vbx& /*vb*/)
 {
     //--AgentGen BEGIN=nlmConfigLogEntryLimit::value_ok
     //--AgentGen END
@@ -842,7 +842,7 @@ nlmConfigLogEntry::~nlmConfigLogEntry()
     //--AgentGen END
 }
 
-void nlmConfigLogEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmConfigLogEntry::row_added(MibTableRow* /*row*/, const Oidx& /*index*/, MibTable* /*src*/)
 {
     // The row 'row' with 'index' has been added to the table.
 
@@ -850,7 +850,7 @@ void nlmConfigLogEntry::row_added(MibTableRow* row, const Oidx& index, MibTable*
     //--AgentGen END
 }
 
-void nlmConfigLogEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmConfigLogEntry::row_delete(MibTableRow* /*row*/, const Oidx& /*index*/, MibTable* /*src*/)
 {
     // The row 'row' with 'index' will be deleted.
 
@@ -858,7 +858,7 @@ void nlmConfigLogEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable
     //--AgentGen END
 }
 
-void nlmConfigLogEntry::row_init(MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmConfigLogEntry::row_init(MibTableRow* /*row*/, const Oidx& /*index*/, MibTable* /*src*/)
 {
     // The row 'row' with 'index' has been initialized.
 
@@ -915,7 +915,7 @@ nlmStatsLogEntry::~nlmStatsLogEntry()
     //--AgentGen END
 }
 
-void nlmStatsLogEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmStatsLogEntry::row_added(MibTableRow* /*row*/, const Oidx& index, MibTable* src)
 {
     // The row 'row' with 'index' has been added to the table.
 
@@ -927,7 +927,7 @@ void nlmStatsLogEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* 
     //--AgentGen END
 }
 
-void nlmStatsLogEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmStatsLogEntry::row_delete(MibTableRow* /*row*/, const Oidx& index, MibTable* src)
 {
     // The row 'row' with 'index' will be deleted.
 
@@ -939,7 +939,7 @@ void nlmStatsLogEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable*
     //--AgentGen END
 }
 
-void nlmStatsLogEntry::row_init(MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmStatsLogEntry::row_init(MibTableRow* /*row*/, const Oidx& index, MibTable* src)
 {
     // The row 'row' with 'index' has been intialized.
 
@@ -1050,7 +1050,7 @@ void nlmLogEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable* src)
     //--AgentGen END
 }
 
-void nlmLogEntry::row_init(MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmLogEntry::row_init(MibTableRow* /*row*/, const Oidx& index, MibTable* src)
 {
     // The row 'row' with 'index' has been initialized.
 
@@ -1366,7 +1366,7 @@ nlmLogVariableEntry::~nlmLogVariableEntry()
     //--AgentGen END
 }
 
-void nlmLogVariableEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmLogVariableEntry::row_added(MibTableRow* /*row*/, const Oidx& /*index*/, MibTable* /*src*/)
 {
     // The row 'row' with 'index' has been added to the table.
 
@@ -1374,7 +1374,7 @@ void nlmLogVariableEntry::row_added(MibTableRow* row, const Oidx& index, MibTabl
     //--AgentGen END
 }
 
-void nlmLogVariableEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmLogVariableEntry::row_delete(MibTableRow* /*row*/, const Oidx& index, MibTable* src)
 {
     // The row 'row' with 'index' will be deleted.
 
@@ -1393,7 +1393,7 @@ void nlmLogVariableEntry::row_delete(MibTableRow* row, const Oidx& index, MibTab
     //--AgentGen END
 }
 
-void nlmLogVariableEntry::row_init(MibTableRow* row, const Oidx& index, MibTable* src)
+void nlmLogVariableEntry::row_init(MibTableRow* /*row*/, const Oidx& /*index*/, MibTable* /*src*/)
 {
     // The row 'row' with 'index' has been initialized.
 

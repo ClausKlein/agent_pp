@@ -377,7 +377,7 @@ int agentppTestSparseCol1::set(const Vbx& vb)
     return MibLeaf::set(vb);
 }
 
-bool agentppTestSparseCol1::value_ok(const Vbx& vb)
+bool agentppTestSparseCol1::value_ok(const Vbx& /*vb*/)
 {
     //--AgentGen BEGIN=agentppTestSparseCol1::value_ok
     //--AgentGen END
@@ -468,7 +468,7 @@ int agentppTestSparseCol2::set(const Vbx& vb)
     return MibLeaf::set(vb);
 }
 
-bool agentppTestSparseCol2::value_ok(const Vbx& vb)
+bool agentppTestSparseCol2::value_ok(const Vbx& /*vb*/)
 {
     //--AgentGen BEGIN=agentppTestSparseCol2::value_ok
     //--AgentGen END
@@ -559,7 +559,7 @@ int agentppTestSparseCol3::set(const Vbx& vb)
     return MibLeaf::set(vb);
 }
 
-bool agentppTestSparseCol3::value_ok(const Vbx& vb)
+bool agentppTestSparseCol3::value_ok(const Vbx& /*vb*/)
 {
     //--AgentGen BEGIN=agentppTestSparseCol3::value_ok
     //--AgentGen END

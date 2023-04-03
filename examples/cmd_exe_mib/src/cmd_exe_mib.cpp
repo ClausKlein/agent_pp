@@ -24,6 +24,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <snmp_pp/log.h>
+#include <string>
 
 #ifdef SNMP_PP_NAMESPACE
 using namespace Snmp_pp;
@@ -34,7 +35,9 @@ namespace Agentpp
 {
 #endif
 
+#ifndef _NO_LOGGING
 static const char* loggerModuleName = "agent++.cmd_exe_mib";
+#endif
 
 void CmdThread::run()
 {
@@ -42,9 +45,13 @@ void CmdThread::run()
     LOG("CmdExeMib: starting command thread");
     LOG_END;
 
-    auto*    row = (MibTableRow*)row_ptr;
-    OctetStr cmdline;
+    auto*    row = row_ptr;
+    OctetStr fname;
+    fname += Mib::instance->get_persistent_objects_path();
+    fname += "exec_output.";
+    fname += row->get_index().get_printable();
 
+    OctetStr cmdline;
     {
         Lock tmp(*cmdExecutionCmdEntry::instance);
 
@@ -53,9 +60,10 @@ void CmdThread::run()
         ((cmdExecutionCmdStatus*)row->get_nth(1))->set_state(2); // running
         ((cmdExecutionCmdRunTime*)row->get_nth(2))->start();
 
-        cmdExecutionCmdConfigEntry::instance->start_synch();
-        cmdline = cmdExecutionCmdConfigEntry::instance->get_command_line(cmd);
-        cmdExecutionCmdConfigEntry::instance->end_synch();
+        {
+            Lock lock(*cmdExecutionCmdConfigEntry::instance);
+            cmdline = cmdExecutionCmdConfigEntry::instance->get_command_line(cmd);
+        }
 
         if (cmdline.len() == 0)
         {
@@ -69,9 +77,7 @@ void CmdThread::run()
         }
 
         cmdline += " > ";
-        cmdline += Mib::instance->get_persistent_objects_path();
-        cmdline += "exec_output.";
-        cmdline += row->get_index().get_printable();
+        cmdline += fname;
 
         LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
         LOG("Execution command (cmdline)");
@@ -80,7 +86,6 @@ void CmdThread::run()
     }
 
     int const err = system(cmdline.get_printable()); // NOLINT(cert-env33-c)
-
     {
         Lock tmp(*cmdExecutionCmdEntry::instance);
         ((cmdExecutionCmdStatus*)row->get_nth(1))->set_state((err != 0) ? 4 : 3); // error or finished
@@ -93,11 +98,6 @@ void CmdThread::run()
     FILE*   f    = nullptr;
     char*   buf  = nullptr;
     int32_t size = 0, bytes = 0;
-
-    OctetStr fname;
-    fname += Mib::instance->get_persistent_objects_path();
-    fname += "exec_output.";
-    fname += row->get_index().get_printable();
 
     if ((f = fopen(fname.get_printable(), "r")) == nullptr)
     {
@@ -119,20 +119,20 @@ void CmdThread::run()
             char*   nl  = buf;
             while ((ptr < buf + size) && (nl))
             {
-                nl         = strchr(ptr, '\n');
                 auto* line = new OctetStr();
+
+                nl = strchr(ptr, '\n');
                 if (nl == nullptr)
                 {
                     *line = ptr;
                 }
                 else
                 {
-                    char* l = new char[nl - ptr + 1];
-                    strncpy(l, ptr, nl - ptr);
-                    l[nl - ptr] = 0; // OK, CK
-                    *line       = l;
-                    ptr         = nl + 1;
+                    std::string l(ptr, nl - 1);
+                    *line = l.data();
+                    ptr   = nl + 1;
                 }
+
                 Oidx index(row->get_index());
                 index += i;
                 i++;
@@ -186,7 +186,7 @@ int cmdExecutionCmdConfigLine::set(const Vbx& vb)
     return MibLeaf::set(vb);
 }
 
-bool cmdExecutionCmdConfigLine::value_ok(const Vbx& vb)
+bool cmdExecutionCmdConfigLine::value_ok(const Vbx& /*vb*/)
 {
     // place code to check validity of new values here
     return true;
@@ -249,14 +249,15 @@ int cmdExecutionCmdName::set(const Vbx& vb)
     OctetStr name;
 
     vb.get_value(name);
-    if (!cmdExecutionCmdConfigEntry::instance->contains(Oidx::from_string(name)))
+    if (!cmdExecutionCmdConfigEntry::instance->contains(
+            Oidx::from_string(name))) // NOTE: withLength == true
     {
         return SNMP_ERROR_INCONSIST_VAL;
     }
     return MibLeaf::set(vb);
 }
 
-bool cmdExecutionCmdName::value_ok(const Vbx& vb) { return true; }
+bool cmdExecutionCmdName::value_ok(const Vbx& /*vb*/) { return true; }
 
 /**
  *  cmdExecutionCmdStatus
@@ -486,20 +487,22 @@ bool cmdExecutionCmdConfigEntry::deserialize(char* buf, int& sz)
     bool const b = MibTable::deserialize(buf, sz);
     if (!b)
     {
-        add_row("2.108.115");       // NOTE: "ls" with implied length! CK
+        add_row("2.108.115");       // NOTE: "ls" with firts element as length! CK
         set_row(0, "ls -la", 3, 1); // add active row(0)
     }
 
     return b;
 }
 
-void cmdExecutionCmdConfigEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* t)
+void cmdExecutionCmdConfigEntry::row_added(
+    MibTableRow* /*row*/, const Oidx& /*index*/, MibTable* /*t*/)
 {
     // The row 'row' with 'index' has been added to the table.
     // Place any necessary actions here.
 }
 
-void cmdExecutionCmdConfigEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable* t)
+void cmdExecutionCmdConfigEntry::row_delete(
+    MibTableRow* /*row*/, const Oidx& /*index*/, MibTable* /*t*/)
 {
     // The row 'row' with 'index' will be deleted.
     // Place any necessary actions here.
@@ -534,7 +537,7 @@ bool cmdExecutionCmdConfigEntry::contains(const Oidx& index)
 OctetStr cmdExecutionCmdConfigEntry::get_command_line(const OctetStr& command)
 {
     OctetStr                   cmdline;
-    Oidx const                 index(Oidx::from_string(command));
+    Oidx const                 index(Oidx::from_string(command)); // NOTE: withLength == true
     OidListCursor<MibTableRow> cur;
 
     for (cur.init(&content); cur.get(); cur.next())
@@ -580,13 +583,13 @@ cmdExecutionCmdEntry::~cmdExecutionCmdEntry()
     instance = nullptr;
 }
 
-void cmdExecutionCmdEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* t)
+void cmdExecutionCmdEntry::row_added(MibTableRow* /*row*/, const Oidx& /*index*/, MibTable* /*t*/)
 {
     // The row 'row' with 'index' has been added to the table.
     // Place any necessary actions here.
 }
 
-void cmdExecutionCmdEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable* t)
+void cmdExecutionCmdEntry::row_delete(MibTableRow* /*row*/, const Oidx& /*index*/, MibTable* /*t*/)
 {
     // The row 'row' with 'index' will be deleted.
     // Place any necessary actions here.
@@ -610,13 +613,13 @@ cmdExecutionOutputEntry::cmdExecutionOutputEntry() : MibTable("1.3.6.1.4.1.4976.
 
 cmdExecutionOutputEntry::~cmdExecutionOutputEntry() { instance = nullptr; }
 
-void cmdExecutionOutputEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* t)
+void cmdExecutionOutputEntry::row_added(MibTableRow* /*row*/, const Oidx& /*index*/, MibTable* /*t*/)
 {
     // The row 'row' with 'index' has been added to the table.
     // Place any necessary actions here.
 }
 
-void cmdExecutionOutputEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable* t)
+void cmdExecutionOutputEntry::row_delete(MibTableRow* /*row*/, const Oidx& /*index*/, MibTable* /*t*/)
 {
     // The row 'row' with 'index' will be deleted.
     // Place any necessary actions here.

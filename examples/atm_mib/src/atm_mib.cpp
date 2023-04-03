@@ -400,7 +400,7 @@ MibEntryPtr atmInterfaceMyNeighborIpAddress::clone()
     return other;
 }
 
-bool atmInterfaceMyNeighborIpAddress::value_ok(const Vbx& vb)
+bool atmInterfaceMyNeighborIpAddress::value_ok(const Vbx& /*vb*/)
 {
     // place code to check validity of new values here
     return true;
@@ -438,7 +438,7 @@ MibEntryPtr atmInterfaceMyNeighborIfName::clone()
     return other;
 }
 
-bool atmInterfaceMyNeighborIfName::value_ok(const Vbx& vb)
+bool atmInterfaceMyNeighborIfName::value_ok(const Vbx& /*vb*/)
 {
     // place code to check validity of new values here
     return true;
@@ -522,7 +522,7 @@ MibEntryPtr atmInterfaceSubscrAddress::clone()
     return other;
 }
 
-bool atmInterfaceSubscrAddress::value_ok(const Vbx& vb)
+bool atmInterfaceSubscrAddress::value_ok(const Vbx& /*vb*/)
 {
     // place code to check validity of new values here
     return true;
@@ -666,7 +666,7 @@ MibEntryPtr atmTrafficDescrType::clone()
     return other;
 }
 
-bool atmTrafficDescrType::value_ok(const Vbx& vb)
+bool atmTrafficDescrType::value_ok(const Vbx& /*vb*/)
 {
     // place code to check validity of new values here
     return true;
@@ -704,7 +704,7 @@ MibEntryPtr atmTrafficDescrParam1::clone()
     return other;
 }
 
-bool atmTrafficDescrParam1::value_ok(const Vbx& vb)
+bool atmTrafficDescrParam1::value_ok(const Vbx& /*vb*/)
 {
     // place code to check validity of new values here
     return true;
@@ -742,7 +742,7 @@ MibEntryPtr atmTrafficDescrParam2::clone()
     return other;
 }
 
-bool atmTrafficDescrParam2::value_ok(const Vbx& vb)
+bool atmTrafficDescrParam2::value_ok(const Vbx& /*vb*/)
 {
     // place code to check validity of new values here
     return true;
@@ -780,7 +780,7 @@ MibEntryPtr atmTrafficDescrParam3::clone()
     return other;
 }
 
-bool atmTrafficDescrParam3::value_ok(const Vbx& vb)
+bool atmTrafficDescrParam3::value_ok(const Vbx& /*vb*/)
 {
     // place code to check validity of new values here
     return true;
@@ -818,7 +818,7 @@ MibEntryPtr atmTrafficDescrParam4::clone()
     return other;
 }
 
-bool atmTrafficDescrParam4::value_ok(const Vbx& vb)
+bool atmTrafficDescrParam4::value_ok(const Vbx& /*vb*/)
 {
     // place code to check validity of new values here
     return true;
@@ -856,7 +856,7 @@ MibEntryPtr atmTrafficDescrParam5::clone()
     return other;
 }
 
-bool atmTrafficDescrParam5::value_ok(const Vbx& vb)
+bool atmTrafficDescrParam5::value_ok(const Vbx& /*vb*/)
 {
     // place code to check validity of new values here
     return true;

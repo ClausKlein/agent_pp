@@ -42,7 +42,9 @@ using namespace Snmp_pp;
 using namespace Agentpp;
 #endif
 
+#ifndef _NO_LOGGING
 static const char* loggerModuleName = "agent++.dynamic_table";
+#endif
 
 // globals:
 

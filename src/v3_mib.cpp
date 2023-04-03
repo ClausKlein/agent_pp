@@ -587,11 +587,11 @@ void UsmUserTable::initialize_key_change(MibTableRow* row)
         {
             uint32_t const priv_prot = op.last();
 
-            Priv* priv       = usm->get_auth_priv()->get_priv(priv_prot);
-            int   hashlength = 0;
+            Priv* priv      = usm->get_auth_priv()->get_priv(priv_prot);
+            int   keylength = 0;
             if (priv)
             {
-                hashlength = priv->get_min_key_len();
+                keylength = priv->get_min_key_len();
             }
             else
             {
@@ -601,13 +601,13 @@ void UsmUserTable::initialize_key_change(MibTableRow* row)
                 LOG_END;
             }
 
-            ukc8->initialize(hashlength, auth_prot, PRIVKEY, ukc9);
-            ukc9->initialize(hashlength, auth_prot, PRIVKEY, ukc8);
+            ukc8->initialize(keylength, auth_prot, PRIVKEY, ukc9);
+            ukc9->initialize(keylength, auth_prot, PRIVKEY, ukc8);
         }
     }
 }
 
-void UsmUserTable::row_init(MibTableRow* new_row, const Oidx& ind, MibTable* /*t*/)
+void UsmUserTable::row_init(MibTableRow* new_row, const Oidx& /*ind*/, MibTable* /*t*/)
 {
     initialize_key_change(new_row);
     // add user to USM
@@ -660,7 +660,7 @@ void UsmUserTable::row_added(MibTableRow* new_row, const Oidx& ind, MibTable* /*
     ml->set_value(o.as_string());
 }
 
-void UsmUserTable::row_deactivated(MibTableRow* row, const Oidx& ind, MibTable* /*t*/)
+void UsmUserTable::row_deactivated(MibTableRow* row, const Oidx& /*ind*/, MibTable* /*t*/)
 {
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
     LOG("UsmUserTable: deactivated row with index");
@@ -730,7 +730,7 @@ MibTableRow* UsmUserTable::addNewRow(const OctetStr& userName, const OctetStr& s
             LOG(res);
             LOG_END;
         }
-        return false;
+        return nullptr;
     }
 
     // add User into MIB

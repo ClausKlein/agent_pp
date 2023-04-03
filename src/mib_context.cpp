@@ -198,7 +198,7 @@ void MibGroup::load_from_file(const char* fname)
             fclose(f);
             return;
         }
-        buf = new char[sz + 16];
+        buf = new char[sz + 16]; // TODO(CK): use std::array<char>
         memcpy(buf, header, 2 + hlen);
         char* cp = buf + 2 + hlen;
         bytes    = fread(cp, sizeof(char), sz, f);

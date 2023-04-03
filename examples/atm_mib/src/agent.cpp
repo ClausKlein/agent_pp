@@ -49,7 +49,9 @@ using namespace Snmp_pp;
 using namespace Agentpp;
 #endif
 
+#ifndef _NO_LOGGING
 static const char* loggerModuleName = "agent++.atm_mib.agent";
+#endif
 
 // table size policies
 

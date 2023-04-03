@@ -289,7 +289,7 @@ int snmpTargetAddrParams::prepare_set_request(Request* req, int& ind)
     return status;
 }
 
-bool snmpTargetAddrParams::value_ok(const Vbx& vb)
+bool snmpTargetAddrParams::value_ok(const Vbx& /*vb*/)
 {
     // Vbx cvb(vb); // zero length should return wrong length!
     // if (strlen(cvb.get_printable_value()) == 0) return false;
@@ -496,7 +496,7 @@ List<MibTableRow>* snmpTargetAddrEntry::get_rows_cloned_for_tag(const OctetStr& 
     return list;
 }
 
-bool snmpTargetAddrEntry::ready_for_service(Vbx* pvbs, int sz)
+bool snmpTargetAddrEntry::ready_for_service(Vbx* pvbs, int /*sz*/)
 {
     OctetStr params;
 

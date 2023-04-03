@@ -304,7 +304,7 @@ snmpTargetAddrExtEntry* snmpTargetAddrExtEntry::get_instance(Mib* mib)
     return instance;
 }
 
-void snmpTargetAddrExtEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* source)
+void snmpTargetAddrExtEntry::row_added(MibTableRow* /*row*/, const Oidx& index, MibTable* source)
 {
     if (source)
     {
@@ -312,7 +312,7 @@ void snmpTargetAddrExtEntry::row_added(MibTableRow* row, const Oidx& index, MibT
     }
 }
 
-void snmpTargetAddrExtEntry::row_delete(MibTableRow* row, const Oidx& index, MibTable* source)
+void snmpTargetAddrExtEntry::row_delete(MibTableRow* /*row*/, const Oidx& index, MibTable* source)
 {
     if (source)
     {
