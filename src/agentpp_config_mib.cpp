@@ -790,8 +790,8 @@ int agentppCfgStorageEntry::prepare_set_request(Request* req, int& ind)
     return StorageTable::prepare_set_request(req, ind);
 }
 
-int agentppCfgStorageEntry::is_transition_ok(
-    MibTable* table, MibTableRow* row, const Oidx& index, int currentStatus, int requestedStatus)
+int agentppCfgStorageEntry::is_transition_ok(MibTable* /*table*/, MibTableRow* row,
+    const Oidx& /*index*/, int /*currentStatus*/, int requestedStatus)
 {
     // The row 'row' with 'index' from 'table' (which will be 0 for local
     // table) is requested to change status. Accept or deny this state change

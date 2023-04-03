@@ -965,10 +965,12 @@ uint32_t RequestList::get_request_id(const Vbx& vb) TS_SYNCHRONIZED({
      * @param community - A v1 or v2c community string.
      * @return true if the given community is ok, false otherwise.
      */
-    bool RequestList::community_ok(int pdutype, const OctetStr& community)
+    bool RequestList::community_ok(
+        [[maybe_unused]] int pdutype, [[maybe_unused]] const OctetStr& community)
 {
-#ifdef SNMPv3
+#ifndef SNMPv3
     return true;
+#else
     switch (pdutype)
     {
     case sNMP_PDU_SET: {

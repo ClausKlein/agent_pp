@@ -2205,7 +2205,7 @@ bool MibTable::could_ever_be_managed(const Oidx& o, int& result)
  * @param sz - The size of the array.
  * @return true if the specified row is ready to set for service.
  */
-bool MibTable::ready_for_service(Vbx* pvbs, int sz) { return true; }
+bool MibTable::ready_for_service(Vbx* /*pvbs*/, int /*sz*/) { return true; }
 
 /**
  * Check whether the specified row is ready to set in service.
@@ -2700,7 +2700,7 @@ int MibTable::prepare_set_request(Request* req, int& ind)
     }
 }
 
-int MibTable::undo_set_request(Request* req, int& ind)
+int MibTable::undo_set_request(Request* req, int& /*ind*/)
 {
     MibLeaf* o = nullptr;
 
@@ -2721,7 +2721,7 @@ int MibTable::undo_set_request(Request* req, int& ind)
     return result;
 }
 
-void MibTable::cleanup_set_request(Request* req, int& ind)
+void MibTable::cleanup_set_request(Request* req, int& /*ind*/)
 {
     // this method is only called once per MibTable
     // involved in a set request, so we need to

@@ -85,7 +85,7 @@ void OidxPtrEntryPtrMap::clear()
 
 int OidxPtrEntryPtrMap::contains(OidxPtr item) const { return seek(item) != nullptr; }
 
-void OidxPtrEntryPtrMap::error(const char* msg) const
+void OidxPtrEntryPtrMap::error([[maybe_unused]] const char* msg) const
 {
     LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
     LOG("AVLMap");

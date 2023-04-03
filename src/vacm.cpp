@@ -53,7 +53,10 @@ SnmpUnavailableContexts::SnmpUnavailableContexts()
     : MibLeaf(oidSnmpUnavailableContexts, READONLY, new Counter32(0))
 { }
 
-void SnmpUnavailableContexts::incValue() { *((SnmpInt32*)value) = (int32_t)*((SnmpInt32*)value) + 1; }
+void SnmpUnavailableContexts::incValue()
+{
+    *((SnmpInt32*)value) = (int32_t) * ((SnmpInt32*)value) + 1;
+}
 
 SnmpInt32 SnmpUnavailableContexts::getValue() { return *((SnmpInt32*)value); }
 
@@ -61,7 +64,7 @@ SnmpUnknownContexts::SnmpUnknownContexts()
     : MibLeaf(oidSnmpUnknownContexts, READONLY, new Counter32(0))
 { }
 
-void SnmpUnknownContexts::incValue() { *((SnmpInt32*)value) = (int32_t)*((SnmpInt32*)value) + 1; }
+void SnmpUnknownContexts::incValue() { *((SnmpInt32*)value) = (int32_t) * ((SnmpInt32*)value) + 1; }
 
 SnmpInt32 SnmpUnknownContexts::getValue() { return *((SnmpInt32*)value); }
 

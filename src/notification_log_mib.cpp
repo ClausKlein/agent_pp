@@ -1468,7 +1468,7 @@ void nlmLogVariableEntry::add_variable(const Oidx& index, unsigned int i, const 
     case sNMP_SYNTAX_OCTETS: {
         [[fallthrough]];
     }
-    case sNMP_SYNTAX_BITS : {
+    case sNMP_SYNTAX_BITS: {
         r->get_nth(nNlmLogVariableOctetStringVal)->replace_value(vb.clone_value());
         r->get_nth(nNlmLogVariableOctetStringVal)->set_access(READONLY);
         r->get_nth(nNlmLogVariableValueType)->set_value(6);
