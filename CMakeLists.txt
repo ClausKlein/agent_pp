@@ -28,11 +28,11 @@ set(AGENT_PP_NAMESPACE on) # "Enable Namespaces (needed!)" ON)
 
 include(Features.cmake)
 
-option(AGENT_PP_PROXY "Enable Proxy" ON)
-option(AGENT_PP_PROXY_FORWARDER "Enable Proxy Forwarder" ON)
 option(AGENT_PP_AGENPRO "build with AgenPro templates (usually disabled)" OFF)
 option(AGENT_PP_AGENPRO_SIMAGENT "build with AgenPro simagent instead regular templates (usually disabled)" OFF)
-option(AGENT_PP_EXAMPLES "build examples" ON)
+option(AGENT_PP_EXAMPLES "build examples" ${PROJECT_IS_TOP_LEVEL})
+option(AGENT_PP_PROXY "Enable Proxy" ON)
+option(AGENT_PP_PROXY_FORWARDER "Enable Proxy Forwarder" ON)
 option(AGENT_PP_TOOLS "build tools" OFF)
 
 set(VERSION ${PROJECT_VERSION})
@@ -194,6 +194,9 @@ endif()
 
 include(CPM)
 
+CPMAddPackage("gh:aminya/project_options@0.27.1")
+list(APPEND CMAKE_MODULE_PATH ${ProjectOptions_SRC_DIR})
+
 set(SNMP_PP_VERSION 3.4.7)
 option(SNMP_PP_LOGGING "build all libaries with logging" NO)
 # see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.13.beta
@@ -203,9 +206,6 @@ CPMAddPackage(
   GITHUB_REPOSITORY ClausKlein/snmp_pp
   OPTIONS "SNMP_PP_EXAMPLES YES" "CMAKE_SKIP_INSTALL_RULES NO"
 )
-
-CPMAddPackage("gh:aminya/project_options@0.26.3")
-list(APPEND CMAKE_MODULE_PATH ${ProjectOptions_SRC_DIR})
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake_config.h.in config.h)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake_libagent.h.in libagent.h)
@@ -295,10 +295,6 @@ project_options(
   ENABLE_CACHE
   ${ENABLE_COVERAGE}
   ${OPTION_ENABLED_SANITIZER}
-  #XXX ENABLE_SANITIZER_ADDRESS
-  #XXX ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
-  #XXX ENABLE_SANITIZER_THREAD
-  #XXX ENABLE_SANITIZER_MEMORY
   # TODO: WARNINGS_AS_ERRORS
 )
 

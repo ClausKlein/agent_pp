@@ -4,7 +4,6 @@ if(NOT PROJECT_IS_TOP_LEVEL)
   option(CMAKE_SKIP_INSTALL_RULES "Whether to disable generation of installation rules" YES)
 endif()
 
-
 option(USE_OUTPUT_PATH "build all libaries and runtime files at the bin directory" YES)
 if(USE_OUTPUT_PATH)
   set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)

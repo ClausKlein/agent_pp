@@ -9,3 +9,4 @@ configure
 Makefile.in
 include/snmp_pp/config_snmp_pp.h
 include/agent_pp/agent++.h
+compile_commands.json

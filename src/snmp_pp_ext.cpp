@@ -625,7 +625,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
     OctetStr         community;
 
     unsigned char receive_buffer[MAX_SNMP_PACKET];
-    ssize_t       receive_buffer_len = 0; // len of received data
+    int           receive_buffer_len = 0; // len of received data
 
     SnmpMessage snmpmsg;
 
