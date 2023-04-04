@@ -22,10 +22,9 @@
 
 #include <agent_pp/snmp_textual_conventions.h>
 #include <agent_pp/system_group.h>
+#include <algorithm> // std::min
 #include <libagent.h>
 #include <snmp_pp/log.h>
-
-#include <algorithm> // std::min
 
 #ifdef AGENTPP_NAMESPACE
 using namespace Agentpp;
@@ -209,7 +208,7 @@ OctetStr SnmpEngineID::create_engine_id(unsigned short p)
     char             hname[LEN];
     if (gethostname(hname, LEN) == 0)
     {
-        OctetStr const host((unsigned char*)hname, std::min(strlen(hname), MAX_LEN));
+        OctetStr const host((const unsigned char*)hname, std::min(strlen(hname), MAX_LEN));
         engineID += OctetStr(host);
         engineID += OctetStr(port, 2);
     }
@@ -217,7 +216,7 @@ OctetStr SnmpEngineID::create_engine_id(unsigned short p)
     {
         time_t const   ct = time(nullptr);
         char*          tp = ctime(&ct); // TODO(CK): use ctime_s()!
-        OctetStr const t((unsigned char*)tp, std::min(strlen(hname), MAX_LEN));
+        OctetStr const t((const unsigned char*)tp, std::min(strlen(hname), MAX_LEN));
         engineID += t;
         engineID += OctetStr(port, 2);
     }

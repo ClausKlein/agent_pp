@@ -73,8 +73,8 @@ public:
 
     void get_request(Request* /*unused*/, int /*unused*/) override;
 
-    static unsigned int get();
-    static time_t       get_currentTime();
+    static uint32_t get();
+    static time_t   get_currentTime();
 
     bool is_volatile() override { return true; }
 

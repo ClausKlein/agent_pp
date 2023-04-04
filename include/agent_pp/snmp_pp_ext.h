@@ -339,9 +339,9 @@ public:
 
         if (withLength)
         {
-            oid += (long)str.len();
+            oid += str.len();
         }
-        for (unsigned int i = 0; i < str.len(); i++) { oid += (long)str[i]; }
+        for (unsigned int i = 0; i < str.len(); i++) { oid += str[i]; }
         return oid;
     }
 

@@ -1681,8 +1681,8 @@ int MibTable::set_value(Request* req, int reqind)
         // check whether row can now be set active
         if (row_status)
         {
-            Oidx const   ind(index(tmpoid));
-            MibTableRow* row = find_index(ind);
+            Oidx const   myind(index(tmpoid));
+            MibTableRow* row = find_index(myind);
             // check for status upgrade only if it is nessesary
             if (get_row_status(row) == rowNotReady)
             {
@@ -2581,10 +2581,10 @@ int MibTable::check_creation(Request* req, int& ind)
         // set the row values
         for (i = 0; i < rowsize; i++)
         {
-            MibLeaf* col = new_row->get_nth(i);
+            MibLeaf* mycol = new_row->get_nth(i);
             if (fulfilled[i])
             {
-                col->replace_value(pvbs[i].clone_value());
+                mycol->replace_value(pvbs[i].clone_value());
             }
         }
         if (!ready(pvbs, rowsize, new_row))

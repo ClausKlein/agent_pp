@@ -61,7 +61,7 @@ time_t sysUpTime::get_currentTime()
     return now;
 }
 
-unsigned int sysUpTime::get()
+uint32_t sysUpTime::get()
 {
 #ifdef HAVE_CLOCK_GETTIME
     struct timespec tsp = {};

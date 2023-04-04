@@ -26,9 +26,7 @@ set(CNF_STDCXX_98_HEADERS YES)
 set(HAVE_INTTYPES_H YES)
 set(AGENT_PP_NAMESPACE on) # "Enable Namespaces (needed!)" ON)
 
-if(NOT PROJECT_IS_TOP_LEVEL)
-  option(CMAKE_SKIP_INSTALL_RULES "Whether to disable generation of installation rules" YES)
-endif()
+include(Features.cmake)
 
 option(AGENT_PP_PROXY "Enable Proxy" ON)
 option(AGENT_PP_PROXY_FORWARDER "Enable Proxy Forwarder" ON)
@@ -191,13 +189,6 @@ if(CNF_HAVE_PTHREAD_H)
   check_function_exists(pthread_mutex_timedlock HAVE_PTHREAD_MUTEX_TIMEDLOCK)
 endif()
 
-option(USE_OUTPUT_PATH "build all libaries and runtime files at the bin directory" YES)
-if(USE_OUTPUT_PATH)
-  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-endif()
-
 # ---- Add dependencies via CPM ----
 # see https://github.com/cpm-cmake/CPM.cmake for more info
 
@@ -208,7 +199,7 @@ option(SNMP_PP_LOGGING "build all libaries with logging" NO)
 # see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.13.beta
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG 0981f30ae87f0f870f6af80468681b9fe7c309a8 # VERSION ${SNMP_PP_VERSION}.13
+  GIT_TAG 4e53d61fdcdee7ff4781e9c256c5e38ddcad0dd5 # VERSION ${SNMP_PP_VERSION}.13
   GITHUB_REPOSITORY ClausKlein/snmp_pp
   OPTIONS "SNMP_PP_EXAMPLES YES" "CMAKE_SKIP_INSTALL_RULES NO"
 )
@@ -297,37 +288,6 @@ set(MY_SRC_FILES
     src/v3_mib.cpp
     src/vacm.cpp
 )
-
-option(BUILD_SHARED_LIBS "Global flag to cause add_library() to create shared libraries if on." YES)
-
-if(APPLE)
-  set(OPTION_ENABLED_SANITIZER
-      "ENABLE_SANITIZER_ADDRESS; ENABLE_SANITIZER_UNDEFINED_BEHAVIOR"
-      CACHE STRING "Enabled sanitizer for debug build"
-  )
-else()
-  set(OPTION_ENABLED_SANITIZER
-      "ENABLE_SANITIZER_MEMORY"
-      CACHE STRING "Enabled sanitizer for debug build"
-  )
-endif()
-option(OPTION_ENABLE_COVERAGE "Enable test coverage of projects" OFF)
-if(OPTION_ENABLE_COVERAGE)
-  set(ENABLE_COVERAGE "ENABLE_COVERAGE")
-endif()
-
-if(SNMP_PP_LOGGING)
-  set(OPTION_ENABLE_UNITY
-      OFF
-      CACHE STRING "forced" FORCE
-  )
-else()
-  option(OPTION_ENABLE_UNITY "Enable Unity builds of projects" ON)
-endif()
-
-if(OPTION_ENABLE_UNITY)
-  set(ENABLE_UNITY "ENABLE_UNITY")
-endif()
 
 project_options(
   PREFIX
@@ -423,7 +383,6 @@ endmacro()
 
 set(EXE_BASE_DIRS)
 
-option(BUILD_TESTING "Enable testing support" ${PROJECT_IS_TOP_LEVEL})
 if(BUILD_TESTING)
   enable_testing()
   add_subdirectory(tests)

@@ -625,7 +625,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
     OctetStr         community;
 
     unsigned char receive_buffer[MAX_SNMP_PACKET];
-    long          receive_buffer_len = 0; // len of received data
+    ssize_t       receive_buffer_len = 0; // len of received data
 
     SnmpMessage snmpmsg;
 
@@ -743,8 +743,8 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
         {
             fromlen = sizeof(from_addr);
             do {
-                receive_buffer_len = (long)recvfrom(iv_snmp_session, (char*)receive_buffer,
-                    MAX_SNMP_PACKET, 0, (struct sockaddr*)&from_addr, &fromlen);
+                receive_buffer_len = recvfrom(iv_snmp_session, (char*)receive_buffer, MAX_SNMP_PACKET,
+                    0, (struct sockaddr*)&from_addr, &fromlen);
             } while (receive_buffer_len < 0 && EINTR == errno);
 
             if (receive_buffer_len <= 0) // error or no data pending
@@ -770,7 +770,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             OctetStr security_name;
             SmiINT32 security_model = 0;
 
-            int status = snmpmsg.load(receive_buffer, receive_buffer_len);
+            int status = snmpmsg.load(receive_buffer, (uint32_t)receive_buffer_len);
             if (status != SNMP_CLASS_SUCCESS)
             {
                 return status;
@@ -859,7 +859,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
                 fromaddr.get_port());
             debughexprintf(5, receive_buffer, receive_buffer_len);
 
-            int status = snmpmsg.load(receive_buffer, receive_buffer_len);
+            int status = snmpmsg.load(receive_buffer, (uint32_t)receive_buffer_len);
             if (status != SNMP_CLASS_SUCCESS)
             {
                 return status;

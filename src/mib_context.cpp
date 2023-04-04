@@ -128,10 +128,10 @@ void MibGroup::clearAll() { content.clearAll(); }
 
 void MibGroup::load_from_file(const char* fname)
 {
-    FILE* f    = nullptr;
-    char* buf  = nullptr;
-    long  size = 0, bytes = 0;
-    char  header[16];
+    FILE*  f    = nullptr;
+    char*  buf  = nullptr;
+    size_t size = 0, bytes = 0;
+    char   header[16];
 
     if ((f = fopen(fname, "rb")) == nullptr)
     {
