@@ -440,7 +440,7 @@ int main(int argc, char* argv[])
     NotificationOriginator no;
     // add an example destination
     UdpAddress const dest("127.0.0.1/162");
-    no.add_v1_trap_destination(dest, "defaultV1Trap", "v1trap", "public");
+    no.add_v2_trap_destination(dest, "defaultV2Trap", "v2trap", "public");
     // send the notification
     mib->notify("", coldOid, vbs, 0);
 

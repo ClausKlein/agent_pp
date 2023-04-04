@@ -669,7 +669,7 @@ void UsmUserTable::row_added(MibTableRow* new_row, const Oidx& ind, MibTable* /*
     ml->set_value(o.as_string());
 }
 
-void UsmUserTable::row_deactivated(MibTableRow* row, const Oidx& /*ind*/, MibTable* /*t*/)
+void UsmUserTable::row_deactivated(MibTableRow* row, [[maybe_unused]] const Oidx& ind, MibTable* /*t*/)
 {
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
     LOG("UsmUserTable: deactivated row with index");

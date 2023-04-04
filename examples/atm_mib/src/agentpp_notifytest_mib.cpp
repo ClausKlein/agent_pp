@@ -98,7 +98,7 @@ bool agentppNotifyTest::value_ok(const Vbx& vb)
     int32_t v = 0;
 
     vb.get_value(v);
-    if ((v != 1))
+    if ((v != e_agentppNotifyTestAllTypes))
     {
         return false;
     }

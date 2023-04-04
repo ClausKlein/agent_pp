@@ -64,6 +64,7 @@ ${test_app} 127.0.0.1 get || echo OK
 snmpget -v2c -c public localhost:4700 agentppNotifyTest.0 && snmpset -v2c -c public localhost:4700 agentppNotifyTest.0 = 1 || echo OK
 
 test "${test_name}" == "cmd_exe_mib" && ${dir_name}/${test_name}.sh
+test "${test_name}" == "atm_mib" && ${dir_name}/snmp_notifyfiltertest.sh
 
 kill -s TERM %%
 wait %%
