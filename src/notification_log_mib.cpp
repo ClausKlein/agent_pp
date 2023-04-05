@@ -59,7 +59,8 @@ void nlmConfigLogOperStatus::get_request(Request* req, int ind)
 {
     uint32_t l = 1; // disabled(1)
 
-    if (((nlmConfigLogAdminStatus*)my_row->get_nth(nNlmConfigLogAdminStatus))->get_state() == nlmConfigLogAdminStatus::e_enabled)
+    if (((nlmConfigLogAdminStatus*)my_row->get_nth(nNlmConfigLogAdminStatus))->get_state()
+        == nlmConfigLogAdminStatus::e_enabled)
     {
         OctetStr const         f(((nlmConfigLogFilterName*)my_row->get_nth(0))->get_state());
         Oidx const             index(Oidx::from_string(f, true));
@@ -71,11 +72,11 @@ void nlmConfigLogOperStatus::get_request(Request* req, int ind)
             assert(r != nullptr);
             if (r->size() > 0)
             {
-                l = 2;  // operational(2)
+                l = 2; // operational(2)
             }
             else
             {
-                l = 3;  // noFilter(3)
+                l = 3; // noFilter(3)
             }
             delete r;
         }
@@ -833,13 +834,13 @@ nlmConfigLogEntry::nlmConfigLogEntry(Mib* _mib)
     add_col(new nlmConfigLogFilterName(colNlmConfigLogFilterName));
     add_col(new nlmConfigLogEntryLimit(colNlmConfigLogEntryLimit));
     add_col(new nlmConfigLogAdminStatus(colNlmConfigLogAdminStatus));
-    //XXX add_col(new nlmConfigLogOperStatus(colNlmConfigLogOperStatus));
+    // XXX add_col(new nlmConfigLogOperStatus(colNlmConfigLogOperStatus));
     add_col(new MibLeaf(colNlmConfigLogOperStatus, READONLY, new SnmpInt32(2)));
     add_storage_col(new nlmConfigLogStorageType(colNlmConfigLogStorageType));
     add_col(new nlmConfigLogEntryStatus(colNlmConfigLogEntryStatus));
 
     //--AgentGen BEGIN=nlmConfigLogEntry::nlmConfigLogEntry
-    //XXX replace_col(nNlmConfigLogOperStatus, new nlmConfigLogOperStatus(colNlmConfigLogOperStatus));
+    // XXX replace_col(nNlmConfigLogOperStatus, new nlmConfigLogOperStatus(colNlmConfigLogOperStatus));
 
     // NOTE: this is the hidden row HACK! CK
     // create an hidden row at nNlmConfigLogEntryStatus + 1! CK
@@ -1166,10 +1167,6 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, con
         address += (udpAddress->get_port() & 0x00FF);
         delete udpAddress;
     }
-    else
-    {
-        return;
-    }
 
     LOG_BEGIN(loggerModuleName, EVENT_LOG | 5);
     LOG("NotificationLog: Logging (target)(oid)(vbs)");
@@ -1203,7 +1200,8 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, con
         // check filter
         snmpNotifyFilterEntry* snmpNotifyFilterEntry = snmpNotifyFilterEntry::get_instance(mib);
         assert(snmpNotifyFilterEntry != nullptr);
-        if ((profileName.len() == 0) && ((snmpNotifyFilterEntry)
+        if ((profileName.len() == 0)
+            && ((snmpNotifyFilterEntry)
                 && (!snmpNotifyFilterEntry->passes_filter(
                     Oidx::from_string(profileName, true), nid, vbs, vbcount))))
         {
@@ -1211,13 +1209,13 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, con
         }
 
         // OK, now log the notification
-        uint32_t l  = 0;
         Vbx*     vb = logIndexes.find(cur.get()->key());
         if (!vb)
         {
             continue;
         }
 
+        uint32_t l  = 0;
         vb->get_value(l);
         Oidx newIndex(cur.get()->get_index());
         newIndex += ++l;
