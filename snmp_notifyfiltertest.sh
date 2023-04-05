@@ -15,27 +15,31 @@ set -u
 ##############################################################
 
 snmpset ${SNMP_HOST} snmpNotifyFilterProfileRowStatus.${myindex} = destroy || echo ignored
-snmpset ${SNMP_HOST} snmpNotifyFilterProfileRowStatus.\'defaultV2Trap\' = destroy || echo ignored
-snmpset ${SNMP_HOST} snmpNotifyFilterRowStatus.${myindex}.1.3.6.1.4.1.59999.33.1.3.1.2.1.2.2 = destroy || echo ignored
+snmpset ${SNMP_HOST} snmpNotifyFilterProfileRowStatus."'snmpd'" = destroy || echo ignored
+snmpset ${SNMP_HOST} snmpNotifyFilterRowStatus.${myindex}.1.3.6.1.2.1.4.21.1 = destroy || echo ignored
 snmpset ${SNMP_HOST} NOTIFICATION-LOG-MIB::nlmConfigLogEntryStatus.\"testGroup\" = destroy || echo ignored
 
-snmpset ${SNMP_HOST} snmpNotifyFilterProfileRowStatus.\'defaultV2Trap\' = createAndWait \
-    snmpNotifyFilterProfileName.\'defaultV2Trap\' = ${myindex} \
-    snmpNotifyFilterStorageType.\'defaultV2Trap\' = nonVolatile \
-    snmpNotifyFilterProfileRowStatus.\'defaultV2Trap\' = active || echo Error ignored
 
 ##############################################################
-# MgmtMaxSize.Log NOT allowed!
+# RFC1213-MIB::ipRouteTable excluded:
 ##############################################################
-snmpset ${SNMP_HOST} snmpNotifyFilterRowStatus.${myindex}.2.3.6.1.4.1.59999.33.1.3.1.2.1.2.2 = createAndWait \
-    snmpNotifyFilterMask.${myindex}.1.3.6.1.4.1.59999.33.1.3.1.2.1.2.2 = fffb \
-    snmpNotifyFilterType.${myindex}.1.3.6.1.4.1.59999.33.1.3.1.2.1.2.2 = excluded \
-    snmpNotifyStorageType.${myindex}.1.3.6.1.4.1.59999.33.1.3.1.2.1.2.2 = nonVolatile \
-    snmpNotifyFilterRowStatus.${myindex}.2.3.6.1.4.1.59999.33.1.3.1.2.1.2.2 = active || echo Error ignored
+# "The Name of the filter profile to be used when generating
+#  notifications using the corresponding entry in the snmpTargetAddrTable."
+# INDEX { IMPLIED snmpTargetParamsName } -> 'snmpd'
+snmpset ${SNMP_HOST} nmpNotifyFilterProfileRowStatus."'snmpd'" = createAndWait \
+    snmpNotifyFilterProfileName."'snmpd'" = "snmpd" \
+    snmpNotifyFilterStorageType."'snmpd'" = nonVolatile \
+    snmpNotifyFilterProfileRowStatus."'snmpd'" = active || echo Error ignored
+
+snmpset ${SNMP_HOST} snmpNotifyFilterRowStatus.${myindex}.1.3.6.1.2.1.4.21.1 = createAndWait \
+    snmpNotifyFilterMask.${myindex}.1.3.6.1.2.1.4.21.1 = fffb \
+    snmpNotifyFilterType.${myindex}.1.3.6.1.2.1.4.21.1 = excluded \
+    snmpNotifyFilterStorageType.${myindex}.1.3.6.1.2.1.4.21.1 = nonVolatile \
+    snmpNotifyFilterRowStatus.${myindex}.1.3.6.1.2.1.4.21.1 = active || echo Error ignored
 
 set -e  # exit on error
 
-############################# must be OK #############################
+############################# following commands must be OK #############################
 
 snmpset ${SNMP_HOST} NOTIFICATION-LOG-MIB::nlmConfigGlobalEntryLimit.0 = 100 \
     NOTIFICATION-LOG-MIB::nlmConfigGlobalAgeOut.0 = 30 # minutes
@@ -44,7 +48,7 @@ snmpwalk ${SNMP_HOST} nlmConfigGlobal
 snmpwalk ${SNMP_HOST} nlmStats
 
 snmpset ${SNMP_HOST} NOTIFICATION-LOG-MIB::nlmConfigLogEntryStatus.\"testGroup\" = createAndWait \
-    NOTIFICATION-LOG-MIB::nlmConfigLogFilterName.\"testGroup\" = ${myindex} \
+    NOTIFICATION-LOG-MIB::nlmConfigLogFilterName.\"testGroup\" = "${myindex}" \
     NOTIFICATION-LOG-MIB::nlmConfigLogEntryLimit.\"testGroup\" = 10 \
     NOTIFICATION-LOG-MIB::nlmConfigLogAdminStatus.\"testGroup\" = enabled \
     NOTIFICATION-LOG-MIB::nlmConfigLogStorageType.\"testGroup\" = nonVolatile \
