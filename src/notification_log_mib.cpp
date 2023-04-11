@@ -845,6 +845,15 @@ nlmConfigLogEntry::nlmConfigLogEntry(Mib* _mib)
     // NOTE: this is the hidden row HACK! CK
     // create an hidden row at nNlmConfigLogEntryStatus + 1! CK
     add_col(new MibLeaf("100", NOACCESS, new OctetStr())); // viewName
+
+    // FIXME: add default nlmConfigLogEntry! CK
+    Oidx index;
+    constexpr uint32_t l{ 0 };
+    index += l;
+    MibTableRow* r = add_row(index);
+    assert(r != nullptr);
+    // NOTE: default config setup: 100 logEntries, noFilter(3), nonVolatile(3), active(1)
+    set_row(r, "", 100, nlmConfigLogAdminStatus::e_enabled, 3, 3, 1);
     //--AgentGen END
 }
 
@@ -913,6 +922,14 @@ nlmStatsLogEntry::nlmStatsLogEntry(nlmConfigLogEntry* configLogEntry)
 
     //--AgentGen BEGIN=nlmStatsLogEntry::nlmStatsLogEntry
     configLogEntry->add_listener(this);
+
+    // FIXME: add default nlmStatsLogEntry too! CK
+    {
+        Oidx index;
+        constexpr uint32_t l{ 0 };
+        index += l;
+        add_row(index);
+    }
     //--AgentGen END
 }
 
@@ -1009,6 +1026,17 @@ nlmLogEntry::nlmLogEntry(Mib* _mib, nlmConfigLogEntry* configLogEntry, nlmStatsL
         configLogEntry->add_listener(this);
     }
     add_listener(logVariableEntry);
+
+    // FIXME: add default logIndexes too! CK
+    {
+        Oidx index;
+        constexpr uint32_t l{ 0 };
+        index += l;
+        Vbx vb(index);
+        vb.set_value(0ul);
+        // add log index
+        logIndexes.add(new MibStaticEntry(vb));
+    }
     //--AgentGen END
 }
 
@@ -1138,6 +1166,11 @@ bool nlmLogEntry::check_access(const Vbx* vbs, const int size, const Oid& nid, M
 void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, const Vbx* vbs,
     const int vbcount, const OctetStr& context, const OctetStr& ceid, const OctetStr& engineID)
 {
+    if (ceid == engineID)
+    {
+        return; // FIXME: prevent dublicated log entries! CK
+    }
+
     OctetStr address;
 
     if (target)
@@ -1192,7 +1225,7 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, con
         // check access
         OctetStr const profileName =
             ((nlmConfigLogFilterName*)cur.get()->get_nth(nNlmConfigLogFilterName))->get_state();
-        if ((profileName.len() > 0) && (!check_access(vbs, vbcount, nid, cur.get())))
+        if ((profileName.len() == 0) && (!check_access(vbs, vbcount, nid, cur.get())))
         {
             continue;
         }
@@ -1200,7 +1233,7 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, con
         // check filter
         snmpNotifyFilterEntry* snmpNotifyFilterEntry = snmpNotifyFilterEntry::get_instance(mib);
         assert(snmpNotifyFilterEntry != nullptr);
-        if ((profileName.len() == 0)
+        if ((profileName.len() > 0)
             && ((snmpNotifyFilterEntry)
                 && (!snmpNotifyFilterEntry->passes_filter(
                     Oidx::from_string(profileName, true), nid, vbs, vbcount))))
@@ -1230,13 +1263,15 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, con
         logVariableEntry->end_synch();
 
         MibTableRow* s  = statsLogEntry->find_index(cur.get()->get_index());
-        Counter32    ll = 0;
         if (s)
         {
+            Counter32 ll = 0;
             s->get_nth(nNlmStatsLogNotificationsLogged)->get_value(ll);
             ll = (uint32_t)ll + 1ul;
             s->get_nth(nNlmStatsLogNotificationsLogged)->set_value(ll);
             Counter32MibLeaf::incrementScalar(mib, oidNlmStatsGlobalNotificationsLogged);
+
+            break; // FIXME: prevent dublicated log entries! CK
         }
     }
 

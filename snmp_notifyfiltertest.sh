@@ -14,11 +14,9 @@ set -u
 # active(1) notInService(2) notReady(3) createAndGo(4) createAndWait(5) destroy(6)
 ##############################################################
 
-snmpset ${SNMP_HOST} snmpNotifyFilterProfileRowStatus.${myindex} = destroy || echo ignored
 snmpset ${SNMP_HOST} snmpNotifyFilterProfileRowStatus."'snmpd'" = destroy || echo ignored
 snmpset ${SNMP_HOST} snmpNotifyFilterRowStatus.${myindex}.1.3.6.1.2.1.4.21.1 = destroy || echo ignored
 snmpset ${SNMP_HOST} NOTIFICATION-LOG-MIB::nlmConfigLogEntryStatus.\"testGroup\" = destroy || echo ignored
-
 
 ##############################################################
 # RFC1213-MIB::ipRouteTable excluded:
@@ -27,7 +25,7 @@ snmpset ${SNMP_HOST} NOTIFICATION-LOG-MIB::nlmConfigLogEntryStatus.\"testGroup\"
 #  notifications using the corresponding entry in the snmpTargetAddrTable."
 # INDEX { IMPLIED snmpTargetParamsName } -> 'snmpd'
 snmpset ${SNMP_HOST} nmpNotifyFilterProfileRowStatus."'snmpd'" = createAndWait \
-    snmpNotifyFilterProfileName."'snmpd'" = "snmpd" \
+    snmpNotifyFilterProfileName."'snmpd'" = ${myindex} \
     snmpNotifyFilterStorageType."'snmpd'" = nonVolatile \
     snmpNotifyFilterProfileRowStatus."'snmpd'" = active || echo Error ignored
 
@@ -48,13 +46,14 @@ snmpwalk ${SNMP_HOST} nlmConfigGlobal
 snmpwalk ${SNMP_HOST} nlmStats
 
 snmpset ${SNMP_HOST} NOTIFICATION-LOG-MIB::nlmConfigLogEntryStatus.\"testGroup\" = createAndWait \
-    NOTIFICATION-LOG-MIB::nlmConfigLogFilterName.\"testGroup\" = "${myindex}" \
+    NOTIFICATION-LOG-MIB::nlmConfigLogFilterName.\"testGroup\" = ${myindex} \
     NOTIFICATION-LOG-MIB::nlmConfigLogEntryLimit.\"testGroup\" = 10 \
     NOTIFICATION-LOG-MIB::nlmConfigLogAdminStatus.\"testGroup\" = enabled \
     NOTIFICATION-LOG-MIB::nlmConfigLogStorageType.\"testGroup\" = nonVolatile \
     NOTIFICATION-LOG-MIB::nlmConfigLogEntryStatus.\"testGroup\" = active
 
 snmpgetnext ${SNMP_HOST} nlmConfigLogOperStatus
+snmptable -Cib ${SNMP_HOST} nlmConfigLogTable
 
 snmpset ${SNMP_HOST} AGENTPP-NOTIFYTEST-MIB::agentppNotifyTest.0 = 1
 
