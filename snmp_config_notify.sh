@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Author:  Stephan Schloesser, Claus Klein
 # Date:    $Date: 2005/10/14 15:44:15 $

@@ -471,6 +471,7 @@ public:
 
 class AGENTPP_DECL nlmConfigLogEntry : public StorageTable {
     friend class nlmConfigLogEntryStatus;
+    friend class nlmConfigLogOperStatus;
 
 public:
     nlmConfigLogEntry(Mib* mib);

@@ -55,8 +55,7 @@ snmpwalk -v3 -l AuthNoPriv -u SHA -a SHA -A WrongUserAuthPassword -n "" localhos
 snmpwalk -v3 -l AuthNoPriv -u MD5 -n "" localhost:4700 || echo OK
 
 snmpOutTraps=`snmpget -v2c -c public -Onqv localhost:4700 snmpOutTraps.0`
-test ${snmpOutTraps} -ne 1 &&
-echo "OK, authentication failure traps sent"
+test ${snmpOutTraps} -ne 1 && echo "OK, authentication failure traps sent"
 
 # start snmp_pp test_app too
 ${test_app} 127.0.0.1 get || echo OK
@@ -86,7 +85,7 @@ snmpset -v3 -l noAuthNoPriv -u MD5DES -n "" localhost:4700 snmpEngineBoots.0 = 1
 snmpset -v3 -l noAuthNoPriv -u MD5DES -n "" localhost:4700 sysContact.0 = clausklein
 snmpwalk -v3 -l noAuthNoPriv -u MD5DES -n "" localhost:4700 system
 snmpwalk -v3 -l noAuthNoPriv -u MD5DES -n "" localhost:4700 snmpEngine
-snmpwalk -v3 -l noAuthNoPriv -u MD5DES -n "" localhost:4700 SNMPv2-MIB::snmpOutTraps.0
+snmpget -v3 -l noAuthNoPriv -u MD5DES -n "" localhost:4700 SNMPv2-MIB::snmpOutTraps.0
 
 kill -s TERM %%
 wait %%

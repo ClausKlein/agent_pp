@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set index=\"2.108.115\"   # "ls"
 set -x
