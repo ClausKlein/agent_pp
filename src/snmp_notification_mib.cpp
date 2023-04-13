@@ -167,7 +167,7 @@ bool snmpNotifyFilterEntry::passes_filter(
     _snmpNotifyFilterProfileEntry->start_synch();
     MibTableRow* found = _snmpNotifyFilterProfileEntry->find_index(target);
 
-    // no filter -> passes filter
+    // FIXME: no profile -> passes filter
     if (!found)
     {
         _snmpNotifyFilterProfileEntry->end_synch();
@@ -177,8 +177,7 @@ bool snmpNotifyFilterEntry::passes_filter(
     found->first()->get_value(profileName);
     _snmpNotifyFilterProfileEntry->end_synch();
 
-    Oidx profileOid;
-    profileOid = Oidx::from_string(profileName);
+    Oidx profileOid = Oidx::from_string(profileName);
 
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 4);
     LOG("NotificationOriginator: filter: using (profile) (as oid)");
@@ -189,7 +188,7 @@ bool snmpNotifyFilterEntry::passes_filter(
     List<MibTableRow>*      list = get_rows_cloned(&profileOid, rowActive);
     ListCursor<MibTableRow> cur;
 
-    // no filter -> passes filter
+    // FIXME: no filter -> passes filter
     if (list->size() == 0)
     {
         delete list;
@@ -260,6 +259,7 @@ bool snmpNotifyFilterEntry::passes_filter(
         delete[] oidmatches;
         return false;
     }
+
     SnmpInt32 pass = 0;
     matches.last()->get_value(pass);
     if (pass == 1)

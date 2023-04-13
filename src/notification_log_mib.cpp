@@ -40,6 +40,9 @@
 #    include <agent_pp/vacm.h>
 #    include <snmp_pp/log.h>
 
+#    include <iostream>
+#    include <iomanip>
+
 #    ifdef AGENTPP_NAMESPACE
 namespace Agentpp
 {
@@ -340,7 +343,7 @@ int nlmConfigLogFilterName::prepare_set_request(Request* req, int& ind)
  */
 
 nlmConfigLogEntryLimit::nlmConfigLogEntryLimit(const Oidx& id)
-    : MibLeaf(id, READCREATE, new Counter32(0), VMODE_DEFAULT)
+    : MibLeaf(id, READCREATE, new Gauge32(0), VMODE_DEFAULT)
 {
     //--AgentGen BEGIN=nlmConfigLogEntryLimit::nlmConfigLogEntryLimit
     //--AgentGen END
@@ -371,13 +374,13 @@ void nlmConfigLogEntryLimit::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-uint32_t nlmConfigLogEntryLimit::get_state() { return (uint32_t) * ((Counter32*)value); }
+uint32_t nlmConfigLogEntryLimit::get_state() { return (uint32_t) * ((Gauge32*)value); }
 
 void nlmConfigLogEntryLimit::set_state(uint32_t l)
 {
     //--AgentGen BEGIN=nlmConfigLogEntryLimit::set_state
     //--AgentGen END
-    *((Counter32*)value) = l;
+    *((Gauge32*)value) = l;
 }
 
 int nlmConfigLogEntryLimit::set(const Vbx& vb)
@@ -651,15 +654,16 @@ int nlmConfigLogEntryStatus::prepare_set_request(Request* req, int& ind)
 
     if ((l == rowCreateAndGo) || (l == rowActive))
     {
-        // initialize viewName;
+        // verify viewName;
         OctetStr secName, viewName;
         req->get_security_name(secName);
         int const vacmErrorCode =
-            ((nlmConfigLogEntry*)my_table)
+            static_cast<nlmConfigLogEntry*>(my_table)
                 ->mib->get_request_list()
                 ->get_vacm()
                 ->getViewName(req->get_security_model(), secName, req->get_pdu()->get_security_level(),
                     mibView_notify, req->get_context(), viewName);
+        assert(vacmErrorCode == VACM_viewFound);
         if (vacmErrorCode != VACM_viewFound)
         {
             return SNMP_ERROR_NO_ACCESS;
@@ -691,11 +695,12 @@ int nlmConfigLogEntryStatus::commit_set_request(Request* req, int ind)
         OctetStr secName, viewName;
         req->get_security_name(secName);
         int const vacmErrorCode =
-            ((nlmConfigLogEntry*)my_table)
+            static_cast<nlmConfigLogEntry*>(my_table)
                 ->mib->get_request_list()
                 ->get_vacm()
                 ->getViewName(req->get_security_model(), secName, req->get_pdu()->get_security_level(),
                     mibView_notify, req->get_context(), viewName);
+        assert(vacmErrorCode == VACM_viewFound);
         if (vacmErrorCode != VACM_viewFound)
         {
             return SNMP_ERROR_COMMITFAIL;
@@ -840,8 +845,8 @@ nlmConfigLogEntry::nlmConfigLogEntry(Mib* _mib)
     add_col(new nlmConfigLogEntryStatus(colNlmConfigLogEntryStatus));
 
     //--AgentGen BEGIN=nlmConfigLogEntry::nlmConfigLogEntry
-    // NOTE: this is the hidden row HACK! CK
-    // create an hidden row at nNlmConfigLogEntryStatus + 1! CK
+    // NOTE: This is the hidden row HACK! CK
+    // create an hidden row at nNlmConfigLogEntryStatus + 1!
     add_col(new MibLeaf("100", NOACCESS, new OctetStr())); // viewName
 
     // FIXME: add default nlmConfigLogEntry! CK
@@ -891,7 +896,7 @@ void nlmConfigLogEntry::set_row(
     MibTableRow* r, const OctetStr& p0, uint32_t p1, int32_t p2, int32_t p3, int32_t p4, int32_t p5)
 {
     r->get_nth(0)->replace_value(new OctetStr(p0));
-    r->get_nth(1)->replace_value(new Counter32(p1));
+    r->get_nth(1)->replace_value(new Gauge32(p1));
     r->get_nth(2)->replace_value(new SnmpInt32(p2));
     r->get_nth(3)->replace_value(new SnmpInt32(p3));
     r->get_nth(4)->replace_value(new SnmpInt32(p4));
@@ -1217,30 +1222,40 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, con
     ListCursor<MibTableRow> cur;
     for (cur.init(logs); cur.get(); cur.next())
     {
+        const Oidx logIndex(cur.get()->get_index());
+        const std::string logName = logIndex.as_string(true).get_printable(); // NOTE: withoutLength! CK
+
         // ignore disabled log entries
         if (((nlmConfigLogAdminStatus*)cur.get()->get_nth(nNlmConfigLogAdminStatus))->get_state()
             == nlmConfigLogAdminStatus::e_disabled)
         {
+            std::cerr << "nlmLogEntry::add_notification() disabled: " << std::quoted(logName) << std::endl;
             continue;
         }
 
-        // check access
+        // FIXME: check access always! CK
         OctetStr const profileName =
-            ((nlmConfigLogFilterName*)cur.get()->get_nth(nNlmConfigLogFilterName))->get_state();
-        if ((profileName.len() == 0) && (!check_access(vbs, vbcount, nid, cur.get())))
+            static_cast<nlmConfigLogFilterName*>(cur.get()->get_nth(nNlmConfigLogFilterName))->get_state();
+        if ( //XXX (profileName.len() > 0) &&
+            (!check_access(vbs, vbcount, nid, cur.get())))
         {
+            std::cerr << "nlmLogEntry::add_notification() no access: " << std::quoted(logName) << std::endl;
             continue;
         }
 
-        // check filter
-        snmpNotifyFilterEntry* snmpNotifyFilterEntry = snmpNotifyFilterEntry::get_instance(mib);
-        assert(snmpNotifyFilterEntry != nullptr);
-        if ((profileName.len() > 0)
-            && ((snmpNotifyFilterEntry)
-                && (!snmpNotifyFilterEntry->passes_filter(
-                    Oidx::from_string(profileName, true), nid, vbs, vbcount))))
+        // NOTE: check filter for named logs only! CK
+        if (!logName.empty())
         {
-            continue;
+            snmpNotifyFilterEntry* snmpNotifyFilterEntry = snmpNotifyFilterEntry::get_instance(mib);
+            assert(snmpNotifyFilterEntry != nullptr);
+            if ((profileName.len() == 0) // noFilter
+                || ((snmpNotifyFilterEntry != nullptr)
+                    && !snmpNotifyFilterEntry->passes_filter(
+                        Oidx::from_string(profileName, true), nid, vbs, vbcount)))
+            {
+                std::cerr << "nlmLogEntry::add_notification() filterd out: " << std::quoted(logName) << std::endl;
+                continue;
+            }
         }
 
         // OK, now log the notification
@@ -1250,14 +1265,16 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, con
             continue;
         }
 
-        uint32_t l  = 0;
-        vb->get_value(l);
+        uint32_t index  = 0;
+        vb->get_value(index);
         Oidx newIndex(cur.get()->get_index());
-        newIndex += ++l;
-        vb->set_value(l);
+        newIndex += ++index;
+        vb->set_value(index);
 
         MibTableRow* r = add_row(newIndex);
-        set_row(r, sysUpTime::get(), ((DateAndTime*)r->get_nth(1))->get_state(), engineID, address,
+        DateAndTime date (colNlmLogDateAndTime, READONLY, VMODE_DEFAULT);
+        set_row(r, sysUpTime::get(), date.get_state(), engineID, address,
+            // SNMPv2-TM::snmpUDPDomain
             "1.3.6.1.6.1.1", ceid, context, nid.get_printable());
 
         logVariableEntry->start_synch();
@@ -1321,15 +1338,19 @@ void nlmLogEntry::check_limits(List<MibTableRow>* logs)
             {
                 Oidx profile(victim->get_index());
                 profile.trim();
-                MibTableRow* s = configLogEntry->find_index(profile);
+
+                MibTableRow* s = statsLogEntry->find_index(profile);
                 assert(s != nullptr);
                 if (s)
                 {
+                    const std::string logName = profile.as_string(true).get_printable(); // NOTE: withoutLength! CK
+                    std::cerr << "nlmLogEntry::check_limits() age_out: " << std::quoted(logName) << std::endl;
                     Counter32 ll{};
                     s->get_nth(nNlmStatsLogNotificationsBumped)->get_value(ll);
                     ll = ll + 1U;
                     s->get_nth(nNlmStatsLogNotificationsBumped)->set_value(ll);
                 }
+
                 remove_row(victim->get_index());
                 Counter32MibLeaf::incrementScalar(mib, oidNlmStatsGlobalNotificationsBumped);
             }
@@ -1386,6 +1407,8 @@ void nlmLogEntry::check_limits(List<MibTableRow>* logs)
                 assert(r != nullptr);
                 if (r)
                 {
+                    const std::string logName = ind.as_string(true).get_printable(); // NOTE: withoutLength! CK
+                    std::cerr << "nlmLogEntry::check_limits() entry_limit: " << std::quoted(logName) << std::endl;
                     Counter32 ll{};
                     MibLeaf* l = r->get_nth(nNlmStatsLogNotificationsBumped);
                     assert(l != nullptr);

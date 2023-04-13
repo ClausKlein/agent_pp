@@ -41,6 +41,12 @@ snmpset ${SNMP_HOST} \
 snmpset ${SNMP_HOST} \
     snmpNotifyFilterRowStatus.'"link-status"'.1.3.6.1.6.3.1.1.5.4 = destroy || echo ignored
 
+snmpset ${SNMP_HOST} snmpNotifyFilterProfileRowStatus."'snmpd'" = destroy || echo ignored
+snmpset ${SNMP_HOST} snmpNotifyFilterProfileRowStatus."'snmpd'" = createAndGo \
+    snmpNotifyFilterProfileName."'snmpd'" = '"link-status"' \
+    snmpNotifyFilterStorageType."'snmpd'" = nonVolatile \
+    snmpNotifyFilterProfileRowStatus."'snmpd'" = active
+
 snmpset ${SNMP_HOST} \
     snmpNotifyFilterMask.'"link-status"'.1.3.6.1.6.3.1.1.5.3 = "" \
     snmpNotifyFilterType.'"link-status"'.1.3.6.1.6.3.1.1.5.3 = included \
@@ -53,46 +59,46 @@ snmpset ${SNMP_HOST}  \
     snmpNotifyFilterStorageType.'"link-status"'.1.3.6.1.6.3.1.1.5.4 = nonVolatile \
     snmpNotifyFilterRowStatus.'"link-status"'.1.3.6.1.6.3.1.1.5.4 = createAndGo
 
+snmptable -Cib ${SNMP_HOST} snmpNotifyFilterTable
+
+set -e  # exit on error
+
 # Following is an example configuration of a named log for logging only linkUp and linkDown Notifications.
 snmpset ${SNMP_HOST} \
     nlmConfigLogEntryStatus.'"links"' = destroy || echo ignored
 snmpset ${SNMP_HOST} \
     nlmConfigLogFilterName.'"links"'  = '"link-status"' \
-    nlmConfigLogEntryLimit.'"links"'  = 0 \
+    nlmConfigLogEntryLimit.'"links"'  = 4 \
     nlmConfigLogAdminStatus.'"links"' = enabled \
     nlmConfigLogStorageType.'"links"' = nonVolatile \
     nlmConfigLogEntryStatus.'"links"' = createAndGo
-
-set -e  # exit on error
-
 
 ############################# following commands must be OK #############################
 
 snmpset ${SNMP_HOST} nlmConfigLogEntryLimit.0 = 4 || echo "OK, readonly!"
 
 snmpset ${SNMP_HOST} NOTIFICATION-LOG-MIB::nlmConfigGlobalEntryLimit.0 = 10 \
-    NOTIFICATION-LOG-MIB::nlmConfigGlobalAgeOut.0 = 1 # minutes
+    NOTIFICATION-LOG-MIB::nlmConfigGlobalAgeOut.0 = 3 # minutes
+
+snmpset ${SNMP_HOST} nlmConfigLogEntryStatus.'"testGroup"' = destroy || echo ignored
+#XXX NOTIFICATION-LOG-MIB::nlmConfigLogFilterName.'"testGroup"' = ${myindex} \
+snmpset ${SNMP_HOST} NOTIFICATION-LOG-MIB::nlmConfigLogEntryStatus.'"testGroup"' = createAndWait \
+    NOTIFICATION-LOG-MIB::nlmConfigLogAdminStatus.'"testGroup"' = enabled \
+    NOTIFICATION-LOG-MIB::nlmConfigLogEntryLimit.'"testGroup"' = 4 \
+    NOTIFICATION-LOG-MIB::nlmConfigLogStorageType.'"testGroup"' = nonVolatile \
+    NOTIFICATION-LOG-MIB::nlmConfigLogEntryStatus.'"testGroup"' = active
 
 snmpwalk ${SNMP_HOST} nlmConfigGlobal
 snmpwalk ${SNMP_HOST} nlmStats
-
-# snmpset ${SNMP_HOST} nlmConfigLogEntryStatus.'"testGroup"' = destroy || echo ignored
-# #XXX NOTIFICATION-LOG-MIB::nlmConfigLogFilterName.'"testGroup"' = ${myindex} \
-# snmpset ${SNMP_HOST} NOTIFICATION-LOG-MIB::nlmConfigLogEntryStatus.'"testGroup"' = createAndWait \
-#     NOTIFICATION-LOG-MIB::nlmConfigLogEntryLimit.'"testGroup"' = 4 \
-#     NOTIFICATION-LOG-MIB::nlmConfigLogAdminStatus.'"testGroup"' = enabled \
-#     NOTIFICATION-LOG-MIB::nlmConfigLogStorageType.'"testGroup"' = nonVolatile \
-#     NOTIFICATION-LOG-MIB::nlmConfigLogEntryStatus.'"testGroup"' = active
-
-snmpgetnext ${SNMP_HOST} nlmConfigLogOperStatus
+snmpwalk ${SNMP_HOST} nlmConfigLogOperStatus
 snmptable -Cib ${SNMP_HOST} nlmConfigLogTable
 
 snmpset ${SNMP_HOST} AGENTPP-NOTIFYTEST-MIB::agentppNotifyTest.0 = 1
 
-snmpwalk ${SNMP_HOST} nlmLogVariableTable
+snmpwalk ${SNMP_HOST} nlmLogNotificationID
 snmpwalk ${SNMP_HOST} nlmStats
 
-nlmStatsGlobalNotificationsLogged=`snmpget -OnqUv ${SNMP_HOST} nlmStatsGlobalNotificationsLogged.0`
+nlmStatsGlobalNotificationsLogged=`snmpget -OnqUv ${SNMP_HOST} nlmStatsLogNotificationsLogged.0`
 snmpOutTraps=`snmpget -OnqUv ${SNMP_HOST} snmpOutTraps.0`
 test ${snmpOutTraps} -eq ${nlmStatsGlobalNotificationsLogged}
 
