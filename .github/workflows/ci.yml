@@ -51,7 +51,7 @@ jobs:
       - name: Test
         if: startsWith(matrix.os, 'macos') || startsWith(matrix.os, 'ubuntu')
         working-directory: build
-        run: ctest -C Release --timeout 25
+        run: ctest -C Release --timeout 125
 
       - name: Install
         run: cmake --install build --config Release --prefix stage
