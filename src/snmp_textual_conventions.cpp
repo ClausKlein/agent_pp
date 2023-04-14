@@ -200,8 +200,8 @@ OctetStr SnmpEngineID::create_engine_id(unsigned short p)
     OctetStr      engineID((const unsigned char*)"\x80\x00\x13\x70\x05", 5);
     unsigned char port[3] {};
 
-    port[0] = p / 256;
-    port[1] = p % 256;
+    port[0] = static_cast<uint16_t>(p / 256);
+    port[1] = static_cast<uint16_t>(p % 256);
     port[2] = 0;
     constexpr size_t LEN { 255 };
     constexpr size_t MAX_LEN { 23 };

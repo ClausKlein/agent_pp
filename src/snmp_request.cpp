@@ -399,7 +399,7 @@ Snmpx* SnmpRequest::get_new_snmp(Snmpx* snmp, int& status)
 
 //------------------------------ SnmpRequestV3 -------------------------------
 
-SnmpRequestV3::SnmpRequestV3() : SnmpRequestV3(Mib::instance) { }
+// XXX SnmpRequestV3::SnmpRequestV3() : SnmpRequestV3(Mib::instance) { }
 
 SnmpRequestV3::SnmpRequestV3(Mib* _mib) : mib(_mib)
 {
@@ -422,8 +422,6 @@ SnmpRequestV3::~SnmpRequestV3()
         delete snmp;
     }
 }
-
-int SnmpRequestV3::send(UTarget& target, Pdux& pdu) { return send(Mib::instance, target, pdu); }
 
 int SnmpRequestV3::send(Mib* mib, UTarget& target, Pdux& pdu)
 {

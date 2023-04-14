@@ -83,15 +83,15 @@ void init_signals()
     signal(SIGSEGV, sig);
 }
 
-void init(Mib& mib, const NS_SNMP OctetStr& engineID)
+void init(Mib& _mib, const NS_SNMP OctetStr& engineID)
 {
-    mib.add(new sysGroup("AGENT++v3 Test Agent - Use 'MD5' as SNMPv3 user and "
-                         "'MD5UserAuthPassword' as authentication",
+    _mib.add(new sysGroup("AGENT++v3 Test Agent - Use 'MD5' as SNMPv3 user and "
+                          "'MD5UserAuthPassword' as authentication",
         "1.3.6.1.4.1.4976", 10));
-    mib.add(new snmpGroup());
-    mib.add(new command_execution_mib());
-    mib.add(new snmp_target_mib());
-    mib.add(new snmp_notification_mib());
+    _mib.add(new snmpGroup());
+    _mib.add(new command_execution_mib());
+    _mib.add(new snmp_target_mib());
+    _mib.add(new snmp_notification_mib());
 
 #ifdef _SNMPv3
     auto* uut = new UsmUserTable();
@@ -142,13 +142,13 @@ void init(Mib& mib, const NS_SNMP OctetStr& engineID)
         "SHAAES256UserAuthPassword", "SHAAES256UserPrivPassword", engineID, false);
 
     // add non persistent USM statistics
-    mib.add(new UsmStats());
+    _mib.add(new UsmStats());
     // add the USM MIB - usm_mib MibGroup is used to
     // make user added entries persistent
-    mib.add(new usm_mib(uut));
+    _mib.add(new usm_mib(uut));
     // add non persistent SNMPv3 engine object
-    mib.add(new V3SnmpEngine());
-    mib.add(new MPDGroup());
+    _mib.add(new V3SnmpEngine());
+    _mib.add(new MPDGroup());
 #endif
 }
 
@@ -156,7 +156,7 @@ int main(int argc, char* argv[])
 {
     if (argc > 1)
     {
-        port = std::stoi(argv[1]);
+        port = static_cast<uint16_t>(std::stoi(argv[1]));
     }
     else
     {

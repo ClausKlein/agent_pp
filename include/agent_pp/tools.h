@@ -50,7 +50,7 @@ public:
      *
      * @return The file size.
      */
-    static long file_size(FILE*);
+    static int file_size(FILE*);
 
     /**
      * Create the directories of a path if not present.

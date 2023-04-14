@@ -70,7 +70,7 @@ jobs:
         if: startsWith(matrix.os, 'macos') && contains(matrix.type, 'static')
         shell: bash
         run: |
-          export PATH=/usr/local/opt/llvm/bin/:${PATH}
+          export PATH=$(brew --prefix llvm@15)/bin/:${PATH}
           perl -i.bak -pe 's#-I($CPM_SOURCE_CACHE)#-isystem $1#g;' -e 's#-W[-\w=\d]+\b##g;'  build/compile_commands.json
           run-clang-tidy -p build .
 

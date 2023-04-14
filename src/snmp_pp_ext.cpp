@@ -391,7 +391,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
     for (vp = pdu->variables; vp; vp = vp->next_variable, i++)
     {
         // extract the oid portion
-        tempoid.set_data((SmiLPUINT32)vp->name, (unsigned int)vp->name_length);
+        tempoid.set_data((SmiLPUINT32)vp->name, (uint32_t)vp->name_length);
         vbs[i].set_oid(tempoid);
         // extract the value portion
         switch (vp->type)
@@ -451,7 +451,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
 
         // 32 bit integer
         case sNMP_SYNTAX_INT: {
-            SnmpInt32 const int32((long)*(vp->val.integer));
+            SnmpInt32 const int32((int32_t) * (vp->val.integer));
             vbs[i].set_value(int32);
         }
         break;

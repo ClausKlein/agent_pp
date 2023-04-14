@@ -267,7 +267,7 @@ public:
      * @deprecated Use constructor with Mib* parameter instead to avoid
      * usage of static reference snmpTargetAddrEntry::instance.
      */
-    snmpTargetAddrExtEntry();
+    // XXX snmpTargetAddrExtEntry();
 
     /**
      * Create a new snmpTargetAddrExtEntry with providing the reference to
@@ -276,6 +276,7 @@ public:
      * @since 4.3.0
      */
     snmpTargetAddrExtEntry(snmpTargetAddrEntry* parentTable);
+
     ~snmpTargetAddrExtEntry() override;
 
     static snmpTargetAddrExtEntry* instance;

@@ -255,7 +255,7 @@ bool ProxyForwarder::process_multiple(Pdux& pdu, Request* req)
             OctetStr targetOut;
             OctetStr params;
 
-            targetOut = tcur.get()->get_index().as_string();
+            targetOut = tcur.get()->get_index().as_string(); // NOTE: with length!
             // cur.get()->get_nth(1)->get_value(taddr);
             // cur.get()->get_nth(4)->get_value(tagList);
             tcur.get()->get_nth(5)->get_value(params);

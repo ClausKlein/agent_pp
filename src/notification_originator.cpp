@@ -466,14 +466,15 @@ int NotificationOriginator::send_notify(
 #endif
     int status = SNMP_ERROR_SUCCESS;
 
+#ifdef ENABLE_SNMPV1
     if (mpModel == mpV1)
     {
-#ifdef _SNMPv3
+#    ifdef _SNMPv3
         pdu.set_type(sNMP_PDU_V1TRAP);
-#endif
+#    endif
         target->set_version(version1);
 
-#ifdef _SNMPv3
+#    ifdef _SNMPv3
         status                = SnmpRequestV3::send(*target, pdu);
         nlmLogEntry* logEntry = get_nlm_log_entry();
         if (logEntry)
@@ -481,9 +482,9 @@ int NotificationOriginator::send_notify(
             logEntry->add_notification(
                 target, id, vbs, size, contextName, *localEngineID, *localEngineID);
         }
-#else
+#    else
         status = SnmpRequest::process_trap(*target, vbs, size, id, enterprise, (notify != TRAP));
-#endif
+#    endif
 
         GenAddress address;
         target->get_address(address);
@@ -499,6 +500,8 @@ int NotificationOriginator::send_notify(
         LOG_END;
     }
     else
+#endif
+
     {
 #ifdef _SNMPv3
         if (mpModel == mpV3)
@@ -507,7 +510,9 @@ int NotificationOriginator::send_notify(
         }
         else
 #endif
+        {
             target->set_version(version2c);
+        }
 
         if (notify != TRAP)
         {
@@ -550,6 +555,7 @@ int NotificationOriginator::send_notify(
         LOG(status);
         LOG_END;
     }
+
     return status;
 }
 

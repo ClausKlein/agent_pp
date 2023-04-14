@@ -171,7 +171,7 @@ void MibEntry::load_from_file(const char* fname)
     if (size > 0)
     {
         buf   = new char[size + 1]; // TODO(CK): use std::array<char>
-        bytes = fread(buf, sizeof(char), size, f);
+        bytes = fread(buf, sizeof(char), static_cast<size_t>(size), f);
         if (bytes != size)
         {
             delete[] buf;

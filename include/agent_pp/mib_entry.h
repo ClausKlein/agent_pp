@@ -272,9 +272,9 @@ public:
 
     /**
      * Wrapper function for register_for_notifications.
-     * @depricated
+     * @deprecated
      */
-    virtual void add_change_notification(MibEntry* e) { register_for_notifications(e); }
+    // XXX virtual void add_change_notification(MibEntry* e) { register_for_notifications(e); }
 
     /**
      * Receive a notification about changes to a managed object. This

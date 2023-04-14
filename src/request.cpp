@@ -517,7 +517,7 @@ Vbx* Request::search_value(const Oidx& oid) const
  * @param index - An index of a sub-request.
  * @return A SMI syntax.
  */
-SnmpInt32 Request::get_syntax(int i) { return (*pdu)[i].get_syntax(); }
+SnmpUInt32 Request::get_syntax(int i) { return (*pdu)[i].get_syntax(); }
 
 /**
  * Return the object identifier of the specified receiver's

@@ -175,7 +175,7 @@ int main(int argc, char* argv[])
 
     if (argc > 1)
     {
-        port = std::stoi(argv[1]);
+        port = static_cast<uint16_t>(std::stoi(argv[1]));
     }
     else
     {

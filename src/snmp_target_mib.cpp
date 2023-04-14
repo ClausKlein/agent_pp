@@ -551,7 +551,7 @@ bool snmpTargetParamsEntry::contains(const OctetStr& name)
     {
         Oidx const index = cur.get()->get_index();
         // cut length off
-        OctetStr const adminString(index.as_string());
+        OctetStr const adminString(index.as_string(true)); // TODO(CK): without length?
 
         LOG_BEGIN(loggerModuleName, DEBUG_LOG | 9);
         LOG("snmpTargetParamsEntry: contains ");

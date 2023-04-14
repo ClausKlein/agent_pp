@@ -33,6 +33,8 @@ namespace Agentpp
 static const char* loggerModuleName = "agent++.snmp_notification_mib";
 #endif
 
+static constexpr bool WITH_LENGTH { true };
+
 /**
  *  snmpNotifyType
  *
@@ -92,7 +94,7 @@ snmpNotifyEntry::~snmpNotifyEntry() { }
 MibTableRow* snmpNotifyEntry::add_entry(const OctetStr& name, const OctetStr& tag, const int type)
 {
     start_synch();
-    Oidx const   index = Oidx::from_string(name, false);
+    Oidx const   index = Oidx::from_string(name, !WITH_LENGTH); // withoutLength
     MibTableRow* r     = find_index(index);
     if (r)
     {
@@ -177,7 +179,7 @@ bool snmpNotifyFilterEntry::passes_filter(
     found->first()->get_value(profileName);
     _snmpNotifyFilterProfileEntry->end_synch();
 
-    Oidx profileOid = Oidx::from_string(profileName);
+    Oidx profileOid = Oidx::from_string(profileName, WITH_LENGTH);
 
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 4);
     LOG("NotificationOriginator: filter: using (profile) (as oid)");

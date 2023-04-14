@@ -248,9 +248,11 @@ bool snmpCommunityEntry::get_community(
 
 snmpTargetAddrExtEntry* snmpTargetAddrExtEntry::instance = nullptr;
 
+#    if 0
 snmpTargetAddrExtEntry::snmpTargetAddrExtEntry()
     : snmpTargetAddrExtEntry(snmpTargetAddrEntry::instance)
 { }
+#    endif
 
 snmpTargetAddrExtEntry::snmpTargetAddrExtEntry(snmpTargetAddrEntry* parentTable)
     : MibTable(oidSnmpTargetAddrExtEntry, iSnmpAdminString, 1)
@@ -482,7 +484,7 @@ bool snmpTargetAddrExtEntry::passes_filter(const OctetStr& taddress, const Octet
 snmp_community_mib::snmp_community_mib() : MibGroup("1.3.6.1.6.3.18.1", "snmpCommunityMIB")
 {
     add(new snmpCommunityEntry(Mib::instance));
-    add(new snmpTargetAddrExtEntry());
+    add(new snmpTargetAddrExtEntry(snmpTargetAddrEntry::get_instance(Mib::instance)));
 }
 
 snmp_community_mib::snmp_community_mib(Mib* mib) : MibGroup("1.3.6.1.6.3.18.1", "snmpCommunityMIB")

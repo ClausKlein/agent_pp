@@ -38,10 +38,9 @@
 #    include <agent_pp/snmp_notification_mib.h>
 #    include <agent_pp/system_group.h>
 #    include <agent_pp/vacm.h>
-#    include <snmp_pp/log.h>
-
-#    include <iostream>
 #    include <iomanip>
+#    include <iostream>
+#    include <snmp_pp/log.h>
 
 #    ifdef AGENTPP_NAMESPACE
 namespace Agentpp
@@ -51,6 +50,11 @@ namespace Agentpp
 #    ifndef _NO_LOGGING
 static const char* loggerModuleName = "agent++.notification_log_mib";
 #    endif
+
+#    undef USE_Counter32MibLeaf
+
+static constexpr bool WITH_LENGTH { true };
+static constexpr bool WITHOUT_LENGTH { true };
 
 nlmConfigLogOperStatus::nlmConfigLogOperStatus(const Oidx& id)
     : MibLeaf(id, READONLY, new SnmpInt32(1), VMODE_DEFAULT)
@@ -66,7 +70,7 @@ void nlmConfigLogOperStatus::get_request(Request* req, int ind)
         == nlmConfigLogAdminStatus::e_enabled)
     {
         OctetStr const filter(static_cast<nlmConfigLogFilterName*>(my_row->get_nth(0))->get_state());
-        Oidx const     index(Oidx::from_string(filter, true));
+        Oidx const     index(Oidx::from_string(filter, WITH_LENGTH));
         l = 3; // noFilter(3)
 
         if (index.len() > 0)
@@ -851,8 +855,8 @@ nlmConfigLogEntry::nlmConfigLogEntry(Mib* _mib)
 
     // FIXME: add default nlmConfigLogEntry! CK
     {
-        Oidx index;
-        constexpr uint32_t l{ 0 };
+        Oidx               index;
+        constexpr uint32_t l { 0 };
         index += l;
         MibTableRow* r = add_row(index);
         assert(r != nullptr);
@@ -922,16 +926,21 @@ nlmStatsLogEntry::nlmStatsLogEntry(nlmConfigLogEntry* configLogEntry)
     // the static pointer nlmStatsLogEntry::instance.
     instance = this;
 
+#    ifndef USE_Counter32MibLeaf
+    add_col(new Counter32MibLeaf(colNlmStatsLogNotificationsLogged));
+    add_col(new Counter32MibLeaf(colNlmStatsLogNotificationsBumped));
+#    else
     add_col(new MibLeaf(colNlmStatsLogNotificationsLogged, READONLY, new Counter32()));
     add_col(new MibLeaf(colNlmStatsLogNotificationsBumped, READONLY, new Counter32()));
+#    endif
 
     //--AgentGen BEGIN=nlmStatsLogEntry::nlmStatsLogEntry
     configLogEntry->add_listener(this);
 
     // FIXME: add default nlmStatsLogEntry too! CK
     {
-        Oidx index;
-        constexpr uint32_t l{ 0 };
+        Oidx               index;
+        constexpr uint32_t l { 0 };
         index += l;
         MibTableRow* r = add_row(index);
         assert(r != nullptr);
@@ -1036,11 +1045,11 @@ nlmLogEntry::nlmLogEntry(Mib* _mib, nlmConfigLogEntry* configLogEntry, nlmStatsL
 
     // FIXME: add default logIndexes too! CK
     {
-        Oidx index;
-        constexpr uint32_t l{ 0 };
+        constexpr uint32_t l { 0 };
+        Oidx               index;
         index += l;
         Vbx vb(index);
-        vb.set_value(0ul);
+        vb.set_value(l);
         // add log index
         logIndexes.add(new MibStaticEntry(vb));
     }
@@ -1068,8 +1077,9 @@ void nlmLogEntry::row_added(MibTableRow* row, const Oidx& index, MibTable* src)
     // new log configuration?
     if (src == configLogEntry)
     {
-        Vbx vb(index);
-        vb.set_value(0ul);
+        Vbx                vb(index);
+        constexpr uint32_t first { 0 };
+        vb.set_value(first);
         // add log index
         logIndexes.add(new MibStaticEntry(vb));
     }
@@ -1104,8 +1114,9 @@ void nlmLogEntry::row_init(MibTableRow* /*row*/, const Oidx& index, MibTable* sr
     //--AgentGen BEGIN=nlmLogEntry::row_init
     if (src == configLogEntry)
     {
-        Vbx vb(index);
-        vb.set_value(0ul);
+        constexpr uint32_t first { 0 };
+        Vbx                vb(index);
+        vb.set_value(first);
         logIndexes.add(new MibStaticEntry(vb));
     }
     //--AgentGen END
@@ -1200,6 +1211,7 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, con
         }
         GenAddress addr;
         target->get_address(addr);
+
         auto*     udpAddress = new UdpAddress(addr);
         IpAddress ip(*udpAddress);
         for (int i = 0; i < ip.get_length(); i++) { address += (unsigned char)ip[i]; }
@@ -1216,30 +1228,33 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, con
     LOG_END;
 
     start_synch();
-    List<MibTableRow>* logs = configLogEntry->get_rows_cloned();
+    List<MibTableRow>* configLogs = configLogEntry->get_rows_cloned();
     statsLogEntry->start_synch();
 
     ListCursor<MibTableRow> cur;
-    for (cur.init(logs); cur.get(); cur.next())
+    for (cur.init(configLogs); cur.get(); cur.next())
     {
-        const Oidx logIndex(cur.get()->get_index());
-        const std::string logName = logIndex.as_string(true).get_printable(); // NOTE: withoutLength! CK
+        const Oidx        logIndex(cur.get()->get_index());
+        const std::string logName = logIndex.as_string(WITHOUT_LENGTH).get_printable();
 
         // ignore disabled log entries
         if (((nlmConfigLogAdminStatus*)cur.get()->get_nth(nNlmConfigLogAdminStatus))->get_state()
             == nlmConfigLogAdminStatus::e_disabled)
         {
-            std::cerr << "nlmLogEntry::add_notification() disabled: " << std::quoted(logName) << std::endl;
+            std::cerr << "nlmLogEntry::add_notification() disabled: " << std::quoted(logName)
+                      << std::endl;
             continue;
         }
 
         // FIXME: check access always! CK
         OctetStr const profileName =
-            static_cast<nlmConfigLogFilterName*>(cur.get()->get_nth(nNlmConfigLogFilterName))->get_state();
-        if ( //XXX (profileName.len() > 0) &&
+            static_cast<nlmConfigLogFilterName*>(cur.get()->get_nth(nNlmConfigLogFilterName))
+                ->get_state();
+        if ( // XXX (profileName.len() > 0) &&
             (!check_access(vbs, vbcount, nid, cur.get())))
         {
-            std::cerr << "nlmLogEntry::add_notification() no access: " << std::quoted(logName) << std::endl;
+            std::cerr << "nlmLogEntry::add_notification() no access: " << std::quoted(logName)
+                      << std::endl;
             continue;
         }
 
@@ -1251,28 +1266,29 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, con
             if ((profileName.len() == 0) // noFilter
                 || ((snmpNotifyFilterEntry != nullptr)
                     && !snmpNotifyFilterEntry->passes_filter(
-                        Oidx::from_string(profileName, true), nid, vbs, vbcount)))
+                        Oidx::from_string(profileName, WITH_LENGTH), nid, vbs, vbcount)))
             {
-                std::cerr << "nlmLogEntry::add_notification() filterd out: " << std::quoted(logName) << std::endl;
+                std::cerr << "nlmLogEntry::add_notification() filterd out: " << std::quoted(logName)
+                          << std::endl;
                 continue;
             }
         }
 
         // OK, now log the notification
-        Vbx*     vb = logIndexes.find(cur.get()->key());
+        Vbx* vb = logIndexes.find(cur.get()->key());
         if (!vb)
         {
             continue;
         }
 
-        uint32_t index  = 0;
+        uint32_t index = 0;
         vb->get_value(index);
         Oidx newIndex(cur.get()->get_index());
         newIndex += ++index;
         vb->set_value(index);
 
         MibTableRow* r = add_row(newIndex);
-        DateAndTime date (colNlmLogDateAndTime, READONLY, VMODE_DEFAULT);
+        DateAndTime  date(colNlmLogDateAndTime, READONLY, VMODE_DEFAULT);
         set_row(r, sysUpTime::get(), date.get_state(), engineID, address,
             // SNMPv2-TM::snmpUDPDomain
             "1.3.6.1.6.1.1", ceid, context, nid.get_printable());
@@ -1286,37 +1302,45 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, con
         MibTableRow* s = statsLogEntry->find_index(cur.get()->get_index());
         if (s)
         {
-            Counter32 ll{};
+#    ifdef USE_Counter32MibLeaf
+            static_cast<Counter32MibLeaf*>(s->get_nth(nNlmStatsLogNotificationsLogged))->increment();
+#    else
+            Counter32 ll {};
             s->get_nth(nNlmStatsLogNotificationsLogged)->get_value(ll);
             ll = ll + 1U;
             s->get_nth(nNlmStatsLogNotificationsLogged)->set_value(ll);
+#    endif
 
-            break; // FIXME: prevent duplicated log entries! CK
+            // TODO(CK): break; // FIXME: prevent duplicated log entries! CK
         }
     }
 
-    check_limits(logs);
-    delete logs;
+    check_limits(configLogs);
+    delete configLogs;
 
     statsLogEntry->end_synch();
     end_synch();
 }
 
-void nlmLogEntry::check_limits(List<MibTableRow>* logs)
+void nlmLogEntry::check_limits(List<MibTableRow>* Configlogs)
 {
     uint32_t const global_limit = configGlobalEntryLimit->get_state();
     if (global_limit > 0)
     {
-        int32_t const v = size() - global_limit;
+        int const v = size() - static_cast<int>(global_limit);
         if (v > 0)
         {
             ListCursor<MibTableRow> cur;
             int                     i = 0;
             for (cur.init(&entries); (i < v) && (cur.get()); i++)
             {
-                MibTableRow* victim = cur.get();
+                MibTableRow*      victim = cur.get();
+                Oidx              index(victim->get_index());
+                const std::string logName = index.as_string(WITHOUT_LENGTH).get_printable();
+                std::cerr << "nlmLogEntry::check_limits() global_limit: " << std::quoted(logName)
+                          << std::endl;
                 cur.next();
-                remove_row(victim->get_index());
+                remove_row(index);
                 Counter32MibLeaf::incrementScalar(mib, oidNlmStatsGlobalNotificationsBumped);
             }
         }
@@ -1337,18 +1361,24 @@ void nlmLogEntry::check_limits(List<MibTableRow>* logs)
             if (uptime - logtime > age_out * 6000)
             {
                 Oidx profile(victim->get_index());
-                profile.trim();
+                profile.trim(1); // cut off log number
 
                 MibTableRow* s = statsLogEntry->find_index(profile);
                 assert(s != nullptr);
                 if (s)
                 {
-                    const std::string logName = profile.as_string(true).get_printable(); // NOTE: withoutLength! CK
-                    std::cerr << "nlmLogEntry::check_limits() age_out: " << std::quoted(logName) << std::endl;
-                    Counter32 ll{};
+                    const std::string logName = profile.as_string(WITHOUT_LENGTH).get_printable();
+                    std::cerr << "nlmLogEntry::check_limits() age_out: " << std::quoted(logName)
+                              << std::endl;
+#    ifdef USE_Counter32MibLeaf
+                    static_cast<Counter32MibLeaf*>(s->get_nth(nNlmStatsLogNotificationsBumped))
+                        ->increment();
+#    else
+                    Counter32 ll {};
                     s->get_nth(nNlmStatsLogNotificationsBumped)->get_value(ll);
                     ll = ll + 1U;
                     s->get_nth(nNlmStatsLogNotificationsBumped)->set_value(ll);
+#    endif
                 }
 
                 remove_row(victim->get_index());
@@ -1362,7 +1392,7 @@ void nlmLogEntry::check_limits(List<MibTableRow>* logs)
     }
 
     ListCursor<MibTableRow> cur;
-    for (cur.init(logs); cur.get(); cur.next())
+    for (cur.init(Configlogs); cur.get(); cur.next())
     {
         uint32_t entry_limit = 0;
         cur.get()->get_nth(nNlmConfigLogEntryLimit)->get_value(entry_limit);
@@ -1371,16 +1401,16 @@ void nlmLogEntry::check_limits(List<MibTableRow>* logs)
             continue;
         }
 
-        OidListCursor<MibTableRow> c(&content);
+        OidListCursor<MibTableRow> curLog(&content);
         uint32_t                   n = 0;
-        for (c.lookup(cur.get()->key()); c.get(); c.next())
+        for (curLog.lookup(cur.get()->key()); curLog.get(); curLog.next())
         {
-            Oidx const ind(c.get()->get_index().cut_right(1));
-            if (ind > cur.get()->get_index())
+            Oidx const index(curLog.get()->get_index().cut_right(1));
+            if (index > cur.get()->get_index())
             {
                 break;
             }
-            if (ind == cur.get()->get_index())
+            if (index == cur.get()->get_index())
             {
                 n++;
             }
@@ -1389,17 +1419,17 @@ void nlmLogEntry::check_limits(List<MibTableRow>* logs)
         if ((entry_limit > 0) && (n > entry_limit))
         {
             n = n - entry_limit;
-            c.init(&content);
-            for (c.lookup(cur.get()->key()); ((n > 0) && (c.get()));)
+            curLog.init(&content);
+            for (curLog.lookup(cur.get()->key()); ((n > 0) && (curLog.get()));)
             {
-                Oidx const ind(c.get()->get_index().cut_right(1));
-                if (ind > cur.get()->get_index())
+                Oidx const index(curLog.get()->get_index().cut_right(1));
+                if (index > cur.get()->get_index())
                 {
                     break;
                 }
-                if (ind != cur.get()->get_index())
+                if (index != cur.get()->get_index())
                 {
-                    c.next();
+                    curLog.next();
                     continue;
                 }
 
@@ -1407,18 +1437,23 @@ void nlmLogEntry::check_limits(List<MibTableRow>* logs)
                 assert(r != nullptr);
                 if (r)
                 {
-                    const std::string logName = ind.as_string(true).get_printable(); // NOTE: withoutLength! CK
-                    std::cerr << "nlmLogEntry::check_limits() entry_limit: " << std::quoted(logName) << std::endl;
-                    Counter32 ll{};
+                    const std::string logName = index.as_string(WITHOUT_LENGTH).get_printable();
+                    std::cerr << "nlmLogEntry::check_limits() entry_limit: " << std::quoted(logName)
+                              << std::endl;
                     MibLeaf* l = r->get_nth(nNlmStatsLogNotificationsBumped);
                     assert(l != nullptr);
+#    ifdef USE_Counter32MibLeaf
+                    static_cast<Counter32MibLeaf*>(l)->increment();
+#    else
+                    Counter32 ll {};
                     l->get_value(ll);
                     ll = ll + 1U;
                     l->set_value(ll);
+#    endif
                 }
 
-                MibTableRow* victim = c.get();
-                c.next();
+                MibTableRow* victim = curLog.get();
+                curLog.next();
                 remove_row(victim->get_index());
                 Counter32MibLeaf::incrementScalar(mib, oidNlmStatsGlobalNotificationsBumped);
                 n--;
@@ -1485,11 +1520,35 @@ void nlmLogVariableEntry::row_delete(MibTableRow* /*row*/, const Oidx& index, Mi
     {
         OidListCursor<MibTableRow> cur(&content);
         Oidx                       ind(index);
-        for (cur.lookup(&ind); ((cur.get()) && (cur.get()->get_index().cut_right(1) == index));)
+        Oidx                       logIndex(index.cut_right(1));
+        const std::string          logName = logIndex.as_string(WITHOUT_LENGTH).get_printable();
+        std::cerr << "nlmLogVariableEntry::row_delete() : " << std::quoted(logName) << "."
+                  << ind.last() << " " << index.get_printable() << std::endl;
+
+        bool done { false };
+        for (cur.lookup(&ind); cur.get();)
         {
-            MibTableRow* victim = cur.get();
-            cur.next();
-            remove_row(*victim->key());
+            std::cerr << "nlmLogVariableEntry::row_delete() : " << std::quoted(logName)
+                      << cur.get()->get_index().cut_right(1).get_printable() << std::endl;
+
+            if (cur.get()->get_index().cut_right(1) == index)
+            {
+                std::cerr << "nlmLogVariableEntry::row_delete() : " << std::quoted(logName) << "..."
+                          << cur.get()->get_index().last() << std::endl;
+
+                MibTableRow* victim = cur.get();
+                cur.next();
+                remove_row(*victim->key());
+                done = true;
+            }
+            else if (done)
+            {
+                break;
+            }
+            else
+            {
+                cur.next();
+            }
         }
     }
     //--AgentGen END

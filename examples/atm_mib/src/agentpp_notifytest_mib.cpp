@@ -72,6 +72,7 @@ int32_t agentppNotifyTest::get_state() { return (int32_t) * ((SnmpInt32*)value);
 void agentppNotifyTest::set_state(int32_t l)
 {
     //--AgentGen BEGIN=agentppNotifyTest::set_state
+    // XXX send_agentppNotifyTestAllTypes();
     //--AgentGen END
     *((SnmpInt32*)value) = l;
 }
@@ -79,6 +80,7 @@ void agentppNotifyTest::set_state(int32_t l)
 int agentppNotifyTest::set(const Vbx& vb)
 {
     //--AgentGen BEGIN=agentppNotifyTest::set
+#if 1
     int32_t v = 0;
 
     vb.get_value(v);
@@ -89,6 +91,7 @@ int agentppNotifyTest::set(const Vbx& vb)
         break;
     }
     }
+#endif
     //--AgentGen END
     return MibLeaf::set(vb);
 }

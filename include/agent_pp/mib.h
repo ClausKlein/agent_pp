@@ -287,6 +287,7 @@ public:
      */
     virtual void set_value(const NS_SNMP SnmpSyntax&);
 
+#ifndef NO_DEPRECATED
     /**
      * Set the unsigned integer value of the receiver. Caution: The syntax
      * of this MibLeaf instance will be set to sNMP_SYNTAX_INT32! Thus, it
@@ -296,6 +297,7 @@ public:
      * @deprecated Use set_value(const SnmpSyntax&) instead.
      */
     virtual void set_value(const uint32_t);
+#endif
 
     /**
      * Set the value of the receiver from a variable binding and checks
@@ -755,7 +757,7 @@ public:
      *
      * @return The row status of the receiver's row.
      */
-    long get();
+    int32_t get();
 
     /**
      * Let the receiver prepare a SNMP SET subrequest
@@ -1287,6 +1289,7 @@ public:
      */
     MibTable(const Oidx&, int);
 
+#ifndef NO_DEPRECATED
     /**
      * Constructor with object identifier and given fixed index length.
      *
@@ -1300,6 +1303,7 @@ public:
      * @param a - not used
      */
     MibTable(const Oidx&, int, bool);
+#endif
 
     /**
      * Constructor with object identifier and given index structure.

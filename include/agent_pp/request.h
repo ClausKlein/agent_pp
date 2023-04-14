@@ -265,7 +265,7 @@ public:
      * @param index - An index of a sub-request (starting from 0).
      * @return A SMI syntax.
      */
-    virtual NS_SNMP SnmpInt32 get_syntax(int);
+    virtual NS_SNMP SnmpUInt32 get_syntax(int);
 
     /**
      * Return the object identifier of the specified

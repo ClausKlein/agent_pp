@@ -98,7 +98,7 @@ public:
      * @deprecated Use constructor with Mib reference instead to avoid
      * static references.
      */
-    SnmpRequestV3();
+    // XXX SnmpRequestV3();
 
     /**
      * Construct a SnmpRequestV3 session. If there could not be
@@ -117,6 +117,7 @@ public:
      */
     ~SnmpRequestV3();
 
+#    ifndef NO_DEPRECATED
     /**
      * Static method to send a SNMP request synchronously.
      *
@@ -131,7 +132,8 @@ public:
      * @deprecated Use send method with Mib reference to avoid static
      * references.
      */
-    static int send(NS_SNMP UTarget&, Pdux&);
+    static int send(NS_SNMP UTarget& target, Pdux& pdu) { return send(Mib::instance, target, pdu); }
+#    endif
 
     /**
      * Static method to send a SNMP request synchronously.

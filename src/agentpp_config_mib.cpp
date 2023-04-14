@@ -914,7 +914,7 @@ int agentppCfgLogLevel::commit_set_request(Request* req, int ind)
 
     if (DefaultLog::log())
     {
-        DefaultLog::log()->set_filter(logClass, get_state() % 255);
+        DefaultLog::log()->set_filter(logClass, static_cast<uint8_t>(get_state() % 255));
     }
     return status;
 }
@@ -925,7 +925,7 @@ int agentppCfgLogLevel::undo_set_request(Request* req, int& ind)
 
     if (DefaultLog::log())
     {
-        DefaultLog::log()->set_filter(logClass, undoValue);
+        DefaultLog::log()->set_filter(logClass, static_cast<uint8_t>(undoValue));
     }
     return MibLeaf::undo_set_request(req, ind);
 }

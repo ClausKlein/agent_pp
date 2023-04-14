@@ -253,6 +253,7 @@ void MibLeaf::replace_value(SnmpSyntax* v)
     validity |= LEAF_VALUE_INITIALIZED;
 }
 
+#ifndef NO_DEPRECATED
 /**
  * Set the integer value of the receiver.
  *
@@ -264,6 +265,7 @@ void MibLeaf::set_value(const uint32_t l)
     *((SnmpInt32*)value) = l;
     validity |= LEAF_VALUE_INITIALIZED;
 }
+#endif
 
 int MibLeaf::set_value(const Vbx& vb)
 {
@@ -889,7 +891,7 @@ int snmpRowStatus::unset()
  * @return The row status of the receiver's row.
  */
 
-long snmpRowStatus::get() { return (int)*((SnmpInt32*)value); }
+int32_t snmpRowStatus::get() { return (int)*((SnmpInt32*)value); }
 
 /*--------------------------------------------------------------------
  *
@@ -1347,6 +1349,7 @@ MibTable::MibTable(const Oidx& o, int ilen) : MibEntry(o, NOACCESS)
     delete[] istruc;
 }
 
+#ifndef NO_DEPRECATED
 /**
  * Constructor with object identifier and given fixed index length.
  * Additionally the automatic index object initialization can be
@@ -1383,6 +1386,7 @@ MibTable::MibTable(const Oidx& o, int ilen, bool a) : MibEntry(o, NOACCESS)
     init(o, istruc, 1);
     delete[] istruc;
 }
+#endif
 
 MibTable::MibTable(const Oidx& o, const index_info* istruc, unsigned int ilen) : MibEntry(o, NOACCESS)
 {
