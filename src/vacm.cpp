@@ -55,18 +55,21 @@ SnmpUnavailableContexts::SnmpUnavailableContexts()
 
 void SnmpUnavailableContexts::incValue()
 {
-    *((SnmpInt32*)value) = (int32_t) * ((SnmpInt32*)value) + 1;
+    *(dynamic_cast<SnmpUInt32*>(value)) = (uint32_t) * (dynamic_cast<SnmpUInt32*>(value)) + 1;
 }
 
-SnmpInt32 SnmpUnavailableContexts::getValue() { return *((SnmpInt32*)value); }
+SnmpUInt32 SnmpUnavailableContexts::getValue() { return *(dynamic_cast<SnmpUInt32*>(value)); }
 
 SnmpUnknownContexts::SnmpUnknownContexts()
     : MibLeaf(oidSnmpUnknownContexts, READONLY, new Counter32(0))
 { }
 
-void SnmpUnknownContexts::incValue() { *((SnmpInt32*)value) = (int32_t) * ((SnmpInt32*)value) + 1; }
+void SnmpUnknownContexts::incValue()
+{
+    *(dynamic_cast<SnmpUInt32*>(value)) = (uint32_t) * (dynamic_cast<SnmpUInt32*>(value)) + 1;
+}
 
-SnmpInt32 SnmpUnknownContexts::getValue() { return *((SnmpInt32*)value); }
+SnmpUInt32 SnmpUnknownContexts::getValue() { return *(dynamic_cast<SnmpUInt32*>(value)); }
 
 /*********************************************************************
  *
@@ -625,8 +628,8 @@ int VacmViewTreeFamilyTableStatus::set(const Vbx& vb)
     switch (rs)
     {
     case rowNotInService: {
-        OctetStr const viewName = ((SnmpAdminString*)my_row->first())->get();
-        ViewNameIndex* views    = ((VacmViewTreeFamilyTable*)my_table)->viewsOf(viewName);
+        OctetStr const viewName = (dynamic_cast<SnmpAdminString*>(my_row->first()))->get();
+        ViewNameIndex* views = (dynamic_cast<VacmViewTreeFamilyTable*>(my_table))->viewsOf(viewName);
         if (!views)
         {
             LOG_BEGIN(loggerModuleName, WARNING_LOG | 1);
@@ -648,13 +651,13 @@ int VacmViewTreeFamilyTableStatus::set(const Vbx& vb)
     }
 
     case rowActive: {
-        OctetStr const viewName = ((SnmpAdminString*)my_row->first())->get();
-        ViewNameIndex* views    = ((VacmViewTreeFamilyTable*)my_table)->viewsOf(viewName);
+        OctetStr const viewName = (dynamic_cast<SnmpAdminString*>(my_row->first()))->get();
+        ViewNameIndex* views = (dynamic_cast<VacmViewTreeFamilyTable*>(my_table))->viewsOf(viewName);
         if (!views)
         {
             views = new ViewNameIndex(viewName);
             views->add(my_row);
-            ((VacmViewTreeFamilyTable*)my_table)->viewNameIndex.add(views);
+            (dynamic_cast<VacmViewTreeFamilyTable*>(my_table))->viewNameIndex.add(views);
 
             LOG_BEGIN(loggerModuleName, INFO_LOG | 2);
             LOG("VacmViewTreeFamilyTable: adding view name (viewName)");
@@ -732,7 +735,7 @@ void VacmViewTreeFamilyTable::row_added(MibTableRow* new_row, const Oidx& ind, M
 void VacmViewTreeFamilyTable::row_activated(MibTableRow* row, const Oidx& /*ind*/, MibTable* /*t*/)
 {
     // add row to the index
-    OctetStr const viewName = ((SnmpAdminString*)row->first())->get();
+    OctetStr const viewName = (dynamic_cast<SnmpAdminString*>(row->first()))->get();
 
     ViewNameIndex* views = viewsOf(viewName);
 
@@ -748,7 +751,7 @@ void VacmViewTreeFamilyTable::row_activated(MibTableRow* row, const Oidx& /*ind*
 
 void VacmViewTreeFamilyTable::row_deactivated(MibTableRow* row, const Oidx& /*ind*/, MibTable* /*t*/)
 {
-    ViewNameIndex* views = viewsOf(((SnmpAdminString*)row->first())->get());
+    ViewNameIndex* views = viewsOf((dynamic_cast<SnmpAdminString*>(row->first()))->get());
 
     if (views)
     {
@@ -892,7 +895,7 @@ void VacmViewTreeFamilyTable::buildViewNameIndex()
     OctetStr viewName;
     for (cur.init(&content); cur.get(); cur.next())
     {
-        viewName             = ((SnmpAdminString*)cur.get()->first())->get();
+        viewName             = (dynamic_cast<SnmpAdminString*>(cur.get()->first()))->get();
         ViewNameIndex* views = viewsOf(viewName);
         if (views)
         {
@@ -1069,7 +1072,7 @@ void Vacm::deleteView(const OctetStr& viewName, const Oidx& subtree)
 
 void Vacm::incUnknownContexts() { vcp.snmpUnknownContexts->incValue(); }
 
-SnmpInt32 Vacm::getUnknownContexts() { return vcp.snmpUnknownContexts->getValue(); }
+SnmpUInt32 Vacm::getUnknownContexts() { return vcp.snmpUnknownContexts->getValue(); }
 
 int Vacm::isAccessAllowed(const int securityModel, const OctetStr& securityName,
     const int securityLevel, const int viewType, const OctetStr& context, const Oidx& o)

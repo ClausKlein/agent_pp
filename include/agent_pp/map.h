@@ -69,7 +69,7 @@ public:
 
     bool empty() const { return count == 0; }
 
-    virtual int contains(OidxPtr key) const;       // is key mapped?
+    virtual bool contains(OidxPtr key) const;      // is key mapped?
 
     virtual void clear();                          // delete all items
 
@@ -82,16 +82,16 @@ public:
     virtual OidxPtr&  key(Pix i) const   = 0;      // access key at i
     virtual EntryPtr& contents(Pix i)    = 0;      // access contents at i
 
-    virtual int owns(Pix i);                       // is i a valid Pix  ?
-    virtual Pix seek(OidxPtr key) const;           // Pix of key
+    virtual bool owns(Pix i);                      // is i a valid Pix  ?
+    virtual Pix  seek(OidxPtr key) const;          // Pix of key
 
     EntryPtr& dflt()
     {
         return def; // access default val
     }
 
-    void        error(const char* msg) const;
-    virtual int OK() = 0; // rep invariant
+    void         error(const char* msg) const;
+    virtual bool OK() = 0; // rep invariant
 };
 
 #    ifdef AGENTPP_NAMESPACE

@@ -62,11 +62,11 @@ void agentppSimMode::init(SnmpSyntax* v, int m)
     }
 }
 
-int32_t agentppSimMode::get_state() { return (int32_t) * ((SnmpInt32*)value); }
+int32_t agentppSimMode::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
 
 void agentppSimMode::set_state(int32_t l)
 {
-    *((SnmpInt32*)value) = l;
+    *(dynamic_cast<SnmpInt32*>(value)) = l;
     switch (l)
     {
     case 1: {
@@ -159,7 +159,7 @@ int agentppSimDeleteRow::commit_set_request(Request* req, int ind)
     {
         return SNMP_ERROR_WRONG_VALUE;
     }
-    auto* table = (MibTable*)entry;
+    auto* table = dynamic_cast<MibTable*>(entry);
 
     table->start_synch();
     Oidx const index = table->index(toid);
@@ -198,7 +198,7 @@ int agentppSimDeleteRow::prepare_set_request(Request* req, int& ind)
     {
         return SNMP_ERROR_WRONG_VALUE;
     }
-    auto*        table = (MibTable*)entry;
+    auto*        table = dynamic_cast<MibTable*>(entry);
     Oidx const   index = table->index(toid);
     MibTableRow* r     = table->find_index(index);
     if (!r)
@@ -247,7 +247,7 @@ int agentppSimDeleteTableContents::commit_set_request(Request* req, int ind)
         return SNMP_ERROR_WRONG_VALUE;
     }
 
-    auto* table = (MibTable*)entry;
+    auto* table = dynamic_cast<MibTable*>(entry);
     entry->start_synch();
     table->clear();
     entry->end_synch();

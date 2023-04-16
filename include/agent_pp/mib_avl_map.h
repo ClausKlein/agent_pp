@@ -49,6 +49,8 @@ namespace Agentpp
 using namespace Snmp_pp;
 #endif
 
+// NOLINTBEGIN
+
 struct OidxPtrMibEntryPtrAVLNode {
     OidxPtrMibEntryPtrAVLNode* lt;
     OidxPtrMibEntryPtrAVLNode* rt;
@@ -102,7 +104,7 @@ public:
     Pix  last();
     void prev(Pix& i);
 
-    int OK() override;
+    bool OK() override;
 };
 
 inline OidxPtrMibEntryPtrAVLMap::~OidxPtrMibEntryPtrAVLMap() { _kill(root); }
@@ -159,6 +161,8 @@ inline void OidxPtrMibEntryPtrAVLMap::clear()
 }
 
 inline int OidxPtrMibEntryPtrAVLMap::contains(OidxPtr key_) { return seek(key_) != nullptr; }
+
+// NOLINTEND
 
 #ifdef AGENTPP_NAMESPACE
 }

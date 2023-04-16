@@ -244,7 +244,7 @@ public:
     static snmpTargetParamsEntry* get_instance(Mib* mib)
     {
         Oidx const oid(oidSnmpTargetParamsEntry);
-        auto*      entry = (snmpTargetParamsEntry*)mib->get(oid);
+        auto*      entry = dynamic_cast<snmpTargetParamsEntry*>(mib->get(oid));
 
         return (entry) ? entry : instance;
     }
@@ -331,7 +331,7 @@ public:
     static snmpTargetAddrEntry* get_instance(Mib* mib)
     {
         Oidx const oid(oidSnmpTargetAddrEntry);
-        auto*      entry = (snmpTargetAddrEntry*)mib->get(oid);
+        auto*      entry = dynamic_cast<snmpTargetAddrEntry*>(mib->get(oid));
 
         return (entry) ? entry : instance;
     }

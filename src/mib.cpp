@@ -262,7 +262,7 @@ void MibLeaf::replace_value(SnmpSyntax* v)
 void MibLeaf::set_value(const uint32_t l)
 {
     set_syntax(sNMP_SYNTAX_INT32);
-    *((SnmpInt32*)value) = l;
+    *(dynamic_cast<SnmpInt32*>(value)) = l;
     validity |= LEAF_VALUE_INITIALIZED;
 }
 #endif
@@ -464,18 +464,18 @@ Counter32MibLeaf* Counter32MibLeaf::get_instance(Mib* mib, const Oidx& oid, cons
     if (oid.last() == 0)
     {
         // scalar
-        entry = (Counter32MibLeaf*)mib->get(oid);
+        entry = dynamic_cast<Counter32MibLeaf*>(mib->get(oid));
     }
     else if ((oid.len() > 1) && (ind.len() > 0))
     {
         // column
         const Oidx& tableOid(oid);
-        auto*       table = (MibTable*)mib->get(tableOid);
+        auto*       table = dynamic_cast<MibTable*>(mib->get(tableOid));
         if (table)
         {
             Oidx cellOid(oid);
             cellOid += ind;
-            entry = (Counter32MibLeaf*)table->find(cellOid);
+            entry = dynamic_cast<Counter32MibLeaf*>(table->find(cellOid));
         }
     }
     return entry;
@@ -489,18 +489,18 @@ Counter32MibLeaf* Counter32MibLeaf::get_instance(
     if (oid.last() == 0)
     {
         // scalar
-        entry = (Counter32MibLeaf*)mib->get(context, oid);
+        entry = dynamic_cast<Counter32MibLeaf*>(mib->get(context, oid));
     }
     else if ((oid.len() > 1) && (ind.len() > 0))
     {
         // column
         const Oidx& tableOid(oid);
-        auto*       table = (MibTable*)mib->get(context, tableOid);
+        auto*       table = dynamic_cast<MibTable*>(mib->get(context, tableOid));
         if (table)
         {
             Oidx cellOid(oid);
             cellOid += ind;
-            entry = (Counter32MibLeaf*)table->find(cellOid);
+            entry = dynamic_cast<Counter32MibLeaf*>(table->find(cellOid));
         }
     }
     return entry;
@@ -564,7 +564,10 @@ uint32_t Counter32MibLeaf::incrementColumnar(
     return 0;
 }
 
-void Counter32MibLeaf::increment() { *((Counter32*)value) = *((Counter32*)value) + 1; }
+void Counter32MibLeaf::increment()
+{
+    *(dynamic_cast<Counter32*>(value)) = *(dynamic_cast<Counter32*>(value)) + 1;
+}
 
 /*--------------------------------------------------------------------
  *
@@ -800,7 +803,7 @@ int snmpRowStatus::unset()
     if (undo)
     {
         int rs = 0;
-        rs     = *(SnmpInt32*)undo;
+        rs     = *dynamic_cast<SnmpInt32*>(undo);
 
         switch (rs)
         {
@@ -891,7 +894,7 @@ int snmpRowStatus::unset()
  * @return The row status of the receiver's row.
  */
 
-int32_t snmpRowStatus::get() { return (int)*((SnmpInt32*)value); }
+int32_t snmpRowStatus::get() { return (int)*(dynamic_cast<SnmpInt32*>(value)); }
 
 /*--------------------------------------------------------------------
  *
@@ -947,11 +950,11 @@ MibTableRow::MibTableRow(const MibTableRow& other)
         if ((other.row_status) && (cur.get() == other.row_status))
         {
             // NOLINTNEXTLINE(clang-analyzer-cplusplus.NewDeleteLeaks)
-            row_status = add((snmpRowStatus*)cur.get()->clone());
+            row_status = add(dynamic_cast<snmpRowStatus*>(cur.get()->clone()));
         }
         else
         {
-            auto* leaf = (MibLeaf*)cur.get()->clone();
+            auto* leaf = dynamic_cast<MibLeaf*>(cur.get()->clone());
             // a cloned leaf is not initialized by default
             if ((leaf->get_access() == READCREATE) && (!leaf->has_default()))
             {
@@ -2638,19 +2641,20 @@ int MibTable::prepare_set_request(Request* req, int& ind)
                     if ((row_status) && (get_generator(req->get_oid(ind)) == row_status))
                     {
                         Vbx const vb(req->get_value(ind));
-                        if (!(((snmpRowStatus*)o)->value_ok(vb)))
+                        if (!((dynamic_cast<snmpRowStatus*>(o))->value_ok(vb)))
                         {
                             return SNMP_ERROR_WRONG_VALUE;
                         }
-                        if ((((snmpRowStatus*)o)->transition_ok(vb))
-                            && (((snmpRowStatus*)o)->check_state_change(vb, req)))
+                        if (((dynamic_cast<snmpRowStatus*>(o))->transition_ok(vb))
+                            && ((dynamic_cast<snmpRowStatus*>(o))->check_state_change(vb, req)))
                         {
                             result = o->prepare_set_request(req, ind);
                             if (result == SNMP_ERROR_SUCCESS)
                             {
                                 int nrs = -1;
                                 vb.get_value(nrs);
-                                return perform_voting(o->my_row, (int)((snmpRowStatus*)o)->get(), nrs);
+                                return perform_voting(
+                                    o->my_row, (int)(dynamic_cast<snmpRowStatus*>(o))->get(), nrs);
                             }
                             else
                             {
@@ -2822,7 +2826,7 @@ void MibTable::remove_obsolete_rows(OrderedList<Oidx>& confirmed_rows)
  */
 void MibTable::remove_unused_rows()
 {
-    Lock start_synch(*this);
+    Lock const start_synch(*this);
 
     if ((row_status) && (!(row_timeout.in_time())))
     {
@@ -2903,7 +2907,7 @@ void MibTable::remove_unused_rows()
  */
 void MibTable::get_contents(Vbx**& contents, int& rows, int& cols, int discriminator)
 {
-    Lock start_synch(*this);
+    Lock const start_synch(*this);
 
     if (!contents)
     {
@@ -2983,7 +2987,7 @@ List<MibTableRow>* MibTable::get_rows_cloned(int discriminator)
 
 List<MibTableRow>* MibTable::get_rows_cloned(const Oidx* prefix, int discriminator)
 {
-    Lock                       start_synch(*this);
+    Lock const                 start_synch(*this);
     OidListCursor<MibTableRow> cur;
     auto*                      list = new List<MibTableRow>();
 
@@ -3123,12 +3127,12 @@ void Mib::construct(const OctetStr& path, const OctetStr& bootCounterFilePath)
 }
 
 #ifdef _SNMPv3
-int Mib::get_boot_counter(const OctetStr& engineID, unsigned int& engineBoots)
+int Mib::get_boot_counter(const OctetStr& engineID, uint32_t& engineBoots)
 {
     return getBootCounter(bootCounterFile.get_printable(), engineID, engineBoots);
 }
 
-int Mib::set_boot_counter(const OctetStr& engineID, unsigned int engineBoots)
+int Mib::set_boot_counter(const OctetStr& engineID, uint32_t engineBoots)
 {
     return saveBootCounter(bootCounterFile.get_printable(), engineID, engineBoots);
 }
@@ -3321,7 +3325,7 @@ void Mib::set_persistent_objects_path(const OctetStr* str)
     }
     if (str)
     {
-        persistent_objects_path = (OctetStr*)str->clone();
+        persistent_objects_path = dynamic_cast<OctetStr*>(str->clone());
     }
 }
 
@@ -3413,7 +3417,7 @@ bool Mib::add_agent_caps(const OctetStr& context, const Oidx& sysORID, const Oct
     {
         return false;
     }
-    sysOREntry* e = (sysOREntry*)c->get(oidSysOREntry);
+    sysOREntry* e = dynamic_cast<sysOREntry*>(c->get(oidSysOREntry));
     if ((!e) || (e->type() != AGENTPP_TABLE))
     {
         return false;
@@ -3435,7 +3439,7 @@ void Mib::remove_agent_caps(const OctetStr& context, const Oidx& sysORID)
     {
         return;
     }
-    sysOREntry* e = (sysOREntry*)c->get(oidSysOREntry);
+    sysOREntry* e = dynamic_cast<sysOREntry*>(c->get(oidSysOREntry));
     if (!e)
     {
         return;
@@ -3488,7 +3492,7 @@ int Mib::find_managing_object(MibContext* context, const Oidx& oid, MibEntryPtr&
     // update table
     if (is_table_node(retval))
     {
-        ((MibTable*)retval)->update(req);
+        (dynamic_cast<MibTable*>(retval))->update(req);
     }
     // exact match?
     if (*retval->key() == oid)
@@ -3529,7 +3533,7 @@ int Mib::find_next(MibContext* context, const Oidx& oid, MibEntryPtr& entry, Req
         {
             if (is_table_node(entry))
             {
-                ((MibTable*)entry)->update(req);
+                (dynamic_cast<MibTable*>(entry))->update(req);
             }
             while ((is_complex_node(entry)) && (entry->is_empty()))
             {
@@ -3541,7 +3545,7 @@ int Mib::find_next(MibContext* context, const Oidx& oid, MibEntryPtr& entry, Req
                 entry = e;
                 if (is_table_node(entry))
                 {
-                    ((MibTable*)entry)->update(req);
+                    (dynamic_cast<MibTable*>(entry))->update(req);
                 }
             }
             return SNMP_ERROR_SUCCESS;
@@ -3560,7 +3564,7 @@ int Mib::find_next(MibContext* context, const Oidx& oid, MibEntryPtr& entry, Req
         entry = e;
         if (is_table_node(entry))
         {
-            ((MibTable*)entry)->update(req);
+            (dynamic_cast<MibTable*>(entry))->update(req);
         }
     } while ((is_complex_node(entry)) && (entry->is_empty()));
     return SNMP_ERROR_SUCCESS;
@@ -4572,7 +4576,7 @@ void Mib::cleanup()
             if (c.get()->type() == AGENTPP_TABLE)
             {
                 // synchronized
-                ((MibTable*)c.get())->remove_unused_rows();
+                (dynamic_cast<MibTable*>(c.get()))->remove_unused_rows();
             }
         }
         cur.get()->end_synch();

@@ -57,7 +57,7 @@ const index_info indDynamicTable[1] = { { sNMP_SYNTAX_INT, false, 1, 1 } };
 
 class DynamicTable : public MibTable {
 public:
-    DynamicTable(const Oidx& o, const index_info* ind, unsigned int sz) : MibTable(o, ind, sz)
+    DynamicTable(const Oidx& o, const index_info* ind, uint32_t sz) : MibTable(o, ind, sz)
     {
         currentRequest = 0;
         add_col(new MibLeaf("1", READWRITE, new SnmpInt32(0), VMODE_NONE));
@@ -232,7 +232,7 @@ int main(int argc, char* argv[])
     }
 #ifdef _SNMPv3
     const char*    filename        = "snmpv3_boot_counter";
-    unsigned int   snmpEngineBoots = 0;
+    uint32_t       snmpEngineBoots = 0;
     OctetStr const engineId(SnmpEngineID::create_engine_id(port));
 
     // you may use your own methods to load/store this counter

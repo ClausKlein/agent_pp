@@ -672,9 +672,10 @@ int Request::lock_index(MibEntry* entry)
         {
             return i;
         }
-        else if ((l) && (l->type() == AGENTPP_TABLE) && (((MibTable*)l)->has_listeners()))
+        else if ((l) && (l->type() == AGENTPP_TABLE)
+            && ((dynamic_cast<MibTable*>(l))->has_listeners()))
         {
-            ListCursor<MibTable>* cur = ((MibTable*)l)->get_listeners();
+            ListCursor<MibTable>* cur = (dynamic_cast<MibTable*>(l))->get_listeners();
             for (; cur->get(); cur->next())
             {
                 if (cur->get() == entry)
@@ -710,7 +711,7 @@ void Request::set_locked(int i, MibEntry* entry)
         // such locks can be get without causing deadlocks
         if (entry->type() == AGENTPP_TABLE)
         {
-            ListCursor<MibTable>* cur = ((MibTable*)entry)->get_listeners();
+            ListCursor<MibTable>* cur = (dynamic_cast<MibTable*>(entry))->get_listeners();
             for (; cur->get(); cur->next())
             {
                 if (lock_index(cur->get()) < 0)
@@ -746,7 +747,7 @@ void Request::set_unlocked(int i)
             // table object.
             if (entry->type() == AGENTPP_TABLE)
             {
-                ListCursor<MibTable>* cur = ((MibTable*)entry)->get_listeners();
+                ListCursor<MibTable>* cur = (dynamic_cast<MibTable*>(entry))->get_listeners();
                 for (; cur->get(); cur->next())
                 {
                     if (lock_index(cur->get()) < 0)

@@ -179,7 +179,7 @@ bool snmpNotifyFilterEntry::passes_filter(
     found->first()->get_value(profileName);
     _snmpNotifyFilterProfileEntry->end_synch();
 
-    Oidx profileOid = Oidx::from_string(profileName, WITH_LENGTH);
+    Oidx const profileOid = Oidx::from_string(profileName, WITH_LENGTH);
 
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 4);
     LOG("NotificationOriginator: filter: using (profile) (as oid)");

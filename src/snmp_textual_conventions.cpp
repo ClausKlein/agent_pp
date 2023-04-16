@@ -61,10 +61,10 @@ SnmpDisplayString::~SnmpDisplayString() { }
 
 MibEntryPtr SnmpDisplayString::clone()
 {
-    MibEntryPtr other =
-        new SnmpDisplayString(oid, access, (OctetStr*)value->clone(), (value_mode == VMODE_DEFAULT));
+    MibEntryPtr other = new SnmpDisplayString(
+        oid, access, dynamic_cast<OctetStr*>(value->clone()), (value_mode == VMODE_DEFAULT));
 
-    ((SnmpDisplayString*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<SnmpDisplayString*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -138,14 +138,14 @@ SnmpAdminString::~SnmpAdminString() { }
 
 MibEntryPtr SnmpAdminString::clone()
 {
-    MibEntryPtr other =
-        new SnmpAdminString(oid, access, (OctetStr*)value->clone(), value_mode, min, max);
+    MibEntryPtr other = new SnmpAdminString(
+        oid, access, dynamic_cast<OctetStr*>(value->clone()), value_mode, min, max);
 
-    ((SnmpAdminString*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<SnmpAdminString*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
-OctetStr SnmpAdminString::get() { return *((OctetStr*)value); }
+OctetStr SnmpAdminString::get() { return *(dynamic_cast<OctetStr*>(value)); }
 
 /*--------------------- class SnmpEngineID -------------------------*/
 
@@ -157,9 +157,10 @@ SnmpEngineID::~SnmpEngineID() { }
 
 MibEntryPtr SnmpEngineID::clone()
 {
-    MibEntryPtr other = new SnmpEngineID(oid, access, (OctetStr*)value->clone(), value_mode);
+    MibEntryPtr other =
+        new SnmpEngineID(oid, access, dynamic_cast<OctetStr*>(value->clone()), value_mode);
 
-    ((SnmpEngineID*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<SnmpEngineID*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -200,8 +201,8 @@ OctetStr SnmpEngineID::create_engine_id(unsigned short p)
     OctetStr      engineID((const unsigned char*)"\x80\x00\x13\x70\x05", 5);
     unsigned char port[3] {};
 
-    port[0] = static_cast<uint16_t>(p / 256);
-    port[1] = static_cast<uint16_t>(p % 256);
+    port[0] = static_cast<uint8_t>(p / 256);
+    port[1] = static_cast<uint8_t>(p % 256);
     port[2] = 0;
     constexpr size_t LEN { 255 };
     constexpr size_t MAX_LEN { 23 };
@@ -241,8 +242,8 @@ MibEntryPtr SnmpTagValue::clone()
 {
     MibEntryPtr other = new SnmpTagValue(oid);
 
-    ((SnmpTagValue*)other)->replace_value(value->clone());
-    ((SnmpTagValue*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<SnmpTagValue*>(other))->replace_value(value->clone());
+    (dynamic_cast<SnmpTagValue*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -313,8 +314,8 @@ MibEntryPtr SnmpTagList::clone()
 {
     MibEntryPtr other = new SnmpTagList(oid, access, nullptr, get_value_mode());
 
-    ((SnmpTagList*)other)->replace_value(value->clone());
-    ((SnmpTagList*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<SnmpTagList*>(other))->replace_value(value->clone());
+    (dynamic_cast<SnmpTagList*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -364,10 +365,10 @@ bool SnmpTagList::contains(const char* tag)
         return false;
     }
 
-    int const len = ((OctetStr*)value)->len(); // NOTE: without \0! CK
-    char*     l   = new char[len + 1];         // TODO(CK): use std::array<char>
-    memcpy(l, (char*)((OctetStr*)value)->data(), len);
-    l[len] = 0;                                // OK, CK
+    int const len = (dynamic_cast<OctetStr*>(value))->len(); // NOTE: without \0! CK
+    char*     l   = new char[len + 1];                       // TODO(CK): use std::array<char>
+    memcpy(l, (char*)(dynamic_cast<OctetStr*>(value))->data(), len);
+    l[len] = 0;                                              // OK, CK
 
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 10);
     LOG("SnmpTagList: contains: (taglist)(tag)");
@@ -400,9 +401,9 @@ TestAndIncr::TestAndIncr(const Oidx& o) : MibLeaf(o, READWRITE, new SnmpInt32(0)
 
 TestAndIncr::~TestAndIncr() { }
 
-int32_t TestAndIncr::get_state() { return (int32_t) * ((SnmpInt32*)value); }
+int32_t TestAndIncr::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
 
-void TestAndIncr::set_state(int32_t l) { *((SnmpInt32*)value) = l; }
+void TestAndIncr::set_state(int32_t l) { *(dynamic_cast<SnmpInt32*>(value)) = l; }
 
 int TestAndIncr::set(const Vbx& vb)
 {
@@ -461,8 +462,8 @@ MibEntryPtr StorageType::clone()
 {
     MibEntryPtr other = new StorageType(oid, get_state());
 
-    ((StorageType*)other)->replace_value(value->clone());
-    ((StorageType*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<StorageType*>(other))->replace_value(value->clone());
+    (dynamic_cast<StorageType*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -495,18 +496,18 @@ void StorageType::set_state(int32_t state)
 {
     if ((state >= 1) && (state <= 5))
     {
-        *((SnmpInt32*)value) = state;
+        *(dynamic_cast<SnmpInt32*>(value)) = state;
     }
 }
 
-int32_t StorageType::get_state() { return (int32_t) * ((SnmpInt32*)value); }
+int32_t StorageType::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
 
 /*--------------------------- class StorageTypeVoter ------------------------*/
 
 int StorageTypeVoter::is_transition_ok(
     MibTable* t, MibTableRow* row, const Oidx& /*oid*/, int curState, int newState)
 {
-    int const storageType = ((StorageTable*)t)->get_storage_type(row);
+    int const storageType = (dynamic_cast<StorageTable*>(t))->get_storage_type(row);
 
     if (storageType == 5)
     {
@@ -573,7 +574,7 @@ bool StorageTable::is_persistent(MibTableRow* row)
 {
     if (row->get_nth(storage_type))
     {
-        if (((StorageType*)(row->get_nth(storage_type)))->row_is_volatile())
+        if ((dynamic_cast<StorageType*>(row->get_nth(storage_type)))->row_is_volatile())
         {
             return false;
         }
@@ -591,7 +592,7 @@ void StorageTable::set_storage_type(MibTableRow* row, int storageType)
 {
     if (row->get_nth(storage_type))
     {
-        ((StorageType*)(row->get_nth(storage_type)))->set_state(storageType);
+        (dynamic_cast<StorageType*>(row->get_nth(storage_type)))->set_state(storageType);
     }
 }
 
@@ -601,7 +602,7 @@ int StorageTable::get_storage_type(MibTableRow* row)
 
     if (row->get_nth(storage_type))
     {
-        storageType = ((StorageType*)(row->get_nth(storage_type)))->get_state();
+        storageType = (dynamic_cast<StorageType*>(row->get_nth(storage_type)))->get_state();
     }
     return storageType;
 }
@@ -612,7 +613,7 @@ void StorageTable::reset()
 
     for (cur.init(&content); cur.get();)
     {
-        long const type = ((StorageType*)(cur.get()->get_nth(storage_type)))->get_state();
+        long const type = (dynamic_cast<StorageType*>(cur.get()->get_nth(storage_type)))->get_state();
         if ((type != storageType_permanent) && (type != storageType_readOnly))
         {
             MibTableRow* victim = cur.get();
@@ -662,8 +663,8 @@ MibEntryPtr SnmpInt32MinMax::clone()
 {
     MibEntryPtr other = new SnmpInt32MinMax(oid, access, 0, get_value_mode(), min, max);
 
-    ((SnmpInt32MinMax*)other)->replace_value(value->clone());
-    ((SnmpInt32MinMax*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<SnmpInt32MinMax*>(other))->replace_value(value->clone());
+    (dynamic_cast<SnmpInt32MinMax*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -682,9 +683,9 @@ bool SnmpInt32MinMax::value_ok(const Vbx& v)
     return true;
 }
 
-int SnmpInt32MinMax::get_state() { return *((SnmpInt32*)value); }
+int SnmpInt32MinMax::get_state() { return *(dynamic_cast<SnmpInt32*>(value)); }
 
-void SnmpInt32MinMax::set_state(int i) { *((SnmpInt32*)value) = i; }
+void SnmpInt32MinMax::set_state(int i) { *(dynamic_cast<SnmpInt32*>(value)) = i; }
 
 /*------------------------- class OctetStrMinMax ------------------------*/
 
@@ -707,8 +708,8 @@ MibEntryPtr OctetStrMinMax::clone()
 {
     MibEntryPtr other = new OctetStrMinMax(oid, access, nullptr, get_value_mode(), min, max);
 
-    ((OctetStrMinMax*)other)->replace_value(value->clone());
-    ((OctetStrMinMax*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<OctetStrMinMax*>(other))->replace_value(value->clone());
+    (dynamic_cast<OctetStrMinMax*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -740,8 +741,8 @@ MibEntryPtr SnmpMessageProcessingModel::clone()
 {
     MibEntryPtr other = new SnmpMessageProcessingModel(oid, access, 0, get_value_mode());
 
-    ((SnmpMessageProcessingModel*)other)->replace_value(value->clone());
-    ((SnmpMessageProcessingModel*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<SnmpMessageProcessingModel*>(other))->replace_value(value->clone());
+    (dynamic_cast<SnmpMessageProcessingModel*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -757,8 +758,8 @@ MibEntryPtr SnmpSecurityLevel::clone()
 {
     MibEntryPtr other = new SnmpSecurityLevel(oid, access, 0, get_value_mode());
 
-    ((SnmpSecurityLevel*)other)->replace_value(value->clone());
-    ((SnmpSecurityLevel*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<SnmpSecurityLevel*>(other))->replace_value(value->clone());
+    (dynamic_cast<SnmpSecurityLevel*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -774,8 +775,8 @@ MibEntryPtr SnmpSecurityModel::clone()
 {
     MibEntryPtr other = new SnmpSecurityModel(oid, access, 0, get_value_mode());
 
-    ((SnmpSecurityModel*)other)->replace_value(value->clone());
-    ((SnmpSecurityModel*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<SnmpSecurityModel*>(other))->replace_value(value->clone());
+    (dynamic_cast<SnmpSecurityModel*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -785,14 +786,14 @@ TimeStamp::TimeStamp(const Oidx& id, mib_access a, int m) : MibLeaf(id, a, new T
 
 TimeStamp::~TimeStamp() { }
 
-void TimeStamp::update() TS_SYNCHRONIZED({ *((TimeTicks*)value) = sysUpTime::get(); })
+void TimeStamp::update() TS_SYNCHRONIZED({ *dynamic_cast<TimeTicks*>(value) = sysUpTime::get(); })
 
     MibEntryPtr TimeStamp::clone()
 {
     MibEntryPtr other = new TimeStamp(oid, access, value_mode);
 
-    ((TimeStamp*)other)->replace_value(value->clone());
-    ((TimeStamp*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<TimeStamp*>(other))->replace_value(value->clone());
+    (dynamic_cast<TimeStamp*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -831,14 +832,14 @@ MibEntryPtr DateAndTime::clone()
 {
     MibEntryPtr other = new DateAndTime(oid, access, value_mode);
 
-    ((DateAndTime*)other)->replace_value(value->clone());
-    ((DateAndTime*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<DateAndTime*>(other))->replace_value(value->clone());
+    (dynamic_cast<DateAndTime*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
-OctetStr DateAndTime::get_state() { return *((OctetStr*)value); }
+OctetStr DateAndTime::get_state() { return *(dynamic_cast<OctetStr*>(value)); }
 
-void DateAndTime::set_state(const OctetStr& s) { *((OctetStr*)value) = s; }
+void DateAndTime::set_state(const OctetStr& s) { *(dynamic_cast<OctetStr*>(value)) = s; }
 
 void DateAndTime::update()
 {

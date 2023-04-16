@@ -15,11 +15,12 @@ static const Agentpp::index_info index_struct[INDEX_LEN] = {
     // NOTE: implied set! no subindex length used, only as last subindex usable!
 };
 
+#if 0
 // ----------------------------------------
 // example for implied index length
 // ----------------------------------------
 // agent++/src/snmp_notification_mib.cpp:
-static const Agentpp::index_info SnmpNotifyFilterEntry[2] = { { sNMP_SYNTAX_OCTETS, false, 0, 32 },
+const Agentpp::index_info SnmpNotifyFilterEntry[2] = { { sNMP_SYNTAX_OCTETS, false, 0, 32 },
     { sNMP_SYNTAX_OID, true, 1, 95 } };
 // ----------------------------------------
 // example: \"test\".1.3.6.1.4.1.9999
@@ -32,6 +33,7 @@ static const Agentpp::index_info ind_IP_FORWARD_MIB_IpForwardEntry[4] = {
     { sNMP_SYNTAX_INT, false, 1, 1 }, { sNMP_SYNTAX_IPADDR, false, 4, 4 }
 };
 // --------------------
+#endif
 
 /**
  * Return the next available index value for the receiver table,
@@ -138,8 +140,8 @@ getRowIndicesCloned(const Agentpp::Oidx& index)
             else if (index_struct[i].type == sNMP_SYNTAX_OCTETS)
             {
                 // NOTE: the first subid is the strlen!
-                uint32_t strlen = index[pos];
-                *cur            = index.cut_left(pos).cut_right(index.len() - (pos + strlen + 1));
+                uint32_t const strlen = index[pos];
+                *cur = index.cut_left(pos).cut_right(index.len() - (pos + strlen + 1));
                 pos += (strlen + 1); // pos after this string
             }
             else
@@ -169,7 +171,7 @@ int main()
         std::cout << get_next_avail_index().get_printable() << std::endl;
         std::cout << get_next_avail_index().get_printable() << std::endl;
 
-        Agentpp::Oidx defaults = get_next_avail_index();
+        Agentpp::Oidx const defaults = get_next_avail_index();
         std::cout << defaults.get_printable() << std::endl;
 
         Agentpp::Array<Agentpp::Oidx>* defaults_indices = getRowIndicesCloned(defaults);
@@ -182,40 +184,41 @@ int main()
     }
 
     // XXX Agentpp::Oidx StringIndex("7.99.111.110.116.101.120.116");
-    const char*   firstTestString   = "context";
-    const char*   testOidWithoutLen = "1.2.3.4";
-    const char*   testOidWithLen    = "4.1.2.3.4";
-    const char*   testOidString     = "1.3.6.1.6.3.13.1.2.1";
-    const bool    withLength        = true;
-    Agentpp::Oidx IpaddressIndex("127.0.0.1");
-    Agentpp::Oidx oidWithoutLen(testOidWithoutLen);
+    const char*         firstTestString   = "context";
+    const char*         testOidWithoutLen = "1.2.3.4";
+    const char*         testOidWithLen    = "4.1.2.3.4";
+    const char*         testOidString     = "1.3.6.1.6.3.13.1.2.1";
+    const bool          withLength        = true;
+    Agentpp::Oidx const IpaddressIndex("127.0.0.1");
+    Agentpp::Oidx const oidWithoutLen(testOidWithoutLen);
 
     Agentpp::Oidx StringIndex = Agentpp::Oidx::from_string(firstTestString, withLength); // add the len
 
     assert(std::string(firstTestString)
         == StringIndex.as_string(true).get_printable());         // get back withoutLength == true!
 
-    Agentpp::Oidx ImpliedStringIndex =
+    Agentpp::Oidx const ImpliedStringIndex =
         Agentpp::Oidx::from_string(firstTestString, false);      // NOTE: without Length!
     assert(std::string(firstTestString)
         == ImpliedStringIndex.as_string(false).get_printable()); // NOTE: the symmetry!
 
-    Agentpp::Oidx OidIndex(testOidString);
+    Agentpp::Oidx const OidIndex(testOidString);
     assert(std::string(testOidString) == OidIndex.get_printable());
+
+    std::cout << "Oidx::operator+=(): -> concatenation:" << std::endl;
 
     // Oidx index = cur.get()->get_index();             // something like [a.b.c.d.e.f]
     Agentpp::Oidx index;
     index += Agentpp::Oidx::from_string(firstTestString, withLength); // index a: variable len string
     index += 2;                                                       // index b
-    // XXX index += Agentpp::Oidx(testOidWithLen);       // index c: variable len oid
     index += oidWithoutLen.len(); // index c len has to be explicit set!
-    index += oidWithoutLen;       // index c: variable len oid
+    index += oidWithoutLen;       // index c: string in this case!
     index += 4;                   // index d
-    // XXX index += Agentpp::Oidx::from_string("1234", false); // index e: without len!
-    index += IpaddressIndex;                         // index e
-    index += OidIndex;                               // index f: vaiable len oid without len: IMPLIED
+    index += IpaddressIndex;      // index e
+    index += OidIndex;            // index f: vaiable len oid without len: IMPLIED
 
-    std::cout << index.get_printable() << std::endl; // 7.99.111.110.116.101.120.116.2.2.88.89.4...
+    std::cout << index.get_printable() << std::endl;
+    //  7.99.111.110.116.101.120.116.2.4.1.2.3.4.4.127.0.0.1.1.3.6.1.6.3.13.1.2.1
 
     Agentpp::Array<Agentpp::Oidx>* indices = getRowIndicesCloned(index);
 
@@ -275,7 +278,7 @@ int main()
 
     {
         // IPv6 address as index samples
-        Agentpp::Oidx IpV6addressIndex("253.0.0.0.0.0.0.0.12.150.48.164.1.194.15.47");
+        Agentpp::Oidx const IpV6addressIndex("253.0.0.0.0.0.0.0.12.150.48.164.1.194.15.47");
         // XXX Agentpp::Oidx IpV6addressIndex("09.08.07.06.05.04.03.02.01.00.255.255.127.0.0.1");
         assert(16 == IpV6addressIndex.len());
 
@@ -330,6 +333,7 @@ int main()
  *  at 3 [6:6] = 1
  *  at 4 [7:10] = 1.1.2.3
  *  at 5 [11:11] = 3
+ *  Oidx::operator+=(): -> concatenation:
  *  7.99.111.110.116.101.120.116.2.4.1.2.3.4.4.127.0.0.1.1.3.6.1.6.3.13.1.2.1
  *  at 0 [0:7] = 7.99.111.110.116.101.120.116
  *  at 1 [8:8] = 2

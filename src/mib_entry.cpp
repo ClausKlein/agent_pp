@@ -64,7 +64,7 @@ MibEntry::MibEntry(const MibEntry& other)
  */
 MibEntry::~MibEntry()
 {
-    Lock tmp(*this); // exclusively get this object.
+    Lock const tmp(*this); // exclusively get this object.
 
     // explictly call clear() on this list, because it contains pointers
     // to other mib objects which we don't want to delete here

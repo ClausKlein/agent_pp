@@ -47,14 +47,14 @@ MibEntryPtr snmpTargetAddrTDomain::clone()
 {
     MibEntryPtr other = new snmpTargetAddrTDomain(oid);
 
-    ((snmpTargetAddrTDomain*)other)->replace_value(value->clone());
-    ((snmpTargetAddrTDomain*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<snmpTargetAddrTDomain*>(other))->replace_value(value->clone());
+    (dynamic_cast<snmpTargetAddrTDomain*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
 int snmpTargetAddrTDomain::get_state()
 {
-    uint32_t const len = ((Oid*)value)->len();
+    uint32_t const len = (dynamic_cast<Oid*>(value))->len();
 
     if ((len != 7) && (len != 9))
     {
@@ -62,9 +62,9 @@ int snmpTargetAddrTDomain::get_state()
     }
     if (len == 7)
     {
-        return (*(Oid*)value)[6];
+        return (*dynamic_cast<Oid*>(value))[6];
     }
-    return 100 + (*(Oid*)value)[8];
+    return 100 + (*dynamic_cast<Oid*>(value))[8];
 }
 
 bool snmpTargetAddrTDomain::value_ok(const Vbx& vb)
@@ -119,8 +119,8 @@ MibEntryPtr snmpTargetAddrTAddress::clone()
 {
     MibEntryPtr other = new snmpTargetAddrTAddress(oid);
 
-    ((snmpTargetAddrTAddress*)other)->replace_value(value->clone());
-    ((snmpTargetAddrTAddress*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<snmpTargetAddrTAddress*>(other))->replace_value(value->clone());
+    (dynamic_cast<snmpTargetAddrTAddress*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -226,7 +226,7 @@ int snmpTargetAddrTAddress::prepare_set_request(Request* req, int& ind)
 
 UdpAddress* snmpTargetAddrTAddress::getUdpAddress()
 {
-    int const tdomain = ((snmpTargetAddrTDomain*)my_row->get_nth(0))->get_state();
+    int const tdomain = (dynamic_cast<snmpTargetAddrTDomain*>(my_row->get_nth(0)))->get_state();
 
     switch (tdomain)
     {
@@ -234,7 +234,7 @@ UdpAddress* snmpTargetAddrTAddress::getUdpAddress()
     case 101:
     case 102: {
         auto* address = new UdpAddress();
-        *address      = (*(OctetStr*)value);
+        *address      = (*dynamic_cast<OctetStr*>(value));
         return address;
     }
     }
@@ -265,8 +265,8 @@ MibEntryPtr snmpTargetAddrParams::clone()
 {
     MibEntryPtr other = new snmpTargetAddrParams(oid);
 
-    ((snmpTargetAddrParams*)other)->replace_value(value->clone());
-    ((snmpTargetAddrParams*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<snmpTargetAddrParams*>(other))->replace_value(value->clone());
+    (dynamic_cast<snmpTargetAddrParams*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -427,7 +427,8 @@ Address* snmpTargetAddrEntry::get_address(MibTableRow* row)
     case 1:
     case 101:
     case 102: {
-        UdpAddress* address = ((snmpTargetAddrTAddress*)row->get_nth(1))->getUdpAddress();
+        UdpAddress* address =
+            (dynamic_cast<snmpTargetAddrTAddress*>(row->get_nth(1)))->getUdpAddress();
         return address;
         // break;
     }
@@ -493,7 +494,8 @@ List<MibTableRow>* snmpTargetAddrEntry::get_rows_cloned_for_tag(const OctetStr& 
     {
         snmpRowStatus* status = cur.get()->get_row_status();
         if (((!status) || ((status) && (status->get() == rowActive)))
-            && ((((SnmpTagList*)cur.get()->get_nth(4))->contains(myTag.get_printable()))))
+            && ((
+                (dynamic_cast<SnmpTagList*>(cur.get()->get_nth(4)))->contains(myTag.get_printable()))))
         {
             list->add(new MibTableRow(*cur.get()));
         }

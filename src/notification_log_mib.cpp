@@ -90,7 +90,7 @@ void nlmConfigLogOperStatus::get_request(Request* req, int ind)
         }
     }
 
-    *((SnmpInt32*)value) = l;
+    *(dynamic_cast<SnmpInt32*>(value)) = l;
     MibLeaf::get_request(req, ind);
 }
 
@@ -98,8 +98,8 @@ MibEntryPtr nlmConfigLogOperStatus::clone()
 {
     MibEntryPtr other = new nlmConfigLogOperStatus(oid);
 
-    ((nlmConfigLogOperStatus*)other)->replace_value(value->clone());
-    ((nlmConfigLogOperStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<nlmConfigLogOperStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<nlmConfigLogOperStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -136,13 +136,16 @@ void nlmConfigGlobalEntryLimit::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-uint32_t nlmConfigGlobalEntryLimit::get_state() { return (uint32_t) * ((Gauge32*)value); }
+uint32_t nlmConfigGlobalEntryLimit::get_state()
+{
+    return (uint32_t) * (dynamic_cast<Gauge32*>(value));
+}
 
 void nlmConfigGlobalEntryLimit::set_state(uint32_t l)
 {
     //--AgentGen BEGIN=nlmConfigGlobalEntryLimit::set_state
     //--AgentGen END
-    *((Gauge32*)value) = l;
+    *(dynamic_cast<Gauge32*>(value)) = l;
 }
 
 int nlmConfigGlobalEntryLimit::set(const Vbx& vb)
@@ -207,13 +210,13 @@ void nlmConfigGlobalAgeOut::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-uint32_t nlmConfigGlobalAgeOut::get_state() { return (uint32_t) * ((Gauge32*)value); }
+uint32_t nlmConfigGlobalAgeOut::get_state() { return (uint32_t) * (dynamic_cast<Gauge32*>(value)); }
 
 void nlmConfigGlobalAgeOut::set_state(uint32_t l)
 {
     //--AgentGen BEGIN=nlmConfigGlobalAgeOut::set_state
     //--AgentGen END
-    *((Gauge32*)value) = l;
+    *(dynamic_cast<Gauge32*>(value)) = l;
 }
 
 int nlmConfigGlobalAgeOut::set(const Vbx& vb)
@@ -269,8 +272,8 @@ MibEntryPtr nlmConfigLogFilterName::clone()
 {
     MibEntryPtr other = new nlmConfigLogFilterName(oid);
 
-    ((nlmConfigLogFilterName*)other)->replace_value(value->clone());
-    ((nlmConfigLogFilterName*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<nlmConfigLogFilterName*>(other))->replace_value(value->clone());
+    (dynamic_cast<nlmConfigLogFilterName*>(other))->set_reference_to_table(my_table);
 
     //--AgentGen BEGIN=nlmConfigLogFilterName::clone
     //--AgentGen END
@@ -284,13 +287,13 @@ void nlmConfigLogFilterName::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-OctetStr nlmConfigLogFilterName::get_state() { return *((OctetStr*)value); }
+OctetStr nlmConfigLogFilterName::get_state() { return *(dynamic_cast<OctetStr*>(value)); }
 
 void nlmConfigLogFilterName::set_state(const OctetStr& s)
 {
     //--AgentGen BEGIN=nlmConfigLogFilterName::set_state
     //--AgentGen END
-    *((OctetStr*)value) = s;
+    *(dynamic_cast<OctetStr*>(value)) = s;
 }
 
 int nlmConfigLogFilterName::set(const Vbx& vb)
@@ -363,8 +366,8 @@ MibEntryPtr nlmConfigLogEntryLimit::clone()
 {
     MibEntryPtr other = new nlmConfigLogEntryLimit(oid);
 
-    ((nlmConfigLogEntryLimit*)other)->replace_value(value->clone());
-    ((nlmConfigLogEntryLimit*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<nlmConfigLogEntryLimit*>(other))->replace_value(value->clone());
+    (dynamic_cast<nlmConfigLogEntryLimit*>(other))->set_reference_to_table(my_table);
 
     //--AgentGen BEGIN=nlmConfigLogEntryLimit::clone
     //--AgentGen END
@@ -378,13 +381,13 @@ void nlmConfigLogEntryLimit::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-uint32_t nlmConfigLogEntryLimit::get_state() { return (uint32_t) * ((Gauge32*)value); }
+uint32_t nlmConfigLogEntryLimit::get_state() { return (uint32_t) * (dynamic_cast<Gauge32*>(value)); }
 
 void nlmConfigLogEntryLimit::set_state(uint32_t l)
 {
     //--AgentGen BEGIN=nlmConfigLogEntryLimit::set_state
     //--AgentGen END
-    *((Gauge32*)value) = l;
+    *(dynamic_cast<Gauge32*>(value)) = l;
 }
 
 int nlmConfigLogEntryLimit::set(const Vbx& vb)
@@ -440,8 +443,8 @@ MibEntryPtr nlmConfigLogAdminStatus::clone()
 {
     MibEntryPtr other = new nlmConfigLogAdminStatus(oid);
 
-    ((nlmConfigLogAdminStatus*)other)->replace_value(value->clone());
-    ((nlmConfigLogAdminStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<nlmConfigLogAdminStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<nlmConfigLogAdminStatus*>(other))->set_reference_to_table(my_table);
 
     //--AgentGen BEGIN=nlmConfigLogAdminStatus::clone
     //--AgentGen END
@@ -455,13 +458,13 @@ void nlmConfigLogAdminStatus::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-int32_t nlmConfigLogAdminStatus::get_state() { return (int32_t) * ((SnmpInt32*)value); }
+int32_t nlmConfigLogAdminStatus::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
 
 void nlmConfigLogAdminStatus::set_state(int32_t l)
 {
     //--AgentGen BEGIN=nlmConfigLogAdminStatus::set_state
     //--AgentGen END
-    *((SnmpInt32*)value) = l;
+    *(dynamic_cast<SnmpInt32*>(value)) = l;
 }
 
 int nlmConfigLogAdminStatus::set(const Vbx& vb)
@@ -527,8 +530,8 @@ MibEntryPtr nlmConfigLogStorageType::clone()
 {
     MibEntryPtr other = new nlmConfigLogStorageType(oid);
 
-    ((nlmConfigLogStorageType*)other)->replace_value(value->clone());
-    ((nlmConfigLogStorageType*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<nlmConfigLogStorageType*>(other))->replace_value(value->clone());
+    (dynamic_cast<nlmConfigLogStorageType*>(other))->set_reference_to_table(my_table);
 
     //--AgentGen BEGIN=nlmConfigLogStorageType::clone
     //--AgentGen END
@@ -542,13 +545,13 @@ void nlmConfigLogStorageType::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-int32_t nlmConfigLogStorageType::get_state() { return (int32_t) * ((SnmpInt32*)value); }
+int32_t nlmConfigLogStorageType::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
 
 void nlmConfigLogStorageType::set_state(int32_t l)
 {
     //--AgentGen BEGIN=nlmConfigLogStorageType::set_state
     //--AgentGen END
-    *((SnmpInt32*)value) = l;
+    *(dynamic_cast<SnmpInt32*>(value)) = l;
 }
 
 int nlmConfigLogStorageType::set(const Vbx& vb)
@@ -615,21 +618,21 @@ MibEntryPtr nlmConfigLogEntryStatus::clone()
 {
     MibEntryPtr other = new nlmConfigLogEntryStatus(oid);
 
-    ((nlmConfigLogEntryStatus*)other)->replace_value(value->clone());
-    ((nlmConfigLogEntryStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<nlmConfigLogEntryStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<nlmConfigLogEntryStatus*>(other))->set_reference_to_table(my_table);
 
     //--AgentGen BEGIN=nlmConfigLogEntryStatus::clone
     //--AgentGen END
     return other;
 }
 
-int32_t nlmConfigLogEntryStatus::get_state() { return (int32_t) * ((SnmpInt32*)value); }
+int32_t nlmConfigLogEntryStatus::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
 
 void nlmConfigLogEntryStatus::set_state(int32_t l)
 {
     //--AgentGen BEGIN=nlmConfigLogEntryStatus::set_state
     //--AgentGen END
-    *((SnmpInt32*)value) = l;
+    *(dynamic_cast<SnmpInt32*>(value)) = l;
 }
 
 int nlmConfigLogEntryStatus::set(const Vbx& vb)
@@ -750,13 +753,16 @@ void nlmStatsGlobalNotificationsLogged::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-uint32_t nlmStatsGlobalNotificationsLogged::get_state() { return (uint32_t) * ((Counter32*)value); }
+uint32_t nlmStatsGlobalNotificationsLogged::get_state()
+{
+    return (uint32_t) * (dynamic_cast<Counter32*>(value));
+}
 
 void nlmStatsGlobalNotificationsLogged::set_state(uint32_t l)
 {
     //--AgentGen BEGIN=nlmStatsGlobalNotificationsLogged::set_state
     //--AgentGen END
-    *((Counter32*)value) = l;
+    *(dynamic_cast<Counter32*>(value)) = l;
 }
 
 uint32_t nlmStatsGlobalNotificationsLogged::inc()
@@ -803,13 +809,16 @@ void nlmStatsGlobalNotificationsBumped::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-uint32_t nlmStatsGlobalNotificationsBumped::get_state() { return (uint32_t) * ((Counter32*)value); }
+uint32_t nlmStatsGlobalNotificationsBumped::get_state()
+{
+    return (uint32_t) * (dynamic_cast<Counter32*>(value));
+}
 
 void nlmStatsGlobalNotificationsBumped::set_state(uint32_t l)
 {
     //--AgentGen BEGIN=nlmStatsGlobalNotificationsBumped::set_state
     //--AgentGen END
-    *((Counter32*)value) = l;
+    *(dynamic_cast<Counter32*>(value)) = l;
 }
 
 uint32_t nlmStatsGlobalNotificationsBumped::inc()
@@ -1238,7 +1247,8 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, con
         const std::string logName = logIndex.as_string(WITHOUT_LENGTH).get_printable();
 
         // ignore disabled log entries
-        if (((nlmConfigLogAdminStatus*)cur.get()->get_nth(nNlmConfigLogAdminStatus))->get_state()
+        if ((dynamic_cast<nlmConfigLogAdminStatus*>(cur.get()->get_nth(nNlmConfigLogAdminStatus)))
+                ->get_state()
             == nlmConfigLogAdminStatus::e_disabled)
         {
             std::cerr << "nlmLogEntry::add_notification() disabled: " << std::quoted(logName)
@@ -1335,7 +1345,7 @@ void nlmLogEntry::check_limits(List<MibTableRow>* Configlogs)
             for (cur.init(&entries); (i < v) && (cur.get()); i++)
             {
                 MibTableRow*      victim = cur.get();
-                Oidx              index(victim->get_index());
+                Oidx const        index(victim->get_index());
                 const std::string logName = index.as_string(WITHOUT_LENGTH).get_printable();
                 std::cerr << "nlmLogEntry::check_limits() global_limit: " << std::quoted(logName)
                           << std::endl;
@@ -1520,28 +1530,29 @@ void nlmLogVariableEntry::row_delete(MibTableRow* /*row*/, const Oidx& index, Mi
     {
         OidListCursor<MibTableRow> cur(&content);
         Oidx                       ind(index);
-        Oidx                       logIndex(index.cut_right(1));
+        Oidx const                 logIndex(index.cut_right(1));
         const std::string          logName = logIndex.as_string(WITHOUT_LENGTH).get_printable();
-        std::cerr << "nlmLogVariableEntry::row_delete() : " << std::quoted(logName) << "."
-                  << ind.last() << " " << index.get_printable() << std::endl;
+        ind += 1;
+        std::cerr << "nlmLogVariableEntry::row_delete(" << index.get_printable() << ") "
+                  << std::quoted(logName) << std::endl;
 
-        bool done { false };
-        for (cur.lookup(&ind); cur.get();)
+        bool found { false };
+        for (found = cur.lookup(&ind); found && cur.get();)
         {
-            std::cerr << "nlmLogVariableEntry::row_delete() : " << std::quoted(logName)
-                      << cur.get()->get_index().cut_right(1).get_printable() << std::endl;
+            std::cerr << "nlmLogVariableEntry::row_delete() : lookup "
+                      << cur.get()->get_index().get_printable() << std::endl;
 
             if (cur.get()->get_index().cut_right(1) == index)
             {
-                std::cerr << "nlmLogVariableEntry::row_delete() : " << std::quoted(logName) << "..."
-                          << cur.get()->get_index().last() << std::endl;
+                std::cerr << "nlmLogVariableEntry::row_delete() : remove_row " << std::quoted(logName)
+                          << "..." << cur.get()->get_index().last() << std::endl;
 
                 MibTableRow* victim = cur.get();
                 cur.next();
                 remove_row(*victim->key());
-                done = true;
+                found = true;
             }
-            else if (done)
+            else if (found)
             {
                 break;
             }

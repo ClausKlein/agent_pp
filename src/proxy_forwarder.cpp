@@ -68,9 +68,9 @@ void ProxyForwarder::check_references(Mib* mib)
 
         return;
     }
-    _snmpProxyEntry        = (snmpProxyEntry*)mib->get(oidSnmpProxyEntry);
-    _snmpTargetAddrEntry   = (snmpTargetAddrEntry*)mib->get(oidSnmpTargetAddrEntry);
-    _snmpTargetParamsEntry = (snmpTargetParamsEntry*)mib->get(oidSnmpTargetParamsEntry);
+    _snmpProxyEntry        = dynamic_cast<snmpProxyEntry*>(mib->get(oidSnmpProxyEntry));
+    _snmpTargetAddrEntry   = dynamic_cast<snmpTargetAddrEntry*>(mib->get(oidSnmpTargetAddrEntry));
+    _snmpTargetParamsEntry = dynamic_cast<snmpTargetParamsEntry*>(mib->get(oidSnmpTargetParamsEntry));
     if ((!_snmpProxyEntry) || (!_snmpTargetParamsEntry) || (!_snmpTargetAddrEntry))
     {
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 0);

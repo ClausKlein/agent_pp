@@ -67,14 +67,14 @@ agentppNotifyTest::~agentppNotifyTest()
     //--AgentGen END
 }
 
-int32_t agentppNotifyTest::get_state() { return (int32_t) * ((SnmpInt32*)value); }
+int32_t agentppNotifyTest::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
 
 void agentppNotifyTest::set_state(int32_t l)
 {
     //--AgentGen BEGIN=agentppNotifyTest::set_state
     // XXX send_agentppNotifyTestAllTypes();
     //--AgentGen END
-    *((SnmpInt32*)value) = l;
+    *(dynamic_cast<SnmpInt32*>(value)) = l;
 }
 
 int agentppNotifyTest::set(const Vbx& vb)

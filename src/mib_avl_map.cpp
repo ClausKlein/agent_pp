@@ -222,7 +222,7 @@ Pix OidxPtrMibEntryPtrAVLMap::seek_inexact(OidxPtr key)
 static int                        _need_rebalancing; // to send back balance info from rec. calls
 static OidxPtr*                   _target_item;      // add/del_item target
 static OidxPtrMibEntryPtrAVLNode* _found_node;       // returned added/deleted node
-static int                        _already_found;    // for deletion subcases
+static bool                       _already_found;    // for deletion subcases
 
 void OidxPtrMibEntryPtrAVLMap::_add(OidxPtrMibEntryPtrAVLNode*& t)
 {
@@ -528,7 +528,7 @@ void OidxPtrMibEntryPtrAVLMap::_del(OidxPtrMibEntryPtrAVLNode* par, OidxPtrMibEn
             OidxPtrMibEntryPtrAVLNode* p = pred(t);
             t->item                      = p->item;
             t->cont                      = p->cont;
-            _already_found               = 1;
+            _already_found               = true;
             comp                         = -1; // fall through below to left
         }
     }
@@ -769,7 +769,7 @@ void OidxPtrMibEntryPtrAVLMap::del(OidxPtr item)
     }
 
     _need_rebalancing = 0;
-    _already_found    = 0;
+    _already_found    = false;
     _found_node       = nullptr;
     _target_item      = &item; // NOTE: This will be a dangling reference! CK
     _del(root, root);
@@ -808,9 +808,9 @@ OidxPtrMibEntryPtrAVLMap::OidxPtrMibEntryPtrAVLMap(OidxPtrMibEntryPtrAVLMap& b)
     for (Pix i = b.first(); i != nullptr; b.next(i)) { (*this)[b.key(i)] = b.contents(i); }
 }
 
-int OidxPtrMibEntryPtrAVLMap::OK()
+bool OidxPtrMibEntryPtrAVLMap::OK()
 {
-    int v = 1;
+    bool v = true;
 
     if (root == nullptr)
     {

@@ -1141,12 +1141,12 @@ int Snmpx::send(Pdux const& pdu, SnmpTarget* target)
     switch (target->get_type())
     {
     case SnmpTarget::type_ctarget: {
-        ctarget = (CTarget*)target;
+        ctarget = dynamic_cast<CTarget*>(target);
         break;
     }
 
     case SnmpTarget::type_utarget: {
-        utarget = (UTarget*)target;
+        utarget = dynamic_cast<UTarget*>(target);
         break;
     }
 

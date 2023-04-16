@@ -90,11 +90,11 @@ void MibTableSizePolicy::register_policy(MibContext* context, MibTableSizePolicy
         {
             if (p->defaultLimit > 0)
             {
-                ((MibTable*)cur.get())->add_voter(p);
+                (dynamic_cast<MibTable*>(cur.get()))->add_voter(p);
             }
             else if (p->policies.find(cur.get()->key()))
             {
-                ((MibTable*)cur.get())->add_voter(p);
+                (dynamic_cast<MibTable*>(cur.get()))->add_voter(p);
             }
         }
     }

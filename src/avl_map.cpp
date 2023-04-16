@@ -523,7 +523,7 @@ void OidxPtrEntryPtrAVLMap::_del(OidxPtrEntryPtrAVLNode* par, OidxPtrEntryPtrAVL
             OidxPtrEntryPtrAVLNode* p = pred(t);
             t->item                   = p->item;
             t->cont                   = p->cont;
-            _already_found            = 1;
+            _already_found            = true;
             comp                      = -1; // fall through below to left
         }
     }
@@ -800,9 +800,9 @@ OidxPtrEntryPtrAVLMap::OidxPtrEntryPtrAVLMap(OidxPtrEntryPtrAVLMap& b) : OidxPtr
     for (Pix i = b.first(); i != nullptr; b.next(i)) { (*this)[b.key(i)] = b.contents(i); }
 }
 
-int OidxPtrEntryPtrAVLMap::OK()
+bool OidxPtrEntryPtrAVLMap::OK()
 {
-    int v = 1;
+    bool v = true;
 
     if (root == nullptr)
     {

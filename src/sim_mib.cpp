@@ -90,8 +90,8 @@ MibEntryPtr SimRowStatus::clone()
 {
     MibEntryPtr other = new SimRowStatus(oid, access);
 
-    ((SimRowStatus*)other)->replace_value(value->clone());
-    ((SimRowStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<SimRowStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<SimRowStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -145,7 +145,7 @@ time_t simSysUpTime::get() { return (get_currentTime() - start) * 100; }
 
 void simSysUpTime::get_request(Request* req, int ind)
 {
-    *((TimeTicks*)value) = (uint32_t)get();
+    *(dynamic_cast<TimeTicks*>(value)) = (uint32_t)get();
     MibLeaf::get_request(req, ind);
 }
 

@@ -53,22 +53,22 @@ void CmdThread::run()
 
     OctetStr cmdline;
     {
-        Lock tmp(*cmdExecutionCmdEntry::instance);
+        Lock const tmp(*cmdExecutionCmdEntry::instance);
 
         OctetStr cmd;
-        ((cmdExecutionCmdName*)row->get_nth(0))->get_value(cmd);
-        ((cmdExecutionCmdStatus*)row->get_nth(1))->set_state(2); // running
-        ((cmdExecutionCmdRunTime*)row->get_nth(2))->start();
+        (dynamic_cast<cmdExecutionCmdName*>(row->get_nth(0)))->get_value(cmd);
+        (dynamic_cast<cmdExecutionCmdStatus*>(row->get_nth(1)))->set_state(2); // running
+        (dynamic_cast<cmdExecutionCmdRunTime*>(row->get_nth(2)))->start();
 
         {
-            Lock lock(*cmdExecutionCmdConfigEntry::instance);
+            Lock const lock(*cmdExecutionCmdConfigEntry::instance);
             cmdline = cmdExecutionCmdConfigEntry::instance->get_command_line(cmd);
         }
 
         if (cmdline.len() == 0)
         {
-            ((cmdExecutionCmdStatus*)row->get_nth(1))->set_state(4); // error
-            ((cmdExecutionCmdRunTime*)row->get_nth(2))->end();
+            (dynamic_cast<cmdExecutionCmdStatus*>(row->get_nth(1)))->set_state(4); // error
+            (dynamic_cast<cmdExecutionCmdRunTime*>(row->get_nth(2)))->end();
 
             LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
             LOG("CmdExeMib: error at command thread");
@@ -87,17 +87,18 @@ void CmdThread::run()
 
     int const err = system(cmdline.get_printable()); // NOLINT(cert-env33-c)
     {
-        Lock tmp(*cmdExecutionCmdEntry::instance);
-        ((cmdExecutionCmdStatus*)row->get_nth(1))->set_state((err != 0) ? 4 : 3); // error or finished
-        ((cmdExecutionCmdRunTime*)row->get_nth(2))->end();
-        ((cmdExecutionCmdRowStatus*)row->get_nth(3))->set_state(rowNotInService);
+        Lock const tmp(*cmdExecutionCmdEntry::instance);
+        (dynamic_cast<cmdExecutionCmdStatus*>(row->get_nth(1)))
+            ->set_state((err != 0) ? 4 : 3); // error or finished
+        (dynamic_cast<cmdExecutionCmdRunTime*>(row->get_nth(2)))->end();
+        (dynamic_cast<cmdExecutionCmdRowStatus*>(row->get_nth(3)))->set_state(rowNotInService);
     }
 
-    Lock tmp(*cmdExecutionOutputEntry::instance);
+    Lock const tmp(*cmdExecutionOutputEntry::instance);
 
-    FILE*   f    = nullptr;
-    char*   buf  = nullptr;
-    int32_t size = 0, bytes = 0;
+    FILE*  f    = nullptr;
+    char*  buf  = nullptr;
+    size_t size = 0, bytes = 0;
 
     if ((f = fopen(fname.get_printable(), "r")) == nullptr)
     {
@@ -168,8 +169,8 @@ MibEntryPtr cmdExecutionCmdConfigLine::clone()
 {
     MibEntryPtr other = new cmdExecutionCmdConfigLine(oid);
 
-    ((cmdExecutionCmdConfigLine*)other)->replace_value(value->clone());
-    ((cmdExecutionCmdConfigLine*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<cmdExecutionCmdConfigLine*>(other))->replace_value(value->clone());
+    (dynamic_cast<cmdExecutionCmdConfigLine*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -215,9 +216,9 @@ void cmdExecutionCmdNextIndex::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-int32_t cmdExecutionCmdNextIndex::get_state() { return (int32_t) * ((SnmpInt32*)value); }
+int32_t cmdExecutionCmdNextIndex::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
 
-void cmdExecutionCmdNextIndex::set_state(int32_t l) { *((SnmpInt32*)value) = l; }
+void cmdExecutionCmdNextIndex::set_state(int32_t l) { *(dynamic_cast<SnmpInt32*>(value)) = l; }
 
 /**
  *  cmdExecutionCmdName
@@ -233,8 +234,8 @@ MibEntryPtr cmdExecutionCmdName::clone()
 {
     MibEntryPtr other = new cmdExecutionCmdName(oid);
 
-    ((cmdExecutionCmdName*)other)->replace_value(value->clone());
-    ((cmdExecutionCmdName*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<cmdExecutionCmdName*>(other))->replace_value(value->clone());
+    (dynamic_cast<cmdExecutionCmdName*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -274,8 +275,8 @@ MibEntryPtr cmdExecutionCmdStatus::clone()
 {
     MibEntryPtr other = new cmdExecutionCmdStatus(oid);
 
-    ((cmdExecutionCmdStatus*)other)->replace_value(value->clone());
-    ((cmdExecutionCmdStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<cmdExecutionCmdStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<cmdExecutionCmdStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -285,9 +286,9 @@ void cmdExecutionCmdStatus::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-int32_t cmdExecutionCmdStatus::get_state() { return (int32_t) * ((SnmpInt32*)value); }
+int32_t cmdExecutionCmdStatus::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
 
-void cmdExecutionCmdStatus::set_state(int32_t l) { *((SnmpInt32*)value) = l; }
+void cmdExecutionCmdStatus::set_state(int32_t l) { *(dynamic_cast<SnmpInt32*>(value)) = l; }
 
 /**
  *  cmdExecutionCmdRunTime
@@ -307,8 +308,8 @@ MibEntryPtr cmdExecutionCmdRunTime::clone()
 {
     MibEntryPtr other = new cmdExecutionCmdRunTime(oid);
 
-    ((cmdExecutionCmdRunTime*)other)->replace_value(value->clone());
-    ((cmdExecutionCmdRunTime*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<cmdExecutionCmdRunTime*>(other))->replace_value(value->clone());
+    (dynamic_cast<cmdExecutionCmdRunTime*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -328,9 +329,9 @@ void cmdExecutionCmdRunTime::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-int32_t cmdExecutionCmdRunTime::get_state() { return (int32_t) * ((TimeTicks*)value); }
+int32_t cmdExecutionCmdRunTime::get_state() { return (int32_t) * (dynamic_cast<TimeTicks*>(value)); }
 
-void cmdExecutionCmdRunTime::set_state(int32_t l) { *((TimeTicks*)value) = l; }
+void cmdExecutionCmdRunTime::set_state(int32_t l) { *(dynamic_cast<TimeTicks*>(value)) = l; }
 
 void cmdExecutionCmdRunTime::start()
 {
@@ -353,14 +354,14 @@ MibEntryPtr cmdExecutionCmdRowStatus::clone()
 {
     MibEntryPtr other = new cmdExecutionCmdRowStatus(oid);
 
-    ((cmdExecutionCmdRowStatus*)other)->replace_value(value->clone());
-    ((cmdExecutionCmdRowStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<cmdExecutionCmdRowStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<cmdExecutionCmdRowStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
-int32_t cmdExecutionCmdRowStatus::get_state() { return (int32_t) * ((SnmpInt32*)value); }
+int32_t cmdExecutionCmdRowStatus::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
 
-void cmdExecutionCmdRowStatus::set_state(int32_t l) { *((SnmpInt32*)value) = l; }
+void cmdExecutionCmdRowStatus::set_state(int32_t l) { *(dynamic_cast<SnmpInt32*>(value)) = l; }
 
 int cmdExecutionCmdRowStatus::prepare_set_request(Request* req, int& ind)
 {
@@ -381,7 +382,7 @@ int cmdExecutionCmdRowStatus::prepare_set_request(Request* req, int& ind)
     switch (l)
     {
     case rowNotInService: {
-        if (((cmdExecutionCmdStatus*)my_row->get_nth(1))->get_state() == 2) // running
+        if ((dynamic_cast<cmdExecutionCmdStatus*>(my_row->get_nth(1)))->get_state() == 2) // running
         {
             return SNMP_ERROR_INCONSIST_VAL;
         }
@@ -389,7 +390,7 @@ int cmdExecutionCmdRowStatus::prepare_set_request(Request* req, int& ind)
     }
 
     case rowDestroy: {
-        if (((cmdExecutionCmdStatus*)my_row->get_nth(1))->get_state() == 2) // running
+        if ((dynamic_cast<cmdExecutionCmdStatus*>(my_row->get_nth(1)))->get_state() == 2) // running
         {
             return SNMP_ERROR_INCONSIST_VAL;
         }
@@ -414,7 +415,7 @@ int cmdExecutionCmdRowStatus::set(const Vbx& vb)
     case rowActive: {
 #ifdef _THREADS
         auto* ct = new CmdThread(my_row);
-        ((cmdExecutionCmdEntry*)my_table)->threadPool->execute(ct);
+        (dynamic_cast<cmdExecutionCmdEntry*>(my_table))->threadPool->execute(ct);
 #else
 #    error "Please_compile_with _THREADS defined"
 #endif
@@ -447,8 +448,8 @@ MibEntryPtr cmdExecutionOutputLine::clone()
 {
     MibEntryPtr other = new cmdExecutionOutputLine(oid);
 
-    ((cmdExecutionOutputLine*)other)->replace_value(value->clone());
-    ((cmdExecutionOutputLine*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<cmdExecutionOutputLine*>(other))->replace_value(value->clone());
+    (dynamic_cast<cmdExecutionOutputLine*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -543,7 +544,7 @@ OctetStr cmdExecutionCmdConfigEntry::get_command_line(const OctetStr& command)
 
     for (cur.init(&content); cur.get(); cur.next())
     {
-        if (((snmpRowStatus*)cur.get()->get_nth(2))->get() == rowActive)
+        if ((dynamic_cast<snmpRowStatus*>(cur.get()->get_nth(2)))->get() == rowActive)
         {
             if (strcmp(cur.get()->get_index().get_printable(), index.get_printable()) == 0)
             {
@@ -633,7 +634,7 @@ void cmdExecutionOutputEntry::set_row(int index, char* p0)
 
 void cmdExecutionOutputEntry::remove_all(const Oidx& index)
 {
-    Lock tmp(*this);
+    Lock const tmp(*this);
 
     OidListCursor<MibTableRow> cur;
 

@@ -55,9 +55,9 @@ char* AgentTools::make_concatenation(const char* prefix, const char* suffix)
  *
  * @return The file size.
  */
-int AgentTools::file_size(FILE* stream)
+long AgentTools::file_size(FILE* stream)
 {
-    int oldpos = 0, length = 0;
+    long oldpos = 0, length = 0;
 
     oldpos = ftell(stream);
     fseek(stream, 0, SEEK_END);

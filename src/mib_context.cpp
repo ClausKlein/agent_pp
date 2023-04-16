@@ -435,7 +435,7 @@ MibEntry* MibContext::add(MibEntry* item)
 
     if (item->type() == AGENTPP_GROUP)
     {
-        auto* mg = (MibGroup*)item;
+        auto* mg = dynamic_cast<MibGroup*>(item);
         if (groups.find(mg->key()))
         {
             LOG_BEGIN(loggerModuleName, WARNING_LOG | 1);

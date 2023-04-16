@@ -205,7 +205,7 @@ public:
     static snmpCommunityEntry* get_instance(Mib* mib)
     {
         Oidx const oid(oidSnmpCommunityEntry);
-        auto*      entry = (snmpCommunityEntry*)mib->get(oid);
+        auto*      entry = dynamic_cast<snmpCommunityEntry*>(mib->get(oid));
 
         return (entry) ? entry : instance;
     }

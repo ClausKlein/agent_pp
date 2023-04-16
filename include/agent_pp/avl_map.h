@@ -47,6 +47,8 @@ namespace Agentpp
 using namespace Snmp_pp;
 #endif
 
+// NOLINTBEGIN
+
 struct OidxPtrEntryPtrAVLNode {
     OidxPtrEntryPtrAVLNode* lt;
     OidxPtrEntryPtrAVLNode* rt;
@@ -83,7 +85,7 @@ protected:
     bool                    _need_rebalancing {}; // to send back balance info from rec. calls
     OidxPtr*                _target_item {};      // add/del_item target
     OidxPtrEntryPtrAVLNode* _found_node {};       // returned added/deleted node
-    int                     _already_found {};    // for deletion subcases
+    bool                    _already_found {};    // for deletion subcases
 
 public:
     OidxPtrEntryPtrAVLMap(EntryPtr deflt);
@@ -99,16 +101,16 @@ public:
     inline OidxPtr&  key(Pix i) const override;
     inline EntryPtr& contents(Pix i) override;
 
-    Pix        seek(OidxPtr key) const override;
-    Pix        seek_inexact(OidxPtr key) const;
-    inline int contains(OidxPtr key_) const override;
+    Pix         seek(OidxPtr key) const override;
+    Pix         seek_inexact(OidxPtr key) const;
+    inline bool contains(OidxPtr key_) const override;
 
     inline void clear() override;
 
     Pix  last() const;
     void prev(Pix& i) const;
 
-    int OK() override;
+    bool OK() override;
 };
 
 inline OidxPtrEntryPtrAVLMap::~OidxPtrEntryPtrAVLMap() { _kill(root); }
@@ -163,7 +165,9 @@ inline void OidxPtrEntryPtrAVLMap::clear()
     root  = nullptr;
 }
 
-inline int OidxPtrEntryPtrAVLMap::contains(OidxPtr key_) const { return seek(key_) != nullptr; }
+inline bool OidxPtrEntryPtrAVLMap::contains(OidxPtr key_) const { return seek(key_) != nullptr; }
+
+// NOLINTEND
 
 #ifdef AGENTPP_NAMESPACE
 }

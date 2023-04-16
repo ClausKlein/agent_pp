@@ -58,7 +58,7 @@ static const char* loggerModuleName = "agent++.agentpp_config_mib";
 #        ifndef _NO_THREADS
 void OperationTask::run()
 {
-    Mib* mib = ((agentppCfgStorageEntry*)initiator->my_table)->get_mib();
+    Mib* mib = (dynamic_cast<agentppCfgStorageEntry*>(initiator->my_table))->get_mib();
 
     if (!mib)
     {
@@ -69,15 +69,16 @@ void OperationTask::run()
         return;
     }
     MibTableRow* row = initiator->my_row;
-    int const format = ((agentppCfgStorageFormat*)row->get_nth(nAgentppCfgStorageFormat))->get_state();
+    int const    format =
+        (dynamic_cast<agentppCfgStorageFormat*>(row->get_nth(nAgentppCfgStorageFormat)))->get_state();
     NS_SNMP OctetStr path =
-        ((agentppCfgStoragePath*)row->get_nth(nAgentppCfgStoragePath))->get_state();
+        (dynamic_cast<agentppCfgStoragePath*>(row->get_nth(nAgentppCfgStoragePath)))->get_state();
     switch (operation)
     {
     case agentppCfgStorageOperation::e_store: {
         if (mib->save(format, path))
         {
-            ((TimeStamp*)row->get_nth(nAgentppCfgStorageLastStore))->update();
+            (dynamic_cast<TimeStamp*>(row->get_nth(nAgentppCfgStorageLastStore)))->update();
             LOG_BEGIN(loggerModuleName, INFO_LOG | 1);
             LOG("agentppCfgStorageEntry: config saved successfully (path)");
             LOG(path.get_printable());
@@ -89,7 +90,7 @@ void OperationTask::run()
     case agentppCfgStorageOperation::e_restore: {
         if (mib->load(format, path))
         {
-            ((TimeStamp*)row->get_nth(nAgentppCfgStorageLastRestore))->update();
+            (dynamic_cast<TimeStamp*>(row->get_nth(nAgentppCfgStorageLastRestore)))->update();
             LOG_BEGIN(loggerModuleName, INFO_LOG | 1);
             LOG("agentppCfgStorageEntry: config loaded successfully (path)");
             LOG(path.get_printable());
@@ -149,8 +150,8 @@ agentppCfgSecSrcAddrValidation::~agentppCfgSecSrcAddrValidation()
 void agentppCfgSecSrcAddrValidation::get_request(Request* req, int ind)
 {
     //--AgentGen BEGIN=agentppCfgSecSrcAddrValidation::get_request
-    snmpCommunityEntry* _snmpCommunityEntry =
-        (snmpCommunityEntry*)mibReference->get(req->get_context(), oidSnmpCommunityEntry);
+    snmpCommunityEntry* _snmpCommunityEntry = dynamic_cast<snmpCommunityEntry*>(
+        mibReference->get(req->get_context(), oidSnmpCommunityEntry));
 
     if (!_snmpCommunityEntry)
     {
@@ -172,14 +173,14 @@ int32_t agentppCfgSecSrcAddrValidation::get_state()
 {
     //--AgentGen BEGIN=agentppCfgSecSrcAddrValidation::get_state
     //--AgentGen END
-    return (int32_t) * ((SnmpInt32*)value);
+    return (int32_t) * (dynamic_cast<SnmpInt32*>(value));
 }
 
 void agentppCfgSecSrcAddrValidation::set_state(int32_t l)
 {
     //--AgentGen BEGIN=agentppCfgSecSrcAddrValidation::set_state
     //--AgentGen END
-    *((SnmpInt32*)value) = l;
+    *(dynamic_cast<SnmpInt32*>(value)) = l;
 }
 
 int agentppCfgSecSrcAddrValidation::set(const Vbx& vb)
@@ -254,8 +255,8 @@ MibEntryPtr agentppCfgStoragePath::clone()
 {
     MibEntryPtr other = new agentppCfgStoragePath(oid);
 
-    ((agentppCfgStoragePath*)other)->replace_value(value->clone());
-    ((agentppCfgStoragePath*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<agentppCfgStoragePath*>(other))->replace_value(value->clone());
+    (dynamic_cast<agentppCfgStoragePath*>(other))->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppCfgStoragePath::clone
     //--AgentGen END
     return other;
@@ -272,14 +273,14 @@ NS_SNMP OctetStr agentppCfgStoragePath::get_state()
 {
     //--AgentGen BEGIN=agentppCfgStoragePath::get_state
     //--AgentGen END
-    return *((NS_SNMP OctetStr*)value);
+    return *(dynamic_cast<NS_SNMP OctetStr*>(value));
 }
 
 void agentppCfgStoragePath::set_state(const NS_SNMP OctetStr& s)
 {
     //--AgentGen BEGIN=agentppCfgStoragePath::set_state
     //--AgentGen END
-    *((NS_SNMP OctetStr*)value) = s;
+    *(dynamic_cast<NS_SNMP OctetStr*>(value)) = s;
 }
 
 int agentppCfgStoragePath::prepare_set_request(Request* req, int& ind)
@@ -302,7 +303,7 @@ int agentppCfgStoragePath::prepare_set_request(Request* req, int& ind)
         return SNMP_ERROR_WRONG_LENGTH;
     }
     //--AgentGen BEGIN=agentppCfgStoragePath::prepare_set_request
-    if (((agentppCfgStorageEntry*)my_table)->is_secure_paths())
+    if ((dynamic_cast<agentppCfgStorageEntry*>(my_table))->is_secure_paths())
     {
         if ((v.len() == 0) || (v[0] == '/') || (v[0] == '\\'))
         {
@@ -379,8 +380,8 @@ MibEntryPtr agentppCfgStorageFormat::clone()
 {
     MibEntryPtr other = new agentppCfgStorageFormat(oid);
 
-    ((agentppCfgStorageFormat*)other)->replace_value(value->clone());
-    ((agentppCfgStorageFormat*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<agentppCfgStorageFormat*>(other))->replace_value(value->clone());
+    (dynamic_cast<agentppCfgStorageFormat*>(other))->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppCfgStorageFormat::clone
     //--AgentGen END
     return other;
@@ -397,14 +398,14 @@ int32_t agentppCfgStorageFormat::get_state()
 {
     //--AgentGen BEGIN=agentppCfgStorageFormat::get_state
     //--AgentGen END
-    return (int32_t) * ((SnmpInt32*)value);
+    return (int32_t) * (dynamic_cast<SnmpInt32*>(value));
 }
 
 void agentppCfgStorageFormat::set_state(int32_t l)
 {
     //--AgentGen BEGIN=agentppCfgStorageFormat::set_state
     //--AgentGen END
-    *((SnmpInt32*)value) = l;
+    *(dynamic_cast<SnmpInt32*>(value)) = l;
 }
 
 bool agentppCfgStorageFormat::value_ok(const Vbx& vb)
@@ -420,7 +421,9 @@ bool agentppCfgStorageFormat::value_ok(const Vbx& vb)
         return false;
     }
     //--AgentGen BEGIN=agentppCfgStorageFormat::value_ok
-    if (!((agentppCfgStorageEntry*)my_table)->get_mib()->get_config_format((unsigned int)v))
+    if (!(dynamic_cast<agentppCfgStorageEntry*>(my_table))
+             ->get_mib()
+             ->get_config_format((unsigned int)v))
     {
         return false;
     }
@@ -491,8 +494,8 @@ MibEntryPtr agentppCfgStorageOperation::clone()
 {
     MibEntryPtr other = new agentppCfgStorageOperation(oid);
 
-    ((agentppCfgStorageOperation*)other)->replace_value(value->clone());
-    ((agentppCfgStorageOperation*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<agentppCfgStorageOperation*>(other))->replace_value(value->clone());
+    (dynamic_cast<agentppCfgStorageOperation*>(other))->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppCfgStorageOperation::clone
     //--AgentGen END
     return other;
@@ -509,14 +512,14 @@ int32_t agentppCfgStorageOperation::get_state()
 {
     //--AgentGen BEGIN=agentppCfgStorageOperation::get_state
     //--AgentGen END
-    return (int32_t) * ((SnmpInt32*)value);
+    return (int32_t) * (dynamic_cast<SnmpInt32*>(value));
 }
 
 void agentppCfgStorageOperation::set_state(int32_t l)
 {
     //--AgentGen BEGIN=agentppCfgStorageOperation::set_state
     //--AgentGen END
-    *((SnmpInt32*)value) = l;
+    *(dynamic_cast<SnmpInt32*>(value)) = l;
 }
 
 int agentppCfgStorageOperation::set(const Vbx& vb)
@@ -615,8 +618,8 @@ MibEntryPtr agentppCfgStorageStorageType::clone()
 {
     MibEntryPtr other = new agentppCfgStorageStorageType(oid);
 
-    ((agentppCfgStorageStorageType*)other)->replace_value(value->clone());
-    ((agentppCfgStorageStorageType*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<agentppCfgStorageStorageType*>(other))->replace_value(value->clone());
+    (dynamic_cast<agentppCfgStorageStorageType*>(other))->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppCfgStorageStorageType::clone
     //--AgentGen END
     return other;
@@ -633,14 +636,14 @@ int32_t agentppCfgStorageStorageType::get_state()
 {
     //--AgentGen BEGIN=agentppCfgStorageStorageType::get_state
     //--AgentGen END
-    return (int32_t) * ((SnmpInt32*)value);
+    return (int32_t) * (dynamic_cast<SnmpInt32*>(value));
 }
 
 void agentppCfgStorageStorageType::set_state(int32_t l)
 {
     //--AgentGen BEGIN=agentppCfgStorageStorageType::set_state
     //--AgentGen END
-    *((SnmpInt32*)value) = l;
+    *(dynamic_cast<SnmpInt32*>(value)) = l;
 }
 
 int agentppCfgStorageStorageType::set(const Vbx& vb)
@@ -690,8 +693,8 @@ MibEntryPtr agentppCfgStorageStatus::clone()
 {
     MibEntryPtr other = new agentppCfgStorageStatus(oid);
 
-    ((agentppCfgStorageStatus*)other)->replace_value(value->clone());
-    ((agentppCfgStorageStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<agentppCfgStorageStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<agentppCfgStorageStatus*>(other))->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppCfgStorageStatus::clone
     //--AgentGen END
     return other;
@@ -701,14 +704,14 @@ int32_t agentppCfgStorageStatus::get_state()
 {
     //--AgentGen BEGIN=agentppCfgStorageStatus::get_state
     //--AgentGen END
-    return (int32_t) * ((SnmpInt32*)value);
+    return (int32_t) * (dynamic_cast<SnmpInt32*>(value));
 }
 
 void agentppCfgStorageStatus::set_state(int32_t l)
 {
     //--AgentGen BEGIN=agentppCfgStorageStatus::set_state
     //--AgentGen END
-    *((SnmpInt32*)value) = l;
+    *(dynamic_cast<SnmpInt32*>(value)) = l;
 }
 
 int agentppCfgStorageStatus::set(const Vbx& vb)
@@ -799,12 +802,14 @@ int agentppCfgStorageEntry::is_transition_ok(MibTable* /*table*/, MibTableRow* r
     //--AgentGen BEGIN=agentppCfgStorageEntry::is_transition_ok
     if (requestedStatus == rowDestroy)
     {
-        if (((agentppCfgStorageStorageType*)row->get_nth(nAgentppCfgStorageStorageType))->get_state()
+        if ((dynamic_cast<agentppCfgStorageStorageType*>(row->get_nth(nAgentppCfgStorageStorageType)))
+                ->get_state()
             >= 4)
         {
             return SNMP_ERROR_INCONSIST_VAL;
         }
-        if (((agentppCfgStorageOperation*)row->get_nth(nAgentppCfgStorageOperation))->get_state()
+        if ((dynamic_cast<agentppCfgStorageOperation*>(row->get_nth(nAgentppCfgStorageOperation)))
+                ->get_state()
             != agentppCfgStorageOperation::e_idle)
         {
             return SNMP_ERROR_INCONSIST_VAL;
@@ -875,7 +880,7 @@ agentpp_config_mib::agentpp_config_mib(Mib* backReference)
     add(new agentppCfgLogLevel(DEBUG_LOG, oidAgentppCfgLogLevelDebug));
     add(new agentppCfgSecSrcAddrValidation());
     add(new agentppCfgStorageEntry());
-    auto* storageTable = (agentppCfgStorageEntry*)content.last();
+    auto* storageTable = dynamic_cast<agentppCfgStorageEntry*>(content.last());
     storageTable->set_mib(backReference);
 }
 
@@ -904,9 +909,9 @@ void agentppCfgLogLevel::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-int32_t agentppCfgLogLevel::get_state() { return (int32_t) * ((SnmpInt32*)value); }
+int32_t agentppCfgLogLevel::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
 
-void agentppCfgLogLevel::set_state(int32_t l) { *((SnmpInt32*)value) = l; }
+void agentppCfgLogLevel::set_state(int32_t l) { *(dynamic_cast<SnmpInt32*>(value)) = l; }
 
 int agentppCfgLogLevel::commit_set_request(Request* req, int ind)
 {
@@ -921,7 +926,7 @@ int agentppCfgLogLevel::commit_set_request(Request* req, int ind)
 
 int agentppCfgLogLevel::undo_set_request(Request* req, int& ind)
 {
-    int32_t const undoValue = *((SnmpInt32*)undo);
+    int32_t const undoValue = *(dynamic_cast<SnmpInt32*>(undo));
 
     if (DefaultLog::log())
     {

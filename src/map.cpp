@@ -56,20 +56,20 @@ Pix OidxPtrEntryPtrMap::seek(OidxPtr item) const
     return i;
 }
 
-int OidxPtrEntryPtrMap::owns(Pix idx)
+bool OidxPtrEntryPtrMap::owns(Pix idx)
 {
     if (idx == nullptr)
     {
-        return 0;
+        return false;
     }
     for (Pix i = first(); i; next(i))
     {
         if (i == idx)
         {
-            return 1;
+            return true;
         }
     }
-    return 0;
+    return false;
 }
 
 void OidxPtrEntryPtrMap::clear()
@@ -83,7 +83,7 @@ void OidxPtrEntryPtrMap::clear()
     }
 }
 
-int OidxPtrEntryPtrMap::contains(OidxPtr item) const { return seek(item) != nullptr; }
+bool OidxPtrEntryPtrMap::contains(OidxPtr item) const { return seek(item) != nullptr; }
 
 void OidxPtrEntryPtrMap::error([[maybe_unused]] const char* msg) const
 {

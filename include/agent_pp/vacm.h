@@ -187,8 +187,8 @@ public:
         const int securityLevel, const int viewType, const NS_SNMP OctetStr& context,
         NS_SNMP OctetStr& viewName);
 
-    void              incUnknownContexts();
-    NS_SNMP SnmpInt32 getUnknownContexts();
+    void               incUnknownContexts();
+    NS_SNMP SnmpUInt32 getUnknownContexts();
 
     static const char* getErrorMsg(int nr) { return vacmErrs[nr]; }
 
@@ -318,15 +318,15 @@ protected:
 class AGENTPP_DECL SnmpUnavailableContexts : public MibLeaf {
 public:
     SnmpUnavailableContexts();
-    void              incValue();
-    NS_SNMP SnmpInt32 getValue();
+    void               incValue();
+    NS_SNMP SnmpUInt32 getValue();
 };
 
 class AGENTPP_DECL SnmpUnknownContexts : public MibLeaf {
 public:
     SnmpUnknownContexts();
-    void              incValue();
-    NS_SNMP SnmpInt32 getValue();
+    void               incValue();
+    NS_SNMP SnmpUInt32 getValue();
 };
 
 /*********************************************************************

@@ -245,7 +245,7 @@ public:
     static snmpEnableAuthenTraps* get_instance(Mib* mib)
     {
         Oidx const oid(oidSnmpEnableAuthenTraps);
-        auto*      entry = (snmpEnableAuthenTraps*)mib->get(oid);
+        auto*      entry = dynamic_cast<snmpEnableAuthenTraps*>(mib->get(oid));
 
         return (entry) ? entry : instance;
     }

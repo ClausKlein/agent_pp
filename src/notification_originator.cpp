@@ -148,7 +148,7 @@ int NotificationOriginator::generate(Vbx* vbs, int size, const Oidx& id, unsigne
             memcpy(tagstr, (char*)tag.data(), len);
             tagstr[len] = 0;                      // OK, CK
 
-            if (((SnmpTagList*)cur.get()->get_nth(4))->contains(tagstr))
+            if ((dynamic_cast<SnmpTagList*>(cur.get()->get_nth(4)))->contains(tagstr))
             {
                 // determine notification type
                 typeCur.get()->get_nth(1)->get_value(notify);
@@ -189,7 +189,7 @@ snmpTargetAddrEntry* NotificationOriginator::get_snmp_target_addr_entry()
     {
         if (!targetAddrEntry)
         {
-            targetAddrEntry = (snmpTargetAddrEntry*)mib->get(oidSnmpTargetAddrEntry);
+            targetAddrEntry = dynamic_cast<snmpTargetAddrEntry*>(mib->get(oidSnmpTargetAddrEntry));
         }
         return targetAddrEntry;
     }
@@ -202,7 +202,8 @@ snmpTargetParamsEntry* NotificationOriginator::get_snmp_target_params_entry()
     {
         if (!targetParamsEntry)
         {
-            targetParamsEntry = (snmpTargetParamsEntry*)mib->get(oidSnmpTargetParamsEntry);
+            targetParamsEntry =
+                dynamic_cast<snmpTargetParamsEntry*>(mib->get(oidSnmpTargetParamsEntry));
         }
         return targetParamsEntry;
     }
@@ -215,7 +216,7 @@ snmpNotifyEntry* NotificationOriginator::get_snmp_notify_entry()
     {
         if (!notifyEntry)
         {
-            notifyEntry = (snmpNotifyEntry*)mib->get(oidSnmpNotifyEntry);
+            notifyEntry = dynamic_cast<snmpNotifyEntry*>(mib->get(oidSnmpNotifyEntry));
         }
         return notifyEntry;
     }
@@ -228,7 +229,8 @@ snmpNotifyFilterEntry* NotificationOriginator::get_snmp_notify_filter_entry()
     {
         if (!notifyFilterEntry)
         {
-            notifyFilterEntry = (snmpNotifyFilterEntry*)mib->get(oidSnmpNotifyFilterEntry);
+            notifyFilterEntry =
+                dynamic_cast<snmpNotifyFilterEntry*>(mib->get(oidSnmpNotifyFilterEntry));
         }
         return notifyFilterEntry;
     }
@@ -242,7 +244,7 @@ snmpCommunityEntry* NotificationOriginator::get_snmp_community_entry()
     {
         if (!communityEntry)
         {
-            communityEntry = (snmpCommunityEntry*)mib->get(oidSnmpCommunityEntry);
+            communityEntry = dynamic_cast<snmpCommunityEntry*>(mib->get(oidSnmpCommunityEntry));
         }
         return communityEntry;
     }
@@ -255,7 +257,7 @@ nlmLogEntry* NotificationOriginator::get_nlm_log_entry()
     {
         if (!_nlmLogEntry)
         {
-            _nlmLogEntry = (nlmLogEntry*)mib->get(oidNlmLogEntry);
+            _nlmLogEntry = dynamic_cast<nlmLogEntry*>(mib->get(oidNlmLogEntry));
         }
         return _nlmLogEntry;
     }
@@ -294,7 +296,7 @@ bool NotificationOriginator::check_access(
     CTarget*& target = nop.target;
 #endif
 
-    auto*    paramsPtr = (snmpTargetAddrParams*)cur.get()->get_nth(5);
+    auto*    paramsPtr = dynamic_cast<snmpTargetAddrParams*>(cur.get()->get_nth(5));
     OctetStr paramsStr;
     paramsPtr->get_value(paramsStr);
 
@@ -516,8 +518,8 @@ int NotificationOriginator::send_notify(
 
         if (notify != TRAP)
         {
-            target->set_retry(((SnmpInt32MinMax*)cur.get()->get_nth(3))->get_state());
-            target->set_timeout(((SnmpInt32MinMax*)cur.get()->get_nth(2))->get_state());
+            target->set_retry((dynamic_cast<SnmpInt32MinMax*>(cur.get()->get_nth(3)))->get_state());
+            target->set_timeout((dynamic_cast<SnmpInt32MinMax*>(cur.get()->get_nth(2)))->get_state());
         }
 
 #ifdef _SNMPv3

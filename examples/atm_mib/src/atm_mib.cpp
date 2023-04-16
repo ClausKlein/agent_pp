@@ -48,8 +48,8 @@ MibEntryPtr atmInterfaceMaxVpcs::clone()
 {
     MibEntryPtr other = new atmInterfaceMaxVpcs(oid);
 
-    ((atmInterfaceMaxVpcs*)other)->replace_value(value->clone());
-    ((atmInterfaceMaxVpcs*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceMaxVpcs*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceMaxVpcs*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -92,8 +92,8 @@ MibEntryPtr atmInterfaceMaxVccs::clone()
 {
     MibEntryPtr other = new atmInterfaceMaxVccs(oid);
 
-    ((atmInterfaceMaxVccs*)other)->replace_value(value->clone());
-    ((atmInterfaceMaxVccs*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceMaxVccs*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceMaxVccs*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -136,8 +136,8 @@ MibEntryPtr atmInterfaceConfVpcs::clone()
 {
     MibEntryPtr other = new atmInterfaceConfVpcs(oid);
 
-    ((atmInterfaceConfVpcs*)other)->replace_value(value->clone());
-    ((atmInterfaceConfVpcs*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceConfVpcs*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceConfVpcs*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -155,8 +155,8 @@ MibEntryPtr atmInterfaceConfVccs::clone()
 {
     MibEntryPtr other = new atmInterfaceConfVccs(oid);
 
-    ((atmInterfaceConfVccs*)other)->replace_value(value->clone());
-    ((atmInterfaceConfVccs*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceConfVccs*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceConfVccs*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -175,8 +175,8 @@ MibEntryPtr atmInterfaceMaxActiveVpiBits::clone()
 {
     MibEntryPtr other = new atmInterfaceMaxActiveVpiBits(oid);
 
-    ((atmInterfaceMaxActiveVpiBits*)other)->replace_value(value->clone());
-    ((atmInterfaceMaxActiveVpiBits*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceMaxActiveVpiBits*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceMaxActiveVpiBits*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -220,8 +220,8 @@ MibEntryPtr atmInterfaceMaxActiveVciBits::clone()
 {
     MibEntryPtr other = new atmInterfaceMaxActiveVciBits(oid);
 
-    ((atmInterfaceMaxActiveVciBits*)other)->replace_value(value->clone());
-    ((atmInterfaceMaxActiveVciBits*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceMaxActiveVciBits*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceMaxActiveVciBits*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -265,8 +265,8 @@ MibEntryPtr atmInterfaceIlmiVpi::clone()
 {
     MibEntryPtr other = new atmInterfaceIlmiVpi(oid);
 
-    ((atmInterfaceIlmiVpi*)other)->replace_value(value->clone());
-    ((atmInterfaceIlmiVpi*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceIlmiVpi*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceIlmiVpi*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -310,8 +310,8 @@ MibEntryPtr atmInterfaceIlmiVci::clone()
 {
     MibEntryPtr other = new atmInterfaceIlmiVci(oid);
 
-    ((atmInterfaceIlmiVci*)other)->replace_value(value->clone());
-    ((atmInterfaceIlmiVci*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceIlmiVci*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceIlmiVci*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -355,8 +355,8 @@ MibEntryPtr atmInterfaceAddressType::clone()
 {
     MibEntryPtr other = new atmInterfaceAddressType(oid);
 
-    ((atmInterfaceAddressType*)other)->replace_value(value->clone());
-    ((atmInterfaceAddressType*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceAddressType*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceAddressType*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -375,8 +375,8 @@ MibEntryPtr atmInterfaceAdminAddress::clone()
 {
     MibEntryPtr other = new atmInterfaceAdminAddress(oid);
 
-    ((atmInterfaceAdminAddress*)other)->replace_value(value->clone());
-    ((atmInterfaceAdminAddress*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceAdminAddress*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceAdminAddress*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -395,8 +395,8 @@ MibEntryPtr atmInterfaceMyNeighborIpAddress::clone()
 {
     MibEntryPtr other = new atmInterfaceMyNeighborIpAddress(oid);
 
-    ((atmInterfaceMyNeighborIpAddress*)other)->replace_value(value->clone());
-    ((atmInterfaceMyNeighborIpAddress*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceMyNeighborIpAddress*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceMyNeighborIpAddress*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -433,8 +433,8 @@ MibEntryPtr atmInterfaceMyNeighborIfName::clone()
 {
     MibEntryPtr other = new atmInterfaceMyNeighborIfName(oid);
 
-    ((atmInterfaceMyNeighborIfName*)other)->replace_value(value->clone());
-    ((atmInterfaceMyNeighborIfName*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceMyNeighborIfName*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceMyNeighborIfName*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -477,8 +477,8 @@ MibEntryPtr atmInterfaceCurrentMaxVpiBits::clone()
 {
     MibEntryPtr other = new atmInterfaceCurrentMaxVpiBits(oid);
 
-    ((atmInterfaceCurrentMaxVpiBits*)other)->replace_value(value->clone());
-    ((atmInterfaceCurrentMaxVpiBits*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceCurrentMaxVpiBits*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceCurrentMaxVpiBits*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -497,8 +497,8 @@ MibEntryPtr atmInterfaceCurrentMaxVciBits::clone()
 {
     MibEntryPtr other = new atmInterfaceCurrentMaxVciBits(oid);
 
-    ((atmInterfaceCurrentMaxVciBits*)other)->replace_value(value->clone());
-    ((atmInterfaceCurrentMaxVciBits*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceCurrentMaxVciBits*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceCurrentMaxVciBits*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -517,8 +517,8 @@ MibEntryPtr atmInterfaceSubscrAddress::clone()
 {
     MibEntryPtr other = new atmInterfaceSubscrAddress(oid);
 
-    ((atmInterfaceSubscrAddress*)other)->replace_value(value->clone());
-    ((atmInterfaceSubscrAddress*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceSubscrAddress*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceSubscrAddress*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -561,8 +561,8 @@ MibEntryPtr atmInterfaceDs3PlcpSEFSs::clone()
 {
     MibEntryPtr other = new atmInterfaceDs3PlcpSEFSs(oid);
 
-    ((atmInterfaceDs3PlcpSEFSs*)other)->replace_value(value->clone());
-    ((atmInterfaceDs3PlcpSEFSs*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceDs3PlcpSEFSs*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceDs3PlcpSEFSs*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -581,8 +581,8 @@ MibEntryPtr atmInterfaceDs3PlcpAlarmState::clone()
 {
     MibEntryPtr other = new atmInterfaceDs3PlcpAlarmState(oid);
 
-    ((atmInterfaceDs3PlcpAlarmState*)other)->replace_value(value->clone());
-    ((atmInterfaceDs3PlcpAlarmState*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceDs3PlcpAlarmState*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceDs3PlcpAlarmState*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -601,8 +601,8 @@ MibEntryPtr atmInterfaceDs3PlcpUASs::clone()
 {
     MibEntryPtr other = new atmInterfaceDs3PlcpUASs(oid);
 
-    ((atmInterfaceDs3PlcpUASs*)other)->replace_value(value->clone());
-    ((atmInterfaceDs3PlcpUASs*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceDs3PlcpUASs*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceDs3PlcpUASs*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -621,8 +621,8 @@ MibEntryPtr atmInterfaceOCDEvents::clone()
 {
     MibEntryPtr other = new atmInterfaceOCDEvents(oid);
 
-    ((atmInterfaceOCDEvents*)other)->replace_value(value->clone());
-    ((atmInterfaceOCDEvents*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceOCDEvents*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceOCDEvents*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -641,8 +641,8 @@ MibEntryPtr atmInterfaceTCAlarmState::clone()
 {
     MibEntryPtr other = new atmInterfaceTCAlarmState(oid);
 
-    ((atmInterfaceTCAlarmState*)other)->replace_value(value->clone());
-    ((atmInterfaceTCAlarmState*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmInterfaceTCAlarmState*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmInterfaceTCAlarmState*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -661,8 +661,8 @@ MibEntryPtr atmTrafficDescrType::clone()
 {
     MibEntryPtr other = new atmTrafficDescrType(oid);
 
-    ((atmTrafficDescrType*)other)->replace_value(value->clone());
-    ((atmTrafficDescrType*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmTrafficDescrType*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmTrafficDescrType*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -699,8 +699,8 @@ MibEntryPtr atmTrafficDescrParam1::clone()
 {
     MibEntryPtr other = new atmTrafficDescrParam1(oid);
 
-    ((atmTrafficDescrParam1*)other)->replace_value(value->clone());
-    ((atmTrafficDescrParam1*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmTrafficDescrParam1*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmTrafficDescrParam1*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -737,8 +737,8 @@ MibEntryPtr atmTrafficDescrParam2::clone()
 {
     MibEntryPtr other = new atmTrafficDescrParam2(oid);
 
-    ((atmTrafficDescrParam2*)other)->replace_value(value->clone());
-    ((atmTrafficDescrParam2*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmTrafficDescrParam2*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmTrafficDescrParam2*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -775,8 +775,8 @@ MibEntryPtr atmTrafficDescrParam3::clone()
 {
     MibEntryPtr other = new atmTrafficDescrParam3(oid);
 
-    ((atmTrafficDescrParam3*)other)->replace_value(value->clone());
-    ((atmTrafficDescrParam3*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmTrafficDescrParam3*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmTrafficDescrParam3*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -813,8 +813,8 @@ MibEntryPtr atmTrafficDescrParam4::clone()
 {
     MibEntryPtr other = new atmTrafficDescrParam4(oid);
 
-    ((atmTrafficDescrParam4*)other)->replace_value(value->clone());
-    ((atmTrafficDescrParam4*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmTrafficDescrParam4*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmTrafficDescrParam4*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -851,8 +851,8 @@ MibEntryPtr atmTrafficDescrParam5::clone()
 {
     MibEntryPtr other = new atmTrafficDescrParam5(oid);
 
-    ((atmTrafficDescrParam5*)other)->replace_value(value->clone());
-    ((atmTrafficDescrParam5*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmTrafficDescrParam5*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmTrafficDescrParam5*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -889,8 +889,8 @@ MibEntryPtr atmTrafficQoSClass::clone()
 {
     MibEntryPtr other = new atmTrafficQoSClass(oid);
 
-    ((atmTrafficQoSClass*)other)->replace_value(value->clone());
-    ((atmTrafficQoSClass*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmTrafficQoSClass*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmTrafficQoSClass*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -932,8 +932,8 @@ MibEntryPtr atmTrafficDescrRowStatus::clone()
 {
     MibEntryPtr other = new atmTrafficDescrRowStatus(oid);
 
-    ((atmTrafficDescrRowStatus*)other)->replace_value(value->clone());
-    ((atmTrafficDescrRowStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmTrafficDescrRowStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmTrafficDescrRowStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -952,8 +952,8 @@ MibEntryPtr atmServiceCategory::clone()
 {
     MibEntryPtr other = new atmServiceCategory(oid);
 
-    ((atmServiceCategory*)other)->replace_value(value->clone());
-    ((atmServiceCategory*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmServiceCategory*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmServiceCategory*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -997,8 +997,8 @@ MibEntryPtr atmTrafficFrameDiscard::clone()
 {
     MibEntryPtr other = new atmTrafficFrameDiscard(oid);
 
-    ((atmTrafficFrameDiscard*)other)->replace_value(value->clone());
-    ((atmTrafficFrameDiscard*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmTrafficFrameDiscard*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmTrafficFrameDiscard*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1042,8 +1042,8 @@ MibEntryPtr atmVplAdminStatus::clone()
 {
     MibEntryPtr other = new atmVplAdminStatus(oid);
 
-    ((atmVplAdminStatus*)other)->replace_value(value->clone());
-    ((atmVplAdminStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVplAdminStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVplAdminStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1085,8 +1085,8 @@ MibEntryPtr atmVplOperStatus::clone()
 {
     MibEntryPtr other = new atmVplOperStatus(oid);
 
-    ((atmVplOperStatus*)other)->replace_value(value->clone());
-    ((atmVplOperStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVplOperStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVplOperStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1103,8 +1103,8 @@ MibEntryPtr atmVplLastChange::clone()
 {
     MibEntryPtr other = new atmVplLastChange(oid);
 
-    ((atmVplLastChange*)other)->replace_value(value->clone());
-    ((atmVplLastChange*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVplLastChange*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVplLastChange*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1123,8 +1123,8 @@ MibEntryPtr atmVplReceiveTrafficDescrIndex::clone()
 {
     MibEntryPtr other = new atmVplReceiveTrafficDescrIndex(oid);
 
-    ((atmVplReceiveTrafficDescrIndex*)other)->replace_value(value->clone());
-    ((atmVplReceiveTrafficDescrIndex*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVplReceiveTrafficDescrIndex*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVplReceiveTrafficDescrIndex*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1168,8 +1168,8 @@ MibEntryPtr atmVplTransmitTrafficDescrIndex::clone()
 {
     MibEntryPtr other = new atmVplTransmitTrafficDescrIndex(oid);
 
-    ((atmVplTransmitTrafficDescrIndex*)other)->replace_value(value->clone());
-    ((atmVplTransmitTrafficDescrIndex*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVplTransmitTrafficDescrIndex*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVplTransmitTrafficDescrIndex*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1213,8 +1213,8 @@ MibEntryPtr atmVplCrossConnectIdentifier::clone()
 {
     MibEntryPtr other = new atmVplCrossConnectIdentifier(oid);
 
-    ((atmVplCrossConnectIdentifier*)other)->replace_value(value->clone());
-    ((atmVplCrossConnectIdentifier*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVplCrossConnectIdentifier*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVplCrossConnectIdentifier*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1231,8 +1231,8 @@ MibEntryPtr atmVplRowStatus::clone()
 {
     MibEntryPtr other = new atmVplRowStatus(oid);
 
-    ((atmVplRowStatus*)other)->replace_value(value->clone());
-    ((atmVplRowStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVplRowStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVplRowStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1251,8 +1251,8 @@ MibEntryPtr atmVplCastType::clone()
 {
     MibEntryPtr other = new atmVplCastType(oid);
 
-    ((atmVplCastType*)other)->replace_value(value->clone());
-    ((atmVplCastType*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVplCastType*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVplCastType*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1296,8 +1296,8 @@ MibEntryPtr atmVplConnKind::clone()
 {
     MibEntryPtr other = new atmVplConnKind(oid);
 
-    ((atmVplConnKind*)other)->replace_value(value->clone());
-    ((atmVplConnKind*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVplConnKind*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVplConnKind*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1341,8 +1341,8 @@ MibEntryPtr atmVclAdminStatus::clone()
 {
     MibEntryPtr other = new atmVclAdminStatus(oid);
 
-    ((atmVclAdminStatus*)other)->replace_value(value->clone());
-    ((atmVclAdminStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVclAdminStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVclAdminStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1384,8 +1384,8 @@ MibEntryPtr atmVclOperStatus::clone()
 {
     MibEntryPtr other = new atmVclOperStatus(oid);
 
-    ((atmVclOperStatus*)other)->replace_value(value->clone());
-    ((atmVclOperStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVclOperStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVclOperStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1402,8 +1402,8 @@ MibEntryPtr atmVclLastChange::clone()
 {
     MibEntryPtr other = new atmVclLastChange(oid);
 
-    ((atmVclLastChange*)other)->replace_value(value->clone());
-    ((atmVclLastChange*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVclLastChange*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVclLastChange*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1422,8 +1422,8 @@ MibEntryPtr atmVclReceiveTrafficDescrIndex::clone()
 {
     MibEntryPtr other = new atmVclReceiveTrafficDescrIndex(oid);
 
-    ((atmVclReceiveTrafficDescrIndex*)other)->replace_value(value->clone());
-    ((atmVclReceiveTrafficDescrIndex*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVclReceiveTrafficDescrIndex*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVclReceiveTrafficDescrIndex*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1467,8 +1467,8 @@ MibEntryPtr atmVclTransmitTrafficDescrIndex::clone()
 {
     MibEntryPtr other = new atmVclTransmitTrafficDescrIndex(oid);
 
-    ((atmVclTransmitTrafficDescrIndex*)other)->replace_value(value->clone());
-    ((atmVclTransmitTrafficDescrIndex*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVclTransmitTrafficDescrIndex*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVclTransmitTrafficDescrIndex*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1512,8 +1512,8 @@ MibEntryPtr atmVccAalType::clone()
 {
     MibEntryPtr other = new atmVccAalType(oid);
 
-    ((atmVccAalType*)other)->replace_value(value->clone());
-    ((atmVccAalType*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVccAalType*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVccAalType*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1557,8 +1557,8 @@ MibEntryPtr atmVccAal5CpcsTransmitSduSize::clone()
 {
     MibEntryPtr other = new atmVccAal5CpcsTransmitSduSize(oid);
 
-    ((atmVccAal5CpcsTransmitSduSize*)other)->replace_value(value->clone());
-    ((atmVccAal5CpcsTransmitSduSize*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVccAal5CpcsTransmitSduSize*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVccAal5CpcsTransmitSduSize*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1602,8 +1602,8 @@ MibEntryPtr atmVccAal5CpcsReceiveSduSize::clone()
 {
     MibEntryPtr other = new atmVccAal5CpcsReceiveSduSize(oid);
 
-    ((atmVccAal5CpcsReceiveSduSize*)other)->replace_value(value->clone());
-    ((atmVccAal5CpcsReceiveSduSize*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVccAal5CpcsReceiveSduSize*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVccAal5CpcsReceiveSduSize*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1647,8 +1647,8 @@ MibEntryPtr atmVccAal5EncapsType::clone()
 {
     MibEntryPtr other = new atmVccAal5EncapsType(oid);
 
-    ((atmVccAal5EncapsType*)other)->replace_value(value->clone());
-    ((atmVccAal5EncapsType*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVccAal5EncapsType*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVccAal5EncapsType*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1693,8 +1693,8 @@ MibEntryPtr atmVclCrossConnectIdentifier::clone()
 {
     MibEntryPtr other = new atmVclCrossConnectIdentifier(oid);
 
-    ((atmVclCrossConnectIdentifier*)other)->replace_value(value->clone());
-    ((atmVclCrossConnectIdentifier*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVclCrossConnectIdentifier*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVclCrossConnectIdentifier*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1711,8 +1711,8 @@ MibEntryPtr atmVclRowStatus::clone()
 {
     MibEntryPtr other = new atmVclRowStatus(oid);
 
-    ((atmVclRowStatus*)other)->replace_value(value->clone());
-    ((atmVclRowStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVclRowStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVclRowStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1731,8 +1731,8 @@ MibEntryPtr atmVclCastType::clone()
 {
     MibEntryPtr other = new atmVclCastType(oid);
 
-    ((atmVclCastType*)other)->replace_value(value->clone());
-    ((atmVclCastType*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVclCastType*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVclCastType*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1776,8 +1776,8 @@ MibEntryPtr atmVclConnKind::clone()
 {
     MibEntryPtr other = new atmVclConnKind(oid);
 
-    ((atmVclConnKind*)other)->replace_value(value->clone());
-    ((atmVclConnKind*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVclConnKind*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVclConnKind*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1838,8 +1838,8 @@ MibEntryPtr atmVpCrossConnectAdminStatus::clone()
 {
     MibEntryPtr other = new atmVpCrossConnectAdminStatus(oid);
 
-    ((atmVpCrossConnectAdminStatus*)other)->replace_value(value->clone());
-    ((atmVpCrossConnectAdminStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVpCrossConnectAdminStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVpCrossConnectAdminStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1883,8 +1883,8 @@ MibEntryPtr atmVpCrossConnectL2HOperStatus::clone()
 {
     MibEntryPtr other = new atmVpCrossConnectL2HOperStatus(oid);
 
-    ((atmVpCrossConnectL2HOperStatus*)other)->replace_value(value->clone());
-    ((atmVpCrossConnectL2HOperStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVpCrossConnectL2HOperStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVpCrossConnectL2HOperStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1903,8 +1903,8 @@ MibEntryPtr atmVpCrossConnectH2LOperStatus::clone()
 {
     MibEntryPtr other = new atmVpCrossConnectH2LOperStatus(oid);
 
-    ((atmVpCrossConnectH2LOperStatus*)other)->replace_value(value->clone());
-    ((atmVpCrossConnectH2LOperStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVpCrossConnectH2LOperStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVpCrossConnectH2LOperStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1923,8 +1923,8 @@ MibEntryPtr atmVpCrossConnectL2HLastChange::clone()
 {
     MibEntryPtr other = new atmVpCrossConnectL2HLastChange(oid);
 
-    ((atmVpCrossConnectL2HLastChange*)other)->replace_value(value->clone());
-    ((atmVpCrossConnectL2HLastChange*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVpCrossConnectL2HLastChange*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVpCrossConnectL2HLastChange*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1943,8 +1943,8 @@ MibEntryPtr atmVpCrossConnectH2LLastChange::clone()
 {
     MibEntryPtr other = new atmVpCrossConnectH2LLastChange(oid);
 
-    ((atmVpCrossConnectH2LLastChange*)other)->replace_value(value->clone());
-    ((atmVpCrossConnectH2LLastChange*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVpCrossConnectH2LLastChange*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVpCrossConnectH2LLastChange*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1962,8 +1962,8 @@ MibEntryPtr atmVpCrossConnectRowStatus::clone()
 {
     MibEntryPtr other = new atmVpCrossConnectRowStatus(oid);
 
-    ((atmVpCrossConnectRowStatus*)other)->replace_value(value->clone());
-    ((atmVpCrossConnectRowStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVpCrossConnectRowStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVpCrossConnectRowStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -1999,8 +1999,8 @@ MibEntryPtr atmVcCrossConnectAdminStatus::clone()
 {
     MibEntryPtr other = new atmVcCrossConnectAdminStatus(oid);
 
-    ((atmVcCrossConnectAdminStatus*)other)->replace_value(value->clone());
-    ((atmVcCrossConnectAdminStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVcCrossConnectAdminStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVcCrossConnectAdminStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -2044,8 +2044,8 @@ MibEntryPtr atmVcCrossConnectL2HOperStatus::clone()
 {
     MibEntryPtr other = new atmVcCrossConnectL2HOperStatus(oid);
 
-    ((atmVcCrossConnectL2HOperStatus*)other)->replace_value(value->clone());
-    ((atmVcCrossConnectL2HOperStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVcCrossConnectL2HOperStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVcCrossConnectL2HOperStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -2064,8 +2064,8 @@ MibEntryPtr atmVcCrossConnectH2LOperStatus::clone()
 {
     MibEntryPtr other = new atmVcCrossConnectH2LOperStatus(oid);
 
-    ((atmVcCrossConnectH2LOperStatus*)other)->replace_value(value->clone());
-    ((atmVcCrossConnectH2LOperStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVcCrossConnectH2LOperStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVcCrossConnectH2LOperStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -2084,8 +2084,8 @@ MibEntryPtr atmVcCrossConnectL2HLastChange::clone()
 {
     MibEntryPtr other = new atmVcCrossConnectL2HLastChange(oid);
 
-    ((atmVcCrossConnectL2HLastChange*)other)->replace_value(value->clone());
-    ((atmVcCrossConnectL2HLastChange*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVcCrossConnectL2HLastChange*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVcCrossConnectL2HLastChange*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -2104,8 +2104,8 @@ MibEntryPtr atmVcCrossConnectH2LLastChange::clone()
 {
     MibEntryPtr other = new atmVcCrossConnectH2LLastChange(oid);
 
-    ((atmVcCrossConnectH2LLastChange*)other)->replace_value(value->clone());
-    ((atmVcCrossConnectH2LLastChange*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVcCrossConnectH2LLastChange*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVcCrossConnectH2LLastChange*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -2123,8 +2123,8 @@ MibEntryPtr atmVcCrossConnectRowStatus::clone()
 {
     MibEntryPtr other = new atmVcCrossConnectRowStatus(oid);
 
-    ((atmVcCrossConnectRowStatus*)other)->replace_value(value->clone());
-    ((atmVcCrossConnectRowStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<atmVcCrossConnectRowStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<atmVcCrossConnectRowStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -2141,8 +2141,8 @@ MibEntryPtr aal5VccCrcErrors::clone()
 {
     MibEntryPtr other = new aal5VccCrcErrors(oid);
 
-    ((aal5VccCrcErrors*)other)->replace_value(value->clone());
-    ((aal5VccCrcErrors*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<aal5VccCrcErrors*>(other))->replace_value(value->clone());
+    (dynamic_cast<aal5VccCrcErrors*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -2159,8 +2159,8 @@ MibEntryPtr aal5VccSarTimeOuts::clone()
 {
     MibEntryPtr other = new aal5VccSarTimeOuts(oid);
 
-    ((aal5VccSarTimeOuts*)other)->replace_value(value->clone());
-    ((aal5VccSarTimeOuts*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<aal5VccSarTimeOuts*>(other))->replace_value(value->clone());
+    (dynamic_cast<aal5VccSarTimeOuts*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
@@ -2178,8 +2178,8 @@ MibEntryPtr aal5VccOverSizedSDUs::clone()
 {
     MibEntryPtr other = new aal5VccOverSizedSDUs(oid);
 
-    ((aal5VccOverSizedSDUs*)other)->replace_value(value->clone());
-    ((aal5VccOverSizedSDUs*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<aal5VccOverSizedSDUs*>(other))->replace_value(value->clone());
+    (dynamic_cast<aal5VccOverSizedSDUs*>(other))->set_reference_to_table(my_table);
     return other;
 }
 

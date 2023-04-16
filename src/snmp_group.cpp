@@ -41,7 +41,7 @@ snmpEnableAuthenTraps::snmpEnableAuthenTraps()
 
 snmpEnableAuthenTraps::~snmpEnableAuthenTraps() { }
 
-long snmpEnableAuthenTraps::get_state() { return (long)*((SnmpInt32*)value); }
+long snmpEnableAuthenTraps::get_state() { return (long)*(dynamic_cast<SnmpInt32*>(value)); }
 
 bool snmpEnableAuthenTraps::value_ok(const Vbx& vb)
 {

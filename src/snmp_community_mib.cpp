@@ -49,14 +49,15 @@ MibEntryPtr snmpTargetAddrTMask::clone()
 {
     MibEntryPtr other = new snmpTargetAddrTMask(oid);
 
-    ((snmpTargetAddrTMask*)other)->replace_value(value->clone());
-    ((snmpTargetAddrTMask*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<snmpTargetAddrTMask*>(other))->replace_value(value->clone());
+    (dynamic_cast<snmpTargetAddrTMask*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
 UdpAddress* snmpTargetAddrTMask::getUdpAddress()
 {
-    snmpTargetAddrEntry* snmpTargetAddrEntry = ((snmpTargetAddrExtEntry*)my_table)->baseTable;
+    snmpTargetAddrEntry* snmpTargetAddrEntry =
+        (dynamic_cast<snmpTargetAddrExtEntry*>(my_table))->baseTable;
 
     if (snmpTargetAddrEntry)
     {
@@ -67,7 +68,7 @@ UdpAddress* snmpTargetAddrTMask::getUdpAddress()
             snmpTargetAddrEntry->end_synch();
             return nullptr;
         }
-        int const domain = ((snmpTargetAddrTDomain*)r->get_nth(0))->get_state();
+        int const domain = (dynamic_cast<snmpTargetAddrTDomain*>(r->get_nth(0)))->get_state();
         snmpTargetAddrEntry->end_synch();
         switch (domain)
         {
@@ -75,7 +76,7 @@ UdpAddress* snmpTargetAddrTMask::getUdpAddress()
         case 101:
         case 102: {
             auto* address = new UdpAddress();
-            *address      = (*(OctetStr*)value);
+            *address      = (*dynamic_cast<OctetStr*>(value));
             return address;
         }
         }
@@ -98,7 +99,8 @@ int snmpTargetAddrTMask::prepare_set_request(Request* req, int& ind)
     }
     // check if snmpTargetAddrTMask has same length as
     // snmp anmpTargetAddrTAddress
-    snmpTargetAddrEntry* snmpTargetAddrEntry = ((snmpTargetAddrExtEntry*)my_table)->baseTable;
+    snmpTargetAddrEntry* snmpTargetAddrEntry =
+        (dynamic_cast<snmpTargetAddrExtEntry*>(my_table))->baseTable;
     if (snmpTargetAddrEntry)
     {
         if (req->lock_index(snmpTargetAddrEntry) < 0)
@@ -107,7 +109,7 @@ int snmpTargetAddrTMask::prepare_set_request(Request* req, int& ind)
         }
         MibTableRow*  r = snmpTargetAddrEntry->find_index(my_row->get_index());
         OctetStr      addr;
-        int32_t const status = ((snmpRowStatus*)r->get_nth(7))->get();
+        int32_t const status = (dynamic_cast<snmpRowStatus*>(r->get_nth(7)))->get();
         r->get_nth(1)->get_value(addr);
         if (req->lock_index(snmpTargetAddrEntry) < 0)
         {
@@ -294,7 +296,7 @@ snmpTargetAddrExtEntry::~snmpTargetAddrExtEntry()
 snmpTargetAddrExtEntry* snmpTargetAddrExtEntry::get_instance(Mib* mib)
 {
     Oidx const oid(oidSnmpTargetAddrExtEntry);
-    auto*      entry = (snmpTargetAddrExtEntry*)mib->get(oid);
+    auto*      entry = dynamic_cast<snmpTargetAddrExtEntry*>(mib->get(oid));
 
     if (entry)
     {
@@ -384,7 +386,8 @@ bool snmpTargetAddrExtEntry::passes_filter(const OctetStr& tag, const UTarget& a
         MibTableRow* ext = find_index(cur.get()->get_index());
         if (ext)
         {
-            UdpAddress* address = ((snmpTargetAddrTAddress*)cur.get()->get_nth(1))->getUdpAddress();
+            UdpAddress* address =
+                (dynamic_cast<snmpTargetAddrTAddress*>(cur.get()->get_nth(1)))->getUdpAddress();
             if (!address)
             {
                 LOG_BEGIN(loggerModuleName, WARNING_LOG | 4);
@@ -393,7 +396,7 @@ bool snmpTargetAddrExtEntry::passes_filter(const OctetStr& tag, const UTarget& a
                 LOG_END;
                 continue;
             }
-            UdpAddress* mask = ((snmpTargetAddrTMask*)ext->get_nth(0))->getUdpAddress();
+            UdpAddress* mask = (dynamic_cast<snmpTargetAddrTMask*>(ext->get_nth(0)))->getUdpAddress();
             UdpAddress  a(*address);
             a.mask(*mask);
             UdpAddress b(u);
@@ -444,9 +447,9 @@ bool snmpTargetAddrExtEntry::passes_filter(const OctetStr& taddress, const Octet
         {
             OctetStr taddressRequested(taddress);
             OctetStr taddressAllowed;
-            ((snmpTargetAddrTAddress*)cur.get()->get_nth(1))->get_value(taddressAllowed);
+            (dynamic_cast<snmpTargetAddrTAddress*>(cur.get()->get_nth(1)))->get_value(taddressAllowed);
             OctetStr mask;
-            ((snmpTargetAddrTMask*)ext->get_nth(0))->get_value(mask);
+            (dynamic_cast<snmpTargetAddrTMask*>(ext->get_nth(0)))->get_value(mask);
             for (unsigned int i = 0; i < mask.len(); i++)
             {
                 if (i < taddressAllowed.len())

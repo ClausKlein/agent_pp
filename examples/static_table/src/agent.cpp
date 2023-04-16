@@ -213,7 +213,7 @@ int main(int argc, char* argv[])
     Mib* mib = new Mib();
 
 #ifdef _SNMPv3
-    unsigned int   snmpEngineBoots = 0;
+    uint32_t       snmpEngineBoots = 0;
     OctetStr const engineId(SnmpEngineID::create_engine_id(port));
 
     // you may use your own methods to load/store this counter

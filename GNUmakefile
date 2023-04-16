@@ -32,14 +32,14 @@ install: test
 build: $(BUILD_DIR)
 build: $(BUILD_DIR)/compile_commands.json
 $(BUILD_DIR)/compile_commands.json: GNUmakefile CMakeLists.txt
-	cmake -B $(BUILD_DIR) -S . -G Ninja -D CMAKE_SKIP_INSTALL_RULES=YES -D OPTION_ENABLE_COVERAGE=YES
+	cmake -B $(BUILD_DIR) -S . -G Ninja -D CMAKE_SKIP_INSTALL_RULES=YES -D OPTION_ENABLE_COVERAGE=YES -D SNMP_PP_LOGGING=NO
 	perl -i.bak -p -e 's#-W[-\w=\d]+\b##g;' -e 's#-I(${CPM_SOURCE_CACHE})#-isystem $$1#g;' $(BUILD_DIR)/compile_commands.json
 
 $(BUILD_DIR):
 	mkdir -p $@ gcovr
 
 check: $(BUILD_DIR)/compile_commands.json
-	#XXX run-clang-tidy -p $(BUILD_DIR) -checks='-*,hicpp-named-parameter,modernize-loop-convert,modernize-return-braced-init-list,modernize-deprecated-headers,modernize-redundant-void-arg,modernize-use-bool-literals,modernize-use-auto,modernize-use-nullptr,misc-const-correctness,cppcoreguidelines-explicit-virtual-functions' -j1 -fix .
+	#XXX run-clang-tidy -p $(BUILD_DIR) -checks='-*,hicpp-named-parameter,modernize-loop-convert,modernize-return-braced-init-list,modernize-deprecated-headers,modernize-redundant-void-arg,modernize-use-bool-literals,modernize-use-auto,modernize-use-nullptr,misc-const-correctness,cppcoreguidelines-explicit-virtual-functions,cppcoreguidelines-pro-type-*cast' -j1 -fix .
 	run-clang-tidy -p $(BUILD_DIR) -checks='-clang-analyzer-optin.*,-hicpp-multiway-paths-covered,-*-use-equals-delete' .
 
 clean:

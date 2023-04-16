@@ -88,8 +88,8 @@ public:
         return def;
     }
 
-    void        error(const char* msg);
-    virtual int OK() = 0; // rep invariant
+    void         error(const char* msg);
+    virtual bool OK() = 0; // rep invariant
 };
 
 #ifdef AGENTPP_NAMESPACE

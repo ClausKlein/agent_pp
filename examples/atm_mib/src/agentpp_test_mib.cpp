@@ -89,7 +89,7 @@ void agentppTestTimeout::set_state(uint32_t l)
 {
     //--AgentGen BEGIN=agentppTestTimeout::set_state
     //--AgentGen END
-    *((Gauge32*)value) = l;
+    *(dynamic_cast<Gauge32*>(value)) = l;
 }
 
 int agentppTestTimeout::set(const Vbx& vb)
@@ -163,8 +163,8 @@ MibEntryPtr agentppTestSharedTableCreationTime::clone()
 {
     MibEntryPtr other = new agentppTestSharedTableCreationTime(oid);
 
-    ((agentppTestSharedTableCreationTime*)other)->replace_value(value->clone());
-    ((agentppTestSharedTableCreationTime*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<agentppTestSharedTableCreationTime*>(other))->replace_value(value->clone());
+    (dynamic_cast<agentppTestSharedTableCreationTime*>(other))->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppTestSharedTableCreationTime::clone
     //--AgentGen END
     return other;
@@ -197,8 +197,8 @@ MibEntryPtr agentppTestSharedTableDelay::clone()
 {
     MibEntryPtr other = new agentppTestSharedTableDelay(oid);
 
-    ((agentppTestSharedTableDelay*)other)->replace_value(value->clone());
-    ((agentppTestSharedTableDelay*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<agentppTestSharedTableDelay*>(other))->replace_value(value->clone());
+    (dynamic_cast<agentppTestSharedTableDelay*>(other))->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppTestSharedTableDelay::clone
     //--AgentGen END
     return other;
@@ -231,8 +231,8 @@ MibEntryPtr agentppTestSharedTableSession::clone()
 {
     MibEntryPtr other = new agentppTestSharedTableSession(oid);
 
-    ((agentppTestSharedTableSession*)other)->replace_value(value->clone());
-    ((agentppTestSharedTableSession*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<agentppTestSharedTableSession*>(other))->replace_value(value->clone());
+    (dynamic_cast<agentppTestSharedTableSession*>(other))->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppTestSharedTableSession::clone
     //--AgentGen END
     return other;
@@ -264,8 +264,8 @@ MibEntryPtr agentppTestSharedTableRowStatus::clone()
 {
     MibEntryPtr other = new agentppTestSharedTableRowStatus(oid);
 
-    ((agentppTestSharedTableRowStatus*)other)->replace_value(value->clone());
-    ((agentppTestSharedTableRowStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<agentppTestSharedTableRowStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<agentppTestSharedTableRowStatus*>(other))->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppTestSharedTableRowStatus::clone
     //--AgentGen END
     return other;
@@ -300,8 +300,8 @@ MibEntryPtr agentppTestRowCreation::clone()
 {
     MibEntryPtr other = new agentppTestRowCreation(oid);
 
-    ((agentppTestRowCreation*)other)->replace_value(value->clone());
-    ((agentppTestRowCreation*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<agentppTestRowCreation*>(other))->replace_value(value->clone());
+    (dynamic_cast<agentppTestRowCreation*>(other))->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppTestRowCreation::clone
     //--AgentGen END
     return other;
@@ -335,8 +335,8 @@ MibEntryPtr agentppTestSparseCol1::clone()
 {
     MibEntryPtr other = new agentppTestSparseCol1(oid);
 
-    ((agentppTestSparseCol1*)other)->replace_value(value->clone());
-    ((agentppTestSparseCol1*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<agentppTestSparseCol1*>(other))->replace_value(value->clone());
+    (dynamic_cast<agentppTestSparseCol1*>(other))->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppTestSparseCol1::clone
     //--AgentGen END
     return other;
@@ -353,14 +353,14 @@ int32_t agentppTestSparseCol1::get_state()
 {
     //--AgentGen BEGIN=agentppTestSparseCol1::get_state
     //--AgentGen END
-    return (int32_t) * ((SnmpInt32*)value);
+    return (int32_t) * (dynamic_cast<SnmpInt32*>(value));
 }
 
 void agentppTestSparseCol1::set_state(int32_t l)
 {
     //--AgentGen BEGIN=agentppTestSparseCol1::set_state
     //--AgentGen END
-    *((SnmpInt32*)value) = l;
+    *(dynamic_cast<SnmpInt32*>(value)) = l;
 }
 
 int agentppTestSparseCol1::set(const Vbx& vb)
@@ -426,8 +426,8 @@ MibEntryPtr agentppTestSparseCol2::clone()
 {
     MibEntryPtr other = new agentppTestSparseCol2(oid);
 
-    ((agentppTestSparseCol2*)other)->replace_value(value->clone());
-    ((agentppTestSparseCol2*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<agentppTestSparseCol2*>(other))->replace_value(value->clone());
+    (dynamic_cast<agentppTestSparseCol2*>(other))->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppTestSparseCol2::clone
     //--AgentGen END
     return other;
@@ -444,14 +444,14 @@ uint32_t agentppTestSparseCol2::get_state()
 {
     //--AgentGen BEGIN=agentppTestSparseCol2::get_state
     //--AgentGen END
-    return (uint32_t) * ((Gauge32*)value);
+    return (uint32_t) * (dynamic_cast<Gauge32*>(value));
 }
 
 void agentppTestSparseCol2::set_state(uint32_t l)
 {
     //--AgentGen BEGIN=agentppTestSparseCol2::set_state
     //--AgentGen END
-    *((Gauge32*)value) = l;
+    *(dynamic_cast<Gauge32*>(value)) = l;
 }
 
 int agentppTestSparseCol2::set(const Vbx& vb)
@@ -517,8 +517,8 @@ MibEntryPtr agentppTestSparseCol3::clone()
 {
     MibEntryPtr other = new agentppTestSparseCol3(oid);
 
-    ((agentppTestSparseCol3*)other)->replace_value(value->clone());
-    ((agentppTestSparseCol3*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<agentppTestSparseCol3*>(other))->replace_value(value->clone());
+    (dynamic_cast<agentppTestSparseCol3*>(other))->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppTestSparseCol3::clone
     //--AgentGen END
     return other;
@@ -535,14 +535,14 @@ OctetStr agentppTestSparseCol3::get_state()
 {
     //--AgentGen BEGIN=agentppTestSparseCol3::get_state
     //--AgentGen END
-    return *((OctetStr*)value);
+    return *(dynamic_cast<OctetStr*>(value));
 }
 
 void agentppTestSparseCol3::set_state(const OctetStr& s)
 {
     //--AgentGen BEGIN=agentppTestSparseCol3::set_state
     //--AgentGen END
-    *((OctetStr*)value) = s;
+    *(dynamic_cast<OctetStr*>(value)) = s;
 }
 
 int agentppTestSparseCol3::set(const Vbx& vb)
@@ -612,8 +612,8 @@ MibEntryPtr agentppTestSparseRowStatus::clone()
 {
     MibEntryPtr other = new agentppTestSparseRowStatus(oid);
 
-    ((agentppTestSparseRowStatus*)other)->replace_value(value->clone());
-    ((agentppTestSparseRowStatus*)other)->set_reference_to_table(my_table);
+    (dynamic_cast<agentppTestSparseRowStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<agentppTestSparseRowStatus*>(other))->set_reference_to_table(my_table);
     //--AgentGen BEGIN=agentppTestSparseRowStatus::clone
     //--AgentGen END
     return other;
@@ -623,14 +623,14 @@ int32_t agentppTestSparseRowStatus::get_state()
 {
     //--AgentGen BEGIN=agentppTestSparseRowStatus::get_state
     //--AgentGen END
-    return (int32_t) * ((SnmpInt32*)value);
+    return (int32_t) * (dynamic_cast<SnmpInt32*>(value));
 }
 
 void agentppTestSparseRowStatus::set_state(int32_t l)
 {
     //--AgentGen BEGIN=agentppTestSparseRowStatus::set_state
     //--AgentGen END
-    *((SnmpInt32*)value) = l;
+    *(dynamic_cast<SnmpInt32*>(value)) = l;
 }
 
 int agentppTestSparseRowStatus::set(const Vbx& vb)

@@ -723,7 +723,7 @@ public:
 
     int index(T* t) const { return content.index(t); }
 
-    int empty() const { return content.empty(); }
+    bool empty() const { return content.empty(); }
 
     void clearAll() { content.clearAll(); }
 
@@ -1465,7 +1465,7 @@ public:
      *    a value != 0, if the list is empty. A value of 0, if the
      *    list is not empty.
      */
-    int empty() const { return sz == 0; }
+    bool empty() const { return sz == 0; }
 
     /**
      * Clone the array.

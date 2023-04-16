@@ -83,7 +83,7 @@ uint32_t sysUpTime::get()
 
 void sysUpTime::get_request(Request* req, int ind)
 {
-    *((TimeTicks*)value) = (uint32_t)get();
+    *(dynamic_cast<TimeTicks*>(value)) = get();
     MibLeaf::get_request(req, ind);
 }
 
