@@ -2928,8 +2928,6 @@ void MibTable::get_contents(Vbx**& contents, int& rows, int& cols, int discrimin
     }
 }
 
-#if 0
-
 /**
  * Return all (active) rows as a list of pointers to the
  * corresponding MibTableRow instances. If the receiver table
@@ -2960,8 +2958,6 @@ List <MibTableRow> * MibTable::get_rows(int discriminator)
     }
     return list;
 }
-
-#endif
 
 /**
  * Return all (active) rows as a list of pointers to the
