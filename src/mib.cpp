@@ -433,6 +433,10 @@ int MibLeaf::undo_set_request(Request* /*unused*/, int& /*unused*/)
 
 int MibLeaf::set(const Vbx& vb)
 {
+    if (undo)
+    {
+        delete undo; // paranoia? just to be sure ;-)
+    }
     undo = value->clone();
     return set_value(vb);
 }

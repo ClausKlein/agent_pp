@@ -888,8 +888,8 @@ agentpp_config_mib::agentpp_config_mib(Mib* backReference)
 //--AgentGen END
 
 //--AgentGen BEGIN=_CLASSES
-agentppCfgLogLevel::agentppCfgLogLevel(int lc, const Oidx& oid)
-    : MibLeaf(oid, READWRITE, new SnmpInt32())
+agentppCfgLogLevel::agentppCfgLogLevel(int lc, const Oidx& _oid)
+    : MibLeaf(_oid, READWRITE, new SnmpInt32())
 {
     logClass = lc;
     if (DefaultLog::log())

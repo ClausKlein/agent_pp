@@ -559,7 +559,7 @@ public:
      *    the value of the managed object. NOTE: Do not delete this
      *    pointer from outside MibLeaf. It will be deleted by ~MibLeaf
      */
-    Counter32MibLeaf(const Oidx& oid) : MibLeaf(oid, READONLY, new Counter32(0), VMODE_LOCKED) { }
+    Counter32MibLeaf(const Oidx& _oid) : MibLeaf(_oid, READONLY, new Counter32(0), VMODE_LOCKED) { }
 
     static Counter32MibLeaf* get_instance(Mib* mib, const Oidx& oid, const Oidx& ind = Oidx());
     static Counter32MibLeaf* get_instance(

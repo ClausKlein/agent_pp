@@ -327,12 +327,12 @@ void snmpTargetAddrExtEntry::row_delete(MibTableRow* /*row*/, const Oidx& index,
 
 int snmpTargetAddrExtEntry::prepare_set_request(Request* req, int& ind)
 {
-    Oidx const oid(req->get_oid(ind));
+    Oidx const theoid(req->get_oid(ind));
 
-    if (!find(oid))
+    if (!find(theoid))
     {
         Oidx rs("1.3.6.1.6.3.12.1.2.1.9");
-        rs += index(oid);
+        rs += index(theoid);
         Vbx* status = req->search_value(rs);
         if (!status)
         {

@@ -928,8 +928,8 @@ nlmStatsLogEntry* nlmStatsLogEntry::instance = nullptr;
 
 const index_info indNlmStatsLogEntry[1] = { { sNMP_SYNTAX_OCTETS, false, 0, 255 } };
 
-nlmStatsLogEntry::nlmStatsLogEntry(nlmConfigLogEntry* configLogEntry)
-    : MibTable(oidNlmStatsLogEntry, indNlmStatsLogEntry, 1), configLogEntry(configLogEntry)
+nlmStatsLogEntry::nlmStatsLogEntry(nlmConfigLogEntry* _configLogEntry)
+    : MibTable(oidNlmStatsLogEntry, indNlmStatsLogEntry, 1), configLogEntry(_configLogEntry)
 {
     // This table object is a singleton. In order to access it use
     // the static pointer nlmStatsLogEntry::instance.
@@ -1024,12 +1024,12 @@ nlmLogEntry* nlmLogEntry::instance = nullptr;
 const index_info indNlmLogEntry[2] = { { sNMP_SYNTAX_OCTETS, false, 0, 255 },
     { sNMP_SYNTAX_INT, false, 1, 1 } };
 
-nlmLogEntry::nlmLogEntry(Mib* _mib, nlmConfigLogEntry* configLogEntry, nlmStatsLogEntry* statsLogEntry,
-    nlmLogVariableEntry* logVariableEntry, nlmConfigGlobalEntryLimit* configGlobalEntryLimit,
-    nlmConfigGlobalAgeOut* configGlobalAgeOut)
-    : MibTable(oidNlmLogEntry, indNlmLogEntry, 2), mib(_mib), configLogEntry(configLogEntry),
-      statsLogEntry(statsLogEntry), logVariableEntry(logVariableEntry),
-      configGlobalEntryLimit(configGlobalEntryLimit), configGlobalAgeOut(configGlobalAgeOut)
+nlmLogEntry::nlmLogEntry(Mib* _mib, nlmConfigLogEntry* _configLogEntry, nlmStatsLogEntry* _statsLogEntry,
+    nlmLogVariableEntry* _logVariableEntry, nlmConfigGlobalEntryLimit* _configGlobalEntryLimit,
+    nlmConfigGlobalAgeOut* _configGlobalAgeOut)
+    : MibTable(oidNlmLogEntry, indNlmLogEntry, 2), mib(_mib), configLogEntry(_configLogEntry),
+      statsLogEntry(_statsLogEntry), logVariableEntry(_logVariableEntry),
+      configGlobalEntryLimit(_configGlobalEntryLimit), configGlobalAgeOut(_configGlobalAgeOut)
 {
     // This table object is a singleton. In order to access it use
     // the static pointer nlmLogEntry::instance.
@@ -1672,8 +1672,8 @@ void nlmLogVariableEntry::add_variable(const Oidx& index, unsigned int i, const 
 
 notification_log_mib::notification_log_mib() : notification_log_mib(Mib::instance) { }
 
-notification_log_mib::notification_log_mib(Mib* mib)
-    : MibGroup("1.3.6.1.2.1.92", "notificationLogMIB"), mib(mib)
+notification_log_mib::notification_log_mib(Mib* _mib)
+    : MibGroup("1.3.6.1.2.1.92", "notificationLogMIB"), mib(_mib)
 {
 
     //--AgentGen BEGIN=notification_log_mib::notification_log_mib
@@ -1684,7 +1684,7 @@ notification_log_mib::notification_log_mib(Mib* mib)
     auto* _nlmConfigGlobalAgeOut = new nlmConfigGlobalAgeOut();
     add(_nlmConfigGlobalAgeOut);
 
-    auto* configLogEntry = new nlmConfigLogEntry(mib);
+    auto* configLogEntry = new nlmConfigLogEntry(_mib);
     add(configLogEntry);
 
     add(new nlmStatsGlobalNotificationsLogged());
@@ -1695,7 +1695,7 @@ notification_log_mib::notification_log_mib(Mib* mib)
 
     auto* logVariableEntry = new nlmLogVariableEntry();
     add(logVariableEntry);
-    add(new nlmLogEntry(mib, configLogEntry, statsLogEntry, logVariableEntry,
+    add(new nlmLogEntry(_mib, configLogEntry, statsLogEntry, logVariableEntry,
         _nlmConfigGlobalEntryLimit, _nlmConfigGlobalAgeOut));
 }
 
