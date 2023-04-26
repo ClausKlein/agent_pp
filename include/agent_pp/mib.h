@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - mib.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - mib.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #ifndef mib_h_
 #define mib_h_
@@ -163,7 +163,7 @@ public:
     /**
      * Destructor.
      */
-    virtual ~MibLeaf();
+    ~MibLeaf() override;
 
     /**
      * Initialize a MibLeaf object. This method is typically called either
@@ -207,7 +207,7 @@ public:
      * @param sz - The size of the buffer returned.
      * @return true if serialization was successful, false otherwise.
      */
-    bool serialize(char*&, int&) override;
+    bool serialize(char*& /*unused*/, int& /*unused*/) override;
 
     /**
      * Read the value of the receiver from a byte stream.
@@ -220,7 +220,7 @@ public:
      * @return
      *    true if deserialization was successful, false otherwise.
      */
-    bool deserialize(char*, int&) override;
+    bool deserialize(char* /*unused*/, int& /*unused*/) override;
 
     /**
      * Get the syntax of the receiver's value.
@@ -237,6 +237,7 @@ public:
      *         value of the receiver.
      */
     virtual Vbx get_value() const;
+
     /**
      * Get the value of the receiver.
      *
@@ -245,6 +246,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success.
      */
     virtual int get_value(NS_SNMP SnmpSyntax& s) const { return get_value().get_value(s); }
+
     /**
      * Get the value of the receiver.
      *
@@ -252,6 +254,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success.
      */
     virtual int get_value(int32_t& i) const { return get_value().get_value(i); }
+
     /**
      * Get the value of the receiver.
      *
@@ -259,6 +262,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success.
      */
     virtual int get_value(uint32_t& i) const { return get_value().get_value(i); }
+
     /**
      * Get the value of the receiver.
      *
@@ -267,6 +271,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success.
      */
     virtual int get_value(uint64_t& i) const { return get_value().get_value(i); }
+
     /**
      * Get the value of the receiver.
      *
@@ -282,6 +287,7 @@ public:
      */
     virtual void set_value(const NS_SNMP SnmpSyntax&);
 
+#ifndef NO_DEPRECATED
     /**
      * Set the unsigned integer value of the receiver. Caution: The syntax
      * of this MibLeaf instance will be set to sNMP_SYNTAX_INT32! Thus, it
@@ -291,6 +297,7 @@ public:
      * @deprecated Use set_value(const SnmpSyntax&) instead.
      */
     virtual void set_value(const uint32_t);
+#endif
 
     /**
      * Set the value of the receiver from a variable binding and checks
@@ -301,6 +308,7 @@ public:
      *         SNMP_ERROR_WRONG_TYPE or SNMP_ERROR_BAD_VALUE otherwise.
      */
     virtual int set_value(const Vbx&);
+
     /**
      * Set the value of the receiver by reference.
      *
@@ -328,7 +336,7 @@ public:
      * @param req - A pointer to the whole SNMP GET request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void get_request(Request*, int) override;
+    void get_request(Request* /*unused*/, int /*unused*/) override;
 
     /**
      * Let the receiver process a SNMP GETNEXT subrequest
@@ -336,7 +344,7 @@ public:
      * @param req - A pointer to the whole SNMP GETNEXT request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void get_next_request(Request*, int) override;
+    void get_next_request(Request* /*unused*/, int /*unused*/) override;
 
     /**
      * Let the receiver commit a SNMP SET subrequest
@@ -346,7 +354,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and SNMP_ERROR_COMITFAIL on
      * failure.
      */
-    int commit_set_request(Request*, int) override;
+    int commit_set_request(Request* /*unused*/, int /*unused*/) override;
 
     /**
      * Let the receiver prepare a SNMP SET subrequest
@@ -356,7 +364,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and SNMP_ERROR_WRONG_VALUE,
      *         SNMP_ERROR_WRONG_TYPE, or SNMP_ERROR_NOT_WRITEABLE on failure.
      */
-    int prepare_set_request(Request*, int&) override;
+    int prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * Let the receiver undo a SNMP SET subrequest
@@ -366,7 +374,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and SNMP_ERROR_UNDO_FAIL on
      * failure.
      */
-    int undo_set_request(Request*, int&) override;
+    int undo_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * Clean up resources used for performing (or undoing) set requests.
@@ -374,7 +382,7 @@ public:
      * @param req - A pointer to the whole SNMP SET request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void cleanup_set_request(Request*, int&) override;
+    void cleanup_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * Check whether the receiver's value may be set to the given new value.
@@ -383,7 +391,7 @@ public:
      * @param v - A new value.
      * @return true if the new value is valid, otherwise false.
      */
-    virtual bool value_ok(const Vbx&) { return true; }
+    virtual bool value_ok(const Vbx& /*unused*/) { return true; }
 
     /**
      * Set the receiver's value and backup its old value for a later undo.
@@ -394,6 +402,7 @@ public:
      *         SNMP_ERROR_WRONG_TYPE or SNMP_ERROR_BAD_VALUE otherwise.
      */
     virtual int set(const Vbx& vb);
+
     /**
      * Undo a previous set.
      *
@@ -409,6 +418,7 @@ public:
      *         scalar managed object return 0.
      */
     MibTable* get_reference_to_table() { return my_table; }
+
     /**
      * Return a pointer to the row the receiver belongs to.
      *
@@ -434,14 +444,14 @@ public:
      *
      * @return true if the receiver has a default value, false otherwise.
      */
-    bool has_default() { return ((value_mode & VMODE_DEFAULT) > 0); }
+    bool has_default() { return (value_mode & VMODE_DEFAULT) > 0; }
 
     /**
      * Return whether the receiver has a default value.
      *
      * @return true if the receiver has a default value, false otherwise.
      */
-    bool is_locked() { return ((value_mode & VMODE_LOCKED) > 0); }
+    bool is_locked() { return (value_mode & VMODE_LOCKED) > 0; }
 
     /**
      * Set the receiver's reference to its table.
@@ -449,6 +459,7 @@ public:
      * @param t - A pointer to a MibTable instance.
      */
     void set_reference_to_table(MibTable* t) { my_table = t; }
+
     /**
      * Set the receiver's reference to its row.
      *
@@ -548,11 +559,12 @@ public:
      *    the value of the managed object. NOTE: Do not delete this
      *    pointer from outside MibLeaf. It will be deleted by ~MibLeaf
      */
-    Counter32MibLeaf(const Oidx& oid) : MibLeaf(oid, READONLY, new Counter32(0), VMODE_LOCKED) { }
+    Counter32MibLeaf(const Oidx& _oid) : MibLeaf(_oid, READONLY, new Counter32(0), VMODE_LOCKED) { }
 
     static Counter32MibLeaf* get_instance(Mib* mib, const Oidx& oid, const Oidx& ind = Oidx());
     static Counter32MibLeaf* get_instance(
         Mib* mib, const OctetStr& context, const Oidx& oid, const Oidx& ind = Oidx());
+
     /**
      * Increment a scalar counter with the given instance OID (with .0 suffix)
      * associated with the default context.
@@ -623,7 +635,8 @@ public:
         Mib* mib, const OctetStr& context, const Oidx& columnOid, const Oidx& rowIndex);
 
     virtual void increment();
-    bool         is_volatile() override { return true; }
+
+    bool is_volatile() override { return true; }
 };
 
 /*--------------------------- class snmpRowStatus ------------------------*/
@@ -648,7 +661,6 @@ public:
  */
 
 class AGENTPP_DECL snmpRowStatus : public MibLeaf {
-
 public:
     /**
      * Default constructor
@@ -674,7 +686,7 @@ public:
     /**
      * Destructor
      */
-    virtual ~snmpRowStatus();
+    ~snmpRowStatus() override;
 
     /**
      * Check whether the receiver's value may be set to
@@ -687,7 +699,7 @@ public:
      * @return
      *    true if the new value is valid, otherwise false.
      */
-    bool value_ok(const Vbx&) override;
+    bool value_ok(const Vbx& /*unused*/) override;
 
     /**
      * Check whether the a transition to a given new value is
@@ -721,7 +733,7 @@ public:
      * @return
      *    true if the requested state can be set, otherwise false.
      */
-    virtual bool check_state_change(const Vbx&, Request* req = 0);
+    virtual bool check_state_change(const Vbx&, Request* req = nullptr);
 
     /**
      * Set the receiver's value and backup its old value for a later undo.
@@ -730,7 +742,7 @@ public:
      * @return SNMP_ERROR_SUCCESS if the new value has been set,
      *         SNMP_ERROR_WRONG_TYPE or SNMP_ERROR_BAD_VALUE otherwise.
      */
-    int set(const Vbx&) override;
+    int set(const Vbx& /*vb*/) override;
 
     /**
      * Undo a previous set.
@@ -745,7 +757,7 @@ public:
      *
      * @return The row status of the receiver's row.
      */
-    long get();
+    int32_t get();
 
     /**
      * Let the receiver prepare a SNMP SET subrequest
@@ -758,7 +770,7 @@ public:
      *         SNMP_ERROR_WRONG_TYPE, or
      *         SNMP_ERROR_NOT_WRITEABLE on failure.
      */
-    int prepare_set_request(Request*, int&) override;
+    int prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 };
 
 /*--------------------------- class MibTableRow ------------------------*/
@@ -1070,6 +1082,7 @@ protected:
      * @param t - The MibTable object the reciever belongs to.
      */
     void set_reference_to_table(MibTable*);
+
     /**
      * Set a reference to the receiver in all of its columns.
      */
@@ -1102,6 +1115,7 @@ protected:
 class AGENTPP_DECL MibTableVoter {
 public:
     MibTableVoter() { }
+
     virtual ~MibTableVoter() { }
 
     /**
@@ -1146,7 +1160,8 @@ public:
      *    a SNMP error status or SNMP_ERROR_SUCCESS if the transition
      *    is acknowledged by the voter.
      */
-    virtual int is_transition_ok(MibTable*, MibTableRow*, const Oidx&, int, int)
+    virtual int is_transition_ok(MibTable* /*unused*/, MibTableRow* /*unused*/, const Oidx& /*unused*/,
+        int /*unused*/, int /*unused*/)
     {
         return SNMP_ERROR_SUCCESS;
     }
@@ -1274,6 +1289,7 @@ public:
      */
     MibTable(const Oidx&, int);
 
+#ifndef NO_DEPRECATED
     /**
      * Constructor with object identifier and given fixed index length.
      *
@@ -1287,6 +1303,7 @@ public:
      * @param a - not used
      */
     MibTable(const Oidx&, int, bool);
+#endif
 
     /**
      * Constructor with object identifier and given index structure.
@@ -1311,7 +1328,7 @@ public:
     /**
      * Destructor.
      */
-    virtual ~MibTable();
+    ~MibTable() override;
 
     /**
      * Return the type of the receiver.
@@ -1361,7 +1378,7 @@ public:
      * @param sz - The size of the buffer returned.
      * @return true if serialization was successful, false otherwise.
      */
-    bool serialize(char*&, int&) override;
+    bool serialize(char*& /*unused*/, int& /*unused*/) override;
 
     /**
      * Read the value of the receiver from a byte stream.
@@ -1374,7 +1391,7 @@ public:
      * @return
      *    true if deserialization was successful, false otherwise.
      */
-    bool deserialize(char*, int&) override;
+    bool deserialize(char* /*unused*/, int& /*unused*/) override;
 
     /**
      * Return the immediate successor of the greatest object identifier
@@ -1401,7 +1418,7 @@ public:
      * @param req
      *    the request that needs to update the receiver.
      */
-    virtual void update(Request*) { }
+    virtual void update(Request* /*unused*/) { }
 
     /**
      * Return whether the table is empty or not.
@@ -1427,7 +1444,7 @@ public:
      * @param req - A pointer to the whole SNMP GET request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void get_request(Request*, int) override;
+    void get_request(Request* /*unused*/, int /*unused*/) override;
 
     /**
      * Let the receiver process a SNMP GETNEXT subrequest
@@ -1435,7 +1452,7 @@ public:
      * @param req - A pointer to the whole SNMP GETNEXT request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void get_next_request(Request*, int) override;
+    void get_next_request(Request* /*unused*/, int /*unused*/) override;
 
     /**
      * Let the receiver commit a SNMP SET subrequest
@@ -1445,7 +1462,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and
      *         SNMP_ERROR_COMMITFAIL on failure.
      */
-    int commit_set_request(Request*, int) override;
+    int commit_set_request(Request* /*unused*/, int /*unused*/) override;
 
     /**
      * Let the receiver prepare a SNMP SET subrequest
@@ -1456,7 +1473,7 @@ public:
      *         SNMP_ERROR_WRONG_TYPE, or
      *         SNMP_ERROR_NOT_WRITEABLE on failure.
      */
-    int prepare_set_request(Request*, int&) override;
+    int prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * Let the receiver undo a SNMP SET subrequest
@@ -1466,7 +1483,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and
      *         SNMP_ERROR_UNDO_FAIL on failure.
      */
-    int undo_set_request(Request*, int&) override;
+    int undo_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * Free any resources allocated for a SET request (i.e., undo
@@ -1479,7 +1496,7 @@ public:
      * @return SNMP_ERROR_SUCCESS if the new value has been set,
      *         SNMP_ERROR_WRONG_TYPE or SNMP_ERROR_BAD_VALUE otherwise.
      */
-    void cleanup_set_request(Request*, int&) override;
+    void cleanup_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * Check whether the specified row is ready to set in service.
@@ -1538,7 +1555,10 @@ public:
      *    a pointer to the source MibTable of the event, or 0 if the
      *    event is local.
      */
-    virtual void row_init(MibTableRow*, const Oidx&, MibTable* t = 0) { (void)t; }
+    virtual void row_init(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* t = nullptr)
+    {
+        (void)t;
+    }
 
     /**
      * Is called after a new row has been created and automatic index
@@ -1550,7 +1570,11 @@ public:
      *    a pointer to the source MibTable of the event, or 0 if the
      *    event is local.
      */
-    virtual void row_added(MibTableRow*, const Oidx&, MibTable* t = 0) { (void)t; }
+    virtual void row_added(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* t = nullptr)
+    {
+        (void)t;
+    }
+
     /**
      * Is called before a row is deleted by MibTable
      *
@@ -1560,7 +1584,10 @@ public:
      *    a pointer to the source MibTable of the event, or 0 if the
      *    event is local.
      */
-    virtual void row_delete(MibTableRow*, const Oidx&, MibTable* t = 0) { (void)t; }
+    virtual void row_delete(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* t = nullptr)
+    {
+        (void)t;
+    }
 
     /**
      * Is called when a row is activated by a SET request setting
@@ -1572,7 +1599,10 @@ public:
      *    a pointer to the source MibTable of the event, or 0 if the
      *    event is local.
      */
-    virtual void row_activated(MibTableRow*, const Oidx&, MibTable* t = 0) { (void)t; }
+    virtual void row_activated(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* t = nullptr)
+    {
+        (void)t;
+    }
 
     /**
      * Is called when a row is deactivated by a SET request setting
@@ -1584,7 +1614,11 @@ public:
      *    a pointer to the source MibTable of the event, or 0 if the
      *    event is local.
      */
-    virtual void row_deactivated(MibTableRow*, const Oidx&, MibTable* t = 0) { (void)t; }
+    virtual void row_deactivated(
+        MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* t = nullptr)
+    {
+        (void)t;
+    }
 
     /**
      * Return the next available index value for the receiver table,
@@ -1815,7 +1849,7 @@ public:
      *	true if there is at least one listener attached to this
      *      table via ::add_listener, false otherwise.
      */
-    bool has_listeners() const { return (listeners.size() > 0); }
+    bool has_listeners() const { return listeners.size() > 0; }
 
     /**
      * Removes all rows from this table.
@@ -1929,7 +1963,7 @@ protected:
      *    otherwise (if no successor exists or is out of scope)
      *    a zero length oid is returned
      */
-    Oidx find_succ(const Oidx&, Request* req = 0) override;
+    Oidx find_succ(const Oidx& /*unused*/, Request* req = nullptr) override;
 
     /**
      * Return a pointer to the generator object of a given column.
@@ -1984,7 +2018,7 @@ protected:
      *    It returns the default values of that row. If vbs is 0
      *    no default values are returned.
      */
-    virtual void get_required_columns(bool*, Vbx* vbs = 0);
+    virtual void get_required_columns(bool*, Vbx* vbs = nullptr);
 
     /**
      * Get the value of the snmpRowStatus object of a given row.
@@ -2036,7 +2070,7 @@ protected:
      * @return
      *    true if the row should be stored persistently, false otherwise
      */
-    virtual bool is_persistent(MibTableRow*) { return true; }
+    virtual bool is_persistent(MibTableRow* /*unused*/) { return true; }
 
     /**
      * Let all voters vote for or against a row status transition.
@@ -2075,7 +2109,10 @@ protected:
 
 inline Oidx MibLeaf::get_oid() const
 {
-    if ((!my_table) || (!my_row)) { return oid; }
+    if ((!my_table) || (!my_row))
+    {
+        return oid;
+    }
     else
     {
         Oidx o(*my_table->key());
@@ -2188,9 +2225,8 @@ public:
  * @since 3.5.22
  */
 class AGENTPP_DECL MibConfigFormat {
-
 public:
-    virtual ~MibConfigFormat() {};
+    virtual ~MibConfigFormat() { }
 
     /**
      * Stores the persistent data in the supplied MibContext to disk.
@@ -2230,7 +2266,6 @@ public:
  * @since 3.5.22
  */
 class AGENTPP_DECL MibConfigBER : public MibConfigFormat {
-
 public:
     MibConfigBER() { }
 
@@ -2243,7 +2278,7 @@ public:
      * @return
      *    true if the contents could be saved successfully, false otherwise.
      */
-    bool save(MibContext*, const NS_SNMP OctetStr&) override;
+    bool save(MibContext* /*unused*/, const NS_SNMP OctetStr& /*unused*/) override;
 
     /**
      * Loads the persistent data in the supplied MibContext from disk.
@@ -2254,7 +2289,7 @@ public:
      * @return
      *    true if the contents could be saved successfully, false otherwise.
      */
-    bool load(MibContext*, const NS_SNMP OctetStr&) override;
+    bool load(MibContext* /*unused*/, const NS_SNMP OctetStr& /*unused*/) override;
 
     MibConfigFormat* clone() override { return new MibConfigBER(); }
 };
@@ -2383,6 +2418,7 @@ public:
 #else
     static void          set_request_list(RequestList*);
 #endif
+
     /**
      * Gets the request list associated with all Mib instances.
      *
@@ -2394,6 +2430,7 @@ public:
 #else
     static RequestList*  get_request_list() { return requestList; }
 #endif
+
     /**
      * Process a request. If multi-threading is activated, start a
      * thread to actually process the request.
@@ -2711,7 +2748,7 @@ public:
      * @return
      *    true if persistent storage is activated.
      */
-    bool is_persistency_activated() const { return (persistent_objects_path != 0); }
+    bool is_persistency_activated() const { return persistent_objects_path != nullptr; }
 
     /**
      * Check whether a node (a MIB object) is complex, i.e.
@@ -2727,7 +2764,7 @@ public:
      * @param entry
      *    a pointer to a node (MIB object).
      */
-    bool is_table_node(const MibEntryPtr& e) { return (e->type() == AGENTPP_TABLE); }
+    bool is_table_node(const MibEntryPtr& e) { return e->type() == AGENTPP_TABLE; }
 
     /**
      * Check whether a node (a MIB object) is a leaf node.
@@ -2735,7 +2772,7 @@ public:
      * @param entry
      *    a pointer to a node (MIB object).
      */
-    bool is_leaf_node(const MibEntryPtr& e) { return (e->type() == AGENTPP_LEAF); }
+    bool is_leaf_node(const MibEntryPtr& e) { return e->type() == AGENTPP_LEAF; }
 
     // Pointer to the singleton instance of the Mib class.
     static Mib* instance;
@@ -2863,6 +2900,7 @@ public:
      *    the ProxyForwarder::pdu_type of the proxy.
      */
     void unregister_proxy(const NS_SNMP OctetStr&, ProxyForwarder::pdu_type);
+
     /**
      * Set the local engine ID used by the proxy forwarder application.
      * The local engine ID is automatically set if the v3MP has been
@@ -2897,8 +2935,11 @@ public:
      */
     void delete_thread_pool()
     {
-        if (threadPool) delete threadPool;
-        threadPool = 0;
+        if (threadPool)
+        {
+            delete threadPool;
+        }
+        threadPool = nullptr;
     }
 
     /**
@@ -3027,7 +3068,7 @@ public:
      */
     MibConfigFormat* get_config_format(unsigned int format)
     {
-        return (configFormats.getNth(format - 1));
+        return configFormats.getNth(format - 1);
     }
 
 protected:
@@ -3126,8 +3167,10 @@ private:
 #    ifndef AGENTPP_USE_THREAD_POOL
 #        ifdef _WIN32THREADS
 void mib_method_routine_caller(void*);
+
 #        else
 void* mib_method_routine_caller(void*);
+
 #        endif
 #    endif
 #endif

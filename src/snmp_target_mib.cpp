@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - snmp_target_mib.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - snmp_target_mib.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include <agent_pp/List.h>
 #include <agent_pp/snmp_target_mib.h>
@@ -46,23 +46,35 @@ snmpTargetAddrTDomain::~snmpTargetAddrTDomain() { }
 MibEntryPtr snmpTargetAddrTDomain::clone()
 {
     MibEntryPtr other = new snmpTargetAddrTDomain(oid);
-    ((snmpTargetAddrTDomain*)other)->replace_value(value->clone());
-    ((snmpTargetAddrTDomain*)other)->set_reference_to_table(my_table);
+
+    (dynamic_cast<snmpTargetAddrTDomain*>(other))->replace_value(value->clone());
+    (dynamic_cast<snmpTargetAddrTDomain*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
 int snmpTargetAddrTDomain::get_state()
 {
-    uint32_t len = ((Oid*)value)->len();
-    if ((len != 7) && (len != 9)) return 0;
-    if (len == 7) return (*(Oid*)value)[6];
-    return 100 + (*(Oid*)value)[8];
+    uint32_t const len = (dynamic_cast<Oid*>(value))->len();
+
+    if ((len != 7) && (len != 9))
+    {
+        return 0;
+    }
+    if (len == 7)
+    {
+        return (*dynamic_cast<Oid*>(value))[6];
+    }
+    return 100 + (*dynamic_cast<Oid*>(value))[8];
 }
 
 bool snmpTargetAddrTDomain::value_ok(const Vbx& vb)
 {
     Oid val;
-    if (vb.get_value(val) != SNMP_CLASS_SUCCESS) return false;
+
+    if (vb.get_value(val) != SNMP_CLASS_SUCCESS)
+    {
+        return false;
+    }
 
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 6);
     LOG("snmpTargetAddrTDomain: checking (domain)");
@@ -72,12 +84,18 @@ bool snmpTargetAddrTDomain::value_ok(const Vbx& vb)
     // check for "old" TDomain values
     if (val.len() == 7)
     {
-        if ((val[6] >= 1L) && (val[6] <= 5)) { return true; }
+        if ((val[6] >= 1L) && (val[6] <= 5))
+        {
+            return true;
+        }
     }
     // check for new (TRANSPORT_ADDRESS_MIB) TDomain values
     if (val.len() == 9)
     {
-        if ((val[8] >= 1) && (val[8] <= 16)) { return true; }
+        if ((val[8] >= 1) && (val[8] <= 16))
+        {
+            return true;
+        }
     }
     return false;
 }
@@ -100,14 +118,16 @@ snmpTargetAddrTAddress::~snmpTargetAddrTAddress() { }
 MibEntryPtr snmpTargetAddrTAddress::clone()
 {
     MibEntryPtr other = new snmpTargetAddrTAddress(oid);
-    ((snmpTargetAddrTAddress*)other)->replace_value(value->clone());
-    ((snmpTargetAddrTAddress*)other)->set_reference_to_table(my_table);
+
+    (dynamic_cast<snmpTargetAddrTAddress*>(other))->replace_value(value->clone());
+    (dynamic_cast<snmpTargetAddrTAddress*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
 int snmpTargetAddrTAddress::prepare_set_request(Request* req, int& ind)
 {
     Vbx domain(my_row->get_nth(0)->get_value());
+
     for (int i = 0; i < req->subrequests(); i++)
     {
         if ((i != ind) && (req->get_oid(i) == my_row->get_nth(0)->get_oid()))
@@ -116,19 +136,32 @@ int snmpTargetAddrTAddress::prepare_set_request(Request* req, int& ind)
             break;
         }
     }
-    uint32_t state = 0;
-    Vbx      vb(req->get_value(ind));
-    OctetStr val;
-    if (vb.get_value(val) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
-    int length = val.len();
+    uint32_t  state = 0;
+    Vbx const vb(req->get_value(ind));
+    OctetStr  val;
+    if (vb.get_value(val) != SNMP_CLASS_SUCCESS)
+    {
+        return SNMP_ERROR_WRONG_TYPE;
+    }
+    int const length = val.len();
 
     Oidx o;
-    if (domain.get_value(o) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
-    if ((o.len() != 7) && (o.len() != 9)) return SNMP_ERROR_INCONSIST_VAL;
+    if (domain.get_value(o) != SNMP_CLASS_SUCCESS)
+    {
+        return SNMP_ERROR_WRONG_TYPE;
+    }
+    if ((o.len() != 7) && (o.len() != 9))
+    {
+        return SNMP_ERROR_INCONSIST_VAL;
+    }
     if (o.len() == 7)
+    {
         state = o[6];
+    }
     else
+    {
         state = o[8] + 100;
+    }
 
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 3);
     LOG("snmpTargetAddrTAddress: checking address (len)(type)");
@@ -139,43 +172,73 @@ int snmpTargetAddrTAddress::prepare_set_request(Request* req, int& ind)
     switch (state)
     {
     case 1: // UDP Address
-    case 101:
-        if (length == 6) return SNMP_ERROR_SUCCESS;
+    case 101: {
+        if (length == 6)
+        {
+            return SNMP_ERROR_SUCCESS;
+        }
         break;
-    case 102:
-        if (length == 18) return SNMP_ERROR_SUCCESS;
+    }
+
+    case 102: {
+        if (length == 18)
+        {
+            return SNMP_ERROR_SUCCESS;
+        }
         break;
-    case 105:
-        if (length == 6) return SNMP_ERROR_SUCCESS;
+    }
+
+    case 105: {
+        if (length == 6)
+        {
+            return SNMP_ERROR_SUCCESS;
+        }
         break;
+    }
+
     case 2:
-    case 3: // OSI Address
-        if ((length == 1) || ((length >= 4) && (length <= 85))) return SNMP_ERROR_SUCCESS;
+    case 3: { // OSI Address
+        if ((length == 1) || ((length >= 4) && (length <= 85)))
+        {
+            return SNMP_ERROR_SUCCESS;
+        }
         break;
-    case 4:
-        if ((length >= 3) && (length <= 99)) return SNMP_ERROR_SUCCESS;
+    }
+
+    case 4: {
+        if ((length >= 3) && (length <= 99))
+        {
+            return SNMP_ERROR_SUCCESS;
+        }
         break;
-    case 5:
-        if (length == 12) return SNMP_ERROR_SUCCESS;
+    }
+
+    case 5: {
+        if (length == 12)
+        {
+            return SNMP_ERROR_SUCCESS;
+        }
         break;
+    }
     }
     return SNMP_ERROR_INCONSIST_VAL;
 }
 
 UdpAddress* snmpTargetAddrTAddress::getUdpAddress()
 {
-    int tdomain = ((snmpTargetAddrTDomain*)my_row->get_nth(0))->get_state();
+    int const tdomain = (dynamic_cast<snmpTargetAddrTDomain*>(my_row->get_nth(0)))->get_state();
+
     switch (tdomain)
     {
     case 1:
     case 101:
     case 102: {
-        UdpAddress* address = new UdpAddress();
-        *address            = (*(OctetStr*)value);
+        auto* address = new UdpAddress();
+        *address      = (*dynamic_cast<OctetStr*>(value));
         return address;
     }
     }
-    return 0;
+    return nullptr;
 }
 
 /**
@@ -201,28 +264,38 @@ snmpTargetAddrParams::~snmpTargetAddrParams() { }
 MibEntryPtr snmpTargetAddrParams::clone()
 {
     MibEntryPtr other = new snmpTargetAddrParams(oid);
-    ((snmpTargetAddrParams*)other)->replace_value(value->clone());
-    ((snmpTargetAddrParams*)other)->set_reference_to_table(my_table);
+
+    (dynamic_cast<snmpTargetAddrParams*>(other))->replace_value(value->clone());
+    (dynamic_cast<snmpTargetAddrParams*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
 int snmpTargetAddrParams::prepare_set_request(Request* req, int& ind)
 {
     // place instrumentation code (manipulating "value") here
-    int status = MibLeaf::prepare_set_request(req, ind);
+    int const status = MibLeaf::prepare_set_request(req, ind);
+
     if (status == SNMP_ERROR_SUCCESS)
     {
-        OctetStr newAdminString;
-        Vbx      vb(req->get_value(ind));
-        if (vb.get_value(newAdminString) != SNMP_CLASS_SUCCESS) return SNMP_ERROR_WRONG_TYPE;
-        if (newAdminString.len() == 0) return SNMP_ERROR_WRONG_LENGTH;
+        OctetStr  newAdminString;
+        Vbx const vb(req->get_value(ind));
+        if (vb.get_value(newAdminString) != SNMP_CLASS_SUCCESS)
+        {
+            return SNMP_ERROR_WRONG_TYPE;
+        }
+        if (newAdminString.len() == 0)
+        {
+            return SNMP_ERROR_WRONG_LENGTH;
+        }
         if (!snmpTargetParamsEntry::instance->contains(newAdminString))
+        {
             return SNMP_ERROR_INCONSIST_VAL;
+        }
     }
     return status;
 }
 
-bool snmpTargetAddrParams::value_ok(const Vbx& vb)
+bool snmpTargetAddrParams::value_ok(const Vbx& /*vb*/)
 {
     // Vbx cvb(vb); // zero length should return wrong length!
     // if (strlen(cvb.get_printable_value()) == 0) return false;
@@ -264,7 +337,7 @@ bool snmpTargetAddrParams::value_ok(const Vbx& vb)
  *
  */
 
-snmpTargetAddrEntry* snmpTargetAddrEntry::instance = 0;
+snmpTargetAddrEntry* snmpTargetAddrEntry::instance = nullptr;
 
 snmpTargetAddrEntry::snmpTargetAddrEntry() : StorageTable(oidSnmpTargetAddrEntry, iSnmpAdminString, 1)
 {
@@ -282,7 +355,7 @@ snmpTargetAddrEntry::snmpTargetAddrEntry() : StorageTable(oidSnmpTargetAddrEntry
     add_col(new snmpRowStatus("9"));
 }
 
-snmpTargetAddrEntry::~snmpTargetAddrEntry() { instance = 0; }
+snmpTargetAddrEntry::~snmpTargetAddrEntry() { instance = nullptr; }
 
 void snmpTargetAddrEntry::set_row(MibTableRow* r, const Oidx& p0, const OctetStr& p1, int p2, int p3,
     const OctetStr& p4, const OctetStr& p5, int p6, int p7)
@@ -300,13 +373,14 @@ void snmpTargetAddrEntry::set_row(MibTableRow* r, const Oidx& p0, const OctetStr
 MibTableRow* snmpTargetAddrEntry::add_entry(const OctetStr& name, const Oidx& tdomain,
     const OctetStr& taddress, const OctetStr& taglist, const OctetStr& params)
 {
-    Oidx index = Oidx::from_string(name, false);
+    Oidx const index = Oidx::from_string(name, false);
+
     start_synch();
     MibTableRow* r = find_index(index);
     if (r)
     {
         end_synch();
-        return 0;
+        return nullptr;
     }
     r = add_row(index);
     r->get_nth(0)->replace_value(new Oidx(tdomain));
@@ -327,13 +401,11 @@ bool snmpTargetAddrEntry::refers_to(OctetStr& searchEntry)
     start_synch();
     for (cur.init(&content); cur.get(); cur.next())
     {
-
         OctetStr entry;
         cur.get()->get_nth(5)->get_value(entry);
 
         if (strcmp(entry.get_printable_hex(), searchEntry.get_printable_hex()) == 0)
         {
-
             end_synch();
             return true;
         }
@@ -346,18 +418,21 @@ Address* snmpTargetAddrEntry::get_address(MibTableRow* row)
 {
     OctetStr addrStr;
     Oidx     domain;
+
     row->get_nth(0)->get_value(domain);
     row->get_nth(1)->get_value(addrStr);
-    uint32_t targetDomain = domain.last();
+    uint32_t const targetDomain = domain.last();
     switch (targetDomain)
     {
     case 1:
     case 101:
     case 102: {
-        UdpAddress* address = ((snmpTargetAddrTAddress*)row->get_nth(1))->getUdpAddress();
+        UdpAddress* address =
+            (dynamic_cast<snmpTargetAddrTAddress*>(row->get_nth(1)))->getUdpAddress();
         return address;
         // break;
     }
+
     default: {
         LOG_BEGIN(loggerModuleName, WARNING_LOG | 2);
         LOG("snmpTargetAddrEntry: target (domain) not supported.");
@@ -365,7 +440,7 @@ Address* snmpTargetAddrEntry::get_address(MibTableRow* row)
         LOG_END;
     }
     }
-    return 0;
+    return nullptr;
 }
 
 #ifdef _SNMPv3
@@ -377,7 +452,6 @@ UTarget* snmpTargetAddrEntry::get_target(
 
     if ((!r) || (r->get_row_status()->get() != rowActive))
     {
-
         end_synch();
 
         LOG_BEGIN(loggerModuleName, WARNING_LOG | 3);
@@ -385,37 +459,43 @@ UTarget* snmpTargetAddrEntry::get_target(
         LOG(OctetStr(entry).get_printable());
         LOG((r) ? "no active row found" : "missing row");
         LOG_END;
-        return 0;
+        return nullptr;
     }
     Address* address = get_address(r);
     OctetStr params;
     r->get_nth(5)->get_value(params);
     end_synch();
-    if (!address) { return 0; }
-    UTarget* target = new UTarget(*address);
+    if (!address)
+    {
+        return nullptr;
+    }
+    auto* target = new UTarget(*address);
     delete address;
 
     if (!paramInfo->get_target_params(params, *target, secLevel))
     {
         delete target;
-        return 0;
+        return nullptr;
     }
 
     return target;
 }
+
 #endif
 
 List<MibTableRow>* snmpTargetAddrEntry::get_rows_cloned_for_tag(const OctetStr& tag)
 {
     const OctetStr&            myTag(tag);
     OidListCursor<MibTableRow> cur;
-    List<MibTableRow>*         list = new List<MibTableRow>();
+    auto*                      list = new List<MibTableRow>();
+
     start_synch();
     for (cur.init(&content); cur.get(); cur.next())
     {
         snmpRowStatus* status = cur.get()->get_row_status();
         if (((!status) || ((status) && (status->get() == rowActive)))
-            && ((((SnmpTagList*)cur.get()->get_nth(4))->contains(myTag.get_printable()))))
+            && ((
+                (dynamic_cast<SnmpTagList*>(cur.get()->get_nth(4)))->contains(myTag.get_printable()))))
         {
             list->add(new MibTableRow(*cur.get()));
         }
@@ -424,12 +504,19 @@ List<MibTableRow>* snmpTargetAddrEntry::get_rows_cloned_for_tag(const OctetStr& 
     return list;
 }
 
-bool snmpTargetAddrEntry::ready_for_service(Vbx* pvbs, int sz)
+bool snmpTargetAddrEntry::ready_for_service(Vbx* pvbs, int /*sz*/)
 {
     OctetStr params;
+
     pvbs[5].get_value(params);
-    if (params.len() == 0) return false;
-    if (!snmpTargetParamsEntry::instance->contains(params)) return false;
+    if (params.len() == 0)
+    {
+        return false;
+    }
+    if (!snmpTargetParamsEntry::instance->contains(params))
+    {
+        return false;
+    }
     return true;
 }
 
@@ -438,7 +525,7 @@ bool snmpTargetAddrEntry::ready_for_service(Vbx* pvbs, int sz)
  *
  */
 
-snmpTargetParamsEntry* snmpTargetParamsEntry::instance = 0;
+snmpTargetParamsEntry* snmpTargetParamsEntry::instance = nullptr;
 
 snmpTargetParamsEntry::snmpTargetParamsEntry()
     : StorageTable(oidSnmpTargetParamsEntry, iSnmpAdminString, 1)
@@ -455,24 +542,28 @@ snmpTargetParamsEntry::snmpTargetParamsEntry()
     add_col(new snmpRowStatus("7"));
 }
 
-snmpTargetParamsEntry::~snmpTargetParamsEntry() { instance = 0; }
+snmpTargetParamsEntry::~snmpTargetParamsEntry() { instance = nullptr; }
 
 bool snmpTargetParamsEntry::contains(const OctetStr& name)
 {
     const OctetStr&            cname(name);
     OidListCursor<MibTableRow> cur;
+
     for (cur.init(&content); cur.get(); cur.next())
     {
-        Oidx index = cur.get()->get_index();
+        Oidx const index = cur.get()->get_index();
         // cut length off
-        OctetStr adminString(index.as_string());
+        OctetStr const adminString(index.as_string(true)); // TODO(CK): without length?
 
         LOG_BEGIN(loggerModuleName, DEBUG_LOG | 9);
         LOG("snmpTargetParamsEntry: contains ");
         LOG(adminString.get_printable_hex());
         LOG(cname.get_printable_hex());
         LOG_END;
-        if (strcmp(cname.get_printable_hex(), adminString.get_printable_hex()) == 0) { return true; }
+        if (strcmp(cname.get_printable_hex(), adminString.get_printable_hex()) == 0)
+        {
+            return true;
+        }
     }
     return false;
 }
@@ -480,13 +571,14 @@ bool snmpTargetParamsEntry::contains(const OctetStr& name)
 MibTableRow* snmpTargetParamsEntry::add_entry(const OctetStr& name, const int mpModel,
     const int secModel, const OctetStr& secName, const int secLevel)
 {
-    Oidx index = Oidx::from_string(name, false);
+    Oidx const index = Oidx::from_string(name, false);
+
     start_synch();
     MibTableRow* r = find_index(index);
     if (r)
     {
         end_synch();
-        return 0;
+        return nullptr;
     }
     r = add_row(index);
     r->get_nth(0)->replace_value(new SnmpInt32(mpModel));
@@ -507,7 +599,6 @@ bool snmpTargetParamsEntry::get_target_params(const OctetStr& param, UTarget& ta
 
     if ((!paramsRow) || (paramsRow->get_row_status()->get() != rowActive))
     {
-
         end_synch();
 
         LOG_BEGIN(loggerModuleName, WARNING_LOG | 3);
@@ -534,18 +625,22 @@ bool snmpTargetParamsEntry::get_target_params(const OctetStr& param, UTarget& ta
         target.set_version(version1);
         break;
     }
+
     case 1: {
         target.set_version(version2c);
         break;
     }
+
     case 2: {
         LOG_BEGIN(loggerModuleName, WARNING_LOG | 3);
         LOG("snmpTargetParamsEntry: mpModel SNMPv2u/* not supported");
         LOG_END;
 
         return false;
+
         break;
     }
+
     case 3: {
         target.set_version(version3);
         break;
@@ -556,6 +651,7 @@ bool snmpTargetParamsEntry::get_target_params(const OctetStr& param, UTarget& ta
 
     return true;
 }
+
 #endif
 
 snmp_target_mib::snmp_target_mib() : MibGroup("1.3.6.1.6.3.12", "snmpTargetMIB")

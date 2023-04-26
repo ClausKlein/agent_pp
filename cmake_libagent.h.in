@@ -20,6 +20,10 @@
 #ifndef __LIBAGENT_H_INCLUDED__
 #define __LIBAGENT_H_INCLUDED__
 
+#ifdef _WIN32
+#define NOMINMAX
+#endif
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif

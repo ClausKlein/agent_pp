@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - system_group.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - system_group.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #ifndef system_group_h_
 #define system_group_h_
@@ -27,7 +27,7 @@
 
 #include <agent_pp/mib.h>
 #include <agent_pp/snmp_textual_conventions.h>
-#include <string.h>
+#include <cstring>
 
 #define oidSysGroup    "1.3.6.1.2.1.1"
 #define oidSysDescr    "1.3.6.1.2.1.1.1.0"
@@ -68,16 +68,16 @@ using namespace Snmp_pp;
  **********************************************************************/
 
 class AGENTPP_DECL sysUpTime : public MibLeaf {
-
 public:
     sysUpTime();
 
-    void get_request(Request*, int) override;
+    void get_request(Request* /*unused*/, int /*unused*/) override;
 
-    static unsigned int get();
-    static time_t       get_currentTime();
+    static uint32_t get();
+    static time_t   get_currentTime();
 
     bool is_volatile() override { return true; }
+
 #ifdef HAVE_CLOCK_GETTIME
     static struct timespec start;
 #else
@@ -92,7 +92,6 @@ public:
  **********************************************************************/
 
 class AGENTPP_DECL sysDescr : public SnmpDisplayString {
-
 public:
     sysDescr(const char*);
 };
@@ -104,7 +103,6 @@ public:
  **********************************************************************/
 
 class AGENTPP_DECL sysObjectID : public MibLeaf {
-
 public:
     sysObjectID(const Oidx&);
 };
@@ -116,7 +114,6 @@ public:
  **********************************************************************/
 
 class AGENTPP_DECL sysServices : public MibLeaf {
-
 public:
     sysServices(const int);
 };
@@ -124,37 +121,37 @@ public:
 /**
  *  sysORLastChange
  *
-"The value of sysUpTime at the time of the most recent
- change in state or value of any instance of sysORID."
+ * "The value of sysUpTime at the time of the most recent
+ * change in state or value of any instance of sysORID."
  */
 
 class AGENTPP_DECL sysORLastChange : public MibLeaf {
-
 public:
     sysORLastChange();
-    virtual ~sysORLastChange() {};
+    ~sysORLastChange() override { }
 
     static sysORLastChange* instance;
 
     bool is_volatile() override { return true; }
+
     void update();
 };
 
 /**
  *  sysOREntry
  *
-"An entry (conceptual row) in the sysORTable."
+ * "An entry (conceptual row) in the sysORTable."
  */
 
 class AGENTPP_DECL sysOREntry : public TimeStampTable {
-
 public:
     sysOREntry(TimeStamp*);
-    virtual ~sysOREntry();
+    ~sysOREntry() override;
 
     static sysOREntry* instance;
 
     virtual void set_row(MibTableRow* r, const Oidx&, const NS_SNMP OctetStr&, int);
+
     /**
      * Check whether the receiver contains a row with a given sysORID.
      *
@@ -176,7 +173,6 @@ public:
  **********************************************************************/
 
 class AGENTPP_DECL sysGroup : public MibGroup {
-
 public:
     /**
      * System group
@@ -184,8 +180,8 @@ public:
      * ID, and the services of the system. Optional values are system contact,
      * system name and system location
      */
-    sysGroup(const char* descr, const Oidx& o, const int services, const char* contact = 0,
-        const char* name = 0, const char* location = 0);
+    sysGroup(const char* descr, const Oidx& o, const int services, const char* contact = nullptr,
+        const char* name = nullptr, const char* location = nullptr);
 };
 #ifdef AGENTPP_NAMESPACE
 }

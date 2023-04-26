@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - snmp_community_mib.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - snmp_community_mib.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #ifndef _snmp_community_mib_h
 #define _snmp_community_mib_h
@@ -53,121 +53,120 @@ using namespace Snmp_pp;
 /**
  *  snmpCommunityName
  *
-"The community string for which a row in this table
- represents a configuration."
+ * "The community string for which a row in this table
+ * represents a configuration."
  */
 
 /**
  *  snmpCommunitySecurityName
  *
-"A human readable string representing the corresponding
- value of snmpCommunityName in a Security Model
- independent format."
+ * "A human readable string representing the corresponding
+ * value of snmpCommunityName in a Security Model
+ * independent format."
  */
 
 /**
  *  snmpCommunityContextEngineID
  *
-"The contextEngineID indicating the location of the
- context in which management information is accessed
- when using the community string specified by the
- corresponding instance of snmpCommunityName.
-
- The default value is the snmpEngineID of the entity in
- which this object is instantiated."
+ * "The contextEngineID indicating the location of the
+ * context in which management information is accessed
+ * when using the community string specified by the
+ * corresponding instance of snmpCommunityName.
+ *
+ * The default value is the snmpEngineID of the entity in
+ * which this object is instantiated."
  */
 
 /**
  *  snmpCommunityContextName
  *
-"The context in which management information is accessed
- when using the community string specified by the corresponding
- instance of snmpCommunityName."
+ * "The context in which management information is accessed
+ * when using the community string specified by the corresponding
+ * instance of snmpCommunityName."
  */
 
 /**
  *  snmpCommunityTransportTag
  *
-"This object specifies a set of transport endpoints
- from which a command responder application will accept
- management requests. If a management request containing
- this community is received on a transport endpoint other
- than the transport endpoints identified by this object,
- the request is deemed unauthentic.
-
- The transports identified by this object are specified
- in the snmpTargetAddrTable. Entries in that table
- whose snmpTargetAddrTagList contains this tag value
- are identified.
-
- If the value of this object has zero-length, transport
- endpoints are not checked when authenticating messages
- containing this community string."
+ * "This object specifies a set of transport endpoints
+ * from which a command responder application will accept
+ * management requests. If a management request containing
+ * this community is received on a transport endpoint other
+ * than the transport endpoints identified by this object,
+ * the request is deemed unauthentic.
+ *
+ * The transports identified by this object are specified
+ * in the snmpTargetAddrTable. Entries in that table
+ * whose snmpTargetAddrTagList contains this tag value
+ * are identified.
+ *
+ * If the value of this object has zero-length, transport
+ * endpoints are not checked when authenticating messages
+ * containing this community string."
  */
 
 /**
  *  snmpCommunityStorageType
  *
-"The storage type for this conceptual row in the
- snmpCommunityTable. Conceptual rows having the value
- 'permanent' need not allow write-access to any
- columnar object in the row."
+ * "The storage type for this conceptual row in the
+ * snmpCommunityTable. Conceptual rows having the value
+ * 'permanent' need not allow write-access to any
+ * columnar object in the row."
  */
 
 /**
  *  snmpCommunityStatus
  *
-"The status of this conceptual row in the snmpCommunityTable.
-
- An entry in this table is not qualified for activation
- until instances of all corresponding columns have been
- initialized, either through default values, or through
- Set operations. The snmpCommunityName and
- snmpCommunitySecurityName objects must be explicitly set.
-
- There is no restriction on setting columns in this table
- when the value of snmpCommunityStatus is active(1)."
+ * "The status of this conceptual row in the snmpCommunityTable.
+ *
+ * An entry in this table is not qualified for activation
+ * until instances of all corresponding columns have been
+ * initialized, either through default values, or through
+ * Set operations. The snmpCommunityName and
+ * snmpCommunitySecurityName objects must be explicitly set.
+ *
+ * There is no restriction on setting columns in this table
+ * when the value of snmpCommunityStatus is active(1)."
  */
 
 /**
  *  snmpTargetAddrTMask
  *
-"The mask value associated with an entry in the
- snmpTargetAddrTable. The value of this object must
- have the same length as the corresponding instance of
- snmpTargetAddrTAddress, or must have length 0. An
- attempt to set it to any other value will result in
- an inconsistentValue error.
-
- The value of this object allows an entry in the
- snmpTargetAddrTable to specify multiple addresses.
- The mask value is used to select which bits of
- a transport address must match bits of the corresponding
- instance of snmpTargetAddrTAddress, in order for the
- transport address to match a particular entry in the
- snmpTargetAddrTable. Bits which are 1 in the mask
- value indicate bits in the transport address which
- must match bits in the snmpTargetAddrTAddress value.
- Bits which are 0 in the mask indicate bits in the
- transport address which need not match. If the
- length of the mask is 0, the mask should be treated
- as if all its bits were 1 and its length were equal
- to the length of the corresponding value of
- snmpTargetAddrTable.
-
- This object may not be modified while the value of the
- corresponding instance of snmpTargetAddrRowStatus is
- active(1). An attempt to set this object in this case
- will result in an inconsistentValue error."
+ * "The mask value associated with an entry in the
+ * snmpTargetAddrTable. The value of this object must
+ * have the same length as the corresponding instance of
+ * snmpTargetAddrTAddress, or must have length 0. An
+ * attempt to set it to any other value will result in
+ * an inconsistentValue error.
+ *
+ * The value of this object allows an entry in the
+ * snmpTargetAddrTable to specify multiple addresses.
+ * The mask value is used to select which bits of
+ * a transport address must match bits of the corresponding
+ * instance of snmpTargetAddrTAddress, in order for the
+ * transport address to match a particular entry in the
+ * snmpTargetAddrTable. Bits which are 1 in the mask
+ * value indicate bits in the transport address which
+ * must match bits in the snmpTargetAddrTAddress value.
+ * Bits which are 0 in the mask indicate bits in the
+ * transport address which need not match. If the
+ * length of the mask is 0, the mask should be treated
+ * as if all its bits were 1 and its length were equal
+ * to the length of the corresponding value of
+ * snmpTargetAddrTable.
+ *
+ * This object may not be modified while the value of the
+ * corresponding instance of snmpTargetAddrRowStatus is
+ * active(1). An attempt to set this object in this case
+ * will result in an inconsistentValue error."
  */
 class AGENTPP_DECL snmpTargetAddrTMask : public snmpTargetAddrTAddress {
-
 public:
     snmpTargetAddrTMask(const Oidx&);
-    virtual ~snmpTargetAddrTMask();
+    ~snmpTargetAddrTMask() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
+    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * @note The caller has to delete the returned pointer.
@@ -178,20 +177,19 @@ public:
 /**
  *  snmpTargetAddrMMS
  *
-"The maximum message size value associated with an entry
- in the snmpTargetAddrTable."
+ * "The maximum message size value associated with an entry
+ * in the snmpTargetAddrTable."
  */
 
 /**
  *  snmpCommunityEntry
  *
-"Information about a particular community string."
+ * "Information about a particular community string."
  */
 class AGENTPP_DECL snmpCommunityEntry : public StorageTable {
-
 public:
     snmpCommunityEntry(Mib* mib);
-    virtual ~snmpCommunityEntry();
+    ~snmpCommunityEntry() override;
 
     static snmpCommunityEntry* instance;
 
@@ -206,14 +204,16 @@ public:
      */
     static snmpCommunityEntry* get_instance(Mib* mib)
     {
-        Oidx                oid(oidSnmpCommunityEntry);
-        snmpCommunityEntry* entry = (snmpCommunityEntry*)mib->get(oid);
+        Oidx const oid(oidSnmpCommunityEntry);
+        auto*      entry = dynamic_cast<snmpCommunityEntry*>(mib->get(oid));
+
         return (entry) ? entry : instance;
     }
 
     virtual void set_row(MibTableRow* r, const NS_SNMP OctetStr& p0, const NS_SNMP OctetStr& p1,
         const NS_SNMP OctetStr& p2, const NS_SNMP OctetStr& p3, const NS_SNMP OctetStr& p4, int p5,
         int p6);
+
     /**
      * Get the v3 information for a community.
      *
@@ -256,7 +256,7 @@ public:
 /**
  *  snmpTargetAddrExtEntry
  *
-"Information about a particular mask and mms value."
+ * "Information about a particular mask and mms value."
  */
 class AGENTPP_DECL snmpTargetAddrExtEntry : public MibTable {
     friend class snmpTargetAddrTMask;
@@ -267,7 +267,8 @@ public:
      * @deprecated Use constructor with Mib* parameter instead to avoid
      * usage of static reference snmpTargetAddrEntry::instance.
      */
-    snmpTargetAddrExtEntry();
+    // XXX snmpTargetAddrExtEntry();
+
     /**
      * Create a new snmpTargetAddrExtEntry with providing the reference to
      * its parent table snmpTargetAddrEntry;
@@ -275,9 +276,11 @@ public:
      * @since 4.3.0
      */
     snmpTargetAddrExtEntry(snmpTargetAddrEntry* parentTable);
-    virtual ~snmpTargetAddrExtEntry();
+
+    ~snmpTargetAddrExtEntry() override;
 
     static snmpTargetAddrExtEntry* instance;
+
     /**
      * Get the pointer to the snmpCommunityEntry associated with the
      * provided Mib instance.
@@ -289,10 +292,11 @@ public:
      */
     static snmpTargetAddrExtEntry* get_instance(Mib* mib);
 
-    void         row_added(MibTableRow*, const Oidx&, MibTable* s = 0) override;
-    void         row_delete(MibTableRow*, const Oidx&, MibTable* s = 0) override;
+    void row_added(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* s = nullptr) override;
+    void row_delete(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* s = nullptr) override;
     virtual void set_row(MibTableRow* r, const NS_SNMP OctetStr& p0, int p1);
-    int          prepare_set_request(Request*, int&) override;
+    int          prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+
 #    ifdef _SNMPv3
     virtual bool passes_filter(const NS_SNMP OctetStr&, const NS_SNMP UTarget&);
 #    endif
@@ -311,6 +315,7 @@ public:
      * references.
      */
     snmp_community_mib();
+
     /**
      * Create a new SNMP-COMMUNITY-MIB with providing the reference to
      * its Mib instance which has to contain a snmpTargetAddrEntry instance
@@ -321,7 +326,8 @@ public:
      */
     snmp_community_mib(Mib* mib);
 
-    virtual ~snmp_community_mib() { }
+    ~snmp_community_mib() override { }
+
     static void add_public();
     static void add_public(Mib* mib);
 };

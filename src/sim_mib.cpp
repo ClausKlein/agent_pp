@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - sim_mib.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - sim_mib.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include <agent_pp/sim_mib.h>
 #include <agent_pp/snmp_request.h>
@@ -49,13 +49,20 @@ SimMibLeaf::~SimMibLeaf() { }
 MibEntryPtr SimMibLeaf::clone()
 {
     MibEntryPtr other = new SimMibLeaf(*this);
+
     return other;
 }
 
 mib_access SimMibLeaf::get_access()
 {
-    if ((configMode) && (my_table)) { return READCREATE; }
-    if (configMode) return READWRITE;
+    if ((configMode) && (my_table))
+    {
+        return READCREATE;
+    }
+    if (configMode)
+    {
+        return READWRITE;
+    }
     return MibLeaf::get_access();
 }
 
@@ -69,30 +76,47 @@ bool SimMibLeaf::configMode = false;
 
 int SimMibTable::check_creation(Request* req, int& ind)
 {
-    if (SimMibLeaf::get_config_mode()) { return SNMP_ERROR_SUCCESS; }
+    if (SimMibLeaf::get_config_mode())
+    {
+        return SNMP_ERROR_SUCCESS;
+    }
     else
+    {
         return MibTable::check_creation(req, ind);
+    }
 }
 
 MibEntryPtr SimRowStatus::clone()
 {
     MibEntryPtr other = new SimRowStatus(oid, access);
-    ((SimRowStatus*)other)->replace_value(value->clone());
-    ((SimRowStatus*)other)->set_reference_to_table(my_table);
+
+    (dynamic_cast<SimRowStatus*>(other))->replace_value(value->clone());
+    (dynamic_cast<SimRowStatus*>(other))->set_reference_to_table(my_table);
     return other;
 }
 
 bool SimRowStatus::transition_ok(const Vbx& vb)
 {
-    if (SimMibLeaf::get_config_mode()) { return true; }
+    if (SimMibLeaf::get_config_mode())
+    {
+        return true;
+    }
     else
+    {
         return snmpRowStatus::transition_ok(vb);
+    }
 }
 
 mib_access SimRowStatus::get_access()
 {
-    if ((SimMibLeaf::get_config_mode()) && (my_table)) { return READCREATE; }
-    if (SimMibLeaf::get_config_mode()) return READWRITE;
+    if ((SimMibLeaf::get_config_mode()) && (my_table))
+    {
+        return READCREATE;
+    }
+    if (SimMibLeaf::get_config_mode())
+    {
+        return READWRITE;
+    }
     return MibLeaf::get_access();
 }
 
@@ -112,6 +136,7 @@ simSysUpTime::simSysUpTime() : SimMibLeaf(oidSysUpTime, READONLY, new TimeTicks(
 time_t simSysUpTime::get_currentTime()
 {
     time_t now = 0;
+
     time(&now);
     return now;
 }
@@ -120,7 +145,7 @@ time_t simSysUpTime::get() { return (get_currentTime() - start) * 100; }
 
 void simSysUpTime::get_request(Request* req, int ind)
 {
-    *((TimeTicks*)value) = (uint32_t)get();
+    *(dynamic_cast<TimeTicks*>(value)) = (uint32_t)get();
     MibLeaf::get_request(req, ind);
 }
 

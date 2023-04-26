@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 3.14...3.21)
+cmake_minimum_required(VERSION 3.21...3.26)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # NOTE: We need LANGUAGE C too for libdes. It may be required to build at Windows! CK
 project(
   agent_pp
-  VERSION 4.5.1.11
+  VERSION 4.5.1.12
   LANGUAGES CXX C
 )
 
@@ -26,11 +26,13 @@ set(CNF_STDCXX_98_HEADERS YES)
 set(HAVE_INTTYPES_H YES)
 set(AGENT_PP_NAMESPACE on) # "Enable Namespaces (needed!)" ON)
 
-option(AGENT_PP_PROXY "Enable Proxy" ON)
-option(AGENT_PP_PROXY_FORWARDER "Enable Proxy Forwarder" ON)
+include(Features.cmake)
+
 option(AGENT_PP_AGENPRO "build with AgenPro templates (usually disabled)" OFF)
 option(AGENT_PP_AGENPRO_SIMAGENT "build with AgenPro simagent instead regular templates (usually disabled)" OFF)
-option(AGENT_PP_EXAMPLES "build examples" ON)
+option(AGENT_PP_EXAMPLES "build examples" ${PROJECT_IS_TOP_LEVEL})
+option(AGENT_PP_PROXY "Enable Proxy" ON)
+option(AGENT_PP_PROXY_FORWARDER "Enable Proxy Forwarder" ON)
 option(AGENT_PP_TOOLS "build tools" OFF)
 
 set(VERSION ${PROJECT_VERSION})
@@ -187,34 +189,22 @@ if(CNF_HAVE_PTHREAD_H)
   check_function_exists(pthread_mutex_timedlock HAVE_PTHREAD_MUTEX_TIMEDLOCK)
 endif()
 
-option(USE_OUTPUT_PATH "build all libaries and runtime files at lib and bin directory" YES)
-if(USE_OUTPUT_PATH)
-  # -----------------------------------------------------------------------
-  # Where to put all the LIBRARY targets when built. This variable is used to initialize the
-  # LIBRARY_OUTPUT_DIRECTORY property on all the targets.
-  # -----------------------------------------------------------------------
-  set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
-
-  # -----------------------------------------------------------------------
-  # Where to put all the RUNTIME targets when built. This variable is used to initialize the
-  # RUNTIME_OUTPUT_DIRECTORY property on all the targets.
-  # -----------------------------------------------------------------------
-  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-endif()
-
 # ---- Add dependencies via CPM ----
 # see https://github.com/cpm-cmake/CPM.cmake for more info
 
 include(CPM)
 
+CPMAddPackage("gh:aminya/project_options@0.27.1")
+list(APPEND CMAKE_MODULE_PATH ${ProjectOptions_SRC_DIR})
+
 set(SNMP_PP_VERSION 3.4.7)
-# XXX find_package(snmp_pp CONFIG ${SNMP_PP_VERSION} REQUIRED)
-# see https://github.com/ClausKlein/snmp_pp/releases/tag/v3.4.7.12
+option(SNMP_PP_LOGGING "build all libaries with logging" NO)
 CPMAddPackage(
   NAME snmp_pp
-  GIT_TAG v${SNMP_PP_VERSION}.12
+  # GIT_TAG 6d3318ad76a2d987da6aeb867837789de3d5cf01
+  VERSION ${SNMP_PP_VERSION}.13
   GITHUB_REPOSITORY ClausKlein/snmp_pp
-  OPTIONS "SNMP_PP_LOGGING NO" "SNMP_PP_EXAMPLES YES"
+  OPTIONS "SNMP_PP_EXAMPLES YES" "CMAKE_SKIP_INSTALL_RULES NO"
 )
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake_config.h.in config.h)
@@ -299,23 +289,43 @@ set(MY_SRC_FILES
     src/vacm.cpp
 )
 
-option(BUILD_SHARED_LIBS "Global flag to cause add_library() to create shared libraries if on." ON)
+project_options(
+  PREFIX ${PROJECT_NAME} ENABLE_CACHE ${ENABLE_COVERAGE} ${OPTION_ENABLED_SANITIZER}
+  # TODO: WARNINGS_AS_ERRORS
+)
+
+set(PROJECT_EXPORT_HEADER ${PROJECT_NAME}/export.h)
 add_library(${PROJECT_NAME} ${MY_HEADER_FILES} ${MY_HEADER_LIB_FILES} ${CMAKE_CURRENT_BINARY_DIR}/config.h ${MY_SRC_FILES})
 
+if(CMAKE_SKIP_INSTALL_RULES)
+  include(GenerateExportHeader)
+  generate_export_header(
+    ${PROJECT_NAME} EXPORT_FILE_NAME ${CMAKE_CURRENT_BINARY_DIR}/PackageProjectInclude/${PROJECT_EXPORT_HEADER}
+  )
+  add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+  target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_project_options ${PROJECT_NAME}_project_warnings)
+
+  # target_link_libraries(
+  #   ${PROJECT_NAME} PRIVATE $<BUILD_LOCAL_INTERFACE:${PROJECT_NAME}_project_options>
+  #                           $<BUILD_LOCAL_INTERFACE:${PROJECT_NAME}_project_warnings>
+  # )
+endif()
+set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ${OPTION_ENABLE_UNITY})
+
 if(MSVC)
-  # FIXME: should be warning level 4 (and all warnings as errors! /WX)
   target_compile_options(${PROJECT_NAME} PRIVATE /W3 /wd4251)
-  target_compile_definitions(${PROJECT_NAME} PRIVATE _CRT_SECURE_NO_WARNINGS)
+  target_compile_definitions(${PROJECT_NAME} PUBLIC _CRT_SECURE_NO_WARNINGS)
 else()
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -Wno-unused-parameter)
-  # TODO: lots of warnings (more: -Wpedantic)
+  target_compile_options(
+    ${PROJECT_NAME} PUBLIC -Wno-conversion -Wshadow -Wno-unused-parameter -Wno-deprecated-declarations -Wno-old-style-cast
+                           -Wno-extra-semi
+  )
 endif()
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE 1)
-# Set .so version as autoconf does: agent++ version 1.2.3 will go to .so.12.0.3!
 set_target_properties(
-  ${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}.0.${PROJECT_VERSION_PATCH}
-                             SOVERSION ${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}
+  ${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
+                             SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD ${CMAKE_CXX_STANDARD})
 target_link_libraries(${PROJECT_NAME} PUBLIC snmp_pp::snmp_pp)
@@ -328,8 +338,10 @@ target_include_directories(
   ${PROJECT_NAME} SYSTEM BEFORE PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 target_include_directories(
-  ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-                         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>
+  ${PROJECT_NAME}
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/PackageProjectInclude>
+         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>
 )
 
 # Note: for SameMajorVersion upgrade stategy
@@ -353,7 +365,9 @@ macro(subdirlist result curdir)
     # message(STATUS " ## check ${child}")
     if(IS_DIRECTORY ${curdir}/${child})
       # message(STATUS " ### Add ${child}")
-      list(APPEND dirlist ${child})
+      if(NOT "${child}" STREQUAL "multi_agent")
+        list(APPEND dirlist ${child})
+      endif()
     endif()
   endforeach()
   set(${result} ${dirlist})
@@ -361,8 +375,13 @@ endmacro()
 
 set(EXE_BASE_DIRS)
 
-if(AGENT_PP_EXAMPLES)
-  list(APPEND EXE_BASE_DIRS examples)
+if(BUILD_TESTING)
+  enable_testing()
+  add_subdirectory(tests)
+
+  if(AGENT_PP_EXAMPLES)
+    list(APPEND EXE_BASE_DIRS examples)
+  endif()
 endif()
 
 if(AGENT_PP_TOOLS)
@@ -376,6 +395,7 @@ endif()
 foreach(EXE_BASE_DIR ${EXE_BASE_DIRS})
   message(STATUS " # Process dir ${EXE_BASE_DIR}")
   subdirlist(EXE_SUB_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/${EXE_BASE_DIR})
+
   foreach(EXE_SUB_DIR ${EXE_SUB_DIRS})
     message(STATUS " ## Process executable in ${EXE_SUB_DIR}")
 
@@ -404,43 +424,31 @@ foreach(EXE_BASE_DIR ${EXE_BASE_DIRS})
 
     # NOTE: all examples are named agent! CK
     add_executable(${EXE_SUB_DIR} ${EXE_SRC})
-    target_link_libraries(${EXE_SUB_DIR} ${PROJECT_NAME} snmp_pp::snmp_pp)
+    target_link_libraries(${EXE_SUB_DIR} ${PROJECT_NAME})
     target_include_directories(${EXE_SUB_DIR} SYSTEM BEFORE PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
     target_include_directories(
       ${EXE_SUB_DIR} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/${EXE_BASE_DIR}/${EXE_SUB_DIR}/include/"
     )
-    set_target_properties(
-      ${EXE_SUB_DIR} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/${EXE_BASE_DIR}/${EXE_SUB_DIR}/src"
-    )
+
     if(NOT ${EXE_BASE_DIR} STREQUAL "tools")
-      set_target_properties(${EXE_SUB_DIR} PROPERTIES OUTPUT_NAME "agent")
+      set_target_properties(${EXE_SUB_DIR} PROPERTIES OUTPUT_NAME "${EXE_SUB_DIR}")
+      add_test(
+        NAME ${EXE_SUB_DIR}-test
+        COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/simple-snmp-test.sh $<TARGET_FILE:${EXE_SUB_DIR}> $<TARGET_FILE:test_app>
+        WORKING_DIRECTORY $<TARGET_FILE_DIR:test_app>
+      )
     endif()
 
   endforeach()
 endforeach()
 
-if(AGENT_PP_EXAMPLES)
-  enable_testing()
-
-  if(${BUILD_SHARED_LIBS} AND $<TARGET_RUNTIME_DLLS:test_app>)
-    add_custom_command(
-      TARGET test_app
-      POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:test_app> $<TARGET_FILE_DIR:test_app>
-      COMMAND_EXPAND_LISTS
-    )
-  endif()
-
-  add_test(
-    NAME simple-snmp-test
-    COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/simple-snmp-test.sh $<TARGET_FILE:static_table> $<TARGET_FILE:test_app>
-    WORKING_DIRECTORY $<TARGET_FILE_DIR:test_app>
-  )
+if(CMAKE_SKIP_INSTALL_RULES)
+  return()
 endif()
 
 install(FILES ${MY_HEADER_LIB_FILES} DESTINATION include)
 
-CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.8.0")
+CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.10.0")
 packageProject(
   # the name of the target to export
   NAME ${PROJECT_NAME}
@@ -452,13 +460,15 @@ packageProject(
   INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include
   # should match the target's INSTALL_INTERFACE include directory
   INCLUDE_DESTINATION include
+  # (optional) option to install only header files with matching pattern
+  INCLUDE_HEADER_PATTERN "*.h"
   # semicolon separated list of the project's dependencies
   DEPENDENCIES "snmp_pp ${SNMP_PP_VERSION}"
   # (optional) create a header containing the version info
   # Note: that the path to headers should be lowercase
   VERSION_HEADER "${PROJECT_NAME}/version.h"
   # (optional) create a export header using GenerateExportHeader module
-  EXPORT_HEADER "${PROJECT_NAME}/export.h"
+  EXPORT_HEADER "${PROJECT_EXPORT_HEADER}"
   # (optional) install your library with a namespace (Note: do NOT add extra '::')
   NAMESPACE ${PROJECT_NAME}
   # (optional) define the project's version compatibility, defaults to `AnyNewerVersion`

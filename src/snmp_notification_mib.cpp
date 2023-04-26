@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - snmp_notification_mib.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - snmp_notification_mib.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include <agent_pp/mib_complex_entry.h>
 #include <agent_pp/snmp_notification_mib.h>
@@ -32,6 +32,8 @@ namespace Agentpp
 #ifndef _NO_LOGGING
 static const char* loggerModuleName = "agent++.snmp_notification_mib";
 #endif
+
+static constexpr bool WITH_LENGTH { true };
 
 /**
  *  snmpNotifyType
@@ -73,7 +75,7 @@ static const char* loggerModuleName = "agent++.snmp_notification_mib";
  *
  */
 
-snmpNotifyEntry* snmpNotifyEntry::instance = 0;
+snmpNotifyEntry* snmpNotifyEntry::instance = nullptr;
 
 snmpNotifyEntry::snmpNotifyEntry() : StorageTable(oidSnmpNotifyEntry, iSnmpAdminString, 1)
 {
@@ -92,12 +94,12 @@ snmpNotifyEntry::~snmpNotifyEntry() { }
 MibTableRow* snmpNotifyEntry::add_entry(const OctetStr& name, const OctetStr& tag, const int type)
 {
     start_synch();
-    Oidx         index = Oidx::from_string(name, false);
+    Oidx const   index = Oidx::from_string(name, !WITH_LENGTH); // withoutLength
     MibTableRow* r     = find_index(index);
     if (r)
     {
         end_synch();
-        return 0;
+        return nullptr;
     }
     r = add_row(index);
     r->get_nth(0)->replace_value(new OctetStr(tag));
@@ -113,7 +115,7 @@ MibTableRow* snmpNotifyEntry::add_entry(const OctetStr& name, const OctetStr& ta
  *
  */
 
-snmpNotifyFilterProfileEntry* snmpNotifyFilterProfileEntry::instance = 0;
+snmpNotifyFilterProfileEntry* snmpNotifyFilterProfileEntry::instance = nullptr;
 
 const index_info indSnmpNotifyFilterProfileEntry[1] = { { sNMP_SYNTAX_OCTETS, true, 1, 32 } };
 
@@ -136,7 +138,7 @@ snmpNotifyFilterProfileEntry::~snmpNotifyFilterProfileEntry() { }
  *
  */
 
-snmpNotifyFilterEntry* snmpNotifyFilterEntry::instance = 0;
+snmpNotifyFilterEntry* snmpNotifyFilterEntry::instance = nullptr;
 
 const index_info iSnmpNotifyFilterEntry[2] = { { sNMP_SYNTAX_OCTETS, false, 0, 32 },
     { sNMP_SYNTAX_OID, true, 1, 95 } };
@@ -162,12 +164,12 @@ snmpNotifyFilterEntry::snmpNotifyFilterEntry(snmpNotifyFilterProfileEntry* profi
 snmpNotifyFilterEntry::~snmpNotifyFilterEntry() { }
 
 bool snmpNotifyFilterEntry::passes_filter(
-    const Oidx& target, const Oidx& oid, const Vbx* vbs, unsigned int vb_count)
+    const Oidx& target, const Oidx& _oid, const Vbx* vbs, unsigned int vb_count)
 {
     _snmpNotifyFilterProfileEntry->start_synch();
     MibTableRow* found = _snmpNotifyFilterProfileEntry->find_index(target);
 
-    // no filter -> passes filter
+    // FIXME: no profile -> passes filter
     if (!found)
     {
         _snmpNotifyFilterProfileEntry->end_synch();
@@ -177,8 +179,7 @@ bool snmpNotifyFilterEntry::passes_filter(
     found->first()->get_value(profileName);
     _snmpNotifyFilterProfileEntry->end_synch();
 
-    Oidx profileOid;
-    profileOid = Oidx::from_string(profileName);
+    Oidx const profileOid = Oidx::from_string(profileName, WITH_LENGTH);
 
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 4);
     LOG("NotificationOriginator: filter: using (profile) (as oid)");
@@ -189,18 +190,17 @@ bool snmpNotifyFilterEntry::passes_filter(
     List<MibTableRow>*      list = get_rows_cloned(&profileOid, rowActive);
     ListCursor<MibTableRow> cur;
 
-    // no filter -> passes filter
+    // FIXME: no filter -> passes filter
     if (list->size() == 0)
     {
         delete list;
         return true;
     }
 
-    OidList<MibStaticEntry>  matches;
-    OidList<MibStaticEntry>* oidmatches = new OidList<MibStaticEntry>[vb_count];
+    OidList<MibStaticEntry> matches;
+    auto*                   oidmatches = new OidList<MibStaticEntry>[vb_count];
     for (cur.init(list); cur.get(); cur.next())
     {
-
         Oidx subtree = cur.get()->get_index();
         // no need to check: if (subtree.len()<3) continue;
         subtree = subtree.cut_left(subtree[0] + 1);
@@ -213,12 +213,12 @@ bool snmpNotifyFilterEntry::passes_filter(
 
         // check if oid is in the filter specified by filterMask
         // and subtree.
-        if (subtree.compare(oid, filterMask) >= 0)
+        if (subtree.compare(_oid, filterMask) >= 0)
         {
             Oidx sid;
             sid += subtree.len();
             sid += subtree;
-            MibStaticEntry* match = new MibStaticEntry(sid, SnmpInt32(filterType));
+            auto* match = new MibStaticEntry(sid, filterType);
             matches.add(match);
 
             LOG_BEGIN(loggerModuleName, INFO_LOG | 4);
@@ -233,7 +233,6 @@ bool snmpNotifyFilterEntry::passes_filter(
         }
         else
         {
-
             LOG_BEGIN(loggerModuleName, INFO_LOG | 5);
             LOG("NotificationOriginator: filter: "
                 "(trapoid)(subtree)(filterMask)(filterType)(match)");
@@ -251,7 +250,7 @@ bool snmpNotifyFilterEntry::passes_filter(
                 Oidx sid;
                 sid += subtree.len();
                 sid += subtree;
-                MibStaticEntry* match = new MibStaticEntry(sid, SnmpInt32(filterType));
+                auto* match = new MibStaticEntry(sid, filterType);
                 oidmatches[i].add(match);
             }
         }
@@ -262,6 +261,7 @@ bool snmpNotifyFilterEntry::passes_filter(
         delete[] oidmatches;
         return false;
     }
+
     SnmpInt32 pass = 0;
     matches.last()->get_value(pass);
     if (pass == 1)
@@ -280,14 +280,15 @@ bool snmpNotifyFilterEntry::passes_filter(
         }
     }
     delete[] oidmatches;
-    return (pass == 1);
+    return pass == 1;
 }
 
 snmp_notification_mib::snmp_notification_mib() : MibGroup("1.3.6.1.6.3.13.1", "snmpNotificationMIB")
 {
-    snmpNotifyEntry*              notifyEntry              = new snmpNotifyEntry();
-    snmpNotifyFilterProfileEntry* notifyFilterProfileEntry = new snmpNotifyFilterProfileEntry();
-    snmpNotifyFilterEntry* notifyFilterEntry = new snmpNotifyFilterEntry(notifyFilterProfileEntry);
+    auto* notifyEntry              = new snmpNotifyEntry();
+    auto* notifyFilterProfileEntry = new snmpNotifyFilterProfileEntry();
+    auto* notifyFilterEntry        = new snmpNotifyFilterEntry(notifyFilterProfileEntry);
+
     add(notifyEntry);
     add(notifyFilterProfileEntry);
     add(notifyFilterEntry);

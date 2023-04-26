@@ -1,5 +1,5 @@
 ---
-# This configuration requires clang-format 11 or higher.
+# This configuration requires clang-format 13 or higher.
 BasedOnStyle:  WebKit
 #NOTE: keep // AgentGen BEGIN=... in one line! CK
 ColumnLimit: 103
@@ -13,7 +13,9 @@ AlignConsecutiveAssignments: Consecutive
 AlignConsecutiveDeclarations: Consecutive
 AlignConsecutiveMacros: Consecutive
 AlignEscapedNewlines: Left
-AlignTrailingComments: true
+AlignTrailingComments:
+   Kind: Always
+   OverEmptyLines: 2
 AllowAllArgumentsOnNextLine: true
 AllowAllConstructorInitializersOnNextLine: true
 AllowAllParametersOfDeclarationOnNextLine: true
@@ -21,8 +23,11 @@ AllowShortBlocksOnASingleLine: Always
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: All
 AllowShortEnumsOnASingleLine: true
+AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: true
-AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortIfStatementsOnASingleLine: Never # WithoutElse
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
 AlwaysBreakTemplateDeclarations: Yes
 ### BinPack... args will all be on the same line
 BinPackArguments: true
@@ -55,6 +60,7 @@ IndentPPDirectives: AfterHash
 MaxEmptyLinesToKeep: 1
 PenaltyReturnTypeOnItsOwnLine: 60
 PointerAlignment: Left
+# clangV16: RemoveSemicolon: Yes
 SpaceAfterTemplateKeyword: true
 Standard: Cpp11
 # ---

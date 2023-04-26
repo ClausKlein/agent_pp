@@ -1,5 +1,6 @@
 build-aux/
 build/
+gcovr/
 m4/
 *.m4
 *.ac
@@ -7,4 +8,5 @@ m4/
 configure
 Makefile.in
 include/snmp_pp/config_snmp_pp.h
-
+include/agent_pp/agent++.h
+compile_commands.json

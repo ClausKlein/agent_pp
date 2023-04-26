@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - snmp_request.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - snmp_request.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #ifndef snmp_request_h_
 #define snmp_request_h_
@@ -39,7 +39,6 @@ using namespace Snmp_pp;
 #endif
 
 class AGENTPP_DECL InformInfo {
-
 public:
     InformInfo(NS_SNMP CTarget&, Vbx*, int, const Oidx&);
     ~InformInfo();
@@ -89,7 +88,6 @@ protected:
  */
 
 class AGENTPP_DECL SnmpRequestV3 {
-
 public:
     /**
      * Construct a SnmpRequestV3 session. If there could not be
@@ -100,7 +98,8 @@ public:
      * @deprecated Use constructor with Mib reference instead to avoid
      * static references.
      */
-    SnmpRequestV3();
+    // XXX SnmpRequestV3();
+
     /**
      * Construct a SnmpRequestV3 session. If there could not be
      * opened any SNMP port, an error message will be printed to
@@ -112,11 +111,13 @@ public:
      * @since 4.3.0
      */
     SnmpRequestV3(Mib* mib);
+
     /**
      * Destructor
      */
     ~SnmpRequestV3();
 
+#    ifndef NO_DEPRECATED
     /**
      * Static method to send a SNMP request synchronously.
      *
@@ -131,7 +132,8 @@ public:
      * @deprecated Use send method with Mib reference to avoid static
      * references.
      */
-    static int send(NS_SNMP UTarget&, Pdux&);
+    static int send(NS_SNMP UTarget& target, Pdux& pdu) { return send(Mib::instance, target, pdu); }
+#    endif
 
     /**
      * Static method to send a SNMP request synchronously.

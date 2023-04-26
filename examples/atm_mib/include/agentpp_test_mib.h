@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - agentpp_test_mib.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - agentpp_test_mib.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 //--AgentGen BEGIN=_BEGIN
 //--AgentGen END
@@ -124,18 +124,17 @@ namespace Agentpp
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestTimeout : public MibLeaf {
-
 public:
     agentppTestTimeout();
-    virtual ~agentppTestTimeout();
+    ~agentppTestTimeout() override;
 
     static agentppTestTimeout* instance;
 
-    void         get_request(Request*, int) override;
-    virtual void set_state(uint32_t);
-    int          set(const Vbx&) override;
-    int          prepare_set_request(Request*, int&) override;
-    bool         value_ok(const Vbx&) override;
+    void         get_request(Request* /*req*/ /*unused*/, int /*ind*/ /*unused*/) override;
+    virtual void set_state(uint32_t /*l*/);
+    int          set(const Vbx& /*vb*/) override;
+    int          prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool         value_ok(const Vbx& /*unused*/ /*vb*/) override;
 
     //--AgentGen BEGIN=agentppTestTimeout
     //--AgentGen END
@@ -150,10 +149,9 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSharedTableCreationTime : public DateAndTime {
-
 public:
-    agentppTestSharedTableCreationTime(const Oidx&);
-    virtual ~agentppTestSharedTableCreationTime();
+    agentppTestSharedTableCreationTime(const Oidx& /*id*/);
+    ~agentppTestSharedTableCreationTime() override;
 
     MibEntryPtr clone() override;
 
@@ -169,10 +167,9 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSharedTableDelay : public MibLeaf {
-
 public:
-    agentppTestSharedTableDelay(const Oidx&);
-    virtual ~agentppTestSharedTableDelay();
+    agentppTestSharedTableDelay(const Oidx& /*id*/);
+    ~agentppTestSharedTableDelay() override;
 
     MibEntryPtr clone() override;
 
@@ -188,10 +185,9 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSharedTableSession : public MibLeaf {
-
 public:
-    agentppTestSharedTableSession(const Oidx&);
-    virtual ~agentppTestSharedTableSession();
+    agentppTestSharedTableSession(const Oidx& /*id*/);
+    ~agentppTestSharedTableSession() override;
 
     MibEntryPtr clone() override;
 
@@ -206,12 +202,12 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSharedTableRowStatus : public snmpRowStatus {
-
 public:
-    agentppTestSharedTableRowStatus(const Oidx&);
-    virtual ~agentppTestSharedTableRowStatus();
+    agentppTestSharedTableRowStatus(const Oidx& /*id*/);
+    ~agentppTestSharedTableRowStatus() override;
 
     MibEntryPtr clone() override;
+
     enum labels {
         e_active        = 1,
         e_notInService  = 2,
@@ -235,10 +231,9 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestRowCreation : public MibLeaf {
-
 public:
-    agentppTestRowCreation(const Oidx&);
-    virtual ~agentppTestRowCreation();
+    agentppTestRowCreation(const Oidx& /*id*/);
+    ~agentppTestRowCreation() override;
 
     MibEntryPtr clone() override;
 
@@ -255,18 +250,17 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSparseCol1 : public MibLeaf {
-
 public:
-    agentppTestSparseCol1(const Oidx&);
-    virtual ~agentppTestSparseCol1();
+    agentppTestSparseCol1(const Oidx& /*id*/);
+    ~agentppTestSparseCol1() override;
 
     MibEntryPtr     clone() override;
-    void            get_request(Request*, int) override;
+    void            get_request(Request* /*req*/ /*unused*/, int /*ind*/ /*unused*/) override;
     virtual int32_t get_state();
-    virtual void    set_state(int32_t);
-    int             set(const Vbx&) override;
-    int             prepare_set_request(Request*, int&) override;
-    bool            value_ok(const Vbx&) override;
+    virtual void    set_state(int32_t /*l*/);
+    int             set(const Vbx& /*vb*/) override;
+    int             prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool            value_ok(const Vbx& /*unused*/ /*vb*/) override;
 
     //--AgentGen BEGIN=agentppTestSparseCol1
     //--AgentGen END
@@ -281,18 +275,17 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSparseCol2 : public MibLeaf {
-
 public:
-    agentppTestSparseCol2(const Oidx&);
-    virtual ~agentppTestSparseCol2();
+    agentppTestSparseCol2(const Oidx& /*id*/);
+    ~agentppTestSparseCol2() override;
 
     MibEntryPtr      clone() override;
-    void             get_request(Request*, int) override;
+    void             get_request(Request* /*req*/ /*unused*/, int /*ind*/ /*unused*/) override;
     virtual uint32_t get_state();
-    virtual void     set_state(uint32_t);
-    int              set(const Vbx&) override;
-    int              prepare_set_request(Request*, int&) override;
-    bool             value_ok(const Vbx&) override;
+    virtual void     set_state(uint32_t /*l*/);
+    int              set(const Vbx& /*vb*/) override;
+    int  prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool value_ok(const Vbx& /*unused*/ /*vb*/) override;
 
     //--AgentGen BEGIN=agentppTestSparseCol2
     //--AgentGen END
@@ -307,18 +300,17 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSparseCol3 : public MibLeaf {
-
 public:
-    agentppTestSparseCol3(const Oidx&);
-    virtual ~agentppTestSparseCol3();
+    agentppTestSparseCol3(const Oidx& /*id*/);
+    ~agentppTestSparseCol3() override;
 
     MibEntryPtr              clone() override;
-    void                     get_request(Request*, int) override;
+    void                     get_request(Request* /*req*/ /*unused*/, int /*ind*/ /*unused*/) override;
     virtual NS_SNMP OctetStr get_state();
-    virtual void             set_state(const NS_SNMP OctetStr&);
-    int                      set(const Vbx&) override;
-    int                      prepare_set_request(Request*, int&) override;
-    bool                     value_ok(const Vbx&) override;
+    virtual void             set_state(const NS_SNMP OctetStr& /*s*/);
+    int                      set(const Vbx& /*vb*/) override;
+    int  prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+    bool value_ok(const Vbx& /*unused*/ /*vb*/) override;
 
     //--AgentGen BEGIN=agentppTestSparseCol3
     //--AgentGen END
@@ -331,16 +323,16 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSparseRowStatus : public snmpRowStatus {
-
 public:
-    agentppTestSparseRowStatus(const Oidx&);
-    virtual ~agentppTestSparseRowStatus();
+    agentppTestSparseRowStatus(const Oidx& /*id*/);
+    ~agentppTestSparseRowStatus() override;
 
     MibEntryPtr     clone() override;
     virtual int32_t get_state();
-    virtual void    set_state(int32_t);
-    int             set(const Vbx&) override;
-    int             prepare_set_request(Request*, int&) override;
+    virtual void    set_state(int32_t /*l*/);
+    int             set(const Vbx& /*unused*/ /*vb*/) override;
+    int             prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+
     enum labels {
         e_active        = 1,
         e_notInService  = 2,
@@ -364,10 +356,9 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSharedEntry : public MibTable {
-
 public:
     agentppTestSharedEntry();
-    virtual ~agentppTestSharedEntry();
+    ~agentppTestSharedEntry() override;
 
     static agentppTestSharedEntry* instance;
 
@@ -383,10 +374,9 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSessionsEntry : public MibTable {
-
 public:
     agentppTestSessionsEntry();
-    virtual ~agentppTestSessionsEntry();
+    ~agentppTestSessionsEntry() override;
 
     static agentppTestSessionsEntry* instance;
 
@@ -402,15 +392,15 @@ public:
  */
 
 class AGENTPP_TEST_MIB_DECL agentppTestSparseEntry : public MibTable {
-
 public:
     agentppTestSparseEntry();
-    virtual ~agentppTestSparseEntry();
+    ~agentppTestSparseEntry() override;
 
     static agentppTestSparseEntry* instance;
 
-    void get_request(Request*, int) override;
-    int  prepare_set_request(Request*, int&) override;
+    void get_request(Request* /*req*/ /*unused*/, int /*ind*/ /*unused*/) override;
+    int  prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
+
     //--AgentGen BEGIN=agentppTestSparseEntry
     //--AgentGen END
 };
@@ -424,7 +414,8 @@ public:
 class AGENTPP_TEST_MIB_DECL agentpp_test_mib : public MibGroup {
 public:
     agentpp_test_mib();
-    virtual ~agentpp_test_mib() { }
+    ~agentpp_test_mib() override { }
+
     //--AgentGen BEGIN=agentpp_test_mib
     //--AgentGen END
 };

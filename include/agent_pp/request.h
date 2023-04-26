@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - request.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - request.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #ifndef request_h_
 #define request_h_
@@ -96,6 +96,7 @@ public:
      */
     typedef NS_SNMP CTarget TargetType;
 #endif
+
     /**
      * Construct a Request.
      *
@@ -264,7 +265,7 @@ public:
      * @param index - An index of a sub-request (starting from 0).
      * @return A SMI syntax.
      */
-    virtual NS_SNMP SnmpInt32 get_syntax(int);
+    virtual NS_SNMP SnmpUInt32 get_syntax(int);
 
     /**
      * Return the object identifier of the specified
@@ -404,6 +405,7 @@ public:
      * Increment the number of variable bindings to be processed by one.
      */
     void inc_outstanding();
+
     /**
      * Decrement the number of variable bindings to be processed by one
      */
@@ -473,9 +475,7 @@ public:
      *    a pointer to a UTarget instance.
      */
     NS_SNMP UTarget* get_address() { return &target; }
-
 #else
-
     /**
      * Return a pointer to the request's originator address.
      * (only available without _SNMPv3)
@@ -568,7 +568,7 @@ public:
         if (lockQueue)
         {
             delete lockQueue;
-            lockQueue = 0;
+            lockQueue = nullptr;
         }
     }
 #endif
@@ -682,7 +682,7 @@ public:
      * Destructor
      * (SYNCHRONIZED)
      */
-    virtual ~RequestList();
+    ~RequestList() override;
 
     /**
      * Activate or deactivate source address
@@ -765,8 +765,8 @@ public:
      *    the new community for SET requests.
      */
     void set_write_community(const NS_SNMP OctetStr&);
-
 #endif
+
     /**
      * Wait a given time for an incoming request.
      *
@@ -964,7 +964,7 @@ protected:
         if (lockQueue)
         {
             delete lockQueue;
-            lockQueue = 0;
+            lockQueue = nullptr;
         }
     }
 #endif
@@ -972,7 +972,7 @@ protected:
     List<Request>* requests;
     Snmpx*         snmp;
 #ifdef _SNMPv3
-    Vacm*   vacm;
+    Vacm*         vacm;
     NS_SNMP v3MP* v3mp;
 #endif
     NS_SNMP OctetStr* write_community;
@@ -1002,7 +1002,8 @@ public:
     RequestID(uint32_t req_id, const Oidx& r_key) : id(r_key) { request_id = req_id; }
 
     uint32_t get_request_id() const { return request_id; }
-    Oidx*    key() { return &id; }
+
+    Oidx* key() { return &id; }
 
 protected:
     uint32_t request_id;
