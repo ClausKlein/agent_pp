@@ -194,7 +194,7 @@ endif()
 
 include(CPM)
 
-CPMAddPackage("gh:aminya/project_options@0.27.1")
+CPMAddPackage("gh:aminya/project_options@0.27.2")
 list(APPEND CMAKE_MODULE_PATH ${ProjectOptions_SRC_DIR})
 
 set(SNMP_PP_VERSION 3.4.7)
