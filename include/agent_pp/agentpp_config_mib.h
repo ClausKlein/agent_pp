@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - agentpp_config_mib.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - agentpp_config_mib.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 //--AgentGen BEGIN=_BEGIN
 //--AgentGen END
@@ -93,7 +93,9 @@ public:
         operation = op;
         initiator = source;
     }
-    virtual ~OperationTask() { }
+
+    ~OperationTask() override { }
+
     void run() override;
 
 private:
@@ -112,7 +114,7 @@ private:
  * "Specifies whether SNMPv1/v2c source address
  * validation via the snmpTargetAddrExtTable and
  * the snmpCommunityTable is enabled or disabled.
-
+ *
  * If the value of this object is notAvailable(3), then at
  * least one of the necessary MIB modules are not
  * implemented for this agent instance and an attempt
@@ -121,7 +123,6 @@ private:
  */
 
 class AGENTPP_DECL agentppCfgSecSrcAddrValidation : public MibLeaf {
-
 public:
     /**
      * Default constructor.
@@ -135,21 +136,21 @@ public:
      * @param mibRef a pointer to the Mib instance.
      * @since 4.3.0.
      */
-    agentppCfgSecSrcAddrValidation(Mib* mibRef)
-        : agentppCfgSecSrcAddrValidation()
+    agentppCfgSecSrcAddrValidation(Mib* mibRef) : agentppCfgSecSrcAddrValidation()
     {
         mibReference = mibRef;
     }
 
-    virtual ~agentppCfgSecSrcAddrValidation();
+    ~agentppCfgSecSrcAddrValidation() override;
 
     static agentppCfgSecSrcAddrValidation* instance;
 
-    void            get_request(Request*, int) override;
+    void            get_request(Request* /*unused*/, int /*unused*/) override;
     virtual int32_t get_state();
     virtual void    set_state(int32_t);
-    int             set(const Vbx&) override;
-    bool            value_ok(const Vbx&) override;
+    int             set(const Vbx& /*vb*/) override;
+    bool            value_ok(const Vbx& /*unused*/) override;
+
     enum labels { e_enabled = 1, e_disabled = 2, e_notAvailable = 3 };
 
     //--AgentGen BEGIN=agentppCfgSecSrcAddrValidation
@@ -175,7 +176,8 @@ public:
      * Default constructor without agentppCfgStorageEntry.
      */
     agentpp_config_mib();
-    virtual ~agentpp_config_mib() { }
+    ~agentpp_config_mib() override { }
+
 //--AgentGen BEGIN=agentpp_config_mib
 #    ifndef _NO_THREADS
     /**
@@ -190,17 +192,16 @@ public:
 
 //--AgentGen BEGIN=_CLASSES
 class AGENTPP_DECL agentppCfgLogLevel : public MibLeaf {
-
 public:
     agentppCfgLogLevel(int, const Oidx&);
-    virtual ~agentppCfgLogLevel();
+    ~agentppCfgLogLevel() override;
 
     virtual int32_t get_state();
     virtual void    set_state(int32_t);
-    void            get_request(Request*, int) override;
-    bool            value_ok(const Vbx&) override;
-    int             commit_set_request(Request*, int) override;
-    int             undo_set_request(Request*, int&) override;
+    void            get_request(Request* /*unused*/, int /*unused*/) override;
+    bool            value_ok(const Vbx& /*unused*/) override;
+    int             commit_set_request(Request* /*unused*/, int /*unused*/) override;
+    int             undo_set_request(Request* /*unused*/, int& /*unused*/) override;
 
 protected:
     int logClass;
@@ -218,19 +219,19 @@ protected:
  */
 
 class AGENTPP_DECL agentppCfgStoragePath : public SnmpDisplayString {
-
 public:
     agentppCfgStoragePath(const Oidx&);
-    virtual ~agentppCfgStoragePath();
+    ~agentppCfgStoragePath() override;
 
     MibEntryPtr              clone() override;
-    void                     get_request(Request*, int) override;
+    void                     get_request(Request* /*unused*/, int /*unused*/) override;
     virtual NS_SNMP OctetStr get_state();
     virtual void             set_state(const NS_SNMP OctetStr&);
-    int                      prepare_set_request(Request*, int&) override;
+    int                      prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     //--AgentGen BEGIN=agentppCfgStoragePath
-    int commit_set_request(Request*, int) override;
+    int commit_set_request(Request* /*unused*/, int /*unused*/) override;
+
     //--AgentGen END
 };
 
@@ -244,17 +245,17 @@ public:
  */
 
 class AGENTPP_DECL agentppCfgStorageFormat : public MibLeaf {
-
 public:
     agentppCfgStorageFormat(const Oidx&);
-    virtual ~agentppCfgStorageFormat();
+    ~agentppCfgStorageFormat() override;
 
     MibEntryPtr     clone() override;
-    void            get_request(Request*, int) override;
+    void            get_request(Request* /*unused*/, int /*unused*/) override;
     virtual int32_t get_state();
     virtual void    set_state(int32_t);
-    int             prepare_set_request(Request*, int&) override;
-    bool            value_ok(const Vbx&) override;
+    int             prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    bool            value_ok(const Vbx& /*unused*/) override;
+
     enum labels { e_agentppBER = 1 };
 
     //--AgentGen BEGIN=agentppCfgStorageFormat
@@ -267,7 +268,7 @@ public:
  * "The states 'idle(1)' and 'inProgress(2)'  can only be
  * read, whereas the states 'store(3)' and 'restore(4)' can
  * only be written.
-
+ *
  * Setting this object to 'store(3)' will save the agent's
  * configuration to the location identified by
  * agentppCfgStoragePath. Setting this object to
@@ -276,7 +277,7 @@ public:
  * While the two operations above are in progress,
  * this object returns 'inProgress(2)' on get requests.
  * Otherwise 'idle(1)' is returned on get requests.
-
+ *
  * While its state is 'inProgress' any set request returns
  * a 'resourceUnavailable(13)' error."
  */
@@ -286,19 +287,21 @@ class AGENTPP_DECL agentppCfgStorageOperation : public MibLeaf {
 
 public:
     agentppCfgStorageOperation(const Oidx&);
-    virtual ~agentppCfgStorageOperation();
+    ~agentppCfgStorageOperation() override;
 
     MibEntryPtr     clone() override;
-    void            get_request(Request*, int) override;
+    void            get_request(Request* /*unused*/, int /*unused*/) override;
     virtual int32_t get_state();
     virtual void    set_state(int32_t);
-    int             set(const Vbx&) override;
-    int             prepare_set_request(Request*, int&) override;
-    bool            value_ok(const Vbx&) override;
+    int             set(const Vbx& /*vb*/) override;
+    int             prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    bool            value_ok(const Vbx& /*unused*/) override;
+
     enum labels { e_idle = 1, e_inProgress = 2, e_store = 3, e_restore = 4 };
 
     //--AgentGen BEGIN=agentppCfgStorageOperation
     bool is_volatile() override { return true; }
+
 #    ifndef _NO_THREADS
 private:
     OperationTask* operationTask;
@@ -314,24 +317,18 @@ private:
  */
 
 class AGENTPP_DECL agentppCfgStorageStorageType : public StorageType {
-
 public:
     agentppCfgStorageStorageType(const Oidx&);
-    virtual ~agentppCfgStorageStorageType();
+    ~agentppCfgStorageStorageType() override;
 
     MibEntryPtr clone() override;
-    void        get_request(Request*, int) override;
+    void        get_request(Request* /*unused*/, int /*unused*/) override;
     int32_t     get_state() override;
-    void        set_state(int32_t) override;
-    int         set(const Vbx&) override;
-    int         prepare_set_request(Request*, int&) override;
-    enum labels {
-        e_other       = 1,
-        e_volatile    = 2,
-        e_nonVolatile = 3,
-        e_permanent   = 4,
-        e_readOnly    = 5
-    };
+    void        set_state(int32_t /*unused*/) override;
+    int         set(const Vbx& /*vb*/) override;
+    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+
+    enum labels { e_other = 1, e_volatile = 2, e_nonVolatile = 3, e_permanent = 4, e_readOnly = 5 };
 
     //--AgentGen BEGIN=agentppCfgStorageStorageType
     //--AgentGen END
@@ -345,16 +342,16 @@ public:
  */
 
 class AGENTPP_DECL agentppCfgStorageStatus : public snmpRowStatus {
-
 public:
     agentppCfgStorageStatus(const Oidx&);
-    virtual ~agentppCfgStorageStatus();
+    ~agentppCfgStorageStatus() override;
 
     MibEntryPtr     clone() override;
     virtual int32_t get_state();
     virtual void    set_state(int32_t);
-    int             set(const Vbx&) override;
-    int             prepare_set_request(Request*, int&) override;
+    int             set(const Vbx& /*unused*/) override;
+    int             prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+
     enum labels {
         e_active        = 1,
         e_notInService  = 2,
@@ -378,22 +375,22 @@ public:
  */
 
 class AGENTPP_DECL agentppCfgStorageEntry : public StorageTable {
-
 public:
     agentppCfgStorageEntry();
-    virtual ~agentppCfgStorageEntry();
+    ~agentppCfgStorageEntry() override;
 
     static agentppCfgStorageEntry* instance;
 
-    void get_request(Request*, int) override;
-    int  prepare_set_request(Request*, int&) override;
-    int  is_transition_ok(
-         MibTable*, MibTableRow*, const Oidx&, int, int) override;
-    virtual void set_row(MibTableRow* r, const NS_SNMP OctetStr& p1,
-        int32_t p2, uint32_t p3, uint32_t p4, int32_t p5, int32_t p6,
-        int32_t p7);
+    void get_request(Request* /*unused*/, int /*unused*/) override;
+    int  prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    int  is_transition_ok(MibTable* /*unused*/, MibTableRow* /*unused*/, const Oidx& /*unused*/,
+         int /*unused*/, int /*unused*/) override;
+    virtual void set_row(MibTableRow* r, const NS_SNMP OctetStr& p1, int32_t p2, uint32_t p3,
+        uint32_t p4, int32_t p5, int32_t p6, int32_t p7);
+
     //--AgentGen BEGIN=agentppCfgStorageEntry
     void set_mib(Mib* m);
+
     Mib* get_mib() { return mib; }
 
     /**

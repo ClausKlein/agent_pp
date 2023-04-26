@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - snmp_textual_conventions.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - snmp_textual_conventions.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #ifndef _snmp_textual_convention_h_
 #define _snmp_textual_convention_h_
@@ -47,7 +47,6 @@ const index_info iSnmpAdminString[1] = { { sNMP_SYNTAX_OCTETS, true, 1, 32 } };
  */
 
 class AGENTPP_DECL SnmpDisplayString : public MibLeaf {
-
 public:
     /**
      * Construct a DisplayString with initial value.
@@ -61,6 +60,7 @@ public:
      *    the object.
      */
     SnmpDisplayString(const Oidx&, mib_access, NS_SNMP OctetStr*);
+
     /**
      * Construct a DisplayString with initial value.
      *
@@ -76,6 +76,7 @@ public:
      *    applies to columnar objects only)
      */
     SnmpDisplayString(const Oidx&, mib_access, NS_SNMP OctetStr*, bool);
+
     /**
      * Construct a DisplayString with initial value.
      *
@@ -94,13 +95,12 @@ public:
      * @param max_size
      *    the maximum size of the DisplayString.
      */
-    SnmpDisplayString(
-        const Oidx&, mib_access, NS_SNMP OctetStr*, bool, int, int);
-    virtual ~SnmpDisplayString();
+    SnmpDisplayString(const Oidx&, mib_access, NS_SNMP OctetStr*, bool, int, int);
+    ~SnmpDisplayString() override;
 
     MibEntryPtr clone() override;
-    bool        value_ok(const Vbx&) override;
-    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx& /*unused*/) override;
+    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
 protected:
     unsigned int max_size;
@@ -214,7 +214,6 @@ protected:
  */
 
 class AGENTPP_DECL SnmpEngineID : public MibLeaf {
-
 public:
     /**
      * Construct a SnmpEngineID with initial value.
@@ -255,10 +254,10 @@ public:
     /**
      * Destructor
      */
-    virtual ~SnmpEngineID();
+    ~SnmpEngineID() override;
 
     MibEntryPtr clone() override;
-    int         prepare_set_request(Request*, int&) override;
+    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * Create a default SnmpEngineID of the form
@@ -295,7 +294,6 @@ public:
  */
 
 class AGENTPP_DECL SnmpTagValue : public MibLeaf {
-
 public:
     /**
      * Construct a SnmpTagValue with initial value.
@@ -321,11 +319,11 @@ public:
     SnmpTagValue(const Oidx&, mib_access, NS_SNMP OctetStr*, int);
 
     SnmpTagValue(const Oidx&);
-    virtual ~SnmpTagValue();
+    ~SnmpTagValue() override;
 
     MibEntryPtr clone() override;
-    bool        value_ok(const Vbx&) override;
-    int         prepare_set_request(Request*, int&) override;
+    bool        value_ok(const Vbx& /*unused*/) override;
+    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
     static bool is_delimiter(char);
 };
 
@@ -341,7 +339,6 @@ public:
  */
 
 class AGENTPP_DECL SnmpTagList : public MibLeaf {
-
 public:
     /**
      * Construct a SnmpTagList with initial value.
@@ -367,10 +364,10 @@ public:
     SnmpTagList(const Oidx&, mib_access, NS_SNMP OctetStr*, int);
 
     SnmpTagList(const Oidx&);
-    virtual ~SnmpTagList();
+    ~SnmpTagList() override;
 
     MibEntryPtr  clone() override;
-    bool         value_ok(const Vbx&) override;
+    bool         value_ok(const Vbx& /*unused*/) override;
     virtual bool contains(const char*);
 };
 
@@ -427,16 +424,15 @@ public:
  */
 
 class AGENTPP_DECL TestAndIncr : public MibLeaf {
-
 public:
     TestAndIncr(const Oidx&);
-    virtual ~TestAndIncr();
+    ~TestAndIncr() override;
 
     virtual int32_t get_state();
     virtual void    set_state(int32_t);
-    int             set(const Vbx&) override;
-    bool            value_ok(const Vbx&) override;
-    int             prepare_set_request(Request*, int&) override;
+    int             set(const Vbx& /*vb*/) override;
+    bool            value_ok(const Vbx& /*unused*/) override;
+    int             prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     bool is_volatile() override { return true; }
 };
@@ -465,7 +461,6 @@ public:
  */
 
 class AGENTPP_DECL StorageType : public MibLeaf {
-
 public:
     /**
      * Construct a storageType instance.
@@ -500,7 +495,7 @@ public:
     virtual void set_state(int32_t);
 
     MibEntryPtr clone() override;
-    bool        value_ok(const Vbx&) override;
+    bool        value_ok(const Vbx& /*unused*/) override;
 };
 
 /*---------------------- class StorageTypePolicy ---------------------*/
@@ -514,7 +509,6 @@ public:
  */
 
 class AGENTPP_DECL StorageTypeVoter : public MibTableVoter {
-
 public:
     /**
      * Create a default StorageType voter that enforces that permanent(4)
@@ -522,10 +516,10 @@ public:
      */
     StorageTypeVoter() { }
 
-    virtual ~StorageTypeVoter() { }
+    ~StorageTypeVoter() override { }
 
-    int is_transition_ok(
-        MibTable*, MibTableRow*, const Oidx&, int, int) override;
+    int is_transition_ok(MibTable* /*unused*/, MibTableRow* /*unused*/, const Oidx& /*unused*/,
+        int /*unused*/, int /*unused*/) override;
 };
 
 /*--------------------------- class StorageTable ------------------------*/
@@ -610,7 +604,7 @@ public:
     /**
      * Destructor.
      */
-    virtual ~StorageTable();
+    ~StorageTable() override;
 
     /**
      * Add the StorageType column to the table.
@@ -643,7 +637,7 @@ public:
      */
     virtual int get_storage_type(MibTableRow*);
 
-    int prepare_set_request(Request*, int&) override;
+    int prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
 protected:
     /**
@@ -655,10 +649,11 @@ protected:
      * @return
      *    true if the row should be stored persistently, false otherwise
      */
-    bool is_persistent(MibTableRow*) override;
+    bool is_persistent(MibTableRow* /*unused*/) override;
 
 private:
-    void              register_row_status_voting();
+    void register_row_status_voting();
+
     int               storage_type;
     StorageTypeVoter* storage_type_voter;
 };
@@ -702,6 +697,7 @@ public:
      *    the maximum value the receiver may be set to.
      */
     SnmpInt32MinMax(const Oidx&, mib_access, const int, int, int, int);
+
     /**
      * Construct a SnmpIn32MinMax without initial value (will be 0).
      *
@@ -716,7 +712,7 @@ public:
      */
     SnmpInt32MinMax(const Oidx&, mib_access, int, int);
 
-    bool        value_ok(const Vbx&) override;
+    bool        value_ok(const Vbx& /*unused*/) override;
     MibEntryPtr clone() override;
 
     int32_t get_state();
@@ -764,8 +760,8 @@ public:
      * @param max
      *    the maximum length of the receiver's value.
      */
-    OctetStrMinMax(const Oidx&, mib_access, NS_SNMP OctetStr*, int,
-        unsigned int, unsigned int);
+    OctetStrMinMax(const Oidx&, mib_access, NS_SNMP OctetStr*, int, unsigned int, unsigned int);
+
     /**
      * Construct a SnmpIn32MinMax without initial value (will be 0).
      *
@@ -780,7 +776,7 @@ public:
      */
     OctetStrMinMax(const Oidx&, mib_access, unsigned int, unsigned int);
 
-    int         prepare_set_request(Request*, int&) override;
+    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
     MibEntryPtr clone() override;
 
     /**
@@ -870,10 +866,9 @@ protected:
  */
 
 class AGENTPP_DECL SnmpSecurityModel : public SnmpInt32MinMax {
-
 public:
     SnmpSecurityModel(const Oidx&, mib_access, int, int);
-    virtual ~SnmpSecurityModel();
+    ~SnmpSecurityModel() override;
 
     MibEntryPtr clone() override;
 };
@@ -903,10 +898,9 @@ public:
  */
 
 class AGENTPP_DECL SnmpSecurityLevel : public SnmpInt32MinMax {
-
 public:
     SnmpSecurityLevel(const Oidx&, mib_access, int, int);
-    virtual ~SnmpSecurityLevel();
+    ~SnmpSecurityLevel() override;
 
     MibEntryPtr clone() override;
 };
@@ -986,10 +980,9 @@ public:
  */
 
 class AGENTPP_DECL SnmpMessageProcessingModel : public SnmpInt32MinMax {
-
 public:
     SnmpMessageProcessingModel(const Oidx&, mib_access, int, int);
-    virtual ~SnmpMessageProcessingModel();
+    ~SnmpMessageProcessingModel() override;
 
     MibEntryPtr clone() override;
 };
@@ -1058,7 +1051,6 @@ public:
  */
 
 class AGENTPP_DECL SnmpAdminString : public OctetStrMinMax {
-
 public:
     /**
      * Construct a SnmpAdminString with initial value.
@@ -1072,6 +1064,7 @@ public:
      *    the object.
      */
     SnmpAdminString(const Oidx&, mib_access, NS_SNMP OctetStr*);
+
     /**
      * Construct a SnmpAdminString with initial value.
      *
@@ -1094,6 +1087,7 @@ public:
      *                   snmpRowStatus.
      */
     SnmpAdminString(const Oidx&, mib_access, NS_SNMP OctetStr*, int);
+
     /**
      * Construct a SnmpAdminString with initial value.
      *
@@ -1120,7 +1114,7 @@ public:
      *    the maxmimum size of the SnmpAdminString.
      */
     SnmpAdminString(const Oidx&, mib_access, NS_SNMP OctetStr*, int, int, int);
-    virtual ~SnmpAdminString();
+    ~SnmpAdminString() override;
 
     MibEntryPtr clone() override;
 
@@ -1166,7 +1160,7 @@ public:
      *                   snmpRowStatus.
      */
     TimeStamp(const Oidx&, mib_access, int);
-    virtual ~TimeStamp();
+    ~TimeStamp() override;
 
     bool is_volatile() override { return true; }
 
@@ -1207,10 +1201,11 @@ public:
      */
     TimeStampTable(const Oidx&, const index_info*, unsigned int, TimeStamp*);
 
-    virtual ~TimeStampTable();
+    ~TimeStampTable() override;
 
-    void row_added(MibTableRow*, const Oidx&, MibTable*) override;
-    void row_delete(MibTableRow*, const Oidx&, MibTable*) override;
+    void row_added(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    void row_delete(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+
     /**
      * This method should be called whenever the reciever is changed,
      * except when a row is added or deleted (row_added and row_deleted
@@ -1283,7 +1278,7 @@ public:
     /**
      * Destructor.
      */
-    virtual ~DateAndTime();
+    ~DateAndTime() override;
 
     MibEntryPtr              clone() override;
     virtual NS_SNMP OctetStr get_state();

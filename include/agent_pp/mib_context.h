@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - mib_context.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - mib_context.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #ifndef _mib_context_h_
 #define _mib_context_h_
@@ -101,7 +101,7 @@ public:
     /**
      * Destructor (does not delete contained MibEntry instances)
      */
-    virtual ~MibGroup();
+    ~MibGroup() override;
 
     /**
      * Return the type of the receiver.
@@ -152,14 +152,14 @@ public:
      *
      * @param fname - A file name.
      */
-    void load_from_file(const char*) override;
+    void load_from_file(const char* /*unused*/) override;
 
     /**
      * Save the value(s) of the receiver node to a file.
      *
      * @param fname - A file name.
      */
-    void save_to_file(const char*) override;
+    void save_to_file(const char* /*unused*/) override;
 
     /**
      * Return whether objects in this group are persistent or not.
@@ -168,7 +168,7 @@ public:
      *    true if objects of this group should be stored persistently,
      *    false otherwise.
      */
-    bool is_persistent() { return (persistencyName != 0); }
+    bool is_persistent() { return persistencyName != nullptr; }
 
     NS_SNMP OctetStr get_persistency_name() { return *persistencyName; }
 
@@ -198,7 +198,7 @@ public:
     unsigned int get_timeout() { return timeout; }
 
 protected:
-    List<MibEntry> content;
+    List<MibEntry>    content;
     NS_SNMP OctetStr* persistencyName;
     unsigned int      timeout;
 };
@@ -245,7 +245,7 @@ public:
     /**
      * Destructor.
      */
-    virtual ~MibContext();
+    ~MibContext() override;
 
     /**
      * Initialize context, thus load initialize groups with data
@@ -472,7 +472,7 @@ public:
      */
     MibGroup* get_group(int n)
     {
-        return ((n >= 0) && (n < groups.size())) ? groups.getNth(n) : 0;
+        return ((n >= 0) && (n < groups.size())) ? groups.getNth(n) : nullptr;
     }
 
     /**

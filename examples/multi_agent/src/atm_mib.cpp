@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - atm_mib.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - atm_mib.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include <atm_mib.h>
 
@@ -39,8 +39,7 @@ namespace Agentpp
  *
  */
 
-atmInterfaceMaxVpcs::atmInterfaceMaxVpcs(const Oidx& id)
-    : SimMibLeaf(id, READWRITE, new SnmpInt32())
+atmInterfaceMaxVpcs::atmInterfaceMaxVpcs(const Oidx& id) : SimMibLeaf(id, READWRITE, new SnmpInt32())
 { }
 
 atmInterfaceMaxVpcs::~atmInterfaceMaxVpcs() { }
@@ -48,6 +47,7 @@ atmInterfaceMaxVpcs::~atmInterfaceMaxVpcs() { }
 MibEntryPtr atmInterfaceMaxVpcs::clone()
 {
     MibEntryPtr other = new atmInterfaceMaxVpcs(oid);
+
     ((atmInterfaceMaxVpcs*)other)->replace_value(value->clone());
     ((atmInterfaceMaxVpcs*)other)->set_reference_to_table(my_table);
     return other;
@@ -56,8 +56,12 @@ MibEntryPtr atmInterfaceMaxVpcs::clone()
 bool atmInterfaceMaxVpcs::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if (!(((v >= 0) && (v <= 4096)))) return false;
+    if (!(((v >= 0) && (v <= 4096))))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -65,9 +69,11 @@ bool atmInterfaceMaxVpcs::value_ok(const Vbx& vb)
 int atmInterfaceMaxVpcs::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -77,8 +83,7 @@ int atmInterfaceMaxVpcs::prepare_set_request(Request* req, int& ind)
  *
  */
 
-atmInterfaceMaxVccs::atmInterfaceMaxVccs(const Oidx& id)
-    : SimMibLeaf(id, READWRITE, new SnmpInt32())
+atmInterfaceMaxVccs::atmInterfaceMaxVccs(const Oidx& id) : SimMibLeaf(id, READWRITE, new SnmpInt32())
 { }
 
 atmInterfaceMaxVccs::~atmInterfaceMaxVccs() { }
@@ -86,6 +91,7 @@ atmInterfaceMaxVccs::~atmInterfaceMaxVccs() { }
 MibEntryPtr atmInterfaceMaxVccs::clone()
 {
     MibEntryPtr other = new atmInterfaceMaxVccs(oid);
+
     ((atmInterfaceMaxVccs*)other)->replace_value(value->clone());
     ((atmInterfaceMaxVccs*)other)->set_reference_to_table(my_table);
     return other;
@@ -94,8 +100,12 @@ MibEntryPtr atmInterfaceMaxVccs::clone()
 bool atmInterfaceMaxVccs::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if (!(((v >= 0) && (v <= 65536)))) return false;
+    if (!(((v >= 0) && (v <= 65536))))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -103,9 +113,11 @@ bool atmInterfaceMaxVccs::value_ok(const Vbx& vb)
 int atmInterfaceMaxVccs::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -115,8 +127,7 @@ int atmInterfaceMaxVccs::prepare_set_request(Request* req, int& ind)
  *
  */
 
-atmInterfaceConfVpcs::atmInterfaceConfVpcs(const Oidx& id)
-    : SimMibLeaf(id, READONLY, new SnmpInt32())
+atmInterfaceConfVpcs::atmInterfaceConfVpcs(const Oidx& id) : SimMibLeaf(id, READONLY, new SnmpInt32())
 { }
 
 atmInterfaceConfVpcs::~atmInterfaceConfVpcs() { }
@@ -124,6 +135,7 @@ atmInterfaceConfVpcs::~atmInterfaceConfVpcs() { }
 MibEntryPtr atmInterfaceConfVpcs::clone()
 {
     MibEntryPtr other = new atmInterfaceConfVpcs(oid);
+
     ((atmInterfaceConfVpcs*)other)->replace_value(value->clone());
     ((atmInterfaceConfVpcs*)other)->set_reference_to_table(my_table);
     return other;
@@ -134,8 +146,7 @@ MibEntryPtr atmInterfaceConfVpcs::clone()
  *
  */
 
-atmInterfaceConfVccs::atmInterfaceConfVccs(const Oidx& id)
-    : SimMibLeaf(id, READONLY, new SnmpInt32())
+atmInterfaceConfVccs::atmInterfaceConfVccs(const Oidx& id) : SimMibLeaf(id, READONLY, new SnmpInt32())
 { }
 
 atmInterfaceConfVccs::~atmInterfaceConfVccs() { }
@@ -143,6 +154,7 @@ atmInterfaceConfVccs::~atmInterfaceConfVccs() { }
 MibEntryPtr atmInterfaceConfVccs::clone()
 {
     MibEntryPtr other = new atmInterfaceConfVccs(oid);
+
     ((atmInterfaceConfVccs*)other)->replace_value(value->clone());
     ((atmInterfaceConfVccs*)other)->set_reference_to_table(my_table);
     return other;
@@ -162,6 +174,7 @@ atmInterfaceMaxActiveVpiBits::~atmInterfaceMaxActiveVpiBits() { }
 MibEntryPtr atmInterfaceMaxActiveVpiBits::clone()
 {
     MibEntryPtr other = new atmInterfaceMaxActiveVpiBits(oid);
+
     ((atmInterfaceMaxActiveVpiBits*)other)->replace_value(value->clone());
     ((atmInterfaceMaxActiveVpiBits*)other)->set_reference_to_table(my_table);
     return other;
@@ -170,8 +183,12 @@ MibEntryPtr atmInterfaceMaxActiveVpiBits::clone()
 bool atmInterfaceMaxActiveVpiBits::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if (!(((v >= 0) && (v <= 12)))) return false;
+    if (!(((v >= 0) && (v <= 12))))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -179,9 +196,11 @@ bool atmInterfaceMaxActiveVpiBits::value_ok(const Vbx& vb)
 int atmInterfaceMaxActiveVpiBits::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -200,6 +219,7 @@ atmInterfaceMaxActiveVciBits::~atmInterfaceMaxActiveVciBits() { }
 MibEntryPtr atmInterfaceMaxActiveVciBits::clone()
 {
     MibEntryPtr other = new atmInterfaceMaxActiveVciBits(oid);
+
     ((atmInterfaceMaxActiveVciBits*)other)->replace_value(value->clone());
     ((atmInterfaceMaxActiveVciBits*)other)->set_reference_to_table(my_table);
     return other;
@@ -208,8 +228,12 @@ MibEntryPtr atmInterfaceMaxActiveVciBits::clone()
 bool atmInterfaceMaxActiveVciBits::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if (!(((v >= 0) && (v <= 16)))) return false;
+    if (!(((v >= 0) && (v <= 16))))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -217,9 +241,11 @@ bool atmInterfaceMaxActiveVciBits::value_ok(const Vbx& vb)
 int atmInterfaceMaxActiveVciBits::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -238,6 +264,7 @@ atmInterfaceIlmiVpi::~atmInterfaceIlmiVpi() { }
 MibEntryPtr atmInterfaceIlmiVpi::clone()
 {
     MibEntryPtr other = new atmInterfaceIlmiVpi(oid);
+
     ((atmInterfaceIlmiVpi*)other)->replace_value(value->clone());
     ((atmInterfaceIlmiVpi*)other)->set_reference_to_table(my_table);
     return other;
@@ -246,8 +273,12 @@ MibEntryPtr atmInterfaceIlmiVpi::clone()
 bool atmInterfaceIlmiVpi::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if (!(((v >= 0) && (v <= 4095)))) return false;
+    if (!(((v >= 0) && (v <= 4095))))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -255,9 +286,11 @@ bool atmInterfaceIlmiVpi::value_ok(const Vbx& vb)
 int atmInterfaceIlmiVpi::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -276,6 +309,7 @@ atmInterfaceIlmiVci::~atmInterfaceIlmiVci() { }
 MibEntryPtr atmInterfaceIlmiVci::clone()
 {
     MibEntryPtr other = new atmInterfaceIlmiVci(oid);
+
     ((atmInterfaceIlmiVci*)other)->replace_value(value->clone());
     ((atmInterfaceIlmiVci*)other)->set_reference_to_table(my_table);
     return other;
@@ -284,8 +318,12 @@ MibEntryPtr atmInterfaceIlmiVci::clone()
 bool atmInterfaceIlmiVci::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if (!(v <= 65535)) return false;
+    if (!(v <= 65535))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -293,9 +331,11 @@ bool atmInterfaceIlmiVci::value_ok(const Vbx& vb)
 int atmInterfaceIlmiVci::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -314,6 +354,7 @@ atmInterfaceAddressType::~atmInterfaceAddressType() { }
 MibEntryPtr atmInterfaceAddressType::clone()
 {
     MibEntryPtr other = new atmInterfaceAddressType(oid);
+
     ((atmInterfaceAddressType*)other)->replace_value(value->clone());
     ((atmInterfaceAddressType*)other)->set_reference_to_table(my_table);
     return other;
@@ -333,6 +374,7 @@ atmInterfaceAdminAddress::~atmInterfaceAdminAddress() { }
 MibEntryPtr atmInterfaceAdminAddress::clone()
 {
     MibEntryPtr other = new atmInterfaceAdminAddress(oid);
+
     ((atmInterfaceAdminAddress*)other)->replace_value(value->clone());
     ((atmInterfaceAdminAddress*)other)->set_reference_to_table(my_table);
     return other;
@@ -343,8 +385,7 @@ MibEntryPtr atmInterfaceAdminAddress::clone()
  *
  */
 
-atmInterfaceMyNeighborIpAddress::atmInterfaceMyNeighborIpAddress(
-    const Oidx& id)
+atmInterfaceMyNeighborIpAddress::atmInterfaceMyNeighborIpAddress(const Oidx& id)
     : SimMibLeaf(id, READWRITE, new IpAddress("0.0.0.0"))
 { }
 
@@ -353,9 +394,9 @@ atmInterfaceMyNeighborIpAddress::~atmInterfaceMyNeighborIpAddress() { }
 MibEntryPtr atmInterfaceMyNeighborIpAddress::clone()
 {
     MibEntryPtr other = new atmInterfaceMyNeighborIpAddress(oid);
+
     ((atmInterfaceMyNeighborIpAddress*)other)->replace_value(value->clone());
-    ((atmInterfaceMyNeighborIpAddress*)other)
-        ->set_reference_to_table(my_table);
+    ((atmInterfaceMyNeighborIpAddress*)other)->set_reference_to_table(my_table);
     return other;
 }
 
@@ -365,13 +406,14 @@ bool atmInterfaceMyNeighborIpAddress::value_ok(const Vbx& vb)
     return true;
 }
 
-int atmInterfaceMyNeighborIpAddress::prepare_set_request(
-    Request* req, int& ind)
+int atmInterfaceMyNeighborIpAddress::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -390,6 +432,7 @@ atmInterfaceMyNeighborIfName::~atmInterfaceMyNeighborIfName() { }
 MibEntryPtr atmInterfaceMyNeighborIfName::clone()
 {
     MibEntryPtr other = new atmInterfaceMyNeighborIfName(oid);
+
     ((atmInterfaceMyNeighborIfName*)other)->replace_value(value->clone());
     ((atmInterfaceMyNeighborIfName*)other)->set_reference_to_table(my_table);
     return other;
@@ -404,13 +447,18 @@ bool atmInterfaceMyNeighborIfName::value_ok(const Vbx& vb)
 int atmInterfaceMyNeighborIfName::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
-    Vb       vb(req->get_value(ind));
+    }
+    Vb const vb(req->get_value(ind));
     OctetStr v;
     vb.get_value(v);
-    if (!((v.len() <= 255))) return SNMP_ERROR_WRONG_LENGTH;
+    if (!((v.len() <= 255)))
+    {
+        return SNMP_ERROR_WRONG_LENGTH;
+    }
     return SNMP_ERROR_SUCCESS;
 }
 
@@ -428,6 +476,7 @@ atmInterfaceCurrentMaxVpiBits::~atmInterfaceCurrentMaxVpiBits() { }
 MibEntryPtr atmInterfaceCurrentMaxVpiBits::clone()
 {
     MibEntryPtr other = new atmInterfaceCurrentMaxVpiBits(oid);
+
     ((atmInterfaceCurrentMaxVpiBits*)other)->replace_value(value->clone());
     ((atmInterfaceCurrentMaxVpiBits*)other)->set_reference_to_table(my_table);
     return other;
@@ -447,6 +496,7 @@ atmInterfaceCurrentMaxVciBits::~atmInterfaceCurrentMaxVciBits() { }
 MibEntryPtr atmInterfaceCurrentMaxVciBits::clone()
 {
     MibEntryPtr other = new atmInterfaceCurrentMaxVciBits(oid);
+
     ((atmInterfaceCurrentMaxVciBits*)other)->replace_value(value->clone());
     ((atmInterfaceCurrentMaxVciBits*)other)->set_reference_to_table(my_table);
     return other;
@@ -466,6 +516,7 @@ atmInterfaceSubscrAddress::~atmInterfaceSubscrAddress() { }
 MibEntryPtr atmInterfaceSubscrAddress::clone()
 {
     MibEntryPtr other = new atmInterfaceSubscrAddress(oid);
+
     ((atmInterfaceSubscrAddress*)other)->replace_value(value->clone());
     ((atmInterfaceSubscrAddress*)other)->set_reference_to_table(my_table);
     return other;
@@ -480,13 +531,18 @@ bool atmInterfaceSubscrAddress::value_ok(const Vbx& vb)
 int atmInterfaceSubscrAddress::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
-    Vb       vb(req->get_value(ind));
+    }
+    Vb const vb(req->get_value(ind));
     OctetStr v;
     vb.get_value(v);
-    if (!((v.len() <= 40))) return SNMP_ERROR_WRONG_LENGTH;
+    if (!((v.len() <= 40)))
+    {
+        return SNMP_ERROR_WRONG_LENGTH;
+    }
     return SNMP_ERROR_SUCCESS;
 }
 
@@ -504,6 +560,7 @@ atmInterfaceDs3PlcpSEFSs::~atmInterfaceDs3PlcpSEFSs() { }
 MibEntryPtr atmInterfaceDs3PlcpSEFSs::clone()
 {
     MibEntryPtr other = new atmInterfaceDs3PlcpSEFSs(oid);
+
     ((atmInterfaceDs3PlcpSEFSs*)other)->replace_value(value->clone());
     ((atmInterfaceDs3PlcpSEFSs*)other)->set_reference_to_table(my_table);
     return other;
@@ -523,6 +580,7 @@ atmInterfaceDs3PlcpAlarmState::~atmInterfaceDs3PlcpAlarmState() { }
 MibEntryPtr atmInterfaceDs3PlcpAlarmState::clone()
 {
     MibEntryPtr other = new atmInterfaceDs3PlcpAlarmState(oid);
+
     ((atmInterfaceDs3PlcpAlarmState*)other)->replace_value(value->clone());
     ((atmInterfaceDs3PlcpAlarmState*)other)->set_reference_to_table(my_table);
     return other;
@@ -542,6 +600,7 @@ atmInterfaceDs3PlcpUASs::~atmInterfaceDs3PlcpUASs() { }
 MibEntryPtr atmInterfaceDs3PlcpUASs::clone()
 {
     MibEntryPtr other = new atmInterfaceDs3PlcpUASs(oid);
+
     ((atmInterfaceDs3PlcpUASs*)other)->replace_value(value->clone());
     ((atmInterfaceDs3PlcpUASs*)other)->set_reference_to_table(my_table);
     return other;
@@ -561,6 +620,7 @@ atmInterfaceOCDEvents::~atmInterfaceOCDEvents() { }
 MibEntryPtr atmInterfaceOCDEvents::clone()
 {
     MibEntryPtr other = new atmInterfaceOCDEvents(oid);
+
     ((atmInterfaceOCDEvents*)other)->replace_value(value->clone());
     ((atmInterfaceOCDEvents*)other)->set_reference_to_table(my_table);
     return other;
@@ -580,6 +640,7 @@ atmInterfaceTCAlarmState::~atmInterfaceTCAlarmState() { }
 MibEntryPtr atmInterfaceTCAlarmState::clone()
 {
     MibEntryPtr other = new atmInterfaceTCAlarmState(oid);
+
     ((atmInterfaceTCAlarmState*)other)->replace_value(value->clone());
     ((atmInterfaceTCAlarmState*)other)->set_reference_to_table(my_table);
     return other;
@@ -599,6 +660,7 @@ atmTrafficDescrType::~atmTrafficDescrType() { }
 MibEntryPtr atmTrafficDescrType::clone()
 {
     MibEntryPtr other = new atmTrafficDescrType(oid);
+
     ((atmTrafficDescrType*)other)->replace_value(value->clone());
     ((atmTrafficDescrType*)other)->set_reference_to_table(my_table);
     return other;
@@ -613,9 +675,11 @@ bool atmTrafficDescrType::value_ok(const Vbx& vb)
 int atmTrafficDescrType::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -634,6 +698,7 @@ atmTrafficDescrParam1::~atmTrafficDescrParam1() { }
 MibEntryPtr atmTrafficDescrParam1::clone()
 {
     MibEntryPtr other = new atmTrafficDescrParam1(oid);
+
     ((atmTrafficDescrParam1*)other)->replace_value(value->clone());
     ((atmTrafficDescrParam1*)other)->set_reference_to_table(my_table);
     return other;
@@ -648,9 +713,11 @@ bool atmTrafficDescrParam1::value_ok(const Vbx& vb)
 int atmTrafficDescrParam1::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -669,6 +736,7 @@ atmTrafficDescrParam2::~atmTrafficDescrParam2() { }
 MibEntryPtr atmTrafficDescrParam2::clone()
 {
     MibEntryPtr other = new atmTrafficDescrParam2(oid);
+
     ((atmTrafficDescrParam2*)other)->replace_value(value->clone());
     ((atmTrafficDescrParam2*)other)->set_reference_to_table(my_table);
     return other;
@@ -683,9 +751,11 @@ bool atmTrafficDescrParam2::value_ok(const Vbx& vb)
 int atmTrafficDescrParam2::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -704,6 +774,7 @@ atmTrafficDescrParam3::~atmTrafficDescrParam3() { }
 MibEntryPtr atmTrafficDescrParam3::clone()
 {
     MibEntryPtr other = new atmTrafficDescrParam3(oid);
+
     ((atmTrafficDescrParam3*)other)->replace_value(value->clone());
     ((atmTrafficDescrParam3*)other)->set_reference_to_table(my_table);
     return other;
@@ -718,9 +789,11 @@ bool atmTrafficDescrParam3::value_ok(const Vbx& vb)
 int atmTrafficDescrParam3::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -739,6 +812,7 @@ atmTrafficDescrParam4::~atmTrafficDescrParam4() { }
 MibEntryPtr atmTrafficDescrParam4::clone()
 {
     MibEntryPtr other = new atmTrafficDescrParam4(oid);
+
     ((atmTrafficDescrParam4*)other)->replace_value(value->clone());
     ((atmTrafficDescrParam4*)other)->set_reference_to_table(my_table);
     return other;
@@ -753,9 +827,11 @@ bool atmTrafficDescrParam4::value_ok(const Vbx& vb)
 int atmTrafficDescrParam4::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -774,6 +850,7 @@ atmTrafficDescrParam5::~atmTrafficDescrParam5() { }
 MibEntryPtr atmTrafficDescrParam5::clone()
 {
     MibEntryPtr other = new atmTrafficDescrParam5(oid);
+
     ((atmTrafficDescrParam5*)other)->replace_value(value->clone());
     ((atmTrafficDescrParam5*)other)->set_reference_to_table(my_table);
     return other;
@@ -788,9 +865,11 @@ bool atmTrafficDescrParam5::value_ok(const Vbx& vb)
 int atmTrafficDescrParam5::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -809,6 +888,7 @@ atmTrafficQoSClass::~atmTrafficQoSClass() { }
 MibEntryPtr atmTrafficQoSClass::clone()
 {
     MibEntryPtr other = new atmTrafficQoSClass(oid);
+
     ((atmTrafficQoSClass*)other)->replace_value(value->clone());
     ((atmTrafficQoSClass*)other)->set_reference_to_table(my_table);
     return other;
@@ -817,8 +897,12 @@ MibEntryPtr atmTrafficQoSClass::clone()
 bool atmTrafficQoSClass::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if (!(((v >= 0) && (v <= 255)))) return false;
+    if (!(((v >= 0) && (v <= 255))))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -826,9 +910,11 @@ bool atmTrafficQoSClass::value_ok(const Vbx& vb)
 int atmTrafficQoSClass::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -838,15 +924,14 @@ int atmTrafficQoSClass::prepare_set_request(Request* req, int& ind)
  *
  */
 
-atmTrafficDescrRowStatus::atmTrafficDescrRowStatus(const Oidx& id)
-    : snmpRowStatus(id, READCREATE)
-{ }
+atmTrafficDescrRowStatus::atmTrafficDescrRowStatus(const Oidx& id) : snmpRowStatus(id, READCREATE) { }
 
 atmTrafficDescrRowStatus::~atmTrafficDescrRowStatus() { }
 
 MibEntryPtr atmTrafficDescrRowStatus::clone()
 {
     MibEntryPtr other = new atmTrafficDescrRowStatus(oid);
+
     ((atmTrafficDescrRowStatus*)other)->replace_value(value->clone());
     ((atmTrafficDescrRowStatus*)other)->set_reference_to_table(my_table);
     return other;
@@ -866,6 +951,7 @@ atmServiceCategory::~atmServiceCategory() { }
 MibEntryPtr atmServiceCategory::clone()
 {
     MibEntryPtr other = new atmServiceCategory(oid);
+
     ((atmServiceCategory*)other)->replace_value(value->clone());
     ((atmServiceCategory*)other)->set_reference_to_table(my_table);
     return other;
@@ -874,9 +960,12 @@ MibEntryPtr atmServiceCategory::clone()
 bool atmServiceCategory::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
     if ((v != 1) && (v != 2) && (v != 3) && (v != 4) && (v != 5) && (v != 6))
+    {
         return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -884,9 +973,11 @@ bool atmServiceCategory::value_ok(const Vbx& vb)
 int atmServiceCategory::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -905,6 +996,7 @@ atmTrafficFrameDiscard::~atmTrafficFrameDiscard() { }
 MibEntryPtr atmTrafficFrameDiscard::clone()
 {
     MibEntryPtr other = new atmTrafficFrameDiscard(oid);
+
     ((atmTrafficFrameDiscard*)other)->replace_value(value->clone());
     ((atmTrafficFrameDiscard*)other)->set_reference_to_table(my_table);
     return other;
@@ -913,8 +1005,12 @@ MibEntryPtr atmTrafficFrameDiscard::clone()
 bool atmTrafficFrameDiscard::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if ((v != 1) && (v != 2)) return false;
+    if ((v != 1) && (v != 2))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -922,9 +1018,11 @@ bool atmTrafficFrameDiscard::value_ok(const Vbx& vb)
 int atmTrafficFrameDiscard::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -943,6 +1041,7 @@ atmVplAdminStatus::~atmVplAdminStatus() { }
 MibEntryPtr atmVplAdminStatus::clone()
 {
     MibEntryPtr other = new atmVplAdminStatus(oid);
+
     ((atmVplAdminStatus*)other)->replace_value(value->clone());
     ((atmVplAdminStatus*)other)->set_reference_to_table(my_table);
     return other;
@@ -951,8 +1050,12 @@ MibEntryPtr atmVplAdminStatus::clone()
 bool atmVplAdminStatus::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if ((v != 1) && (v != 2)) return false;
+    if ((v != 1) && (v != 2))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -960,9 +1063,11 @@ bool atmVplAdminStatus::value_ok(const Vbx& vb)
 int atmVplAdminStatus::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -972,15 +1077,14 @@ int atmVplAdminStatus::prepare_set_request(Request* req, int& ind)
  *
  */
 
-atmVplOperStatus::atmVplOperStatus(const Oidx& id)
-    : SimMibLeaf(id, READONLY, new SnmpInt32())
-{ }
+atmVplOperStatus::atmVplOperStatus(const Oidx& id) : SimMibLeaf(id, READONLY, new SnmpInt32()) { }
 
 atmVplOperStatus::~atmVplOperStatus() { }
 
 MibEntryPtr atmVplOperStatus::clone()
 {
     MibEntryPtr other = new atmVplOperStatus(oid);
+
     ((atmVplOperStatus*)other)->replace_value(value->clone());
     ((atmVplOperStatus*)other)->set_reference_to_table(my_table);
     return other;
@@ -991,15 +1095,14 @@ MibEntryPtr atmVplOperStatus::clone()
  *
  */
 
-atmVplLastChange::atmVplLastChange(const Oidx& id)
-    : SimMibLeaf(id, READONLY, new TimeTicks())
-{ }
+atmVplLastChange::atmVplLastChange(const Oidx& id) : SimMibLeaf(id, READONLY, new TimeTicks()) { }
 
 atmVplLastChange::~atmVplLastChange() { }
 
 MibEntryPtr atmVplLastChange::clone()
 {
     MibEntryPtr other = new atmVplLastChange(oid);
+
     ((atmVplLastChange*)other)->replace_value(value->clone());
     ((atmVplLastChange*)other)->set_reference_to_table(my_table);
     return other;
@@ -1019,6 +1122,7 @@ atmVplReceiveTrafficDescrIndex::~atmVplReceiveTrafficDescrIndex() { }
 MibEntryPtr atmVplReceiveTrafficDescrIndex::clone()
 {
     MibEntryPtr other = new atmVplReceiveTrafficDescrIndex(oid);
+
     ((atmVplReceiveTrafficDescrIndex*)other)->replace_value(value->clone());
     ((atmVplReceiveTrafficDescrIndex*)other)->set_reference_to_table(my_table);
     return other;
@@ -1027,8 +1131,12 @@ MibEntryPtr atmVplReceiveTrafficDescrIndex::clone()
 bool atmVplReceiveTrafficDescrIndex::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if (!(((v >= 0) && (v <= 2147483647)))) return false;
+    if (!(((v >= 0) && (v <= 2147483647))))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -1036,9 +1144,11 @@ bool atmVplReceiveTrafficDescrIndex::value_ok(const Vbx& vb)
 int atmVplReceiveTrafficDescrIndex::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -1048,8 +1158,7 @@ int atmVplReceiveTrafficDescrIndex::prepare_set_request(Request* req, int& ind)
  *
  */
 
-atmVplTransmitTrafficDescrIndex::atmVplTransmitTrafficDescrIndex(
-    const Oidx& id)
+atmVplTransmitTrafficDescrIndex::atmVplTransmitTrafficDescrIndex(const Oidx& id)
     : SimMibLeaf(id, READCREATE, new SnmpInt32(0), VMODE_DEFAULT)
 { }
 
@@ -1058,28 +1167,33 @@ atmVplTransmitTrafficDescrIndex::~atmVplTransmitTrafficDescrIndex() { }
 MibEntryPtr atmVplTransmitTrafficDescrIndex::clone()
 {
     MibEntryPtr other = new atmVplTransmitTrafficDescrIndex(oid);
+
     ((atmVplTransmitTrafficDescrIndex*)other)->replace_value(value->clone());
-    ((atmVplTransmitTrafficDescrIndex*)other)
-        ->set_reference_to_table(my_table);
+    ((atmVplTransmitTrafficDescrIndex*)other)->set_reference_to_table(my_table);
     return other;
 }
 
 bool atmVplTransmitTrafficDescrIndex::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if (!(((v >= 0) && (v <= 2147483647)))) return false;
+    if (!(((v >= 0) && (v <= 2147483647))))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
 
-int atmVplTransmitTrafficDescrIndex::prepare_set_request(
-    Request* req, int& ind)
+int atmVplTransmitTrafficDescrIndex::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -1098,6 +1212,7 @@ atmVplCrossConnectIdentifier::~atmVplCrossConnectIdentifier() { }
 MibEntryPtr atmVplCrossConnectIdentifier::clone()
 {
     MibEntryPtr other = new atmVplCrossConnectIdentifier(oid);
+
     ((atmVplCrossConnectIdentifier*)other)->replace_value(value->clone());
     ((atmVplCrossConnectIdentifier*)other)->set_reference_to_table(my_table);
     return other;
@@ -1108,15 +1223,14 @@ MibEntryPtr atmVplCrossConnectIdentifier::clone()
  *
  */
 
-atmVplRowStatus::atmVplRowStatus(const Oidx& id)
-    : snmpRowStatus(id, READCREATE)
-{ }
+atmVplRowStatus::atmVplRowStatus(const Oidx& id) : snmpRowStatus(id, READCREATE) { }
 
 atmVplRowStatus::~atmVplRowStatus() { }
 
 MibEntryPtr atmVplRowStatus::clone()
 {
     MibEntryPtr other = new atmVplRowStatus(oid);
+
     ((atmVplRowStatus*)other)->replace_value(value->clone());
     ((atmVplRowStatus*)other)->set_reference_to_table(my_table);
     return other;
@@ -1136,6 +1250,7 @@ atmVplCastType::~atmVplCastType() { }
 MibEntryPtr atmVplCastType::clone()
 {
     MibEntryPtr other = new atmVplCastType(oid);
+
     ((atmVplCastType*)other)->replace_value(value->clone());
     ((atmVplCastType*)other)->set_reference_to_table(my_table);
     return other;
@@ -1144,8 +1259,12 @@ MibEntryPtr atmVplCastType::clone()
 bool atmVplCastType::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if ((v != 1) && (v != 2) && (v != 3)) return false;
+    if ((v != 1) && (v != 2) && (v != 3))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -1153,9 +1272,11 @@ bool atmVplCastType::value_ok(const Vbx& vb)
 int atmVplCastType::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -1174,6 +1295,7 @@ atmVplConnKind::~atmVplConnKind() { }
 MibEntryPtr atmVplConnKind::clone()
 {
     MibEntryPtr other = new atmVplConnKind(oid);
+
     ((atmVplConnKind*)other)->replace_value(value->clone());
     ((atmVplConnKind*)other)->set_reference_to_table(my_table);
     return other;
@@ -1182,8 +1304,12 @@ MibEntryPtr atmVplConnKind::clone()
 bool atmVplConnKind::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if ((v != 1) && (v != 2) && (v != 3) && (v != 4) && (v != 5)) return false;
+    if ((v != 1) && (v != 2) && (v != 3) && (v != 4) && (v != 5))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -1191,9 +1317,11 @@ bool atmVplConnKind::value_ok(const Vbx& vb)
 int atmVplConnKind::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -1212,6 +1340,7 @@ atmVclAdminStatus::~atmVclAdminStatus() { }
 MibEntryPtr atmVclAdminStatus::clone()
 {
     MibEntryPtr other = new atmVclAdminStatus(oid);
+
     ((atmVclAdminStatus*)other)->replace_value(value->clone());
     ((atmVclAdminStatus*)other)->set_reference_to_table(my_table);
     return other;
@@ -1220,8 +1349,12 @@ MibEntryPtr atmVclAdminStatus::clone()
 bool atmVclAdminStatus::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if ((v != 1) && (v != 2)) return false;
+    if ((v != 1) && (v != 2))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -1229,9 +1362,11 @@ bool atmVclAdminStatus::value_ok(const Vbx& vb)
 int atmVclAdminStatus::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -1241,15 +1376,14 @@ int atmVclAdminStatus::prepare_set_request(Request* req, int& ind)
  *
  */
 
-atmVclOperStatus::atmVclOperStatus(const Oidx& id)
-    : SimMibLeaf(id, READONLY, new SnmpInt32())
-{ }
+atmVclOperStatus::atmVclOperStatus(const Oidx& id) : SimMibLeaf(id, READONLY, new SnmpInt32()) { }
 
 atmVclOperStatus::~atmVclOperStatus() { }
 
 MibEntryPtr atmVclOperStatus::clone()
 {
     MibEntryPtr other = new atmVclOperStatus(oid);
+
     ((atmVclOperStatus*)other)->replace_value(value->clone());
     ((atmVclOperStatus*)other)->set_reference_to_table(my_table);
     return other;
@@ -1260,15 +1394,14 @@ MibEntryPtr atmVclOperStatus::clone()
  *
  */
 
-atmVclLastChange::atmVclLastChange(const Oidx& id)
-    : SimMibLeaf(id, READONLY, new TimeTicks())
-{ }
+atmVclLastChange::atmVclLastChange(const Oidx& id) : SimMibLeaf(id, READONLY, new TimeTicks()) { }
 
 atmVclLastChange::~atmVclLastChange() { }
 
 MibEntryPtr atmVclLastChange::clone()
 {
     MibEntryPtr other = new atmVclLastChange(oid);
+
     ((atmVclLastChange*)other)->replace_value(value->clone());
     ((atmVclLastChange*)other)->set_reference_to_table(my_table);
     return other;
@@ -1288,6 +1421,7 @@ atmVclReceiveTrafficDescrIndex::~atmVclReceiveTrafficDescrIndex() { }
 MibEntryPtr atmVclReceiveTrafficDescrIndex::clone()
 {
     MibEntryPtr other = new atmVclReceiveTrafficDescrIndex(oid);
+
     ((atmVclReceiveTrafficDescrIndex*)other)->replace_value(value->clone());
     ((atmVclReceiveTrafficDescrIndex*)other)->set_reference_to_table(my_table);
     return other;
@@ -1296,8 +1430,12 @@ MibEntryPtr atmVclReceiveTrafficDescrIndex::clone()
 bool atmVclReceiveTrafficDescrIndex::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if (!(((v >= 0) && (v <= 2147483647)))) return false;
+    if (!(((v >= 0) && (v <= 2147483647))))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -1305,9 +1443,11 @@ bool atmVclReceiveTrafficDescrIndex::value_ok(const Vbx& vb)
 int atmVclReceiveTrafficDescrIndex::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -1317,8 +1457,7 @@ int atmVclReceiveTrafficDescrIndex::prepare_set_request(Request* req, int& ind)
  *
  */
 
-atmVclTransmitTrafficDescrIndex::atmVclTransmitTrafficDescrIndex(
-    const Oidx& id)
+atmVclTransmitTrafficDescrIndex::atmVclTransmitTrafficDescrIndex(const Oidx& id)
     : SimMibLeaf(id, READCREATE, new SnmpInt32(0), VMODE_DEFAULT)
 { }
 
@@ -1327,28 +1466,33 @@ atmVclTransmitTrafficDescrIndex::~atmVclTransmitTrafficDescrIndex() { }
 MibEntryPtr atmVclTransmitTrafficDescrIndex::clone()
 {
     MibEntryPtr other = new atmVclTransmitTrafficDescrIndex(oid);
+
     ((atmVclTransmitTrafficDescrIndex*)other)->replace_value(value->clone());
-    ((atmVclTransmitTrafficDescrIndex*)other)
-        ->set_reference_to_table(my_table);
+    ((atmVclTransmitTrafficDescrIndex*)other)->set_reference_to_table(my_table);
     return other;
 }
 
 bool atmVclTransmitTrafficDescrIndex::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if (!(((v >= 0) && (v <= 2147483647)))) return false;
+    if (!(((v >= 0) && (v <= 2147483647))))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
 
-int atmVclTransmitTrafficDescrIndex::prepare_set_request(
-    Request* req, int& ind)
+int atmVclTransmitTrafficDescrIndex::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -1367,6 +1511,7 @@ atmVccAalType::~atmVccAalType() { }
 MibEntryPtr atmVccAalType::clone()
 {
     MibEntryPtr other = new atmVccAalType(oid);
+
     ((atmVccAalType*)other)->replace_value(value->clone());
     ((atmVccAalType*)other)->set_reference_to_table(my_table);
     return other;
@@ -1375,9 +1520,12 @@ MibEntryPtr atmVccAalType::clone()
 bool atmVccAalType::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
     if ((v != 1) && (v != 2) && (v != 3) && (v != 4) && (v != 5) && (v != 6))
+    {
         return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -1385,9 +1533,11 @@ bool atmVccAalType::value_ok(const Vbx& vb)
 int atmVccAalType::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -1406,6 +1556,7 @@ atmVccAal5CpcsTransmitSduSize::~atmVccAal5CpcsTransmitSduSize() { }
 MibEntryPtr atmVccAal5CpcsTransmitSduSize::clone()
 {
     MibEntryPtr other = new atmVccAal5CpcsTransmitSduSize(oid);
+
     ((atmVccAal5CpcsTransmitSduSize*)other)->replace_value(value->clone());
     ((atmVccAal5CpcsTransmitSduSize*)other)->set_reference_to_table(my_table);
     return other;
@@ -1414,8 +1565,12 @@ MibEntryPtr atmVccAal5CpcsTransmitSduSize::clone()
 bool atmVccAal5CpcsTransmitSduSize::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if (!(((v >= 1) && (v <= 65535)))) return false;
+    if (!(((v >= 1) && (v <= 65535))))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -1423,9 +1578,11 @@ bool atmVccAal5CpcsTransmitSduSize::value_ok(const Vbx& vb)
 int atmVccAal5CpcsTransmitSduSize::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -1444,6 +1601,7 @@ atmVccAal5CpcsReceiveSduSize::~atmVccAal5CpcsReceiveSduSize() { }
 MibEntryPtr atmVccAal5CpcsReceiveSduSize::clone()
 {
     MibEntryPtr other = new atmVccAal5CpcsReceiveSduSize(oid);
+
     ((atmVccAal5CpcsReceiveSduSize*)other)->replace_value(value->clone());
     ((atmVccAal5CpcsReceiveSduSize*)other)->set_reference_to_table(my_table);
     return other;
@@ -1452,8 +1610,12 @@ MibEntryPtr atmVccAal5CpcsReceiveSduSize::clone()
 bool atmVccAal5CpcsReceiveSduSize::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if (!(((v >= 1) && (v <= 65535)))) return false;
+    if (!(((v >= 1) && (v <= 65535))))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -1461,9 +1623,11 @@ bool atmVccAal5CpcsReceiveSduSize::value_ok(const Vbx& vb)
 int atmVccAal5CpcsReceiveSduSize::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -1482,6 +1646,7 @@ atmVccAal5EncapsType::~atmVccAal5EncapsType() { }
 MibEntryPtr atmVccAal5EncapsType::clone()
 {
     MibEntryPtr other = new atmVccAal5EncapsType(oid);
+
     ((atmVccAal5EncapsType*)other)->replace_value(value->clone());
     ((atmVccAal5EncapsType*)other)->set_reference_to_table(my_table);
     return other;
@@ -1490,10 +1655,13 @@ MibEntryPtr atmVccAal5EncapsType::clone()
 bool atmVccAal5EncapsType::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if ((v != 1) && (v != 2) && (v != 3) && (v != 4) && (v != 5) && (v != 6)
-        && (v != 7) && (v != 8) && (v != 9) && (v != 10))
+    if ((v != 1) && (v != 2) && (v != 3) && (v != 4) && (v != 5) && (v != 6) && (v != 7) && (v != 8)
+        && (v != 9) && (v != 10))
+    {
         return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -1501,9 +1669,11 @@ bool atmVccAal5EncapsType::value_ok(const Vbx& vb)
 int atmVccAal5EncapsType::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -1522,6 +1692,7 @@ atmVclCrossConnectIdentifier::~atmVclCrossConnectIdentifier() { }
 MibEntryPtr atmVclCrossConnectIdentifier::clone()
 {
     MibEntryPtr other = new atmVclCrossConnectIdentifier(oid);
+
     ((atmVclCrossConnectIdentifier*)other)->replace_value(value->clone());
     ((atmVclCrossConnectIdentifier*)other)->set_reference_to_table(my_table);
     return other;
@@ -1532,15 +1703,14 @@ MibEntryPtr atmVclCrossConnectIdentifier::clone()
  *
  */
 
-atmVclRowStatus::atmVclRowStatus(const Oidx& id)
-    : snmpRowStatus(id, READCREATE)
-{ }
+atmVclRowStatus::atmVclRowStatus(const Oidx& id) : snmpRowStatus(id, READCREATE) { }
 
 atmVclRowStatus::~atmVclRowStatus() { }
 
 MibEntryPtr atmVclRowStatus::clone()
 {
     MibEntryPtr other = new atmVclRowStatus(oid);
+
     ((atmVclRowStatus*)other)->replace_value(value->clone());
     ((atmVclRowStatus*)other)->set_reference_to_table(my_table);
     return other;
@@ -1560,6 +1730,7 @@ atmVclCastType::~atmVclCastType() { }
 MibEntryPtr atmVclCastType::clone()
 {
     MibEntryPtr other = new atmVclCastType(oid);
+
     ((atmVclCastType*)other)->replace_value(value->clone());
     ((atmVclCastType*)other)->set_reference_to_table(my_table);
     return other;
@@ -1568,8 +1739,12 @@ MibEntryPtr atmVclCastType::clone()
 bool atmVclCastType::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if ((v != 1) && (v != 2) && (v != 3)) return false;
+    if ((v != 1) && (v != 2) && (v != 3))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -1577,9 +1752,11 @@ bool atmVclCastType::value_ok(const Vbx& vb)
 int atmVclCastType::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -1598,6 +1775,7 @@ atmVclConnKind::~atmVclConnKind() { }
 MibEntryPtr atmVclConnKind::clone()
 {
     MibEntryPtr other = new atmVclConnKind(oid);
+
     ((atmVclConnKind*)other)->replace_value(value->clone());
     ((atmVclConnKind*)other)->set_reference_to_table(my_table);
     return other;
@@ -1606,8 +1784,12 @@ MibEntryPtr atmVclConnKind::clone()
 bool atmVclConnKind::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if ((v != 1) && (v != 2) && (v != 3) && (v != 4) && (v != 5)) return false;
+    if ((v != 1) && (v != 2) && (v != 3) && (v != 4) && (v != 5))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -1615,9 +1797,11 @@ bool atmVclConnKind::value_ok(const Vbx& vb)
 int atmVclConnKind::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -1627,7 +1811,7 @@ int atmVclConnKind::prepare_set_request(Request* req, int& ind)
  *
  */
 
-atmVpCrossConnectIndexNext* atmVpCrossConnectIndexNext::instance = 0;
+atmVpCrossConnectIndexNext* atmVpCrossConnectIndexNext::instance = nullptr;
 
 atmVpCrossConnectIndexNext::atmVpCrossConnectIndexNext()
     : SimMibLeaf(oidAtmVpCrossConnectIndexNext, READONLY, new SnmpInt32())
@@ -1653,6 +1837,7 @@ atmVpCrossConnectAdminStatus::~atmVpCrossConnectAdminStatus() { }
 MibEntryPtr atmVpCrossConnectAdminStatus::clone()
 {
     MibEntryPtr other = new atmVpCrossConnectAdminStatus(oid);
+
     ((atmVpCrossConnectAdminStatus*)other)->replace_value(value->clone());
     ((atmVpCrossConnectAdminStatus*)other)->set_reference_to_table(my_table);
     return other;
@@ -1661,8 +1846,12 @@ MibEntryPtr atmVpCrossConnectAdminStatus::clone()
 bool atmVpCrossConnectAdminStatus::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if ((v != 1) && (v != 2)) return false;
+    if ((v != 1) && (v != 2))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -1670,9 +1859,11 @@ bool atmVpCrossConnectAdminStatus::value_ok(const Vbx& vb)
 int atmVpCrossConnectAdminStatus::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -1691,6 +1882,7 @@ atmVpCrossConnectL2HOperStatus::~atmVpCrossConnectL2HOperStatus() { }
 MibEntryPtr atmVpCrossConnectL2HOperStatus::clone()
 {
     MibEntryPtr other = new atmVpCrossConnectL2HOperStatus(oid);
+
     ((atmVpCrossConnectL2HOperStatus*)other)->replace_value(value->clone());
     ((atmVpCrossConnectL2HOperStatus*)other)->set_reference_to_table(my_table);
     return other;
@@ -1710,6 +1902,7 @@ atmVpCrossConnectH2LOperStatus::~atmVpCrossConnectH2LOperStatus() { }
 MibEntryPtr atmVpCrossConnectH2LOperStatus::clone()
 {
     MibEntryPtr other = new atmVpCrossConnectH2LOperStatus(oid);
+
     ((atmVpCrossConnectH2LOperStatus*)other)->replace_value(value->clone());
     ((atmVpCrossConnectH2LOperStatus*)other)->set_reference_to_table(my_table);
     return other;
@@ -1729,6 +1922,7 @@ atmVpCrossConnectL2HLastChange::~atmVpCrossConnectL2HLastChange() { }
 MibEntryPtr atmVpCrossConnectL2HLastChange::clone()
 {
     MibEntryPtr other = new atmVpCrossConnectL2HLastChange(oid);
+
     ((atmVpCrossConnectL2HLastChange*)other)->replace_value(value->clone());
     ((atmVpCrossConnectL2HLastChange*)other)->set_reference_to_table(my_table);
     return other;
@@ -1748,6 +1942,7 @@ atmVpCrossConnectH2LLastChange::~atmVpCrossConnectH2LLastChange() { }
 MibEntryPtr atmVpCrossConnectH2LLastChange::clone()
 {
     MibEntryPtr other = new atmVpCrossConnectH2LLastChange(oid);
+
     ((atmVpCrossConnectH2LLastChange*)other)->replace_value(value->clone());
     ((atmVpCrossConnectH2LLastChange*)other)->set_reference_to_table(my_table);
     return other;
@@ -1758,8 +1953,7 @@ MibEntryPtr atmVpCrossConnectH2LLastChange::clone()
  *
  */
 
-atmVpCrossConnectRowStatus::atmVpCrossConnectRowStatus(const Oidx& id)
-    : snmpRowStatus(id, READCREATE)
+atmVpCrossConnectRowStatus::atmVpCrossConnectRowStatus(const Oidx& id) : snmpRowStatus(id, READCREATE)
 { }
 
 atmVpCrossConnectRowStatus::~atmVpCrossConnectRowStatus() { }
@@ -1767,6 +1961,7 @@ atmVpCrossConnectRowStatus::~atmVpCrossConnectRowStatus() { }
 MibEntryPtr atmVpCrossConnectRowStatus::clone()
 {
     MibEntryPtr other = new atmVpCrossConnectRowStatus(oid);
+
     ((atmVpCrossConnectRowStatus*)other)->replace_value(value->clone());
     ((atmVpCrossConnectRowStatus*)other)->set_reference_to_table(my_table);
     return other;
@@ -1777,7 +1972,7 @@ MibEntryPtr atmVpCrossConnectRowStatus::clone()
  *
  */
 
-atmVcCrossConnectIndexNext* atmVcCrossConnectIndexNext::instance = 0;
+atmVcCrossConnectIndexNext* atmVcCrossConnectIndexNext::instance = nullptr;
 
 atmVcCrossConnectIndexNext::atmVcCrossConnectIndexNext()
     : SimMibLeaf(oidAtmVcCrossConnectIndexNext, READONLY, new SnmpInt32())
@@ -1803,6 +1998,7 @@ atmVcCrossConnectAdminStatus::~atmVcCrossConnectAdminStatus() { }
 MibEntryPtr atmVcCrossConnectAdminStatus::clone()
 {
     MibEntryPtr other = new atmVcCrossConnectAdminStatus(oid);
+
     ((atmVcCrossConnectAdminStatus*)other)->replace_value(value->clone());
     ((atmVcCrossConnectAdminStatus*)other)->set_reference_to_table(my_table);
     return other;
@@ -1811,8 +2007,12 @@ MibEntryPtr atmVcCrossConnectAdminStatus::clone()
 bool atmVcCrossConnectAdminStatus::value_ok(const Vbx& vb)
 {
     int32_t v = 0;
+
     vb.get_value(v);
-    if ((v != 1) && (v != 2)) return false;
+    if ((v != 1) && (v != 2))
+    {
+        return false;
+    }
     // place additional code to check validity of new values here
     return true;
 }
@@ -1820,9 +2020,11 @@ bool atmVcCrossConnectAdminStatus::value_ok(const Vbx& vb)
 int atmVcCrossConnectAdminStatus::prepare_set_request(Request* req, int& ind)
 {
     int status = 0;
-    if ((status = SimMibLeaf::prepare_set_request(req, ind))
-        != SNMP_ERROR_SUCCESS)
+
+    if ((status = SimMibLeaf::prepare_set_request(req, ind)) != SNMP_ERROR_SUCCESS)
+    {
         return status;
+    }
     // place additional code to check validity of new values here
     return SNMP_ERROR_SUCCESS;
 }
@@ -1841,6 +2043,7 @@ atmVcCrossConnectL2HOperStatus::~atmVcCrossConnectL2HOperStatus() { }
 MibEntryPtr atmVcCrossConnectL2HOperStatus::clone()
 {
     MibEntryPtr other = new atmVcCrossConnectL2HOperStatus(oid);
+
     ((atmVcCrossConnectL2HOperStatus*)other)->replace_value(value->clone());
     ((atmVcCrossConnectL2HOperStatus*)other)->set_reference_to_table(my_table);
     return other;
@@ -1860,6 +2063,7 @@ atmVcCrossConnectH2LOperStatus::~atmVcCrossConnectH2LOperStatus() { }
 MibEntryPtr atmVcCrossConnectH2LOperStatus::clone()
 {
     MibEntryPtr other = new atmVcCrossConnectH2LOperStatus(oid);
+
     ((atmVcCrossConnectH2LOperStatus*)other)->replace_value(value->clone());
     ((atmVcCrossConnectH2LOperStatus*)other)->set_reference_to_table(my_table);
     return other;
@@ -1879,6 +2083,7 @@ atmVcCrossConnectL2HLastChange::~atmVcCrossConnectL2HLastChange() { }
 MibEntryPtr atmVcCrossConnectL2HLastChange::clone()
 {
     MibEntryPtr other = new atmVcCrossConnectL2HLastChange(oid);
+
     ((atmVcCrossConnectL2HLastChange*)other)->replace_value(value->clone());
     ((atmVcCrossConnectL2HLastChange*)other)->set_reference_to_table(my_table);
     return other;
@@ -1898,6 +2103,7 @@ atmVcCrossConnectH2LLastChange::~atmVcCrossConnectH2LLastChange() { }
 MibEntryPtr atmVcCrossConnectH2LLastChange::clone()
 {
     MibEntryPtr other = new atmVcCrossConnectH2LLastChange(oid);
+
     ((atmVcCrossConnectH2LLastChange*)other)->replace_value(value->clone());
     ((atmVcCrossConnectH2LLastChange*)other)->set_reference_to_table(my_table);
     return other;
@@ -1908,8 +2114,7 @@ MibEntryPtr atmVcCrossConnectH2LLastChange::clone()
  *
  */
 
-atmVcCrossConnectRowStatus::atmVcCrossConnectRowStatus(const Oidx& id)
-    : snmpRowStatus(id, READCREATE)
+atmVcCrossConnectRowStatus::atmVcCrossConnectRowStatus(const Oidx& id) : snmpRowStatus(id, READCREATE)
 { }
 
 atmVcCrossConnectRowStatus::~atmVcCrossConnectRowStatus() { }
@@ -1917,6 +2122,7 @@ atmVcCrossConnectRowStatus::~atmVcCrossConnectRowStatus() { }
 MibEntryPtr atmVcCrossConnectRowStatus::clone()
 {
     MibEntryPtr other = new atmVcCrossConnectRowStatus(oid);
+
     ((atmVcCrossConnectRowStatus*)other)->replace_value(value->clone());
     ((atmVcCrossConnectRowStatus*)other)->set_reference_to_table(my_table);
     return other;
@@ -1927,15 +2133,14 @@ MibEntryPtr atmVcCrossConnectRowStatus::clone()
  *
  */
 
-aal5VccCrcErrors::aal5VccCrcErrors(const Oidx& id)
-    : SimMibLeaf(id, READONLY, new Counter32())
-{ }
+aal5VccCrcErrors::aal5VccCrcErrors(const Oidx& id) : SimMibLeaf(id, READONLY, new Counter32()) { }
 
 aal5VccCrcErrors::~aal5VccCrcErrors() { }
 
 MibEntryPtr aal5VccCrcErrors::clone()
 {
     MibEntryPtr other = new aal5VccCrcErrors(oid);
+
     ((aal5VccCrcErrors*)other)->replace_value(value->clone());
     ((aal5VccCrcErrors*)other)->set_reference_to_table(my_table);
     return other;
@@ -1946,15 +2151,14 @@ MibEntryPtr aal5VccCrcErrors::clone()
  *
  */
 
-aal5VccSarTimeOuts::aal5VccSarTimeOuts(const Oidx& id)
-    : SimMibLeaf(id, READONLY, new Counter32())
-{ }
+aal5VccSarTimeOuts::aal5VccSarTimeOuts(const Oidx& id) : SimMibLeaf(id, READONLY, new Counter32()) { }
 
 aal5VccSarTimeOuts::~aal5VccSarTimeOuts() { }
 
 MibEntryPtr aal5VccSarTimeOuts::clone()
 {
     MibEntryPtr other = new aal5VccSarTimeOuts(oid);
+
     ((aal5VccSarTimeOuts*)other)->replace_value(value->clone());
     ((aal5VccSarTimeOuts*)other)->set_reference_to_table(my_table);
     return other;
@@ -1965,8 +2169,7 @@ MibEntryPtr aal5VccSarTimeOuts::clone()
  *
  */
 
-aal5VccOverSizedSDUs::aal5VccOverSizedSDUs(const Oidx& id)
-    : SimMibLeaf(id, READONLY, new Counter32())
+aal5VccOverSizedSDUs::aal5VccOverSizedSDUs(const Oidx& id) : SimMibLeaf(id, READONLY, new Counter32())
 { }
 
 aal5VccOverSizedSDUs::~aal5VccOverSizedSDUs() { }
@@ -1974,6 +2177,7 @@ aal5VccOverSizedSDUs::~aal5VccOverSizedSDUs() { }
 MibEntryPtr aal5VccOverSizedSDUs::clone()
 {
     MibEntryPtr other = new aal5VccOverSizedSDUs(oid);
+
     ((aal5VccOverSizedSDUs*)other)->replace_value(value->clone());
     ((aal5VccOverSizedSDUs*)other)->set_reference_to_table(my_table);
     return other;
@@ -1984,7 +2188,7 @@ MibEntryPtr aal5VccOverSizedSDUs::clone()
  *
  */
 
-atmTrafficDescrParamIndexNext* atmTrafficDescrParamIndexNext::instance = 0;
+atmTrafficDescrParamIndexNext* atmTrafficDescrParamIndexNext::instance = nullptr;
 
 atmTrafficDescrParamIndexNext::atmTrafficDescrParamIndexNext()
     : SimMibLeaf(oidAtmTrafficDescrParamIndexNext, READONLY, new SnmpInt32())
@@ -2001,10 +2205,9 @@ atmTrafficDescrParamIndexNext::~atmTrafficDescrParamIndexNext() { }
  *
  */
 
-atmInterfaceConfEntry* atmInterfaceConfEntry::instance = 0;
+atmInterfaceConfEntry* atmInterfaceConfEntry::instance = nullptr;
 
-const index_info indAtmInterfaceConfEntry[1] = { { sNMP_SYNTAX_INT, false, 1,
-    1 } };
+const index_info indAtmInterfaceConfEntry[1] = { { sNMP_SYNTAX_INT, false, 1, 1 } };
 
 atmInterfaceConfEntry::atmInterfaceConfEntry()
     : MibTable(oidAtmInterfaceConfEntry, indAtmInterfaceConfEntry, 1)
@@ -2021,30 +2224,27 @@ atmInterfaceConfEntry::atmInterfaceConfEntry()
     add_col(new atmInterfaceMaxActiveVciBits(colAtmInterfaceMaxActiveVciBits));
     add_col(new atmInterfaceAddressType(colAtmInterfaceAddressType));
     add_col(new atmInterfaceAdminAddress(colAtmInterfaceAdminAddress));
-    add_col(new atmInterfaceMyNeighborIpAddress(
-        colAtmInterfaceMyNeighborIpAddress));
+    add_col(new atmInterfaceMyNeighborIpAddress(colAtmInterfaceMyNeighborIpAddress));
     add_col(new atmInterfaceMyNeighborIfName(colAtmInterfaceMyNeighborIfName));
-    add_col(
-        new atmInterfaceCurrentMaxVpiBits(colAtmInterfaceCurrentMaxVpiBits));
-    add_col(
-        new atmInterfaceCurrentMaxVciBits(colAtmInterfaceCurrentMaxVciBits));
+    add_col(new atmInterfaceCurrentMaxVpiBits(colAtmInterfaceCurrentMaxVpiBits));
+    add_col(new atmInterfaceCurrentMaxVciBits(colAtmInterfaceCurrentMaxVciBits));
     add_col(new atmInterfaceIlmiVpi(colAtmInterfaceIlmiVpi));
     add_col(new atmInterfaceIlmiVci(colAtmInterfaceIlmiVci));
     add_col(new atmInterfaceSubscrAddress(colAtmInterfaceSubscrAddress));
+
     /* for testing
-    char buf[16];
-    for (int i=0; i<5000; i++) {
-    svprintf(buf, sizeof(buf), "%d", i);
-            add_row(buf);
-    }
-    */
+     * char buf[16];
+     * for (int i=0; i<5000; i++) {
+     * svprintf(buf, sizeof(buf), "%d", i);
+     *      add_row(buf);
+     * }
+     */
 }
 
 atmInterfaceConfEntry::~atmInterfaceConfEntry() { }
 
-void atmInterfaceConfEntry::set_row(MibTableRow* r, int p0, int p1, int p2,
-    int p3, int p4, int p5, int p6, int p7, int p8, char* p9, char* p10,
-    char* p11, int p12, int p13, char* p14)
+void atmInterfaceConfEntry::set_row(MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5,
+    int p6, int p7, int p8, char* p9, char* p10, char* p11, int p12, int p13, char* p14)
 {
     r->get_nth(0)->replace_value(new SnmpInt32(p0));
     r->get_nth(1)->replace_value(new SnmpInt32(p1));
@@ -2068,10 +2268,9 @@ void atmInterfaceConfEntry::set_row(MibTableRow* r, int p0, int p1, int p2,
  *
  */
 
-atmInterfaceDs3PlcpEntry* atmInterfaceDs3PlcpEntry::instance = 0;
+atmInterfaceDs3PlcpEntry* atmInterfaceDs3PlcpEntry::instance = nullptr;
 
-const index_info indAtmInterfaceDs3PlcpEntry[1] = { { sNMP_SYNTAX_INT, false,
-    1, 1 } };
+const index_info indAtmInterfaceDs3PlcpEntry[1] = { { sNMP_SYNTAX_INT, false, 1, 1 } };
 
 atmInterfaceDs3PlcpEntry::atmInterfaceDs3PlcpEntry()
     : MibTable(oidAtmInterfaceDs3PlcpEntry, indAtmInterfaceDs3PlcpEntry, 1)
@@ -2081,8 +2280,7 @@ atmInterfaceDs3PlcpEntry::atmInterfaceDs3PlcpEntry()
     instance = this;
 
     add_col(new atmInterfaceDs3PlcpSEFSs(colAtmInterfaceDs3PlcpSEFSs));
-    add_col(
-        new atmInterfaceDs3PlcpAlarmState(colAtmInterfaceDs3PlcpAlarmState));
+    add_col(new atmInterfaceDs3PlcpAlarmState(colAtmInterfaceDs3PlcpAlarmState));
     add_col(new atmInterfaceDs3PlcpUASs(colAtmInterfaceDs3PlcpUASs));
 }
 
@@ -2100,10 +2298,9 @@ void atmInterfaceDs3PlcpEntry::set_row(MibTableRow* r, int p0, int p1, int p2)
  *
  */
 
-atmInterfaceTCEntry* atmInterfaceTCEntry::instance = 0;
+atmInterfaceTCEntry* atmInterfaceTCEntry::instance = nullptr;
 
-const index_info indAtmInterfaceTCEntry[1] = { { sNMP_SYNTAX_INT, false, 1,
-    1 } };
+const index_info indAtmInterfaceTCEntry[1] = { { sNMP_SYNTAX_INT, false, 1, 1 } };
 
 atmInterfaceTCEntry::atmInterfaceTCEntry()
     : MibTable(oidAtmInterfaceTCEntry, indAtmInterfaceTCEntry, 1)
@@ -2129,10 +2326,9 @@ void atmInterfaceTCEntry::set_row(MibTableRow* r, int p0, int p1)
  *
  */
 
-atmTrafficDescrParamEntry* atmTrafficDescrParamEntry::instance = 0;
+atmTrafficDescrParamEntry* atmTrafficDescrParamEntry::instance = nullptr;
 
-const index_info indAtmTrafficDescrParamEntry[1] = { { sNMP_SYNTAX_INT, false,
-    1, 1 } };
+const index_info indAtmTrafficDescrParamEntry[1] = { { sNMP_SYNTAX_INT, false, 1, 1 } };
 
 atmTrafficDescrParamEntry::atmTrafficDescrParamEntry()
     : MibTable(oidAtmTrafficDescrParamEntry, indAtmTrafficDescrParamEntry, 1)
@@ -2155,8 +2351,8 @@ atmTrafficDescrParamEntry::atmTrafficDescrParamEntry()
 
 atmTrafficDescrParamEntry::~atmTrafficDescrParamEntry() { }
 
-void atmTrafficDescrParamEntry::set_row(MibTableRow* r, char* p0, int p1,
-    int p2, int p3, int p4, int p5, int p6, int p7, int p8, int p9)
+void atmTrafficDescrParamEntry::set_row(
+    MibTableRow* r, char* p0, int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8, int p9)
 {
     r->get_nth(0)->replace_value(new Oid(p0));
     r->get_nth(1)->replace_value(new SnmpInt32(p1));
@@ -2175,7 +2371,7 @@ void atmTrafficDescrParamEntry::set_row(MibTableRow* r, char* p0, int p1,
  *
  */
 
-atmVplEntry* atmVplEntry::instance = 0;
+atmVplEntry* atmVplEntry::instance = nullptr;
 
 const index_info indAtmVplEntry[2] = { { sNMP_SYNTAX_INT, false, 1, 1 },
     { sNMP_SYNTAX_INT, false, 1, 1 } };
@@ -2189,10 +2385,8 @@ atmVplEntry::atmVplEntry() : MibTable(oidAtmVplEntry, indAtmVplEntry, 2)
     add_col(new atmVplAdminStatus(colAtmVplAdminStatus));
     add_col(new atmVplOperStatus(colAtmVplOperStatus));
     add_col(new atmVplLastChange(colAtmVplLastChange));
-    add_col(
-        new atmVplReceiveTrafficDescrIndex(colAtmVplReceiveTrafficDescrIndex));
-    add_col(new atmVplTransmitTrafficDescrIndex(
-        colAtmVplTransmitTrafficDescrIndex));
+    add_col(new atmVplReceiveTrafficDescrIndex(colAtmVplReceiveTrafficDescrIndex));
+    add_col(new atmVplTransmitTrafficDescrIndex(colAtmVplTransmitTrafficDescrIndex));
     add_col(new atmVplCrossConnectIdentifier(colAtmVplCrossConnectIdentifier));
     add_col(new atmVplRowStatus(colAtmVplRowStatus));
     add_col(new atmVplCastType(colAtmVplCastType));
@@ -2201,8 +2395,8 @@ atmVplEntry::atmVplEntry() : MibTable(oidAtmVplEntry, indAtmVplEntry, 2)
 
 atmVplEntry::~atmVplEntry() { }
 
-void atmVplEntry::set_row(MibTableRow* r, int p0, int p1, int p2, int p3,
-    int p4, int p5, int p6, int p7, int p8)
+void atmVplEntry::set_row(
+    MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8)
 {
     r->get_nth(0)->replace_value(new SnmpInt32(p0));
     r->get_nth(1)->replace_value(new SnmpInt32(p1));
@@ -2220,7 +2414,7 @@ void atmVplEntry::set_row(MibTableRow* r, int p0, int p1, int p2, int p3,
  *
  */
 
-atmVclEntry* atmVclEntry::instance = 0;
+atmVclEntry* atmVclEntry::instance = nullptr;
 
 const index_info indAtmVclEntry[3] = { { sNMP_SYNTAX_INT, false, 1, 1 },
     { sNMP_SYNTAX_INT, false, 1, 1 }, { sNMP_SYNTAX_INT, false, 1, 1 } };
@@ -2234,13 +2428,10 @@ atmVclEntry::atmVclEntry() : MibTable(oidAtmVclEntry, indAtmVclEntry, 3)
     add_col(new atmVclAdminStatus(colAtmVclAdminStatus));
     add_col(new atmVclOperStatus(colAtmVclOperStatus));
     add_col(new atmVclLastChange(colAtmVclLastChange));
-    add_col(
-        new atmVclReceiveTrafficDescrIndex(colAtmVclReceiveTrafficDescrIndex));
-    add_col(new atmVclTransmitTrafficDescrIndex(
-        colAtmVclTransmitTrafficDescrIndex));
+    add_col(new atmVclReceiveTrafficDescrIndex(colAtmVclReceiveTrafficDescrIndex));
+    add_col(new atmVclTransmitTrafficDescrIndex(colAtmVclTransmitTrafficDescrIndex));
     add_col(new atmVccAalType(colAtmVccAalType));
-    add_col(
-        new atmVccAal5CpcsTransmitSduSize(colAtmVccAal5CpcsTransmitSduSize));
+    add_col(new atmVccAal5CpcsTransmitSduSize(colAtmVccAal5CpcsTransmitSduSize));
     add_col(new atmVccAal5CpcsReceiveSduSize(colAtmVccAal5CpcsReceiveSduSize));
     add_col(new atmVccAal5EncapsType(colAtmVccAal5EncapsType));
     add_col(new atmVclCrossConnectIdentifier(colAtmVclCrossConnectIdentifier));
@@ -2253,8 +2444,8 @@ atmVclEntry::atmVclEntry() : MibTable(oidAtmVclEntry, indAtmVclEntry, 3)
 
 atmVclEntry::~atmVclEntry() { }
 
-void atmVclEntry::set_row(MibTableRow* r, int p0, int p1, int p2, int p3,
-    int p4, int p5, int p6, int p7, int p8, int p9, int p10, int p11, int p12)
+void atmVclEntry::set_row(MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5, int p6,
+    int p7, int p8, int p9, int p10, int p11, int p12)
 {
     r->get_nth(0)->replace_value(new SnmpInt32(p0));
     r->get_nth(1)->replace_value(new SnmpInt32(p1));
@@ -2276,10 +2467,9 @@ void atmVclEntry::set_row(MibTableRow* r, int p0, int p1, int p2, int p3,
  *
  */
 
-atmVpCrossConnectEntry* atmVpCrossConnectEntry::instance = 0;
+atmVpCrossConnectEntry* atmVpCrossConnectEntry::instance = nullptr;
 
-const index_info indAtmVpCrossConnectEntry[5] = { { sNMP_SYNTAX_INT, false, 1,
-                                                      1 },
+const index_info indAtmVpCrossConnectEntry[5] = { { sNMP_SYNTAX_INT, false, 1, 1 },
     { sNMP_SYNTAX_INT, false, 1, 1 }, { sNMP_SYNTAX_INT, false, 1, 1 },
     { sNMP_SYNTAX_INT, false, 1, 1 }, { sNMP_SYNTAX_INT, false, 1, 1 } };
 
@@ -2291,21 +2481,16 @@ atmVpCrossConnectEntry::atmVpCrossConnectEntry()
     instance = this;
 
     add_col(new atmVpCrossConnectAdminStatus(colAtmVpCrossConnectAdminStatus));
-    add_col(
-        new atmVpCrossConnectL2HOperStatus(colAtmVpCrossConnectL2HOperStatus));
-    add_col(
-        new atmVpCrossConnectH2LOperStatus(colAtmVpCrossConnectH2LOperStatus));
-    add_col(
-        new atmVpCrossConnectL2HLastChange(colAtmVpCrossConnectL2HLastChange));
-    add_col(
-        new atmVpCrossConnectH2LLastChange(colAtmVpCrossConnectH2LLastChange));
+    add_col(new atmVpCrossConnectL2HOperStatus(colAtmVpCrossConnectL2HOperStatus));
+    add_col(new atmVpCrossConnectH2LOperStatus(colAtmVpCrossConnectH2LOperStatus));
+    add_col(new atmVpCrossConnectL2HLastChange(colAtmVpCrossConnectL2HLastChange));
+    add_col(new atmVpCrossConnectH2LLastChange(colAtmVpCrossConnectH2LLastChange));
     add_col(new atmVpCrossConnectRowStatus(colAtmVpCrossConnectRowStatus));
 }
 
 atmVpCrossConnectEntry::~atmVpCrossConnectEntry() { }
 
-void atmVpCrossConnectEntry::set_row(
-    MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5)
+void atmVpCrossConnectEntry::set_row(MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5)
 {
     r->get_nth(0)->replace_value(new SnmpInt32(p0));
     r->get_nth(1)->replace_value(new SnmpInt32(p1));
@@ -2320,10 +2505,9 @@ void atmVpCrossConnectEntry::set_row(
  *
  */
 
-atmVcCrossConnectEntry* atmVcCrossConnectEntry::instance = 0;
+atmVcCrossConnectEntry* atmVcCrossConnectEntry::instance = nullptr;
 
-const index_info indAtmVcCrossConnectEntry[7] = { { sNMP_SYNTAX_INT, false, 1,
-                                                      1 },
+const index_info indAtmVcCrossConnectEntry[7] = { { sNMP_SYNTAX_INT, false, 1, 1 },
     { sNMP_SYNTAX_INT, false, 1, 1 }, { sNMP_SYNTAX_INT, false, 1, 1 },
     { sNMP_SYNTAX_INT, false, 1, 1 }, { sNMP_SYNTAX_INT, false, 1, 1 },
     { sNMP_SYNTAX_INT, false, 1, 1 }, { sNMP_SYNTAX_INT, false, 1, 1 } };
@@ -2336,21 +2520,16 @@ atmVcCrossConnectEntry::atmVcCrossConnectEntry()
     instance = this;
 
     add_col(new atmVcCrossConnectAdminStatus(colAtmVcCrossConnectAdminStatus));
-    add_col(
-        new atmVcCrossConnectL2HOperStatus(colAtmVcCrossConnectL2HOperStatus));
-    add_col(
-        new atmVcCrossConnectH2LOperStatus(colAtmVcCrossConnectH2LOperStatus));
-    add_col(
-        new atmVcCrossConnectL2HLastChange(colAtmVcCrossConnectL2HLastChange));
-    add_col(
-        new atmVcCrossConnectH2LLastChange(colAtmVcCrossConnectH2LLastChange));
+    add_col(new atmVcCrossConnectL2HOperStatus(colAtmVcCrossConnectL2HOperStatus));
+    add_col(new atmVcCrossConnectH2LOperStatus(colAtmVcCrossConnectH2LOperStatus));
+    add_col(new atmVcCrossConnectL2HLastChange(colAtmVcCrossConnectL2HLastChange));
+    add_col(new atmVcCrossConnectH2LLastChange(colAtmVcCrossConnectH2LLastChange));
     add_col(new atmVcCrossConnectRowStatus(colAtmVcCrossConnectRowStatus));
 }
 
 atmVcCrossConnectEntry::~atmVcCrossConnectEntry() { }
 
-void atmVcCrossConnectEntry::set_row(
-    MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5)
+void atmVcCrossConnectEntry::set_row(MibTableRow* r, int p0, int p1, int p2, int p3, int p4, int p5)
 {
     r->get_nth(0)->replace_value(new SnmpInt32(p0));
     r->get_nth(1)->replace_value(new SnmpInt32(p1));
@@ -2365,7 +2544,7 @@ void atmVcCrossConnectEntry::set_row(
  *
  */
 
-aal5VccEntry* aal5VccEntry::instance = 0;
+aal5VccEntry* aal5VccEntry::instance = nullptr;
 
 const index_info indAal5VccEntry[3] = { { sNMP_SYNTAX_INT, false, 1, 1 },
     { sNMP_SYNTAX_INT, false, 1, 1 }, { sNMP_SYNTAX_INT, false, 1, 1 } };

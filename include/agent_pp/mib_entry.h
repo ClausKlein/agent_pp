@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - mib_entry.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - mib_entry.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #ifndef mib_entry_h_
 #define mib_entry_h_
@@ -99,7 +99,7 @@ public:
     /**
      * Destructor
      */
-    virtual ~MibEntry();
+    ~MibEntry() override;
 
     /**
      * Return the type of the receiver MIB node.
@@ -131,10 +131,10 @@ public:
      *    otherwise (if no successor exists or is out of scope)
      *    a zero length oid is returned
      */
-    virtual Oidx find_succ(const Oidx&, Request* req = 0)
+    virtual Oidx find_succ(const Oidx& /*unused*/, Request* req = nullptr)
     {
         (void)req;
-        return Oidx();
+        return {};
     }
 
     // interfaces dispatch table <-> management instrumentation
@@ -145,7 +145,7 @@ public:
      * @param req - A pointer to the whole SNMP GET request.
      * @param ind - The index of the subrequest to be processed.
      */
-    virtual void get_request(Request*, int) { }
+    virtual void get_request(Request* /*unused*/, int /*unused*/) { }
 
     /**
      * Let the receiver process a SNMP GETNEXT subrequest. The
@@ -158,7 +158,7 @@ public:
      * @param req - A pointer to the whole SNMP GETNEXT request.
      * @param ind - The index of the subrequest to be processed.
      */
-    virtual void get_next_request(Request*, int) { }
+    virtual void get_next_request(Request* /*unused*/, int /*unused*/) { }
 
     /**
      * Let the receiver commit a SNMP SET subrequest
@@ -168,7 +168,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and
      *         SNMP_ERROR_COMITFAIL on failure.
      */
-    virtual int commit_set_request(Request*, int)
+    virtual int commit_set_request(Request* /*unused*/, int /*unused*/)
     {
         return SNMP_ERROR_COMMITFAIL;
     }
@@ -182,7 +182,7 @@ public:
      *         SNMP_ERROR_WRONG_TYPE, or
      *         SNMP_ERROR_NOT_WRITEABLE on failure.
      */
-    virtual int prepare_set_request(Request*, int&)
+    virtual int prepare_set_request(Request* /*unused*/, int& /*unused*/)
     {
         return SNMP_ERROR_NO_SUCH_NAME;
     }
@@ -193,7 +193,7 @@ public:
      * @param req - A pointer to the whole SNMP SET request.
      * @param ind - The index of the subrequest to be processed.
      */
-    virtual int undo_set_request(Request*, int&) { return SNMP_ERROR_SUCCESS; }
+    virtual int undo_set_request(Request* /*unused*/, int& /*unused*/) { return SNMP_ERROR_SUCCESS; }
 
     /**
      * Set the receiver's value and backup its old value for a later undo.
@@ -202,7 +202,7 @@ public:
      * @return SNMP_ERROR_SUCCESS if the new value has been set,
      *         SNMP_ERROR_WRONG_TYPE or SNMP_ERROR_BAD_VALUE otherwise.
      */
-    virtual void cleanup_set_request(Request*, int&) { }
+    virtual void cleanup_set_request(Request* /*unused*/, int& /*unused*/) { }
 
     // load/save mib objects from/to hard disk
 
@@ -272,12 +272,10 @@ public:
 
     /**
      * Wrapper function for register_for_notifications.
-     * @depricated
+     * @deprecated
      */
-    virtual void add_change_notification(MibEntry* e)
-    {
-        register_for_notifications(e);
-    }
+    // XXX virtual void add_change_notification(MibEntry* e) { register_for_notifications(e); }
+
     /**
      * Receive a notification about changes to a managed object. This
      * method will be called for all registered objects of an object
@@ -287,7 +285,7 @@ public:
      * @param change - The type of the change (REMOVE, CREATE, CHANGE,
      *                 or UPDATE)
      */
-    virtual void change_notification(const Oidx&, mib_change) { }
+    virtual void change_notification(const Oidx& /*unused*/, mib_change /*unused*/) { }
 
     /**
      * Return a pointer to the key (object identifier) of the receiver.
@@ -343,6 +341,7 @@ public:
     int operator<=(const Oidx&) const;
     int operator>=(const Oidx&) const;
     int operator==(const Oidx&) const;
+
     //@}
 
 protected:

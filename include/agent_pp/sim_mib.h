@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - sim_mib.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - sim_mib.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #ifndef sim_mib_h_
 #define sim_mib_h_
@@ -51,7 +51,7 @@ public:
     /**
      * Desctructor
      */
-    virtual ~SimMib();
+    ~SimMib() override;
 };
 
 /**
@@ -122,7 +122,7 @@ public:
     /**
      * Destructor.
      */
-    virtual ~SimMibLeaf();
+    ~SimMibLeaf() override;
 
     /**
      * Clone the receiver object.
@@ -146,6 +146,7 @@ public:
      * as a columnar object get read-create access rights.
      */
     static void set_config_mode();
+
     /**
      * Unset config mode. All SimMibLeaf objects get their original
      * access rights (i.e., those rights they got when they have been
@@ -167,20 +168,20 @@ protected:
 
 class AGENTPP_DECL SimMibTable : public MibTable {
 public:
-    SimMibTable(const Oidx& o, const index_info* i, unsigned int n)
-        : MibTable(o, i, n)
-    { }
-    virtual ~SimMibTable() { }
+    SimMibTable(const Oidx& o, const index_info* i, unsigned int n) : MibTable(o, i, n) { }
 
-    int check_creation(Request*, int&) override;
+    ~SimMibTable() override { }
+
+    int check_creation(Request* /*unused*/, int& /*unused*/) override;
 };
 
 class AGENTPP_DECL SimRowStatus : public snmpRowStatus {
 public:
     SimRowStatus(const Oidx& o, mib_access a) : snmpRowStatus(o, a) { }
-    virtual ~SimRowStatus() { }
 
-    bool transition_ok(const Vbx&) override;
+    ~SimRowStatus() override { }
+
+    bool transition_ok(const Vbx& /*unused*/) override;
 
     /**
      * Return the maximum access rights for the managed object
@@ -206,11 +207,10 @@ public:
  **********************************************************************/
 
 class AGENTPP_DECL simSysUpTime : public SimMibLeaf {
-
 public:
     simSysUpTime();
 
-    void get_request(Request*, int) override;
+    void get_request(Request* /*unused*/, int /*unused*/) override;
 
     static time_t get();
     static time_t get_currentTime();
@@ -226,7 +226,6 @@ private:
  **********************************************************************/
 
 class AGENTPP_DECL simSysGroup : public MibGroup {
-
 public:
     simSysGroup();
 };

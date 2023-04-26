@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - mib_complex_entry.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - mib_complex_entry.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #ifndef _mib_complex_entry_h_
 #define _mib_complex_entry_h_
@@ -68,7 +68,7 @@ public:
     /**
      * Destructor
      */
-    virtual ~MibComplexEntry();
+    ~MibComplexEntry() override;
 
     /**
      * Return the type of the receiver MIB node.
@@ -101,7 +101,7 @@ public:
      *    otherwise (if no successor exists or is out of scope)
      *    a zero length oid is returned
      */
-    Oidx find_succ(const Oidx&, Request* req = 0) override = 0;
+    Oidx find_succ(const Oidx& /*unused*/, Request* req = nullptr) override = 0;
 
     // interfaces dispatch table <-> management instrumentation
 
@@ -111,7 +111,7 @@ public:
      * @param req - A pointer to the whole SNMP GET request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void get_request(Request*, int) override = 0;
+    void get_request(Request* /*unused*/, int /*unused*/) override = 0;
 
     /**
      * Let the receiver process a SNMP GETNEXT subrequest
@@ -119,7 +119,7 @@ public:
      * @param req - A pointer to the whole SNMP GETNEXT request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void get_next_request(Request*, int) override = 0;
+    void get_next_request(Request* /*unused*/, int /*unused*/) override = 0;
 
     /**
      * Let the receiver commit a SNMP SET subrequest
@@ -129,7 +129,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and
      *         SNMP_ERROR_COMITFAIL on failure.
      */
-    int commit_set_request(Request*, int) override
+    int commit_set_request(Request* /*unused*/, int /*unused*/) override
     {
         return SNMP_ERROR_COMMITFAIL;
     }
@@ -143,7 +143,7 @@ public:
      *         SNMP_ERROR_WRONG_TYPE, or
      *         SNMP_ERROR_NOT_WRITEABLE on failure.
      */
-    int prepare_set_request(Request*, int&) override
+    int prepare_set_request(Request* /*unused*/, int& /*unused*/) override
     {
         return SNMP_ERROR_NOT_WRITEABLE;
     }
@@ -156,10 +156,7 @@ public:
      * @return SNMP_ERROR_SUCCESS on success and
      *         SNMP_ERROR_UNDO_FAIL on failure.
      */
-    int undo_set_request(Request*, int&) override
-    {
-        return SNMP_ERROR_SUCCESS;
-    }
+    int undo_set_request(Request* /*unused*/, int& /*unused*/) override { return SNMP_ERROR_SUCCESS; }
 
     /**
      * Clean up resources used for performing (or undoing) set requests.
@@ -167,7 +164,7 @@ public:
      * @param req - A pointer to the whole SNMP SET request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void cleanup_set_request(Request*, int&) override { }
+    void cleanup_set_request(Request* /*unused*/, int& /*unused*/) override { }
 
     /**
      * Serialize the value of the receiver.
@@ -176,7 +173,7 @@ public:
      * @param sz - The size of the buffer returned.
      * @return true if serialization was successful, false otherwise.
      */
-    bool serialize(char*&, int&) override { return false; }
+    bool serialize(char*& /*unused*/, int& /*unused*/) override { return false; }
 
     /**
      * Read the value of the receiver from a byte stream.
@@ -189,7 +186,7 @@ public:
      * @return
      *    true if deserialization was successful, false otherwise.
      */
-    bool deserialize(char*, int&) override { return false; }
+    bool deserialize(char* /*unused*/, int& /*unused*/) override { return false; }
 
     /**
      * Check whether the receiver node contains any instance of a
@@ -228,13 +225,20 @@ protected:
 class AGENTPP_DECL MibStaticEntry : public Vbx {
 public:
     MibStaticEntry(const Vbx& v) : Vbx(v) { }
-    MibStaticEntry(const Oidx& o, const NS_SNMP SnmpSyntax& v) : Vbx(o)
-    {
-        set_value(v);
-    }
+
+    MibStaticEntry(const Oidx& o, const NS_SNMP SnmpSyntax& v) : Vbx(o) { set_value(v); }
+
     MibStaticEntry(const MibStaticEntry& other) : Vbx(other) { }
 
-    OidxPtr key() { return (Oidx*)&iv_vb_oid; }
+    // XXX OidxPtr key() { return (Oidx*)&iv_vb_oid; }
+    OidxPtr key()
+    {
+        get_oid(oid);
+        return &oid;
+    }
+
+private:
+    Oidx oid {};
 };
 
 /*------------------------ class MibStaticTable ------------------------*/
@@ -291,7 +295,7 @@ public:
     /**
      * Destructor
      */
-    virtual ~MibStaticTable();
+    ~MibStaticTable() override;
 
     /**
      * Return a clone of the receiver.
@@ -349,7 +353,7 @@ public:
      *    otherwise (if no successor exists or is out of scope)
      *    a zero length oid is returned
      */
-    Oidx find_succ(const Oidx&, Request* req = 0) override;
+    Oidx find_succ(const Oidx& /*unused*/, Request* req = nullptr) override;
 
     /**
      * Let the receiver process a SNMP GET subrequest
@@ -357,7 +361,7 @@ public:
      * @param req - A pointer to the whole SNMP GET request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void get_request(Request*, int) override;
+    void get_request(Request* /*unused*/, int /*unused*/) override;
 
     /**
      * Let the receiver process a SNMP GETNEXT subrequest
@@ -365,7 +369,7 @@ public:
      * @param req - A pointer to the whole SNMP GETNEXT request.
      * @param ind - The index of the subrequest to be processed.
      */
-    void get_next_request(Request*, int) override;
+    void get_next_request(Request* /*unused*/, int /*unused*/) override;
 
 protected:
     OidList<MibStaticEntry> contents;

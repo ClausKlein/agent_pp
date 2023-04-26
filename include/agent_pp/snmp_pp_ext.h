@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - snmp_pp_ext.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - snmp_pp_ext.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #ifndef _SNMP_PP_EXT_H_
 #define _SNMP_PP_EXT_H_
@@ -92,7 +92,7 @@ public:
     /**
      * Destructor
      */
-    virtual ~Oidx() { }
+    ~Oidx() override { }
 
     /**
      * Return a copy of the receiver oid without the n leftmost
@@ -101,10 +101,7 @@ public:
      * @param n - The number of subidentifiers to cut of from left side.
      * @return An Oidx object identifier.
      */
-    Oidx cut_left(const unsigned int index) const
-    {
-        return cut_left(*this, index);
-    }
+    Oidx cut_left(const unsigned int index) const { return cut_left(*this, index); }
 
     /**
      * Return a copy of the receiver oid without the n rightmost
@@ -113,10 +110,7 @@ public:
      * @param n - The number of subidentifiers to cut of from right side.
      * @return An Oidx object identifier.
      */
-    Oidx cut_right(const unsigned int index) const
-    {
-        return cut_right(*this, index);
-    }
+    Oidx cut_right(const unsigned int index) const { return cut_right(*this, index); }
 
     /**
      * Mask the receiver, i.e. zero those sub-identifiers for which
@@ -135,8 +129,11 @@ public:
     {
         for (unsigned int i = 0; (i < len()) && (i < mask.len() * 8); i++)
         {
-            char m = 0x80 >> (i % 8);
-            if (!(mask[i / 8] & m)) { (*this)[i] = 0ul; }
+            char const m = 0x80 >> (i % 8);
+            if (!(mask[i / 8] & m))
+            {
+                (*this)[i] = 0ul;
+            }
         }
         return *this;
     }
@@ -154,12 +151,13 @@ public:
         if (oid.valid())
         {
             // constructor can handle negative length
-            Oidx retval(oid.smival.value.oid.ptr + index,
-                oid.smival.value.oid.len - index);
+            Oidx const retval(oid.smival.value.oid.ptr + index, oid.smival.value.oid.len - index);
             return retval;
         }
         else
-            return Oidx();
+        {
+            return {};
+        }
     }
 
     /**
@@ -174,14 +172,16 @@ public:
     {
         if (oid.valid())
         {
-            unsigned int l = oid.smival.value.oid.len >= index
-                ? oid.smival.value.oid.len - index
-                : 0;
-            Oidx         retval(oid.smival.value.oid.ptr, l);
+            unsigned int const l =
+                oid.smival.value.oid.len >= index ? oid.smival.value.oid.len - index : 0;
+
+            Oidx const retval(oid.smival.value.oid.ptr, l);
             return retval;
         }
         else
-            return Oidx();
+        {
+            return {};
+        }
     }
 
     /**
@@ -192,19 +192,22 @@ public:
     uint32_t last() const
     {
         // check for len == 0
-        if ((!Oid::valid()) || (smival.value.oid.len < 1)) return 0;
+        if ((!Oid::valid()) || (smival.value.oid.len < 1))
+        {
+            return 0;
+        }
 
         return smival.value.oid.ptr[smival.value.oid.len - 1];
     }
 
     using NS_SNMP Oid::operator=;
-    virtual Oidx&      operator=(uint32_t l)
+    virtual Oidx& operator=(uint32_t l)
     {
         // delete the old value
         if (smival.value.oid.ptr)
         {
             delete[] smival.value.oid.ptr;
-            smival.value.oid.ptr = NULL;
+            smival.value.oid.ptr = nullptr;
         }
         smival.value.oid.len    = 1;
         smival.value.oid.ptr    = (SmiLPUINT32) new SmiUINT32[1];
@@ -213,9 +216,9 @@ public:
     }
 
     using NS_SNMP Oid::operator+=;
-    Oidx&              operator+=(NS_SNMP IpAddress const& ip)
+    Oidx&         operator+=(NS_SNMP IpAddress const& ip)
     {
-        for (int i = 0; i < ip.get_length(); i++) *this += (uint32_t)ip[i];
+        for (int i = 0; i < ip.get_length(); i++) { *this += (uint32_t)ip[i]; }
         return *this;
     }
 
@@ -228,9 +231,17 @@ public:
      */
     bool in_subtree_of(const Oidx& o) const
     {
-        if (len() <= o.len()) return false;
+        if (len() <= o.len())
+        {
+            return false;
+        }
         for (unsigned int i = 0; i < o.len(); i++)
-            if ((*this)[i] != o[i]) return false;
+        {
+            if ((*this)[i] != o[i])
+            {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -243,9 +254,17 @@ public:
      */
     bool is_root_of(const Oidx& o) const
     {
-        if (len() >= o.len()) return false;
+        if (len() >= o.len())
+        {
+            return false;
+        }
         for (unsigned int i = 0; i < len(); i++)
-            if ((*this)[i] != o[i]) return false;
+        {
+            if ((*this)[i] != o[i])
+            {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -294,9 +313,12 @@ public:
         OctetStr str;
 
         int i = 0;
+
         // check if the len is implied and should be ignored!
         if (withoutLength && len() > 0 && len() == ((*this)[0] + 1))
+        {
             i++; // first oid seems to be the len
+        }
         for (; i < (int)len(); i++) { str += (unsigned char)(*this)[i]; }
         return str;
     }
@@ -311,12 +333,15 @@ public:
      *    the length of the string will be generated.
      * @return An Oidx.
      */
-    static Oidx from_string(
-        const NS_SNMP OctetStr& str, bool withLength = true)
+    static Oidx from_string(const NS_SNMP OctetStr& str, bool withLength = true)
     {
         Oidx oid;
-        if (withLength) oid += (long)str.len();
-        for (unsigned int i = 0; i < str.len(); i++) oid += (long)str[i];
+
+        if (withLength)
+        {
+            oid += str.len();
+        }
+        for (unsigned int i = 0; i < str.len(); i++) { oid += str[i]; }
         return oid;
     }
 
@@ -329,6 +354,7 @@ public:
     Oidx successor() const
     {
         Oidx o(*this);
+
         if (o.len() == MAX_OID_LEN)
         {
             if (o[MAX_OID_LEN - 1] == 0xFFFFFFFFul)
@@ -342,10 +368,14 @@ public:
                 }
             }
             else
+            {
                 o[MAX_OID_LEN - 1]++;
+            }
         }
         else
+        {
             o += 0U;
+        }
         return o;
     }
 
@@ -358,14 +388,18 @@ public:
     Oidx predecessor() const
     {
         Oidx o(*this);
-        if (o.len() == 0) return o;
+
+        if (o.len() == 0)
+        {
+            return o;
+        }
         if (o[o.len() - 1] == 0)
         {
             o.trim();
             return o;
         }
         o[o.len() - 1]--;
-        for (int i = o.len(); i < MAX_OID_LEN; i++) o += 0xFFFFFFFFul;
+        for (int i = o.len(); i < MAX_OID_LEN; i++) { o += 0xFFFFFFFFul; }
         return o;
     }
 
@@ -381,6 +415,7 @@ public:
     Oidx next_peer() const
     {
         Oidx o(*this);
+
         o[o.len() - 1]++;
         return o;
     }
@@ -401,7 +436,9 @@ public:
 class AGENTPP_DECL Vbx : public NS_SNMP Vb {
 public:
     Vbx() : Vb() { }
+
     Vbx(const NS_SNMP Vb& vb) : Vb(vb) { }
+
     Vbx(const NS_SNMP Oid& oid) : Vb(oid) { }
 
     /**
@@ -412,10 +449,7 @@ public:
      * @param value
      *    the value part of the new variable binding.
      */
-    Vbx(const NS_SNMP Oid& oid, const NS_SNMP SnmpSyntax& val) : Vb(oid)
-    {
-        set_value(val);
-    }
+    Vbx(const NS_SNMP Oid& oid, const NS_SNMP SnmpSyntax& val) : Vb(oid) { set_value(val); }
 
     /**
      * Return the oid value of the receiver.
@@ -423,9 +457,9 @@ public:
      * @return
      *    a copy of the oid value of the receiver.
      */
-    Oidx get_oid() const { return iv_vb_oid; };
+    Oidx get_oid() const { return iv_vb_oid; }
 
-    void get_oid(Oidx& oid) const { oid = iv_vb_oid; };
+    void get_oid(Oidx& oid) const { oid = iv_vb_oid; }
 
     /**
      * Clear the content of the variable binding. The content of
@@ -494,10 +528,8 @@ public:
     static int from_asn1(Vbx*&, int&, unsigned char*&, int&);
 
 private:
-    static unsigned char* asn_build_long_len_sequence(
-        unsigned char*, int*, unsigned char, int, int);
-    static unsigned char* asn_build_long_length(
-        unsigned char*, int*, int, int);
+    static unsigned char* asn_build_long_len_sequence(unsigned char*, int*, unsigned char, int, int);
+    static unsigned char* asn_build_long_length(unsigned char*, int*, int, int);
 };
 
 /*------------------------- class OidxRange ---------------------------*/
@@ -511,7 +543,6 @@ private:
  */
 
 class AGENTPP_DECL OidxRange {
-
 public:
     /**
      * Default constructor
@@ -556,6 +587,7 @@ public:
      *    true if lower and upper bounds of both OID ranges are equal
      */
     virtual bool operator==(const OidxRange&) const;
+
     /**
      * Compare the receiver with another OID range
      *
@@ -566,6 +598,7 @@ public:
      *    lower bound of other
      */
     virtual bool operator<(const OidxRange&) const;
+
     /**
      * Compare the receiver with another OID range
      *
@@ -655,11 +688,14 @@ public:
 class AGENTPP_DECL Pdux : public NS_SNMP Pdu {
 public:
     Pdux() : Pdu() { }
+
     Pdux(NS_SNMP Vb* pvbs, const int pvb_count) : Pdu(pvbs, pvb_count) { }
+
     Pdux(const Pdu& pdu) : Pdu(pdu) { }
+
     Pdux(const Pdux& pdu) : Pdu(pdu) { }
 
-    virtual ~Pdux() { }
+    ~Pdux() override { }
 
     /**
      * Clear the Pdu contents (destruct and construct in one go)
@@ -701,7 +737,7 @@ public:
      * @param port
      *    an UDP port to be used for the session
      */
-    Snmpx(int& status, unsigned short port) : Snmp(status, port) {};
+    Snmpx(int& status, unsigned short port) : Snmp(status, port) { }
 
 #ifdef SNMP_PP_WITH_UDPADDR
     /**
@@ -755,8 +791,7 @@ public:
      *   SNMP_CLASS_SUCCESS on success and SNMP_CLASS_ERROR,
      *   SNMP_CLASS_TL_FAILED on failure.
      */
-    int receive(struct timeval*, Pdux&, NS_SNMP UdpAddress&,
-        NS_SNMP snmp_version&, NS_SNMP OctetStr&);
+    int receive(struct timeval*, Pdux&, NS_SNMP UdpAddress&, NS_SNMP snmp_version&, NS_SNMP OctetStr&);
 #endif
 #ifdef _SNMPv3
     /**
@@ -792,8 +827,7 @@ public:
      *   SNMP_CLASS_SUCCESS on success and SNMP_CLASS_ERROR,
      *   SNMP_CLASS_TL_FAILED on failure.
      */
-    int send(Pdux const&, NS_SNMP UdpAddress const&, NS_SNMP snmp_version,
-        NS_SNMP OctetStr const&);
+    int send(Pdux const&, NS_SNMP UdpAddress const&, NS_SNMP snmp_version, NS_SNMP OctetStr const&);
 #endif
 
     /**

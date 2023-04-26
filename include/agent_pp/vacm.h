@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - vacm.h
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - vacm.h
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 #ifndef vacm_h_
 #define vacm_h_
 
@@ -50,7 +50,7 @@ using namespace Snmp_pp;
 #define oidVacmSecurityToGroupStatus      "1.3.6.1.6.3.16.1.2.1.5"
 
 #define oidVacmAccessTable          "1.3.6.1.6.3.16.1.4"
-#define oidVacmAccessEntry          "1.3.6.1.6.3.16.1.4.1" // groupName 1. index
+#define oidVacmAccessEntry          "1.3.6.1.6.3.16.1.4.1"   // groupName 1. index
 #define oidVacmAccessContextPrefix  "1.3.6.1.6.3.16.1.4.1.1" // 2. index
 #define oidVacmAccessSecurityModel  "1.3.6.1.6.3.16.1.4.1.2" // 3. index
 #define oidVacmAccessSecurityLevel  "1.3.6.1.6.3.16.1.4.1.3" // 4. index
@@ -79,14 +79,6 @@ using namespace Snmp_pp;
 #ifndef oidSnmpUnavailableContexts
 #    define oidSnmpUnavailableContexts "1.3.6.1.6.3.12.1.4.0"
 #    define oidSnmpUnknownContexts     "1.3.6.1.6.3.12.1.5.0"
-#endif
-
-#ifndef true
-#    define true 1
-#endif
-
-#ifndef false
-#    define false 0
 #endif
 
 #define VACM_accessAllowed 0
@@ -164,9 +156,8 @@ public:
      *
      * @return true if access is allowed
      */
-    virtual int isAccessAllowed(const int securityModel,
-        const NS_SNMP OctetStr& securityName, const int securityLevel,
-        const int viewType, const NS_SNMP OctetStr& context, const Oidx& o);
+    virtual int isAccessAllowed(const int securityModel, const NS_SNMP OctetStr& securityName,
+        const int securityLevel, const int viewType, const NS_SNMP OctetStr& context, const Oidx& o);
 
     /**
      * Is the oid within the view.
@@ -178,8 +169,7 @@ public:
      *
      * @return true if the oid is within the view
      */
-    virtual int isAccessAllowed(
-        const NS_SNMP OctetStr& viewName, const Oidx& o);
+    virtual int isAccessAllowed(const NS_SNMP OctetStr& viewName, const Oidx& o);
 
     /**
      * Get the view name for the given params
@@ -193,14 +183,14 @@ public:
      *
      * @return VACM_viewFound on success, error codes on failure
      */
-    virtual int getViewName(const int securityModel,
-        const NS_SNMP OctetStr& securityName, const int securityLevel,
-        const int viewType, const NS_SNMP OctetStr& context,
+    virtual int getViewName(const int securityModel, const NS_SNMP OctetStr& securityName,
+        const int securityLevel, const int viewType, const NS_SNMP OctetStr& context,
         NS_SNMP OctetStr& viewName);
 
     void               incUnknownContexts();
-    NS_SNMP SnmpInt32  getUnknownContexts();
-    static const char* getErrorMsg(int nr) { return vacmErrs[nr]; };
+    NS_SNMP SnmpUInt32 getUnknownContexts();
+
+    static const char* getErrorMsg(int nr) { return vacmErrs[nr]; }
 
     /**
      * Add a new context to the VacmContextTable.
@@ -228,15 +218,13 @@ public:
      * @param[in] groupName       vacmGroupName
      * @param[in] storageType     vacmSecurityToGroupStorageType
      */
-    bool addNewGroup(const int securityModel,
-        const NS_SNMP OctetStr& securityName,
+    bool addNewGroup(const int securityModel, const NS_SNMP OctetStr& securityName,
         const NS_SNMP OctetStr& groupName, const int storageType);
 
     /**
      * Delete the given securityName from the VacmSecurityToGroupTable.
      */
-    void deleteGroup(
-        const int securityModel, const NS_SNMP OctetStr& securityName);
+    void deleteGroup(const int securityModel, const NS_SNMP OctetStr& securityName);
 
     /**
      * Add a new entry to the VacmAccessTable.
@@ -252,9 +240,8 @@ public:
      * @param[in] storageType   vacmAccessStorageType (storageType_volatile,
      * ...)
      */
-    bool addNewAccessEntry(const NS_SNMP OctetStr& groupName,
-        const NS_SNMP OctetStr& prefix, const int securityModel,
-        const int securityLevel, const int match,
+    bool addNewAccessEntry(const NS_SNMP OctetStr& groupName, const NS_SNMP OctetStr& prefix,
+        const int securityModel, const int securityLevel, const int match,
         const NS_SNMP OctetStr& readView, const NS_SNMP OctetStr& writeView,
         const NS_SNMP OctetStr& notifyView, const int storageType);
 
@@ -267,9 +254,8 @@ public:
      * @param[in] securityLevel vacmAccessSecurityLevel
      *
      */
-    void deleteAccessEntry(const NS_SNMP OctetStr& groupName,
-        const NS_SNMP OctetStr& prefix, const int securityModel,
-        const int securityLevel);
+    void deleteAccessEntry(const NS_SNMP OctetStr& groupName, const NS_SNMP OctetStr& prefix,
+        const int securityModel, const int securityLevel);
 
     /**
      * Add a new view to the VacmViewTreeFamilyTable.
@@ -332,27 +318,26 @@ protected:
 class AGENTPP_DECL SnmpUnavailableContexts : public MibLeaf {
 public:
     SnmpUnavailableContexts();
-    void              incValue();
-    NS_SNMP SnmpInt32 getValue();
+    void               incValue();
+    NS_SNMP SnmpUInt32 getValue();
 };
 
 class AGENTPP_DECL SnmpUnknownContexts : public MibLeaf {
 public:
     SnmpUnknownContexts();
-    void              incValue();
-    NS_SNMP SnmpInt32 getValue();
+    void               incValue();
+    NS_SNMP SnmpUInt32 getValue();
 };
 
 /*********************************************************************
-
- VacmContextTable
-
+ *
+ * VacmContextTable
+ *
  ********************************************************************/
 class AGENTPP_DECL VacmContextTable : public MibTable {
-
 public:
     VacmContextTable();
-    ~VacmContextTable();
+    ~VacmContextTable() override;
 
     bool isContextSupported(const NS_SNMP OctetStr& context);
     bool addNewRow(const NS_SNMP OctetStr& context);
@@ -369,56 +354,49 @@ public:
 };
 
 /*********************************************************************
-
- VacmSecurityToGroupTable
-
+ *
+ * VacmSecurityToGroupTable
+ *
  ********************************************************************/
 class AGENTPP_DECL VacmSecurityToGroupTable : public StorageTable {
-
 public:
     VacmSecurityToGroupTable();
-    virtual ~VacmSecurityToGroupTable();
+    ~VacmSecurityToGroupTable() override;
 
-    bool ready_for_service(Vbx*, int) override;
-    bool could_ever_be_managed(const Oidx&, int&) override;
-    void row_added(MibTableRow*, const Oidx&, MibTable*) override;
-    bool getGroupName(const int& securiyModel,
-        const NS_SNMP OctetStr& securityName, NS_SNMP OctetStr& groupName);
+    bool ready_for_service(Vbx* /*pvbs*/, int /*sz*/) override;
+    bool could_ever_be_managed(const Oidx& /*unused*/, int& /*unused*/) override;
+    void row_added(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    bool getGroupName(
+        const int& securiyModel, const NS_SNMP OctetStr& securityName, NS_SNMP OctetStr& groupName);
     bool isGroupNameOK(const NS_SNMP OctetStr&);
-    bool addNewRow(const int securityModel,
-        const NS_SNMP OctetStr& securityName,
+    bool addNewRow(const int securityModel, const NS_SNMP OctetStr& securityName,
         const NS_SNMP OctetStr& groupName, const int storageType);
-    void deleteRow(
-        const int securityModel, const NS_SNMP OctetStr& securityName);
+    void deleteRow(const int securityModel, const NS_SNMP OctetStr& securityName);
 };
 
 /*********************************************************************
-
- VacmAccessTable
-
+ *
+ * VacmAccessTable
+ *
  ********************************************************************/
 class AGENTPP_DECL VacmAccessTable : public StorageTable {
-
 public:
     VacmAccessTable(VacmSecurityToGroupTable*);
-    virtual ~VacmAccessTable();
+    ~VacmAccessTable() override;
 
-    bool ready_for_service(Vbx*, int) override;
-    bool could_ever_be_managed(const Oidx&, int&) override;
-    void row_added(MibTableRow*, const Oidx&, MibTable*) override;
-    bool getViewName(const NS_SNMP OctetStr& group,
-        const NS_SNMP OctetStr& context, const int securityModel,
-        const int securityLevel, const int viewType,
+    bool ready_for_service(Vbx* /*pvbs*/, int /*sz*/) override;
+    bool could_ever_be_managed(const Oidx& /*unused*/, int& /*unused*/) override;
+    void row_added(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    bool getViewName(const NS_SNMP OctetStr& group, const NS_SNMP OctetStr& context,
+        const int securityModel, const int securityLevel, const int viewType,
         NS_SNMP OctetStr& viewName);
 
-    bool addNewRow(const NS_SNMP OctetStr& groupName,
-        const NS_SNMP OctetStr& prefix, const int securityModel,
-        const int securityLevel, const int match,
+    bool addNewRow(const NS_SNMP OctetStr& groupName, const NS_SNMP OctetStr& prefix,
+        const int securityModel, const int securityLevel, const int match,
         const NS_SNMP OctetStr& readView, const NS_SNMP OctetStr& writeView,
         const NS_SNMP OctetStr& notifyView, const int storageType);
-    void deleteRow(const NS_SNMP OctetStr& groupName,
-        const NS_SNMP OctetStr& prefix, const int securityModel,
-        const int securityLevel);
+    void deleteRow(const NS_SNMP OctetStr& groupName, const NS_SNMP OctetStr& prefix,
+        const int securityModel, const int securityLevel);
 
 protected:
     VacmSecurityToGroupTable* securityToGroupTable;
@@ -427,7 +405,7 @@ protected:
 class AGENTPP_DECL VacmAccessTableStatus : public snmpRowStatus {
 public:
     VacmAccessTableStatus(const Oidx&, int);
-    virtual ~VacmAccessTableStatus() {};
+    ~VacmAccessTableStatus() override { }
 
     MibEntryPtr clone() override;
 
@@ -436,16 +414,18 @@ protected:
 };
 
 class AGENTPP_DECL ViewNameIndex {
-
 public:
     ViewNameIndex(const NS_SNMP OctetStr& vname) : name(vname) { }
+
     ~ViewNameIndex()
     { /* avoid deletion of original rows: */
         views.clear();
     }
 
     void add(MibTableRow* row) { views.add(row); }
+
     void remove(MibTableRow* row) { views.remove(row); }
+
     bool isEmpty() { return views.empty(); }
 
     NS_SNMP OctetStr  name;
@@ -453,9 +433,9 @@ public:
 };
 
 /*********************************************************************
-
- VacmViewTreeFamilyTable
-
+ *
+ * VacmViewTreeFamilyTable
+ *
  ********************************************************************/
 #if !defined(AGENTPP_DECL_TEMPL_LIST_VIEWNAMEINDEX)
 #    define AGENTPP_DECL_TEMPL_LIST_VIEWNAMEINDEX
@@ -467,24 +447,26 @@ class AGENTPP_DECL VacmViewTreeFamilyTable : public StorageTable {
 
 public:
     VacmViewTreeFamilyTable();
-    virtual ~VacmViewTreeFamilyTable();
+    ~VacmViewTreeFamilyTable() override;
 
-    bool ready_for_service(Vbx*, int) override;
-    bool could_ever_be_managed(const Oidx&, int&) override;
-    void row_added(MibTableRow*, const Oidx&, MibTable*) override;
-    void row_activated(MibTableRow*, const Oidx&, MibTable*) override;
-    void row_deactivated(MibTableRow*, const Oidx&, MibTable*) override;
-    void row_delete(MibTableRow*, const Oidx&, MibTable*) override;
-    void row_init(MibTableRow*, const Oidx&, MibTable* t = 0) override;
+    bool ready_for_service(Vbx* /*pvbs*/, int /*sz*/) override;
+    bool could_ever_be_managed(const Oidx& /*unused*/, int& /*unused*/) override;
+    void row_added(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    void row_activated(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    void row_deactivated(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    void row_delete(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
+    void row_init(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* t = nullptr) override;
     int  isInMibView(const NS_SNMP OctetStr&, const Oidx&);
-    bool addNewRow(const NS_SNMP OctetStr& viewName, const Oidx& subtree,
-        const NS_SNMP OctetStr& mask, const int type, const int storageType);
+    bool addNewRow(const NS_SNMP OctetStr& viewName, const Oidx& subtree, const NS_SNMP OctetStr& mask,
+        const int type, const int storageType);
     void deleteRow(const NS_SNMP OctetStr& viewName, const Oidx& subtree);
+
     void clear() override
     {
         StorageTable::clear();
         buildViewNameIndex();
     }
+
     void reset() override
     {
         StorageTable::reset();
@@ -502,8 +484,9 @@ protected:
 class AGENTPP_DECL VacmViewTreeFamilyTableStatus : public snmpRowStatus {
 public:
     VacmViewTreeFamilyTableStatus(const Oidx&, int);
-    virtual ~VacmViewTreeFamilyTableStatus() { }
-    int         set(const Vbx&) override;
+    ~VacmViewTreeFamilyTableStatus() override { }
+
+    int         set(const Vbx& /*unused*/) override;
     MibEntryPtr clone() override;
 
 protected:
@@ -511,12 +494,11 @@ protected:
 };
 
 /*********************************************************************
-
- VacmMIB
-
+ *
+ * VacmMIB
+ *
  ********************************************************************/
 class AGENTPP_DECL VacmMIB : public MibGroup {
-
 public:
     VacmMIB(Vacm::ClassPointers);
 };

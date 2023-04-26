@@ -1,22 +1,22 @@
 /*_############################################################################
-  _##
-  _##  AGENT++ 4.5 - agent.cpp
-  _##
-  _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
-  _##
-  _##  Licensed under the Apache License, Version 2.0 (the "License");
-  _##  you may not use this file except in compliance with the License.
-  _##  You may obtain a copy of the License at
-  _##
-  _##      http://www.apache.org/licenses/LICENSE-2.0
-  _##
-  _##  Unless required by applicable law or agreed to in writing, software
-  _##  distributed under the License is distributed on an "AS IS" BASIS,
-  _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  _##  See the License for the specific language governing permissions and
-  _##  limitations under the License.
-  _##
-  _##########################################################################*/
+ * _##
+ * _##  AGENT++ 4.5 - agent.cpp
+ * _##
+ * _##  Copyright (C) 2000-2021  Frank Fock and Jochen Katz (agentpp.com)
+ * _##
+ * _##  Licensed under the Apache License, Version 2.0 (the "License");
+ * _##  you may not use this file except in compliance with the License.
+ * _##  You may obtain a copy of the License at
+ * _##
+ * _##      http://www.apache.org/licenses/LICENSE-2.0
+ * _##
+ * _##  Unless required by applicable law or agreed to in writing, software
+ * _##  distributed under the License is distributed on an "AS IS" BASIS,
+ * _##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * _##  See the License for the specific language governing permissions and
+ * _##  limitations under the License.
+ * _##
+ * _##########################################################################*/
 
 #include "module_includes.h"
 #include "module_init.h"
@@ -53,7 +53,6 @@ static void sig(int signo)
 {
     if ((signo == SIGTERM) || (signo == SIGINT) || (signo == SIGSEGV))
     {
-
         printf("\n");
 
         switch (signo)
@@ -62,6 +61,7 @@ static void sig(int signo)
             printf("Segmentation fault, aborting.\n");
             exit(1);
         }
+
         case SIGTERM:
         case SIGINT: {
             if (run)
@@ -84,6 +84,7 @@ void init_signals()
 void init(Mib& mib, const NS_SNMP OctetStr& engineID)
 {
     OctetStr sysDescr("AGENT++v");
+
     sysDescr += AGENTPP_VERSION_STRING;
     sysDescr += " agent";
     mib.add(new sysGroup(sysDescr.get_printable(), "1.3.6.1.4.1.4976", 10));
@@ -97,70 +98,56 @@ void init(Mib& mib, const NS_SNMP OctetStr& engineID)
     v3MP*         v3mp = mib.get_request_list()->get_v3mp();
     UsmUserTable* uut  = new UsmUserTable(v3mp);
 
-    uut->addNewRow("unsecureUser", SNMPv3_usmNoAuthProtocol,
-        SNMPv3_usmNoPrivProtocol, "", "", engineID, false);
+    uut->addNewRow(
+        "unsecureUser", SNMPv3_usmNoAuthProtocol, SNMPv3_usmNoPrivProtocol, "", "", engineID, false);
 
-    uut->addNewRow("MD5", SNMPv3_usmHMACMD5AuthProtocol,
-        SNMPv3_usmNoPrivProtocol, "MD5UserAuthPassword", "", engineID, false);
+    uut->addNewRow("MD5", SNMPv3_usmHMACMD5AuthProtocol, SNMPv3_usmNoPrivProtocol,
+        "MD5UserAuthPassword", "", engineID, false);
 
-    uut->addNewRow("SHA", SNMPv3_usmHMACSHAAuthProtocol,
-        SNMPv3_usmNoPrivProtocol, "SHAUserAuthPassword", "", engineID, false);
+    uut->addNewRow("SHA", SNMPv3_usmHMACSHAAuthProtocol, SNMPv3_usmNoPrivProtocol,
+        "SHAUserAuthPassword", "", engineID, false);
 
-    uut->addNewRow("MD5DES", SNMPv3_usmHMACMD5AuthProtocol,
-        SNMPv3_usmDESPrivProtocol, "MD5DESUserAuthPassword",
-        "MD5DESUserPrivPassword", engineID, false);
+    uut->addNewRow("MD5DES", SNMPv3_usmHMACMD5AuthProtocol, SNMPv3_usmDESPrivProtocol,
+        "MD5DESUserAuthPassword", "MD5DESUserPrivPassword", engineID, false);
 
-    uut->addNewRow("SHADES", SNMPv3_usmHMACSHAAuthProtocol,
-        SNMPv3_usmDESPrivProtocol, "SHADESUserAuthPassword",
-        "SHADESUserPrivPassword", engineID, false);
+    uut->addNewRow("SHADES", SNMPv3_usmHMACSHAAuthProtocol, SNMPv3_usmDESPrivProtocol,
+        "SHADESUserAuthPassword", "SHADESUserPrivPassword", engineID, false);
 
-    uut->addNewRow("MD5IDEA", SNMPv3_usmHMACMD5AuthProtocol,
-        SNMPv3_usmIDEAPrivProtocol, "MD5IDEAUserAuthPassword",
-        "MD5IDEAUserPrivPassword", engineID, false);
+    uut->addNewRow("MD5IDEA", SNMPv3_usmHMACMD5AuthProtocol, SNMPv3_usmIDEAPrivProtocol,
+        "MD5IDEAUserAuthPassword", "MD5IDEAUserPrivPassword", engineID, false);
 
-    uut->addNewRow("SHAIDEA", SNMPv3_usmHMACSHAAuthProtocol,
-        SNMPv3_usmIDEAPrivProtocol, "SHAIDEAUserAuthPassword",
-        "SHAIDEAUserPrivPassword", engineID, false);
+    uut->addNewRow("SHAIDEA", SNMPv3_usmHMACSHAAuthProtocol, SNMPv3_usmIDEAPrivProtocol,
+        "SHAIDEAUserAuthPassword", "SHAIDEAUserPrivPassword", engineID, false);
 
-    uut->addNewRow("MD5AES128", SNMP_AUTHPROTOCOL_HMACMD5,
-        SNMP_PRIVPROTOCOL_AES128, "MD5AES128UserAuthPassword",
-        "MD5AES128UserPrivPassword", engineID, false);
+    uut->addNewRow("MD5AES128", SNMP_AUTHPROTOCOL_HMACMD5, SNMP_PRIVPROTOCOL_AES128,
+        "MD5AES128UserAuthPassword", "MD5AES128UserPrivPassword", engineID, false);
 
-    MibTableRow* r = uut->addNewRow("SHAAES128", SNMP_AUTHPROTOCOL_HMACSHA,
-        SNMP_PRIVPROTOCOL_AES128, "SHAAES128UserAuthPassword",
-        "SHAAES128UserPrivPassword", engineID, false);
+    MibTableRow* r = uut->addNewRow("SHAAES128", SNMP_AUTHPROTOCOL_HMACSHA, SNMP_PRIVPROTOCOL_AES128,
+        "SHAAES128UserAuthPassword", "SHAAES128UserPrivPassword", engineID, false);
 
-    uut->addNewRow("MD5AES192", SNMP_AUTHPROTOCOL_HMACMD5,
-        SNMP_PRIVPROTOCOL_AES192, "MD5AES192UserAuthPassword",
-        "MD5AES192UserPrivPassword", engineID, false);
+    uut->addNewRow("MD5AES192", SNMP_AUTHPROTOCOL_HMACMD5, SNMP_PRIVPROTOCOL_AES192,
+        "MD5AES192UserAuthPassword", "MD5AES192UserPrivPassword", engineID, false);
 
-    uut->addNewRow("SHAAES192", SNMP_AUTHPROTOCOL_HMACSHA,
-        SNMP_PRIVPROTOCOL_AES192, "SHAAES192UserAuthPassword",
-        "SHAAES192UserPrivPassword", engineID, false);
+    uut->addNewRow("SHAAES192", SNMP_AUTHPROTOCOL_HMACSHA, SNMP_PRIVPROTOCOL_AES192,
+        "SHAAES192UserAuthPassword", "SHAAES192UserPrivPassword", engineID, false);
 
-    r = uut->addNewRow("MD5AES256", SNMP_AUTHPROTOCOL_HMACMD5,
-        SNMP_PRIVPROTOCOL_AES256, "MD5AES256UserAuthPassword",
-        "MD5AES256UserPrivPassword", engineID, false);
+    r = uut->addNewRow("MD5AES256", SNMP_AUTHPROTOCOL_HMACMD5, SNMP_PRIVPROTOCOL_AES256,
+        "MD5AES256UserAuthPassword", "MD5AES256UserPrivPassword", engineID, false);
 
-    uut->addNewRow("SHAAES256", SNMP_AUTHPROTOCOL_HMACSHA,
-        SNMP_PRIVPROTOCOL_AES256, "SHAAES256UserAuthPassword",
-        "SHAAES256UserPrivPassword", engineID, false);
+    uut->addNewRow("SHAAES256", SNMP_AUTHPROTOCOL_HMACSHA, SNMP_PRIVPROTOCOL_AES256,
+        "SHAAES256UserAuthPassword", "SHAAES256UserPrivPassword", engineID, false);
 
-    uut->addNewRow("SHA512AES256", SNMP_AUTHPROTOCOL_HMAC384SHA512,
-        SNMP_PRIVPROTOCOL_AES256, "SHA512AES256UserAuthPassword",
-        "SHA512AES256UserPrivPassword", engineID, false);
+    uut->addNewRow("SHA512AES256", SNMP_AUTHPROTOCOL_HMAC384SHA512, SNMP_PRIVPROTOCOL_AES256,
+        "SHA512AES256UserAuthPassword", "SHA512AES256UserPrivPassword", engineID, false);
 
-    uut->addNewRow("SHA384AES128", SNMP_AUTHPROTOCOL_HMAC256SHA384,
-        SNMP_PRIVPROTOCOL_AES256, "SHA384AES128UserAuthPassword",
-        "SHA384AES128UserPrivPassword", engineID, false);
+    uut->addNewRow("SHA384AES128", SNMP_AUTHPROTOCOL_HMAC256SHA384, SNMP_PRIVPROTOCOL_AES256,
+        "SHA384AES128UserAuthPassword", "SHA384AES128UserPrivPassword", engineID, false);
 
-    uut->addNewRow("SHA256AES128", SNMP_AUTHPROTOCOL_HMAC192SHA256,
-        SNMP_PRIVPROTOCOL_AES128, "SHA256AES128UserAuthPassword",
-        "SHA256AES128UserPrivPassword", engineID, false);
+    uut->addNewRow("SHA256AES128", SNMP_AUTHPROTOCOL_HMAC192SHA256, SNMP_PRIVPROTOCOL_AES128,
+        "SHA256AES128UserAuthPassword", "SHA256AES128UserPrivPassword", engineID, false);
 
-    uut->addNewRow("SHA224AES128", SNMP_AUTHPROTOCOL_HMAC128SHA224,
-        SNMP_PRIVPROTOCOL_AES128, "SHA224AES128UserAuthPassword",
-        "SHA224AES128UserPrivPassword", engineID, false);
+    uut->addNewRow("SHA224AES128", SNMP_AUTHPROTOCOL_HMAC128SHA224, SNMP_PRIVPROTOCOL_AES128,
+        "SHA224AES128UserAuthPassword", "SHA224AES128UserPrivPassword", engineID, false);
 
     // add non persistent USM statistics
     mib.add(new UsmStats(v3mp));
@@ -176,9 +163,13 @@ void init(Mib& mib, const NS_SNMP OctetStr& engineID)
 int main(int argc, char* argv[])
 {
     if (argc > 1)
+    {
         port = atoi(argv[1]);
+    }
     else
+    {
         port = 4700;
+    }
 
 #ifndef _NO_LOGGING
     DefaultLog::log()->set_filter(ERROR_LOG, 5);
@@ -193,7 +184,6 @@ int main(int argc, char* argv[])
 
     if (status == SNMP_CLASS_SUCCESS)
     {
-
         LOG_BEGIN(loggerModuleName, EVENT_LOG | 1);
         LOG("main: SNMP listen port");
         LOG(port);
@@ -269,55 +259,31 @@ int main(int argc, char* argv[])
     // Used to determine the group a given SecurityName belongs to.
     // User "new" of the USM belongs to newGroup
 
-    vacm->addNewGroup(
-        SNMP_SECURITY_MODEL_USM, "new", "newGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "new", "newGroup", storageType_nonVolatile);
 
-    vacm->addNewGroup(
-        SNMP_SECURITY_MODEL_USM, "test", "testGroup", storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_V2, "public", "v1v2group",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_V1, "public", "v1v2group",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "initial", "initial",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "unsecureUser", "newGroup",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "MD5", "testNoPrivGroup",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHA", "testNoPrivGroup",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "MD5DES", "testGroup",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHADES", "testGroup",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "MD53DES", "testGroup",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHA3DES", "testGroup",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "MD5IDEA", "testGroup",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHAIDEA", "testGroup",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "MD5AES128", "testGroup",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHAAES128", "testGroup",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "MD5AES192", "testGroup",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHAAES192", "testGroup",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "MD5AES256", "testGroup",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHAAES256", "testGroup",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHA512AES256", "testGroup",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHA384AES128", "testGroup",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHA256AES128", "testGroup",
-        storageType_nonVolatile);
-    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHA224AES128", "testGroup",
-        storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "test", "testGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_V2, "public", "v1v2group", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_V1, "public", "v1v2group", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "initial", "initial", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "unsecureUser", "newGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "MD5", "testNoPrivGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHA", "testNoPrivGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "MD5DES", "testGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHADES", "testGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "MD53DES", "testGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHA3DES", "testGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "MD5IDEA", "testGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHAIDEA", "testGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "MD5AES128", "testGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHAAES128", "testGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "MD5AES192", "testGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHAAES192", "testGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "MD5AES256", "testGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHAAES256", "testGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHA512AES256", "testGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHA384AES128", "testGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHA256AES128", "testGroup", storageType_nonVolatile);
+    vacm->addNewGroup(SNMP_SECURITY_MODEL_USM, "SHA224AES128", "testGroup", storageType_nonVolatile);
 
     // remove a group with:
     // vacm->deleteGroup(SNMP_SECURITY_MODEL_USM, "neu");
@@ -327,45 +293,39 @@ int main(int argc, char* argv[])
     // level >= noAuthNoPriv within context "") would have full access
     // (read, write, notify) to all objects in view "newView".
     vacm->addNewAccessEntry("newGroup",
-        "other", // context
+        "other",     // context
         SNMP_SECURITY_MODEL_USM, SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV,
         match_exact, // context must mach exactly
-        // alternatively: match_prefix
-        "newView", // readView
-        "newView", // writeView
-        "newView", // notifyView
+                     // alternatively: match_prefix
+        "newView",   // readView
+        "newView",   // writeView
+        "newView",   // notifyView
+        storageType_nonVolatile);
+    vacm->addNewAccessEntry("testGroup", "", SNMP_SECURITY_MODEL_USM, SNMP_SECURITY_LEVEL_AUTH_PRIV,
+        match_prefix, "testView", "testView", "testView", storageType_nonVolatile);
+    vacm->addNewAccessEntry("testNoPrivGroup", "", SNMP_SECURITY_MODEL_USM,
+        SNMP_SECURITY_LEVEL_AUTH_NOPRIV, match_prefix, "testView", "testView", "testView",
+        storageType_nonVolatile);
+    vacm->addNewAccessEntry("testNoPrivGroup", "", SNMP_SECURITY_MODEL_USM,
+        SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV, match_prefix, "testView", "testView", "testView",
         storageType_nonVolatile);
     vacm->addNewAccessEntry("testGroup", "", SNMP_SECURITY_MODEL_USM,
-        SNMP_SECURITY_LEVEL_AUTH_PRIV, match_prefix, "testView", "testView",
-        "testView", storageType_nonVolatile);
-    vacm->addNewAccessEntry("testNoPrivGroup", "", SNMP_SECURITY_MODEL_USM,
-        SNMP_SECURITY_LEVEL_AUTH_NOPRIV, match_prefix, "testView", "testView",
-        "testView", storageType_nonVolatile);
-    vacm->addNewAccessEntry("testNoPrivGroup", "", SNMP_SECURITY_MODEL_USM,
-        SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV, match_prefix, "testView",
-        "testView", "testView", storageType_nonVolatile);
-    vacm->addNewAccessEntry("testGroup", "", SNMP_SECURITY_MODEL_USM,
-        SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV, match_prefix, "testView",
-        "testView", "testView", storageType_nonVolatile);
-    vacm->addNewAccessEntry("v1v2group", "", SNMP_SECURITY_MODEL_V2,
-        SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV, match_exact, "v1ReadView",
-        "v1WriteView", "v1NotifyView", storageType_nonVolatile);
-    vacm->addNewAccessEntry("v1v2group", "", SNMP_SECURITY_MODEL_V1,
-        SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV, match_exact, "v1ReadView",
-        "v1WriteView", "v1NotifyView", storageType_nonVolatile);
-    vacm->addNewAccessEntry("initial", "", SNMP_SECURITY_MODEL_USM,
-        SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV, match_exact, "restricted", "",
-        "restricted", storageType_nonVolatile);
-    vacm->addNewAccessEntry("initial", "", SNMP_SECURITY_MODEL_USM,
-        SNMP_SECURITY_LEVEL_AUTH_NOPRIV, match_exact, "internet", "internet",
-        "internet", storageType_nonVolatile);
-    vacm->addNewAccessEntry("initial", "", SNMP_SECURITY_MODEL_USM,
-        SNMP_SECURITY_LEVEL_AUTH_PRIV, match_exact, "internet", "internet",
-        "internet", storageType_nonVolatile);
+        SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV, match_prefix, "testView", "testView", "testView",
+        storageType_nonVolatile);
+    vacm->addNewAccessEntry("v1v2group", "", SNMP_SECURITY_MODEL_V2, SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV,
+        match_exact, "v1ReadView", "v1WriteView", "v1NotifyView", storageType_nonVolatile);
+    vacm->addNewAccessEntry("v1v2group", "", SNMP_SECURITY_MODEL_V1, SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV,
+        match_exact, "v1ReadView", "v1WriteView", "v1NotifyView", storageType_nonVolatile);
+    vacm->addNewAccessEntry("initial", "", SNMP_SECURITY_MODEL_USM, SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV,
+        match_exact, "restricted", "", "restricted", storageType_nonVolatile);
+    vacm->addNewAccessEntry("initial", "", SNMP_SECURITY_MODEL_USM, SNMP_SECURITY_LEVEL_AUTH_NOPRIV,
+        match_exact, "internet", "internet", "internet", storageType_nonVolatile);
+    vacm->addNewAccessEntry("initial", "", SNMP_SECURITY_MODEL_USM, SNMP_SECURITY_LEVEL_AUTH_PRIV,
+        match_exact, "internet", "internet", "internet", storageType_nonVolatile);
 
     // remove an AccessEntry with:
     // vacm->deleteAccessEntry("newGroup",
-    //	      		"",
+    //	            "",
     //			SNMP_SECURITY_MODEL_USM,
     //			SNMP_SECURITY_LEVEL_NOAUTH_NOPRIV);
 
@@ -394,36 +354,29 @@ int main(int argc, char* argv[])
         view_included, // alternatively: view_excluded
         storageType_nonVolatile);
 
-    vacm->addNewView(
-        "newView", "1.3", "", view_included, storageType_nonVolatile);
-    vacm->addNewView(
-        "testView", "1.3.6", "", view_included, storageType_nonVolatile);
-    vacm->addNewView(
-        "internet", "1.3.6.1", "", view_included, storageType_nonVolatile);
-    vacm->addNewView("restricted", "1.3.6.1.2.1.1", "", view_included,
-        storageType_nonVolatile);
-    vacm->addNewView("restricted", "1.3.6.1.2.1.11", "", view_included,
-        storageType_nonVolatile);
-    vacm->addNewView("restricted", "1.3.6.1.6.3.10.2.1", "", view_included,
-        storageType_nonVolatile);
-    vacm->addNewView("restricted", "1.3.6.1.6.3.11.2.1", "", view_included,
-        storageType_nonVolatile);
-    vacm->addNewView("restricted", "1.3.6.1.6.3.15.1.1", "", view_included,
-        storageType_nonVolatile);
+    vacm->addNewView("newView", "1.3", "", view_included, storageType_nonVolatile);
+    vacm->addNewView("testView", "1.3.6", "", view_included, storageType_nonVolatile);
+    vacm->addNewView("internet", "1.3.6.1", "", view_included, storageType_nonVolatile);
+    vacm->addNewView("restricted", "1.3.6.1.2.1.1", "", view_included, storageType_nonVolatile);
+    vacm->addNewView("restricted", "1.3.6.1.2.1.11", "", view_included, storageType_nonVolatile);
+    vacm->addNewView("restricted", "1.3.6.1.6.3.10.2.1", "", view_included, storageType_nonVolatile);
+    vacm->addNewView("restricted", "1.3.6.1.6.3.11.2.1", "", view_included, storageType_nonVolatile);
+    vacm->addNewView("restricted", "1.3.6.1.6.3.15.1.1", "", view_included, storageType_nonVolatile);
 
     // add SNMPv1/v2c community to v3 security name mapping
+
     /*
-    snmpCommunityEntry* communityEntry =
-            snmpCommunityEntry::get_instance(mib);
-    if (communityEntry) {
-        OctetStr co("public");
-        MibTableRow* row = communityEntry->add_row(Oidx::from_string(co,
-    false)); OctetStr tag("v1v2cPermittedManagers");
-        communityEntry->set_row(row, co, co,
-                    reqList->get_v3mp()->get_local_engine_id(),
-                    "", tag, 3, 1);
-    }
-    */
+     * snmpCommunityEntry* communityEntry =
+     *      snmpCommunityEntry::get_instance(mib);
+     * if (communityEntry) {
+     *  OctetStr co("public");
+     *  MibTableRow* row = communityEntry->add_row(Oidx::from_string(co,
+     * false)); OctetStr tag("v1v2cPermittedManagers");
+     *  communityEntry->set_row(row, co, co,
+     *              reqList->get_v3mp()->get_local_engine_id(),
+     *              "", tag, 3, 1);
+     * }
+     */
 #endif
 
     Vbx*         vbs = 0;
@@ -435,10 +388,12 @@ int main(int argc, char* argv[])
     Request* req;
     while (run)
     {
-
         req = reqList->receive(2);
 
-        if (req) { mib->process_request(req); }
+        if (req)
+        {
+            mib->process_request(req);
+        }
         else
         {
             mib->cleanup();
