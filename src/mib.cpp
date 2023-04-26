@@ -2947,14 +2947,14 @@ void MibTable::get_contents(Vbx**& contents, int& rows, int& cols, int discrimin
  *    means all active rows are returned. If the discriminator is
  *    rowEnmpty(0), all rows are returned.
  */
-List <MibTableRow> * MibTable::get_rows(int discriminator)
+List<MibTableRow>* MibTable::get_rows(int discriminator)
 {
-    OidListCursor <MibTableRow> cur;
-    auto *list = new List <MibTableRow>;
+    OidListCursor<MibTableRow> cur;
+    auto*                      list = new List<MibTableRow>;
 
     for (cur.init(&content); cur.get(); cur.next())
     {
-        snmpRowStatus *status = cur.get()->get_row_status();
+        snmpRowStatus* status = cur.get()->get_row_status();
         if ((!status) || (discriminator == 0) || ((status) && (status->get() == discriminator)))
         {
             list->add(cur.get());

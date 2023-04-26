@@ -1024,9 +1024,9 @@ nlmLogEntry* nlmLogEntry::instance = nullptr;
 const index_info indNlmLogEntry[2] = { { sNMP_SYNTAX_OCTETS, false, 0, 255 },
     { sNMP_SYNTAX_INT, false, 1, 1 } };
 
-nlmLogEntry::nlmLogEntry(Mib* _mib, nlmConfigLogEntry* _configLogEntry, nlmStatsLogEntry* _statsLogEntry,
-    nlmLogVariableEntry* _logVariableEntry, nlmConfigGlobalEntryLimit* _configGlobalEntryLimit,
-    nlmConfigGlobalAgeOut* _configGlobalAgeOut)
+nlmLogEntry::nlmLogEntry(Mib* _mib, nlmConfigLogEntry* _configLogEntry,
+    nlmStatsLogEntry* _statsLogEntry, nlmLogVariableEntry* _logVariableEntry,
+    nlmConfigGlobalEntryLimit* _configGlobalEntryLimit, nlmConfigGlobalAgeOut* _configGlobalAgeOut)
     : MibTable(oidNlmLogEntry, indNlmLogEntry, 2), mib(_mib), configLogEntry(_configLogEntry),
       statsLogEntry(_statsLogEntry), logVariableEntry(_logVariableEntry),
       configGlobalEntryLimit(_configGlobalEntryLimit), configGlobalAgeOut(_configGlobalAgeOut)
