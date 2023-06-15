@@ -43,7 +43,7 @@ snmpTargetAddrTDomain::snmpTargetAddrTDomain(const Oidx& id)
 
 snmpTargetAddrTDomain::~snmpTargetAddrTDomain() { }
 
-MibEntryPtr snmpTargetAddrTDomain::clone()
+MibEntryPtr snmpTargetAddrTDomain::clone() const
 {
     MibEntryPtr other = new snmpTargetAddrTDomain(oid);
 
@@ -115,7 +115,7 @@ snmpTargetAddrTAddress::snmpTargetAddrTAddress(const Oidx& id, mib_access a, Oct
 
 snmpTargetAddrTAddress::~snmpTargetAddrTAddress() { }
 
-MibEntryPtr snmpTargetAddrTAddress::clone()
+MibEntryPtr snmpTargetAddrTAddress::clone() const
 {
     MibEntryPtr other = new snmpTargetAddrTAddress(oid);
 
@@ -261,7 +261,7 @@ snmpTargetAddrParams::snmpTargetAddrParams(const Oidx& id)
 
 snmpTargetAddrParams::~snmpTargetAddrParams() { }
 
-MibEntryPtr snmpTargetAddrParams::clone()
+MibEntryPtr snmpTargetAddrParams::clone() const
 {
     MibEntryPtr other = new snmpTargetAddrParams(oid);
 

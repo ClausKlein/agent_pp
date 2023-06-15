@@ -467,7 +467,7 @@ public:
      */
     void clear();
 
-    Vbx* clone() const { return new Vbx(*this); }
+    [[nodiscard]] Vbx* clone() const { return new Vbx(*this); }
 
     friend bool operator==(const Vbx&, const Vbx&);
 
@@ -576,7 +576,7 @@ public:
      * @return
      *    a pointer to a clone of the receiver.
      */
-    virtual OidxRange* clone() const;
+    [[nodiscard]] virtual OidxRange* clone() const;
 
     /**
      * Compare the receiver with another OID range for equality
@@ -711,7 +711,7 @@ public:
      * @return
      *    a pointer to a copy of the receiver.
      */
-    virtual Pdux* clone() const { return new Pdux(*this); }
+    [[nodiscard]] virtual Pdux* clone() const { return new Pdux(*this); }
 };
 
 /*--------------------------- class Snmpx -----------------------------*/

@@ -87,9 +87,9 @@ public:
     UsmUserTableStatus(const Oidx&, int _base_len, NS_SNMP USM* usm);
     ~UsmUserTableStatus() override;
 
-    MibEntryPtr clone() override;
-    int         set(const Vbx& vb) override;
-    int         unset() override;
+    [[nodiscard]] MibEntryPtr clone() const override;
+    int                       set(const Vbx& vb) override;
+    int                       unset() override;
 
     void deleteUsmUser();
     void addUsmUser();
@@ -272,11 +272,11 @@ public:
     UsmCloneFrom(const Oidx& o, NS_SNMP USM* u);
     ~UsmCloneFrom() override { }
 
-    int         prepare_set_request(Request* req, int& ind) override;
-    void        get_request(Request* req, int ind) override;
-    int         set(const Vbx& vb) override;
-    bool        value_ok(const Vbx& vb) override;
-    MibEntryPtr clone() override;
+    int                       prepare_set_request(Request* req, int& ind) override;
+    void                      get_request(Request* req, int ind) override;
+    int                       set(const Vbx& vb) override;
+    bool                      value_ok(const Vbx& vb) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
 
 private:
     NS_SNMP USM* usm;
@@ -290,13 +290,13 @@ public:
     UsmKeyChange(const Oidx& o, NS_SNMP USM* u);
     ~UsmKeyChange() override;
 
-    int         unset() override;
-    void        initialize(int keylen, int hashfunction, int typeOfKey, UsmKeyChange* ukc);
-    void        get_request(Request* req, int ind) override;
-    int         prepare_set_request(Request* req, int& ind) override;
-    int         set(const Vbx& vb) override;
-    bool        value_ok(const Vbx& vb) override;
-    MibEntryPtr clone() override;
+    int  unset() override;
+    void initialize(int keylen, int hashfunction, int typeOfKey, UsmKeyChange* ukc);
+    void get_request(Request* req, int ind) override;
+    int  prepare_set_request(Request* req, int& ind) override;
+    int  set(const Vbx& vb) override;
+    bool value_ok(const Vbx& vb) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
 
 protected:
     bool process_key_change(NS_SNMP OctetStr& os);
@@ -320,8 +320,8 @@ public:
 
     ~UsmOwnKeyChange() override;
 
-    int         prepare_set_request(Request* req, int& ind) override;
-    MibEntryPtr clone() override;
+    int                       prepare_set_request(Request* req, int& ind) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
 
 private:
 };
@@ -480,8 +480,8 @@ class AGENTPP_DECL usmUserAuthProtocol : public MibLeaf {
 public:
     usmUserAuthProtocol() = delete;
     usmUserAuthProtocol(const Oidx&, NS_SNMP USM* u);
-    bool        value_ok(const Vbx& /*unused*/) override;
-    MibEntryPtr clone() override;
+    bool                      value_ok(const Vbx& /*unused*/) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
 
 private:
     NS_SNMP USM* usm;
@@ -491,9 +491,9 @@ class AGENTPP_DECL usmUserPrivProtocol : public MibLeaf {
 public:
     usmUserPrivProtocol() = delete;
     usmUserPrivProtocol(const Oidx&, NS_SNMP USM* u);
-    bool        value_ok(const Vbx& /*unused*/) override;
-    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
-    MibEntryPtr clone() override;
+    bool                      value_ok(const Vbx& /*unused*/) override;
+    int                       prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
 
 private:
     NS_SNMP USM* usm;

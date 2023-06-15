@@ -82,7 +82,7 @@ VacmContextTable::VacmContextTable()
     // vacmContextName
     add_col(new SnmpAdminString("1", READONLY, new OctetStr(""), VMODE_DEFAULT, 0, 32));
 
-    add_row("0"); // add default context ""
+    (void)add_row("0"); // add default context ""
 }
 
 VacmContextTable::~VacmContextTable() { }
@@ -300,7 +300,7 @@ VacmAccessTableStatus::VacmAccessTableStatus(const Oidx& o, int _base_len)
     base_len = _base_len;
 }
 
-MibEntryPtr VacmAccessTableStatus::clone()
+MibEntryPtr VacmAccessTableStatus::clone() const
 {
     snmpRowStatus* other = new VacmAccessTableStatus(oid, base_len);
 
@@ -679,7 +679,7 @@ int VacmViewTreeFamilyTableStatus::set(const Vbx& vb)
     return snmpRowStatus::set(vb);
 }
 
-MibEntryPtr VacmViewTreeFamilyTableStatus::clone()
+MibEntryPtr VacmViewTreeFamilyTableStatus::clone() const
 {
     snmpRowStatus* other = new VacmViewTreeFamilyTableStatus(oid, base_len);
 

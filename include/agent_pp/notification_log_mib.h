@@ -171,8 +171,8 @@ public:
     nlmConfigLogOperStatus(const Oidx&);
     ~nlmConfigLogOperStatus() override;
 
-    MibEntryPtr clone() override;
-    void        get_request(Request* /*unused*/, int /*unused*/) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
+    void                      get_request(Request* /*unused*/, int /*unused*/) override;
 };
 
 //--AgentGen END
@@ -272,13 +272,13 @@ public:
     nlmConfigLogFilterName(const Oidx&);
     ~nlmConfigLogFilterName() override;
 
-    MibEntryPtr              clone() override;
-    void                     get_request(Request* /*unused*/, int /*unused*/) override;
-    virtual NS_SNMP OctetStr get_state();
-    virtual void             set_state(const NS_SNMP OctetStr&);
-    int                      set(const Vbx& /*vb*/) override;
-    int                      prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
-    bool                     value_ok(const Vbx& /*unused*/) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
+    void                      get_request(Request* /*unused*/, int /*unused*/) override;
+    virtual NS_SNMP OctetStr  get_state();
+    virtual void              set_state(const NS_SNMP OctetStr&);
+    int                       set(const Vbx& /*vb*/) override;
+    int                       prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    bool                      value_ok(const Vbx& /*unused*/) override;
 
     //--AgentGen BEGIN=nlmConfigLogFilterName
     //--AgentGen END
@@ -306,13 +306,13 @@ public:
     nlmConfigLogEntryLimit(const Oidx&);
     ~nlmConfigLogEntryLimit() override;
 
-    MibEntryPtr      clone() override;
-    void             get_request(Request* /*unused*/, int /*unused*/) override;
-    virtual uint32_t get_state();
-    virtual void     set_state(uint32_t);
-    int              set(const Vbx& /*vb*/) override;
-    int              prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
-    bool             value_ok(const Vbx& /*unused*/) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
+    void                      get_request(Request* /*unused*/, int /*unused*/) override;
+    virtual uint32_t          get_state();
+    virtual void              set_state(uint32_t);
+    int                       set(const Vbx& /*vb*/) override;
+    int                       prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    bool                      value_ok(const Vbx& /*unused*/) override;
 
     //--AgentGen BEGIN=nlmConfigLogEntryLimit
     //--AgentGen END
@@ -334,13 +334,13 @@ public:
     nlmConfigLogAdminStatus(const Oidx&);
     ~nlmConfigLogAdminStatus() override;
 
-    MibEntryPtr     clone() override;
-    void            get_request(Request* /*unused*/, int /*unused*/) override;
-    virtual int32_t get_state();
-    virtual void    set_state(int32_t);
-    int             set(const Vbx& /*vb*/) override;
-    int             prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
-    bool            value_ok(const Vbx& /*unused*/) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
+    void                      get_request(Request* /*unused*/, int /*unused*/) override;
+    virtual int32_t           get_state();
+    virtual void              set_state(int32_t);
+    int                       set(const Vbx& /*vb*/) override;
+    int                       prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    bool                      value_ok(const Vbx& /*unused*/) override;
 
     enum labels { e_enabled = 1, e_disabled = 2 };
 
@@ -359,13 +359,13 @@ public:
     nlmConfigLogStorageType(const Oidx&);
     ~nlmConfigLogStorageType() override;
 
-    MibEntryPtr clone() override;
-    void        get_request(Request* /*unused*/, int /*unused*/) override;
-    int32_t     get_state() override;
-    void        set_state(int32_t /*unused*/) override;
-    int         set(const Vbx& /*vb*/) override;
-    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
-    bool        value_ok(const Vbx& /*unused*/) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
+    void                      get_request(Request* /*unused*/, int /*unused*/) override;
+    int32_t                   get_state() const override;
+    void                      set_state(int32_t /*unused*/) override;
+    int                       set(const Vbx& /*vb*/) override;
+    int                       prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    bool                      value_ok(const Vbx& /*unused*/) override;
 
     enum labels { e_other = 1, e_volatile = 2, e_nonVolatile = 3, e_permanent = 4, e_readOnly = 5 };
 
@@ -391,11 +391,11 @@ public:
     nlmConfigLogEntryStatus(const Oidx&);
     ~nlmConfigLogEntryStatus() override;
 
-    MibEntryPtr     clone() override;
-    virtual int32_t get_state();
-    virtual void    set_state(int32_t);
-    int             set(const Vbx& /*unused*/) override;
-    int             prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
+    virtual int32_t           get_state();
+    virtual void              set_state(int32_t);
+    int                       set(const Vbx& /*unused*/) override;
+    int                       prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     enum labels {
         e_active        = 1,

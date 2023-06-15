@@ -132,7 +132,7 @@ mib_type MibLeaf::type() const { return AGENTPP_LEAF; }
  * @return A pointer to the clone.
  */
 
-MibEntryPtr MibLeaf::clone() { return new MibLeaf(*this); }
+MibEntryPtr MibLeaf::clone() const { return new MibLeaf(*this); }
 
 /**
  * Get the syntax of the receiver's value.
@@ -598,7 +598,7 @@ snmpRowStatus::~snmpRowStatus() { }
  * @return A pointer to the clone.
  */
 
-MibEntryPtr snmpRowStatus::clone()
+MibEntryPtr snmpRowStatus::clone() const
 {
     auto* ptr = new snmpRowStatus(oid, access);
 
@@ -1874,7 +1874,7 @@ MibTableRow* MibTable::init_row(const Oidx& ind, Vbx* vbs)
     {
         if (!cur.get()->is_volatile())
         {
-            cur.get()->set_value(vbs[i]);
+            (void)cur.get()->set_value(vbs[i]);
         }
     }
     fire_row_changed(rowCreateAndWait, row, ind);
@@ -2980,12 +2980,12 @@ List<MibTableRow>* MibTable::get_rows(int discriminator)
  * @return
  *    a pointer to a cloned list of the rows in the receiver.
  */
-List<MibTableRow>* MibTable::get_rows_cloned(int discriminator)
+[[nodiscard]] List<MibTableRow>* MibTable::get_rows_cloned(int discriminator)
 {
     return get_rows_cloned(nullptr, discriminator);
 }
 
-List<MibTableRow>* MibTable::get_rows_cloned(const Oidx* prefix, int discriminator)
+[[nodiscard]] List<MibTableRow>* MibTable::get_rows_cloned(const Oidx* prefix, int discriminator)
 {
     Lock const                 start_synch(*this);
     OidListCursor<MibTableRow> cur;

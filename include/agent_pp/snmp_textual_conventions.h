@@ -98,9 +98,9 @@ public:
     SnmpDisplayString(const Oidx&, mib_access, NS_SNMP OctetStr*, bool, int, int);
     ~SnmpDisplayString() override;
 
-    MibEntryPtr clone() override;
-    bool        value_ok(const Vbx& /*unused*/) override;
-    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
+    bool                      value_ok(const Vbx& /*unused*/) override;
+    int                       prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
 protected:
     unsigned int max_size;
@@ -256,8 +256,8 @@ public:
      */
     ~SnmpEngineID() override;
 
-    MibEntryPtr clone() override;
-    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
+    int                       prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * Create a default SnmpEngineID of the form
@@ -321,10 +321,10 @@ public:
     SnmpTagValue(const Oidx&);
     ~SnmpTagValue() override;
 
-    MibEntryPtr clone() override;
-    bool        value_ok(const Vbx& /*unused*/) override;
-    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
-    static bool is_delimiter(char);
+    [[nodiscard]] MibEntryPtr clone() const override;
+    bool                      value_ok(const Vbx& /*unused*/) override;
+    int                       prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    static bool               is_delimiter(char);
 };
 
 /*---------------------- class snmpTargetAddrTagList ---------------------*/
@@ -366,9 +366,9 @@ public:
     SnmpTagList(const Oidx&);
     ~SnmpTagList() override;
 
-    MibEntryPtr  clone() override;
-    bool         value_ok(const Vbx& /*unused*/) override;
-    virtual bool contains(const char*);
+    [[nodiscard]] MibEntryPtr clone() const override;
+    bool                      value_ok(const Vbx& /*unused*/) override;
+    virtual bool              contains(const char*);
 };
 
 /*--------------------------- class TestAndIncr -------------------------*/
@@ -484,7 +484,7 @@ public:
      *
      * @return A integer value between 1 and 5.
      */
-    virtual int32_t get_state();
+    virtual int32_t get_state() const;
 
     /**
      * Sets the type of this storage type. Allowed values are
@@ -494,8 +494,8 @@ public:
      */
     virtual void set_state(int32_t);
 
-    MibEntryPtr clone() override;
-    bool        value_ok(const Vbx& /*unused*/) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
+    bool                      value_ok(const Vbx& /*unused*/) override;
 };
 
 /*---------------------- class StorageTypePolicy ---------------------*/
@@ -712,8 +712,8 @@ public:
      */
     SnmpInt32MinMax(const Oidx&, mib_access, int, int);
 
-    bool        value_ok(const Vbx& /*unused*/) override;
-    MibEntryPtr clone() override;
+    bool                      value_ok(const Vbx& /*unused*/) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
 
     int32_t get_state();
     void    set_state(int32_t);
@@ -776,8 +776,8 @@ public:
      */
     OctetStrMinMax(const Oidx&, mib_access, unsigned int, unsigned int);
 
-    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
-    MibEntryPtr clone() override;
+    int                       prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
 
     /**
      * Return the integer value of the receiver.
@@ -870,7 +870,7 @@ public:
     SnmpSecurityModel(const Oidx&, mib_access, int, int);
     ~SnmpSecurityModel() override;
 
-    MibEntryPtr clone() override;
+    [[nodiscard]] MibEntryPtr clone() const override;
 };
 
 /*------------------------ class SnmpSecurityLevel -----------------------*/
@@ -902,7 +902,7 @@ public:
     SnmpSecurityLevel(const Oidx&, mib_access, int, int);
     ~SnmpSecurityLevel() override;
 
-    MibEntryPtr clone() override;
+    [[nodiscard]] MibEntryPtr clone() const override;
 };
 
 /*------------------ class SnmpMessageProcessingModel -------------------*/
@@ -984,7 +984,7 @@ public:
     SnmpMessageProcessingModel(const Oidx&, mib_access, int, int);
     ~SnmpMessageProcessingModel() override;
 
-    MibEntryPtr clone() override;
+    [[nodiscard]] MibEntryPtr clone() const override;
 };
 
 /*---------------------- class SnmpAdminString ---------------------*/
@@ -1116,7 +1116,7 @@ public:
     SnmpAdminString(const Oidx&, mib_access, NS_SNMP OctetStr*, int, int, int);
     ~SnmpAdminString() override;
 
-    MibEntryPtr clone() override;
+    [[nodiscard]] MibEntryPtr clone() const override;
 
     /**
      * Return the AdminString
@@ -1164,7 +1164,7 @@ public:
 
     bool is_volatile() override { return true; }
 
-    MibEntryPtr clone() override;
+    [[nodiscard]] MibEntryPtr clone() const override;
 
     void update();
 };
@@ -1280,9 +1280,9 @@ public:
      */
     ~DateAndTime() override;
 
-    MibEntryPtr              clone() override;
-    virtual NS_SNMP OctetStr get_state();
-    virtual void             set_state(const NS_SNMP OctetStr&);
+    [[nodiscard]] MibEntryPtr clone() const override;
+    virtual NS_SNMP OctetStr  get_state();
+    virtual void              set_state(const NS_SNMP OctetStr&);
 
     bool is_volatile() override { return true; }
 

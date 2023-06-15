@@ -792,7 +792,7 @@ public:
         }
     }
 
-    T* find(Oidx* oidptr) const
+    [[nodiscard]] T* find(Oidx* oidptr) const
     {
         Pix i = content->seek(oidptr);
 
@@ -1470,7 +1470,7 @@ public:
     /**
      * Clone the array.
      */
-    Array<T>* clone()
+    [[nodiscard]] Array<T>* clone()
     {
         auto* r = new Array<T>();
 

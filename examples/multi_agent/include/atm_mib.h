@@ -238,7 +238,7 @@ public:
     atmInterfaceMaxVpcs(const Oidx& /*id*/);
     ~atmInterfaceMaxVpcs() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -255,7 +255,7 @@ public:
     atmInterfaceMaxVccs(const Oidx& /*id*/);
     ~atmInterfaceMaxVccs() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -280,7 +280,7 @@ public:
     atmInterfaceConfVpcs(const Oidx& /*id*/);
     ~atmInterfaceConfVpcs() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -299,7 +299,7 @@ public:
     atmInterfaceConfVccs(const Oidx& /*id*/);
     ~atmInterfaceConfVccs() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -317,7 +317,7 @@ public:
     atmInterfaceMaxActiveVpiBits(const Oidx& /*id*/);
     ~atmInterfaceMaxActiveVpiBits() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -334,7 +334,7 @@ public:
     atmInterfaceMaxActiveVciBits(const Oidx& /*id*/);
     ~atmInterfaceMaxActiveVciBits() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -354,7 +354,7 @@ public:
     atmInterfaceIlmiVpi(const Oidx& /*id*/);
     ~atmInterfaceIlmiVpi() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -374,7 +374,7 @@ public:
     atmInterfaceIlmiVci(const Oidx& /*id*/);
     ~atmInterfaceIlmiVci() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -391,7 +391,7 @@ public:
     atmInterfaceAddressType(const Oidx& /*id*/);
     ~atmInterfaceAddressType() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -414,7 +414,7 @@ public:
     atmInterfaceAdminAddress(const Oidx& /*id*/);
     ~atmInterfaceAdminAddress() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -436,7 +436,7 @@ public:
     atmInterfaceMyNeighborIpAddress(const Oidx& /*id*/);
     ~atmInterfaceMyNeighborIpAddress() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -464,7 +464,7 @@ public:
     atmInterfaceMyNeighborIfName(const Oidx& /*id*/);
     ~atmInterfaceMyNeighborIfName() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -491,7 +491,7 @@ public:
     atmInterfaceCurrentMaxVpiBits(const Oidx& /*id*/);
     ~atmInterfaceCurrentMaxVpiBits() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -516,7 +516,7 @@ public:
     atmInterfaceCurrentMaxVciBits(const Oidx& /*id*/);
     ~atmInterfaceCurrentMaxVciBits() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -534,7 +534,7 @@ public:
     atmInterfaceSubscrAddress(const Oidx& /*id*/);
     ~atmInterfaceSubscrAddress() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -553,7 +553,7 @@ public:
     atmInterfaceDs3PlcpSEFSs(const Oidx& /*id*/);
     ~atmInterfaceDs3PlcpSEFSs() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -577,7 +577,7 @@ public:
     atmInterfaceDs3PlcpAlarmState(const Oidx& /*id*/);
     ~atmInterfaceDs3PlcpAlarmState() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -592,7 +592,7 @@ public:
     atmInterfaceDs3PlcpUASs(const Oidx& /*id*/);
     ~atmInterfaceDs3PlcpUASs() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -611,7 +611,7 @@ public:
     atmInterfaceOCDEvents(const Oidx& /*id*/);
     ~atmInterfaceOCDEvents() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -632,7 +632,7 @@ public:
     atmInterfaceTCAlarmState(const Oidx& /*id*/);
     ~atmInterfaceTCAlarmState() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -657,7 +657,7 @@ public:
     atmTrafficDescrType(const Oidx& /*id*/);
     ~atmTrafficDescrType() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -675,7 +675,7 @@ public:
     atmTrafficDescrParam1(const Oidx& /*id*/);
     ~atmTrafficDescrParam1() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -693,7 +693,7 @@ public:
     atmTrafficDescrParam2(const Oidx& /*id*/);
     ~atmTrafficDescrParam2() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -711,7 +711,7 @@ public:
     atmTrafficDescrParam3(const Oidx& /*id*/);
     ~atmTrafficDescrParam3() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -729,7 +729,7 @@ public:
     atmTrafficDescrParam4(const Oidx& /*id*/);
     ~atmTrafficDescrParam4() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -747,7 +747,7 @@ public:
     atmTrafficDescrParam5(const Oidx& /*id*/);
     ~atmTrafficDescrParam5() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -775,7 +775,7 @@ public:
     atmTrafficQoSClass(const Oidx& /*id*/);
     ~atmTrafficQoSClass() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -793,7 +793,7 @@ public:
     atmTrafficDescrRowStatus(const Oidx& /*id*/);
     ~atmTrafficDescrRowStatus() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -807,7 +807,7 @@ public:
     atmServiceCategory(const Oidx& /*id*/);
     ~atmServiceCategory() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -829,7 +829,7 @@ public:
     atmTrafficFrameDiscard(const Oidx& /*id*/);
     ~atmTrafficFrameDiscard() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -849,7 +849,7 @@ public:
     atmVplAdminStatus(const Oidx& /*id*/);
     ~atmVplAdminStatus() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -865,7 +865,7 @@ public:
     atmVplOperStatus(const Oidx& /*id*/);
     ~atmVplOperStatus() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -880,7 +880,7 @@ public:
     atmVplLastChange(const Oidx& /*id*/);
     ~atmVplLastChange() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -896,7 +896,7 @@ public:
     atmVplReceiveTrafficDescrIndex(const Oidx& /*id*/);
     ~atmVplReceiveTrafficDescrIndex() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -914,7 +914,7 @@ public:
     atmVplTransmitTrafficDescrIndex(const Oidx& /*id*/);
     ~atmVplTransmitTrafficDescrIndex() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -946,7 +946,7 @@ public:
     atmVplCrossConnectIdentifier(const Oidx& /*id*/);
     ~atmVplCrossConnectIdentifier() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -971,7 +971,7 @@ public:
     atmVplRowStatus(const Oidx& /*id*/);
     ~atmVplRowStatus() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -985,7 +985,7 @@ public:
     atmVplCastType(const Oidx& /*id*/);
     ~atmVplCastType() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -1001,7 +1001,7 @@ public:
     atmVplConnKind(const Oidx& /*id*/);
     ~atmVplConnKind() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -1021,7 +1021,7 @@ public:
     atmVclAdminStatus(const Oidx& /*id*/);
     ~atmVclAdminStatus() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -1037,7 +1037,7 @@ public:
     atmVclOperStatus(const Oidx& /*id*/);
     ~atmVclOperStatus() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -1052,7 +1052,7 @@ public:
     atmVclLastChange(const Oidx& /*id*/);
     ~atmVclLastChange() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -1068,7 +1068,7 @@ public:
     atmVclReceiveTrafficDescrIndex(const Oidx& /*id*/);
     ~atmVclReceiveTrafficDescrIndex() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -1086,7 +1086,7 @@ public:
     atmVclTransmitTrafficDescrIndex(const Oidx& /*id*/);
     ~atmVclTransmitTrafficDescrIndex() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -1109,7 +1109,7 @@ public:
     atmVccAalType(const Oidx& /*id*/);
     ~atmVccAalType() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -1129,7 +1129,7 @@ public:
     atmVccAal5CpcsTransmitSduSize(const Oidx& /*id*/);
     ~atmVccAal5CpcsTransmitSduSize() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -1149,7 +1149,7 @@ public:
     atmVccAal5CpcsReceiveSduSize(const Oidx& /*id*/);
     ~atmVccAal5CpcsReceiveSduSize() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -1172,7 +1172,7 @@ public:
     atmVccAal5EncapsType(const Oidx& /*id*/);
     ~atmVccAal5EncapsType() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -1205,7 +1205,7 @@ public:
     atmVclCrossConnectIdentifier(const Oidx& /*id*/);
     ~atmVclCrossConnectIdentifier() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -1238,7 +1238,7 @@ public:
     atmVclRowStatus(const Oidx& /*id*/);
     ~atmVclRowStatus() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -1252,7 +1252,7 @@ public:
     atmVclCastType(const Oidx& /*id*/);
     ~atmVclCastType() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -1268,7 +1268,7 @@ public:
     atmVclConnKind(const Oidx& /*id*/);
     ~atmVclConnKind() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -1311,7 +1311,7 @@ public:
     atmVpCrossConnectAdminStatus(const Oidx& /*id*/);
     ~atmVpCrossConnectAdminStatus() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -1329,7 +1329,7 @@ public:
     atmVpCrossConnectL2HOperStatus(const Oidx& /*id*/);
     ~atmVpCrossConnectL2HOperStatus() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -1345,7 +1345,7 @@ public:
     atmVpCrossConnectH2LOperStatus(const Oidx& /*id*/);
     ~atmVpCrossConnectH2LOperStatus() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -1361,7 +1361,7 @@ public:
     atmVpCrossConnectL2HLastChange(const Oidx& /*id*/);
     ~atmVpCrossConnectL2HLastChange() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -1377,7 +1377,7 @@ public:
     atmVpCrossConnectH2LLastChange(const Oidx& /*id*/);
     ~atmVpCrossConnectH2LLastChange() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -1400,7 +1400,7 @@ public:
     atmVpCrossConnectRowStatus(const Oidx& /*id*/);
     ~atmVpCrossConnectRowStatus() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -1441,7 +1441,7 @@ public:
     atmVcCrossConnectAdminStatus(const Oidx& /*id*/);
     ~atmVcCrossConnectAdminStatus() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     int         prepare_set_request(Request* /*req*/ /*unused*/, int& /*ind*/ /*unused*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
 };
@@ -1459,7 +1459,7 @@ public:
     atmVcCrossConnectL2HOperStatus(const Oidx& /*id*/);
     ~atmVcCrossConnectL2HOperStatus() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -1475,7 +1475,7 @@ public:
     atmVcCrossConnectH2LOperStatus(const Oidx& /*id*/);
     ~atmVcCrossConnectH2LOperStatus() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -1491,7 +1491,7 @@ public:
     atmVcCrossConnectL2HLastChange(const Oidx& /*id*/);
     ~atmVcCrossConnectL2HLastChange() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -1507,7 +1507,7 @@ public:
     atmVcCrossConnectH2LLastChange(const Oidx& /*id*/);
     ~atmVcCrossConnectH2LLastChange() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -1530,7 +1530,7 @@ public:
     atmVcCrossConnectRowStatus(const Oidx& /*id*/);
     ~atmVcCrossConnectRowStatus() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -1546,7 +1546,7 @@ public:
     aal5VccCrcErrors(const Oidx& /*id*/);
     ~aal5VccCrcErrors() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -1567,7 +1567,7 @@ public:
     aal5VccSarTimeOuts(const Oidx& /*id*/);
     ~aal5VccSarTimeOuts() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**
@@ -1584,7 +1584,7 @@ public:
     aal5VccOverSizedSDUs(const Oidx& /*id*/);
     ~aal5VccOverSizedSDUs() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 };
 
 /**

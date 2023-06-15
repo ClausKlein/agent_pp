@@ -44,7 +44,7 @@ atmInterfaceMaxVpcs::atmInterfaceMaxVpcs(const Oidx& id) : SimMibLeaf(id, READWR
 
 atmInterfaceMaxVpcs::~atmInterfaceMaxVpcs() { }
 
-MibEntryPtr atmInterfaceMaxVpcs::clone()
+MibEntryPtr atmInterfaceMaxVpcs::clone() const
 {
     MibEntryPtr other = new atmInterfaceMaxVpcs(oid);
 
@@ -88,7 +88,7 @@ atmInterfaceMaxVccs::atmInterfaceMaxVccs(const Oidx& id) : SimMibLeaf(id, READWR
 
 atmInterfaceMaxVccs::~atmInterfaceMaxVccs() { }
 
-MibEntryPtr atmInterfaceMaxVccs::clone()
+MibEntryPtr atmInterfaceMaxVccs::clone() const
 {
     MibEntryPtr other = new atmInterfaceMaxVccs(oid);
 
@@ -132,7 +132,7 @@ atmInterfaceConfVpcs::atmInterfaceConfVpcs(const Oidx& id) : SimMibLeaf(id, READ
 
 atmInterfaceConfVpcs::~atmInterfaceConfVpcs() { }
 
-MibEntryPtr atmInterfaceConfVpcs::clone()
+MibEntryPtr atmInterfaceConfVpcs::clone() const
 {
     MibEntryPtr other = new atmInterfaceConfVpcs(oid);
 
@@ -151,7 +151,7 @@ atmInterfaceConfVccs::atmInterfaceConfVccs(const Oidx& id) : SimMibLeaf(id, READ
 
 atmInterfaceConfVccs::~atmInterfaceConfVccs() { }
 
-MibEntryPtr atmInterfaceConfVccs::clone()
+MibEntryPtr atmInterfaceConfVccs::clone() const
 {
     MibEntryPtr other = new atmInterfaceConfVccs(oid);
 
@@ -171,7 +171,7 @@ atmInterfaceMaxActiveVpiBits::atmInterfaceMaxActiveVpiBits(const Oidx& id)
 
 atmInterfaceMaxActiveVpiBits::~atmInterfaceMaxActiveVpiBits() { }
 
-MibEntryPtr atmInterfaceMaxActiveVpiBits::clone()
+MibEntryPtr atmInterfaceMaxActiveVpiBits::clone() const
 {
     MibEntryPtr other = new atmInterfaceMaxActiveVpiBits(oid);
 
@@ -216,7 +216,7 @@ atmInterfaceMaxActiveVciBits::atmInterfaceMaxActiveVciBits(const Oidx& id)
 
 atmInterfaceMaxActiveVciBits::~atmInterfaceMaxActiveVciBits() { }
 
-MibEntryPtr atmInterfaceMaxActiveVciBits::clone()
+MibEntryPtr atmInterfaceMaxActiveVciBits::clone() const
 {
     MibEntryPtr other = new atmInterfaceMaxActiveVciBits(oid);
 
@@ -261,7 +261,7 @@ atmInterfaceIlmiVpi::atmInterfaceIlmiVpi(const Oidx& id)
 
 atmInterfaceIlmiVpi::~atmInterfaceIlmiVpi() { }
 
-MibEntryPtr atmInterfaceIlmiVpi::clone()
+MibEntryPtr atmInterfaceIlmiVpi::clone() const
 {
     MibEntryPtr other = new atmInterfaceIlmiVpi(oid);
 
@@ -306,7 +306,7 @@ atmInterfaceIlmiVci::atmInterfaceIlmiVci(const Oidx& id)
 
 atmInterfaceIlmiVci::~atmInterfaceIlmiVci() { }
 
-MibEntryPtr atmInterfaceIlmiVci::clone()
+MibEntryPtr atmInterfaceIlmiVci::clone() const
 {
     MibEntryPtr other = new atmInterfaceIlmiVci(oid);
 
@@ -351,7 +351,7 @@ atmInterfaceAddressType::atmInterfaceAddressType(const Oidx& id)
 
 atmInterfaceAddressType::~atmInterfaceAddressType() { }
 
-MibEntryPtr atmInterfaceAddressType::clone()
+MibEntryPtr atmInterfaceAddressType::clone() const
 {
     MibEntryPtr other = new atmInterfaceAddressType(oid);
 
@@ -371,7 +371,7 @@ atmInterfaceAdminAddress::atmInterfaceAdminAddress(const Oidx& id)
 
 atmInterfaceAdminAddress::~atmInterfaceAdminAddress() { }
 
-MibEntryPtr atmInterfaceAdminAddress::clone()
+MibEntryPtr atmInterfaceAdminAddress::clone() const
 {
     MibEntryPtr other = new atmInterfaceAdminAddress(oid);
 
@@ -391,7 +391,7 @@ atmInterfaceMyNeighborIpAddress::atmInterfaceMyNeighborIpAddress(const Oidx& id)
 
 atmInterfaceMyNeighborIpAddress::~atmInterfaceMyNeighborIpAddress() { }
 
-MibEntryPtr atmInterfaceMyNeighborIpAddress::clone()
+MibEntryPtr atmInterfaceMyNeighborIpAddress::clone() const
 {
     MibEntryPtr other = new atmInterfaceMyNeighborIpAddress(oid);
 
@@ -429,7 +429,7 @@ atmInterfaceMyNeighborIfName::atmInterfaceMyNeighborIfName(const Oidx& id)
 
 atmInterfaceMyNeighborIfName::~atmInterfaceMyNeighborIfName() { }
 
-MibEntryPtr atmInterfaceMyNeighborIfName::clone()
+MibEntryPtr atmInterfaceMyNeighborIfName::clone() const
 {
     MibEntryPtr other = new atmInterfaceMyNeighborIfName(oid);
 
@@ -473,7 +473,7 @@ atmInterfaceCurrentMaxVpiBits::atmInterfaceCurrentMaxVpiBits(const Oidx& id)
 
 atmInterfaceCurrentMaxVpiBits::~atmInterfaceCurrentMaxVpiBits() { }
 
-MibEntryPtr atmInterfaceCurrentMaxVpiBits::clone()
+MibEntryPtr atmInterfaceCurrentMaxVpiBits::clone() const
 {
     MibEntryPtr other = new atmInterfaceCurrentMaxVpiBits(oid);
 
@@ -493,7 +493,7 @@ atmInterfaceCurrentMaxVciBits::atmInterfaceCurrentMaxVciBits(const Oidx& id)
 
 atmInterfaceCurrentMaxVciBits::~atmInterfaceCurrentMaxVciBits() { }
 
-MibEntryPtr atmInterfaceCurrentMaxVciBits::clone()
+MibEntryPtr atmInterfaceCurrentMaxVciBits::clone() const
 {
     MibEntryPtr other = new atmInterfaceCurrentMaxVciBits(oid);
 
@@ -513,7 +513,7 @@ atmInterfaceSubscrAddress::atmInterfaceSubscrAddress(const Oidx& id)
 
 atmInterfaceSubscrAddress::~atmInterfaceSubscrAddress() { }
 
-MibEntryPtr atmInterfaceSubscrAddress::clone()
+MibEntryPtr atmInterfaceSubscrAddress::clone() const
 {
     MibEntryPtr other = new atmInterfaceSubscrAddress(oid);
 
@@ -557,7 +557,7 @@ atmInterfaceDs3PlcpSEFSs::atmInterfaceDs3PlcpSEFSs(const Oidx& id)
 
 atmInterfaceDs3PlcpSEFSs::~atmInterfaceDs3PlcpSEFSs() { }
 
-MibEntryPtr atmInterfaceDs3PlcpSEFSs::clone()
+MibEntryPtr atmInterfaceDs3PlcpSEFSs::clone() const
 {
     MibEntryPtr other = new atmInterfaceDs3PlcpSEFSs(oid);
 
@@ -577,7 +577,7 @@ atmInterfaceDs3PlcpAlarmState::atmInterfaceDs3PlcpAlarmState(const Oidx& id)
 
 atmInterfaceDs3PlcpAlarmState::~atmInterfaceDs3PlcpAlarmState() { }
 
-MibEntryPtr atmInterfaceDs3PlcpAlarmState::clone()
+MibEntryPtr atmInterfaceDs3PlcpAlarmState::clone() const
 {
     MibEntryPtr other = new atmInterfaceDs3PlcpAlarmState(oid);
 
@@ -597,7 +597,7 @@ atmInterfaceDs3PlcpUASs::atmInterfaceDs3PlcpUASs(const Oidx& id)
 
 atmInterfaceDs3PlcpUASs::~atmInterfaceDs3PlcpUASs() { }
 
-MibEntryPtr atmInterfaceDs3PlcpUASs::clone()
+MibEntryPtr atmInterfaceDs3PlcpUASs::clone() const
 {
     MibEntryPtr other = new atmInterfaceDs3PlcpUASs(oid);
 
@@ -617,7 +617,7 @@ atmInterfaceOCDEvents::atmInterfaceOCDEvents(const Oidx& id)
 
 atmInterfaceOCDEvents::~atmInterfaceOCDEvents() { }
 
-MibEntryPtr atmInterfaceOCDEvents::clone()
+MibEntryPtr atmInterfaceOCDEvents::clone() const
 {
     MibEntryPtr other = new atmInterfaceOCDEvents(oid);
 
@@ -637,7 +637,7 @@ atmInterfaceTCAlarmState::atmInterfaceTCAlarmState(const Oidx& id)
 
 atmInterfaceTCAlarmState::~atmInterfaceTCAlarmState() { }
 
-MibEntryPtr atmInterfaceTCAlarmState::clone()
+MibEntryPtr atmInterfaceTCAlarmState::clone() const
 {
     MibEntryPtr other = new atmInterfaceTCAlarmState(oid);
 
@@ -657,7 +657,7 @@ atmTrafficDescrType::atmTrafficDescrType(const Oidx& id)
 
 atmTrafficDescrType::~atmTrafficDescrType() { }
 
-MibEntryPtr atmTrafficDescrType::clone()
+MibEntryPtr atmTrafficDescrType::clone() const
 {
     MibEntryPtr other = new atmTrafficDescrType(oid);
 
@@ -695,7 +695,7 @@ atmTrafficDescrParam1::atmTrafficDescrParam1(const Oidx& id)
 
 atmTrafficDescrParam1::~atmTrafficDescrParam1() { }
 
-MibEntryPtr atmTrafficDescrParam1::clone()
+MibEntryPtr atmTrafficDescrParam1::clone() const
 {
     MibEntryPtr other = new atmTrafficDescrParam1(oid);
 
@@ -733,7 +733,7 @@ atmTrafficDescrParam2::atmTrafficDescrParam2(const Oidx& id)
 
 atmTrafficDescrParam2::~atmTrafficDescrParam2() { }
 
-MibEntryPtr atmTrafficDescrParam2::clone()
+MibEntryPtr atmTrafficDescrParam2::clone() const
 {
     MibEntryPtr other = new atmTrafficDescrParam2(oid);
 
@@ -771,7 +771,7 @@ atmTrafficDescrParam3::atmTrafficDescrParam3(const Oidx& id)
 
 atmTrafficDescrParam3::~atmTrafficDescrParam3() { }
 
-MibEntryPtr atmTrafficDescrParam3::clone()
+MibEntryPtr atmTrafficDescrParam3::clone() const
 {
     MibEntryPtr other = new atmTrafficDescrParam3(oid);
 
@@ -809,7 +809,7 @@ atmTrafficDescrParam4::atmTrafficDescrParam4(const Oidx& id)
 
 atmTrafficDescrParam4::~atmTrafficDescrParam4() { }
 
-MibEntryPtr atmTrafficDescrParam4::clone()
+MibEntryPtr atmTrafficDescrParam4::clone() const
 {
     MibEntryPtr other = new atmTrafficDescrParam4(oid);
 
@@ -847,7 +847,7 @@ atmTrafficDescrParam5::atmTrafficDescrParam5(const Oidx& id)
 
 atmTrafficDescrParam5::~atmTrafficDescrParam5() { }
 
-MibEntryPtr atmTrafficDescrParam5::clone()
+MibEntryPtr atmTrafficDescrParam5::clone() const
 {
     MibEntryPtr other = new atmTrafficDescrParam5(oid);
 
@@ -885,7 +885,7 @@ atmTrafficQoSClass::atmTrafficQoSClass(const Oidx& id)
 
 atmTrafficQoSClass::~atmTrafficQoSClass() { }
 
-MibEntryPtr atmTrafficQoSClass::clone()
+MibEntryPtr atmTrafficQoSClass::clone() const
 {
     MibEntryPtr other = new atmTrafficQoSClass(oid);
 
@@ -928,7 +928,7 @@ atmTrafficDescrRowStatus::atmTrafficDescrRowStatus(const Oidx& id) : snmpRowStat
 
 atmTrafficDescrRowStatus::~atmTrafficDescrRowStatus() { }
 
-MibEntryPtr atmTrafficDescrRowStatus::clone()
+MibEntryPtr atmTrafficDescrRowStatus::clone() const
 {
     MibEntryPtr other = new atmTrafficDescrRowStatus(oid);
 
@@ -948,7 +948,7 @@ atmServiceCategory::atmServiceCategory(const Oidx& id)
 
 atmServiceCategory::~atmServiceCategory() { }
 
-MibEntryPtr atmServiceCategory::clone()
+MibEntryPtr atmServiceCategory::clone() const
 {
     MibEntryPtr other = new atmServiceCategory(oid);
 
@@ -993,7 +993,7 @@ atmTrafficFrameDiscard::atmTrafficFrameDiscard(const Oidx& id)
 
 atmTrafficFrameDiscard::~atmTrafficFrameDiscard() { }
 
-MibEntryPtr atmTrafficFrameDiscard::clone()
+MibEntryPtr atmTrafficFrameDiscard::clone() const
 {
     MibEntryPtr other = new atmTrafficFrameDiscard(oid);
 
@@ -1038,7 +1038,7 @@ atmVplAdminStatus::atmVplAdminStatus(const Oidx& id)
 
 atmVplAdminStatus::~atmVplAdminStatus() { }
 
-MibEntryPtr atmVplAdminStatus::clone()
+MibEntryPtr atmVplAdminStatus::clone() const
 {
     MibEntryPtr other = new atmVplAdminStatus(oid);
 
@@ -1081,7 +1081,7 @@ atmVplOperStatus::atmVplOperStatus(const Oidx& id) : SimMibLeaf(id, READONLY, ne
 
 atmVplOperStatus::~atmVplOperStatus() { }
 
-MibEntryPtr atmVplOperStatus::clone()
+MibEntryPtr atmVplOperStatus::clone() const
 {
     MibEntryPtr other = new atmVplOperStatus(oid);
 
@@ -1099,7 +1099,7 @@ atmVplLastChange::atmVplLastChange(const Oidx& id) : SimMibLeaf(id, READONLY, ne
 
 atmVplLastChange::~atmVplLastChange() { }
 
-MibEntryPtr atmVplLastChange::clone()
+MibEntryPtr atmVplLastChange::clone() const
 {
     MibEntryPtr other = new atmVplLastChange(oid);
 
@@ -1119,7 +1119,7 @@ atmVplReceiveTrafficDescrIndex::atmVplReceiveTrafficDescrIndex(const Oidx& id)
 
 atmVplReceiveTrafficDescrIndex::~atmVplReceiveTrafficDescrIndex() { }
 
-MibEntryPtr atmVplReceiveTrafficDescrIndex::clone()
+MibEntryPtr atmVplReceiveTrafficDescrIndex::clone() const
 {
     MibEntryPtr other = new atmVplReceiveTrafficDescrIndex(oid);
 
@@ -1164,7 +1164,7 @@ atmVplTransmitTrafficDescrIndex::atmVplTransmitTrafficDescrIndex(const Oidx& id)
 
 atmVplTransmitTrafficDescrIndex::~atmVplTransmitTrafficDescrIndex() { }
 
-MibEntryPtr atmVplTransmitTrafficDescrIndex::clone()
+MibEntryPtr atmVplTransmitTrafficDescrIndex::clone() const
 {
     MibEntryPtr other = new atmVplTransmitTrafficDescrIndex(oid);
 
@@ -1209,7 +1209,7 @@ atmVplCrossConnectIdentifier::atmVplCrossConnectIdentifier(const Oidx& id)
 
 atmVplCrossConnectIdentifier::~atmVplCrossConnectIdentifier() { }
 
-MibEntryPtr atmVplCrossConnectIdentifier::clone()
+MibEntryPtr atmVplCrossConnectIdentifier::clone() const
 {
     MibEntryPtr other = new atmVplCrossConnectIdentifier(oid);
 
@@ -1227,7 +1227,7 @@ atmVplRowStatus::atmVplRowStatus(const Oidx& id) : snmpRowStatus(id, READCREATE)
 
 atmVplRowStatus::~atmVplRowStatus() { }
 
-MibEntryPtr atmVplRowStatus::clone()
+MibEntryPtr atmVplRowStatus::clone() const
 {
     MibEntryPtr other = new atmVplRowStatus(oid);
 
@@ -1247,7 +1247,7 @@ atmVplCastType::atmVplCastType(const Oidx& id)
 
 atmVplCastType::~atmVplCastType() { }
 
-MibEntryPtr atmVplCastType::clone()
+MibEntryPtr atmVplCastType::clone() const
 {
     MibEntryPtr other = new atmVplCastType(oid);
 
@@ -1292,7 +1292,7 @@ atmVplConnKind::atmVplConnKind(const Oidx& id)
 
 atmVplConnKind::~atmVplConnKind() { }
 
-MibEntryPtr atmVplConnKind::clone()
+MibEntryPtr atmVplConnKind::clone() const
 {
     MibEntryPtr other = new atmVplConnKind(oid);
 
@@ -1337,7 +1337,7 @@ atmVclAdminStatus::atmVclAdminStatus(const Oidx& id)
 
 atmVclAdminStatus::~atmVclAdminStatus() { }
 
-MibEntryPtr atmVclAdminStatus::clone()
+MibEntryPtr atmVclAdminStatus::clone() const
 {
     MibEntryPtr other = new atmVclAdminStatus(oid);
 
@@ -1380,7 +1380,7 @@ atmVclOperStatus::atmVclOperStatus(const Oidx& id) : SimMibLeaf(id, READONLY, ne
 
 atmVclOperStatus::~atmVclOperStatus() { }
 
-MibEntryPtr atmVclOperStatus::clone()
+MibEntryPtr atmVclOperStatus::clone() const
 {
     MibEntryPtr other = new atmVclOperStatus(oid);
 
@@ -1398,7 +1398,7 @@ atmVclLastChange::atmVclLastChange(const Oidx& id) : SimMibLeaf(id, READONLY, ne
 
 atmVclLastChange::~atmVclLastChange() { }
 
-MibEntryPtr atmVclLastChange::clone()
+MibEntryPtr atmVclLastChange::clone() const
 {
     MibEntryPtr other = new atmVclLastChange(oid);
 
@@ -1418,7 +1418,7 @@ atmVclReceiveTrafficDescrIndex::atmVclReceiveTrafficDescrIndex(const Oidx& id)
 
 atmVclReceiveTrafficDescrIndex::~atmVclReceiveTrafficDescrIndex() { }
 
-MibEntryPtr atmVclReceiveTrafficDescrIndex::clone()
+MibEntryPtr atmVclReceiveTrafficDescrIndex::clone() const
 {
     MibEntryPtr other = new atmVclReceiveTrafficDescrIndex(oid);
 
@@ -1463,7 +1463,7 @@ atmVclTransmitTrafficDescrIndex::atmVclTransmitTrafficDescrIndex(const Oidx& id)
 
 atmVclTransmitTrafficDescrIndex::~atmVclTransmitTrafficDescrIndex() { }
 
-MibEntryPtr atmVclTransmitTrafficDescrIndex::clone()
+MibEntryPtr atmVclTransmitTrafficDescrIndex::clone() const
 {
     MibEntryPtr other = new atmVclTransmitTrafficDescrIndex(oid);
 
@@ -1508,7 +1508,7 @@ atmVccAalType::atmVccAalType(const Oidx& id)
 
 atmVccAalType::~atmVccAalType() { }
 
-MibEntryPtr atmVccAalType::clone()
+MibEntryPtr atmVccAalType::clone() const
 {
     MibEntryPtr other = new atmVccAalType(oid);
 
@@ -1553,7 +1553,7 @@ atmVccAal5CpcsTransmitSduSize::atmVccAal5CpcsTransmitSduSize(const Oidx& id)
 
 atmVccAal5CpcsTransmitSduSize::~atmVccAal5CpcsTransmitSduSize() { }
 
-MibEntryPtr atmVccAal5CpcsTransmitSduSize::clone()
+MibEntryPtr atmVccAal5CpcsTransmitSduSize::clone() const
 {
     MibEntryPtr other = new atmVccAal5CpcsTransmitSduSize(oid);
 
@@ -1598,7 +1598,7 @@ atmVccAal5CpcsReceiveSduSize::atmVccAal5CpcsReceiveSduSize(const Oidx& id)
 
 atmVccAal5CpcsReceiveSduSize::~atmVccAal5CpcsReceiveSduSize() { }
 
-MibEntryPtr atmVccAal5CpcsReceiveSduSize::clone()
+MibEntryPtr atmVccAal5CpcsReceiveSduSize::clone() const
 {
     MibEntryPtr other = new atmVccAal5CpcsReceiveSduSize(oid);
 
@@ -1643,7 +1643,7 @@ atmVccAal5EncapsType::atmVccAal5EncapsType(const Oidx& id)
 
 atmVccAal5EncapsType::~atmVccAal5EncapsType() { }
 
-MibEntryPtr atmVccAal5EncapsType::clone()
+MibEntryPtr atmVccAal5EncapsType::clone() const
 {
     MibEntryPtr other = new atmVccAal5EncapsType(oid);
 
@@ -1689,7 +1689,7 @@ atmVclCrossConnectIdentifier::atmVclCrossConnectIdentifier(const Oidx& id)
 
 atmVclCrossConnectIdentifier::~atmVclCrossConnectIdentifier() { }
 
-MibEntryPtr atmVclCrossConnectIdentifier::clone()
+MibEntryPtr atmVclCrossConnectIdentifier::clone() const
 {
     MibEntryPtr other = new atmVclCrossConnectIdentifier(oid);
 
@@ -1707,7 +1707,7 @@ atmVclRowStatus::atmVclRowStatus(const Oidx& id) : snmpRowStatus(id, READCREATE)
 
 atmVclRowStatus::~atmVclRowStatus() { }
 
-MibEntryPtr atmVclRowStatus::clone()
+MibEntryPtr atmVclRowStatus::clone() const
 {
     MibEntryPtr other = new atmVclRowStatus(oid);
 
@@ -1727,7 +1727,7 @@ atmVclCastType::atmVclCastType(const Oidx& id)
 
 atmVclCastType::~atmVclCastType() { }
 
-MibEntryPtr atmVclCastType::clone()
+MibEntryPtr atmVclCastType::clone() const
 {
     MibEntryPtr other = new atmVclCastType(oid);
 
@@ -1772,7 +1772,7 @@ atmVclConnKind::atmVclConnKind(const Oidx& id)
 
 atmVclConnKind::~atmVclConnKind() { }
 
-MibEntryPtr atmVclConnKind::clone()
+MibEntryPtr atmVclConnKind::clone() const
 {
     MibEntryPtr other = new atmVclConnKind(oid);
 
@@ -1834,7 +1834,7 @@ atmVpCrossConnectAdminStatus::atmVpCrossConnectAdminStatus(const Oidx& id)
 
 atmVpCrossConnectAdminStatus::~atmVpCrossConnectAdminStatus() { }
 
-MibEntryPtr atmVpCrossConnectAdminStatus::clone()
+MibEntryPtr atmVpCrossConnectAdminStatus::clone() const
 {
     MibEntryPtr other = new atmVpCrossConnectAdminStatus(oid);
 
@@ -1879,7 +1879,7 @@ atmVpCrossConnectL2HOperStatus::atmVpCrossConnectL2HOperStatus(const Oidx& id)
 
 atmVpCrossConnectL2HOperStatus::~atmVpCrossConnectL2HOperStatus() { }
 
-MibEntryPtr atmVpCrossConnectL2HOperStatus::clone()
+MibEntryPtr atmVpCrossConnectL2HOperStatus::clone() const
 {
     MibEntryPtr other = new atmVpCrossConnectL2HOperStatus(oid);
 
@@ -1899,7 +1899,7 @@ atmVpCrossConnectH2LOperStatus::atmVpCrossConnectH2LOperStatus(const Oidx& id)
 
 atmVpCrossConnectH2LOperStatus::~atmVpCrossConnectH2LOperStatus() { }
 
-MibEntryPtr atmVpCrossConnectH2LOperStatus::clone()
+MibEntryPtr atmVpCrossConnectH2LOperStatus::clone() const
 {
     MibEntryPtr other = new atmVpCrossConnectH2LOperStatus(oid);
 
@@ -1919,7 +1919,7 @@ atmVpCrossConnectL2HLastChange::atmVpCrossConnectL2HLastChange(const Oidx& id)
 
 atmVpCrossConnectL2HLastChange::~atmVpCrossConnectL2HLastChange() { }
 
-MibEntryPtr atmVpCrossConnectL2HLastChange::clone()
+MibEntryPtr atmVpCrossConnectL2HLastChange::clone() const
 {
     MibEntryPtr other = new atmVpCrossConnectL2HLastChange(oid);
 
@@ -1939,7 +1939,7 @@ atmVpCrossConnectH2LLastChange::atmVpCrossConnectH2LLastChange(const Oidx& id)
 
 atmVpCrossConnectH2LLastChange::~atmVpCrossConnectH2LLastChange() { }
 
-MibEntryPtr atmVpCrossConnectH2LLastChange::clone()
+MibEntryPtr atmVpCrossConnectH2LLastChange::clone() const
 {
     MibEntryPtr other = new atmVpCrossConnectH2LLastChange(oid);
 
@@ -1958,7 +1958,7 @@ atmVpCrossConnectRowStatus::atmVpCrossConnectRowStatus(const Oidx& id) : snmpRow
 
 atmVpCrossConnectRowStatus::~atmVpCrossConnectRowStatus() { }
 
-MibEntryPtr atmVpCrossConnectRowStatus::clone()
+MibEntryPtr atmVpCrossConnectRowStatus::clone() const
 {
     MibEntryPtr other = new atmVpCrossConnectRowStatus(oid);
 
@@ -1995,7 +1995,7 @@ atmVcCrossConnectAdminStatus::atmVcCrossConnectAdminStatus(const Oidx& id)
 
 atmVcCrossConnectAdminStatus::~atmVcCrossConnectAdminStatus() { }
 
-MibEntryPtr atmVcCrossConnectAdminStatus::clone()
+MibEntryPtr atmVcCrossConnectAdminStatus::clone() const
 {
     MibEntryPtr other = new atmVcCrossConnectAdminStatus(oid);
 
@@ -2040,7 +2040,7 @@ atmVcCrossConnectL2HOperStatus::atmVcCrossConnectL2HOperStatus(const Oidx& id)
 
 atmVcCrossConnectL2HOperStatus::~atmVcCrossConnectL2HOperStatus() { }
 
-MibEntryPtr atmVcCrossConnectL2HOperStatus::clone()
+MibEntryPtr atmVcCrossConnectL2HOperStatus::clone() const
 {
     MibEntryPtr other = new atmVcCrossConnectL2HOperStatus(oid);
 
@@ -2060,7 +2060,7 @@ atmVcCrossConnectH2LOperStatus::atmVcCrossConnectH2LOperStatus(const Oidx& id)
 
 atmVcCrossConnectH2LOperStatus::~atmVcCrossConnectH2LOperStatus() { }
 
-MibEntryPtr atmVcCrossConnectH2LOperStatus::clone()
+MibEntryPtr atmVcCrossConnectH2LOperStatus::clone() const
 {
     MibEntryPtr other = new atmVcCrossConnectH2LOperStatus(oid);
 
@@ -2080,7 +2080,7 @@ atmVcCrossConnectL2HLastChange::atmVcCrossConnectL2HLastChange(const Oidx& id)
 
 atmVcCrossConnectL2HLastChange::~atmVcCrossConnectL2HLastChange() { }
 
-MibEntryPtr atmVcCrossConnectL2HLastChange::clone()
+MibEntryPtr atmVcCrossConnectL2HLastChange::clone() const
 {
     MibEntryPtr other = new atmVcCrossConnectL2HLastChange(oid);
 
@@ -2100,7 +2100,7 @@ atmVcCrossConnectH2LLastChange::atmVcCrossConnectH2LLastChange(const Oidx& id)
 
 atmVcCrossConnectH2LLastChange::~atmVcCrossConnectH2LLastChange() { }
 
-MibEntryPtr atmVcCrossConnectH2LLastChange::clone()
+MibEntryPtr atmVcCrossConnectH2LLastChange::clone() const
 {
     MibEntryPtr other = new atmVcCrossConnectH2LLastChange(oid);
 
@@ -2119,7 +2119,7 @@ atmVcCrossConnectRowStatus::atmVcCrossConnectRowStatus(const Oidx& id) : snmpRow
 
 atmVcCrossConnectRowStatus::~atmVcCrossConnectRowStatus() { }
 
-MibEntryPtr atmVcCrossConnectRowStatus::clone()
+MibEntryPtr atmVcCrossConnectRowStatus::clone() const
 {
     MibEntryPtr other = new atmVcCrossConnectRowStatus(oid);
 
@@ -2137,7 +2137,7 @@ aal5VccCrcErrors::aal5VccCrcErrors(const Oidx& id) : SimMibLeaf(id, READONLY, ne
 
 aal5VccCrcErrors::~aal5VccCrcErrors() { }
 
-MibEntryPtr aal5VccCrcErrors::clone()
+MibEntryPtr aal5VccCrcErrors::clone() const
 {
     MibEntryPtr other = new aal5VccCrcErrors(oid);
 
@@ -2155,7 +2155,7 @@ aal5VccSarTimeOuts::aal5VccSarTimeOuts(const Oidx& id) : SimMibLeaf(id, READONLY
 
 aal5VccSarTimeOuts::~aal5VccSarTimeOuts() { }
 
-MibEntryPtr aal5VccSarTimeOuts::clone()
+MibEntryPtr aal5VccSarTimeOuts::clone() const
 {
     MibEntryPtr other = new aal5VccSarTimeOuts(oid);
 
@@ -2174,7 +2174,7 @@ aal5VccOverSizedSDUs::aal5VccOverSizedSDUs(const Oidx& id) : SimMibLeaf(id, READ
 
 aal5VccOverSizedSDUs::~aal5VccOverSizedSDUs() { }
 
-MibEntryPtr aal5VccOverSizedSDUs::clone()
+MibEntryPtr aal5VccOverSizedSDUs::clone() const
 {
     MibEntryPtr other = new aal5VccOverSizedSDUs(oid);
 

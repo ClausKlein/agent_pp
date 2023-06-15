@@ -161,7 +161,7 @@ public:
      *    a pointer to the found MibTableRow instance, or 0 if such
      *    an entry does not exist.
      */
-    virtual MibTableRow* find(const Oidx&);
+    [[nodiscard]] virtual MibTableRow* find(const Oidx&);
 
     bool is_volatile() override { return true; }
 };

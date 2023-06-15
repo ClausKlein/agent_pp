@@ -198,7 +198,7 @@ public:
      *
      * @return A pointer to the clone.
      */
-    MibEntryPtr clone() override;
+    [[nodiscard]] MibEntryPtr clone() const override;
 
     /**
      * Serialize the value of the receiver.
@@ -228,7 +228,7 @@ public:
      * @return The syntax of a MibLeaf object's value or sNMP_SYNTAX_NULL,
      *         if the object has no value.
      */
-    virtual NS_SNMP SmiUINT32 get_syntax() const;
+    [[nodiscard]] virtual NS_SNMP SmiUINT32 get_syntax() const;
 
     /**
      * Get the value of the receiver.
@@ -236,6 +236,7 @@ public:
      * @return A variable binding that holds the object identifier and the
      *         value of the receiver.
      */
+    // TODO(CK) [[nodiscard]]
     virtual Vbx get_value() const;
 
     /**
@@ -245,6 +246,7 @@ public:
      *            the receiver's value.
      * @return SNMP_ERROR_SUCCESS on success.
      */
+    // TODO(CK) [[nodiscard]]
     virtual int get_value(NS_SNMP SnmpSyntax& s) const { return get_value().get_value(s); }
 
     /**
@@ -253,6 +255,7 @@ public:
      * @param i - A reference to an int the receiver's value will be copied in.
      * @return SNMP_ERROR_SUCCESS on success.
      */
+    // TODO(CK) [[nodiscard]]
     virtual int get_value(int32_t& i) const { return get_value().get_value(i); }
 
     /**
@@ -261,6 +264,7 @@ public:
      * @param i - A reference to a long the receiver's value will be copied in.
      * @return SNMP_ERROR_SUCCESS on success.
      */
+    // TODO(CK) [[nodiscard]]
     virtual int get_value(uint32_t& i) const { return get_value().get_value(i); }
 
     /**
@@ -270,15 +274,17 @@ public:
      *            will be copied in.
      * @return SNMP_ERROR_SUCCESS on success.
      */
+    // TODO(CK) [[nodiscard]]
     virtual int get_value(uint64_t& i) const { return get_value().get_value(i); }
 
     /**
      * Get the value of the receiver.
      *
-     * @param c - A pointer to a string the receiver's value will be copied in.
+     * @param str - A std::string the receiver's value will be copied in.
      * @return SNMP_ERROR_SUCCESS on success.
      */
-    virtual int get_value(char* c) const { return get_value().get_value(c); }
+    // TODO(CK) [[nodiscard]]
+    virtual int get_value(std::string& str) const { return get_value().get_value(str); }
 
     /**
      * Set the value of the receiver by value.
@@ -296,7 +302,7 @@ public:
      * @param l - The new integer value.
      * @deprecated Use set_value(const SnmpSyntax&) instead.
      */
-    virtual void set_value(const uint32_t);
+    [[deprecated]] virtual void set_value(const uint32_t);
 #endif
 
     /**
@@ -307,7 +313,7 @@ public:
      * @return SNMP_ERROR_SUCCESS if the new value has been set,
      *         SNMP_ERROR_WRONG_TYPE or SNMP_ERROR_BAD_VALUE otherwise.
      */
-    virtual int set_value(const Vbx&);
+    [[nodiscard]] virtual int set_value(const Vbx&);
 
     /**
      * Set the value of the receiver by reference.
@@ -437,21 +443,21 @@ public:
      * @return
      *    an integer value != 0 if the receiver has a valid value.
      */
-    int valid() { return validity; }
+    int valid() const { return validity; }
 
     /**
      * Return whether the receiver has a default value.
      *
      * @return true if the receiver has a default value, false otherwise.
      */
-    bool has_default() { return (value_mode & VMODE_DEFAULT) > 0; }
+    bool has_default() const { return (value_mode & VMODE_DEFAULT) > 0; }
 
     /**
      * Return whether the receiver has a default value.
      *
      * @return true if the receiver has a default value, false otherwise.
      */
-    bool is_locked() { return (value_mode & VMODE_LOCKED) > 0; }
+    bool is_locked() const { return (value_mode & VMODE_LOCKED) > 0; }
 
     /**
      * Set the receiver's reference to its table.
@@ -493,7 +499,7 @@ protected:
      *    a integer value describing how to handle the receiver's value.
      * @see constructor for details
      */
-    int get_value_mode() { return value_mode; }
+    int get_value_mode() const { return value_mode; }
 
     /**
      * Sets the flags (bits) that determine the type/stage of validity
@@ -719,7 +725,7 @@ public:
      *
      * @return A pointer to the clone.
      */
-    MibEntryPtr clone() override;
+    [[nodiscard]] MibEntryPtr clone() const override;
 
     /**
      * Check whether the state of the receiver's row may be changed.
@@ -836,7 +842,7 @@ public:
      *
      * @return A pointer to the clone.
      */
-    MibTableRow* clone();
+    [[nodiscard]] MibTableRow* clone();
 
     /**
      * Append a MibLeaf instance to the end of the receiver row.
@@ -1302,7 +1308,7 @@ public:
      * @param ilen - The length of the index measured in subidentifiers.
      * @param a - not used
      */
-    MibTable(const Oidx&, int, bool);
+    [[deprecated]] MibTable(const Oidx&, int, bool);
 #endif
 
     /**
@@ -1342,7 +1348,7 @@ public:
      *
      * @return A pointer to the clone.
      */
-    MibEntryPtr clone() override { return new MibTable(*this); }
+    [[nodiscard]] MibEntryPtr clone() const override { return new MibTable(*this); }
 
     /**
      * Add a column to the receiver table.
@@ -1517,6 +1523,7 @@ public:
      * @param ind The index of the new row.
      * @return A pointer to the added row.
      */
+    // TODO(CK) [[nodiscard]]
     virtual MibTableRow* add_row(const Oidx&);
 
     /**
@@ -1532,6 +1539,7 @@ public:
      * @return
      *   a pointer to the added row.
      */
+    // TODO(CK) [[nodiscard]]
     virtual MibTableRow* init_row(const Oidx&, Vbx*);
 
     /**
@@ -1636,7 +1644,7 @@ public:
      * @return A pointer to the found row, or 0 if a row with the
      *         given index does not exists.
      */
-    MibTableRow* find_index(const Oidx&) const;
+    [[nodiscard]] MibTableRow* find_index(const Oidx&) const;
 
     /**
      * Returns the index part of a given oid (relative to the receiver).
@@ -1698,7 +1706,7 @@ public:
      * @return
      *    a pointer to an OidList instance.
      */
-    OidList<MibTableRow>* rows() { return &content; }
+    [[nodiscard]] OidList<MibTableRow>* rows() { return &content; }
 
     /**
      * Return all (active) rows as a list of pointers to the
@@ -1717,7 +1725,7 @@ public:
      *    means all active rows are returned. If the discriminator is
      *    rowEmpty(0), all rows are returned.
      */
-    virtual List<MibTableRow>* get_rows(int = rowActive);
+    [[nodiscard]] virtual List<MibTableRow>* get_rows(int = rowActive);
 
     /**
      * Return all (active) rows as a list of pointers to the
@@ -1738,7 +1746,7 @@ public:
      * @return
      *    a pointer to a cloned list of the rows in the receiver.
      */
-    virtual List<MibTableRow>* get_rows_cloned(int = rowActive);
+    [[nodiscard]] virtual List<MibTableRow>* get_rows_cloned(int = rowActive);
 
     /**
      * Return those (active) rows as a list of pointers to the
@@ -1762,7 +1770,7 @@ public:
      * @return
      *    a pointer to a cloned list of the rows in the receiver.
      */
-    virtual List<MibTableRow>* get_rows_cloned(const Oidx*, int = rowActive);
+    [[nodiscard]] virtual List<MibTableRow>* get_rows_cloned(const Oidx*, int = rowActive);
 
     /**
      * Return the size of the table measured in rows.
@@ -1878,7 +1886,7 @@ public:
      * @param o - The oid of the object to find.
      * @return A pointer to the found object, 0 otherwise.
      */
-    MibLeaf* find(const Oidx&) const;
+    [[nodiscard]] MibLeaf* find(const Oidx&) const;
 
     /**
      * Find the lexicographical successor MibLeaf object to a given oid.
@@ -1886,7 +1894,7 @@ public:
      * @param o - An oid.
      * @return A pointer to the successor object, 0 otherwise.
      */
-    virtual MibLeaf* find_next(const Oidx&);
+    [[nodiscard]] virtual MibLeaf* find_next(const Oidx&);
 
     /**
      * Find the lexicographical predecessor MibLeaf object to a given oid.
@@ -1894,7 +1902,7 @@ public:
      * @param o - An oid.
      * @return A pointer to the predecessor object, 0 otherwise.
      */
-    MibLeaf* find_prev(const Oidx&);
+    [[nodiscard]] MibLeaf* find_prev(const Oidx&);
 
     /**
      * Return the MibLeaf object of the receiver at a given position.
@@ -1904,7 +1912,7 @@ public:
      * @return A pointer to the MibLeaf object at position (n,m), 0
      *         if n or m are out of range.
      */
-    MibLeaf* get(int, int);
+    [[nodiscard]] MibLeaf* get(int, int);
 
     /**
      * Reinitialize the table. By default, this method does nothing.
@@ -2253,7 +2261,7 @@ public:
     /**
      * Clone this format (needed by ArrayList template).
      */
-    virtual MibConfigFormat* clone() = 0;
+    [[nodiscard]] virtual MibConfigFormat* clone() = 0;
 };
 
 /*----------------------- class MibConfigBER ------------------------*/
@@ -2291,7 +2299,7 @@ public:
      */
     bool load(MibContext* /*unused*/, const NS_SNMP OctetStr& /*unused*/) override;
 
-    MibConfigFormat* clone() override { return new MibConfigBER(); }
+    [[nodiscard]] MibConfigFormat* clone() override { return new MibConfigBER(); }
 };
 
 /*--------------------------- class Mib -----------------------------*/
@@ -2426,7 +2434,7 @@ public:
      *    a RequestList instance.
      */
 #ifndef STATIC_REQUEST_LIST
-    RequestList* get_request_list() { return requestList; }
+    RequestList* get_request_list() const { return requestList; }
 #else
     static RequestList*  get_request_list() { return requestList; }
 #endif

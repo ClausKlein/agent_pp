@@ -53,6 +53,7 @@ modernize-*,\
 performance-*,\
 portability-*,\
 -readability-*,\
+readability-make-member-function-const,\
 -*magic-numbers,\
 -*avoid-c-arrays,\
 -*-no-array-decay,\

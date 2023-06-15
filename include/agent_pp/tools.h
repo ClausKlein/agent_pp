@@ -73,7 +73,7 @@ public:
 
     Timer(time_t life) : timestamp(0), lifetime(life) { }
 
-    time_t get_life() { return lifetime; }
+    time_t get_life() const { return lifetime; }
 
     void set_life(time_t sec) { lifetime = sec; }
 
@@ -83,7 +83,7 @@ public:
 
     void set_timestamp() { time(&timestamp); }
 
-    time_t get_timestamp() { return timestamp; }
+    time_t get_timestamp() const { return timestamp; }
 
 protected:
     time_t timestamp;

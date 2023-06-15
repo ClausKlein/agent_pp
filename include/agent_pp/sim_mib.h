@@ -129,7 +129,7 @@ public:
      *
      * @return A pointer to the clone.
      */
-    MibEntryPtr clone() override;
+    [[nodiscard]] MibEntryPtr clone() const override;
 
     /**
      * Return the maximum access rights for the managed object
@@ -197,7 +197,7 @@ public:
      *
      * @return A pointer to the clone.
      */
-    MibEntryPtr clone() override;
+    [[nodiscard]] MibEntryPtr clone() const override;
 };
 
 /**********************************************************************

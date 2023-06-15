@@ -165,8 +165,8 @@ public:
     snmpTargetAddrTMask(const Oidx&);
     ~snmpTargetAddrTMask() override;
 
-    MibEntryPtr clone() override;
-    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
+    int                       prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * @note The caller has to delete the returned pointer.
@@ -267,7 +267,7 @@ public:
      * @deprecated Use constructor with Mib* parameter instead to avoid
      * usage of static reference snmpTargetAddrEntry::instance.
      */
-    // XXX snmpTargetAddrExtEntry();
+    // [[deprecated]] snmpTargetAddrExtEntry();
 
     /**
      * Create a new snmpTargetAddrExtEntry with providing the reference to
@@ -314,7 +314,7 @@ public:
      * @deprecated Use snmp_community_mib(Mib* mib) instead to avoid static
      * references.
      */
-    snmp_community_mib();
+    [[deprecated]] snmp_community_mib();
 
     /**
      * Create a new SNMP-COMMUNITY-MIB with providing the reference to
