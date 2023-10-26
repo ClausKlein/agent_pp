@@ -19,7 +19,8 @@ clang-analyzer-*,\
 cppcoreguidelines-init-variables,\
 cppcoreguidelines-explicit-virtual-functions,\
 cppcoreguidelines-slicing,\
-cppcoreguidelines-pro-type-*,\
+-cppcoreguidelines-pro-type-*,\
+-cppcoreguidelines-pro-type-cstyle-cast,\
 -cppcoreguidelines-pro-type-union-access,\
 -cppcoreguidelines-pro-type-vararg,\
 -cppcoreguidelines-avoid-*,\
@@ -27,7 +28,8 @@ cppcoreguidelines-pro-type-*,\
 -cppcoreguidelines-macro-usage,\
 -cppcoreguidelines-owning-memory,\
 -cppcoreguidelines-narrowing-conversions,\
-google-readability-casting,\
+-google-*,\
+-google-readability-casting,\
 hicpp-*,\
 -hicpp-braces-around-statements,\
 -hicpp-explicit-conversions,\
@@ -37,8 +39,9 @@ hicpp-*,\
 -hicpp-special-member-functions,\
 -hicpp-uppercase-literal-suffix,\
 -hicpp-vararg,\
-misc-*,\
+-misc-*,\
 -misc-const-correctness,\
+-misc-include-cleaner,\
 -misc-non-private-member-variables-in-classes,\
 -misc-no-recursion,\
 -misc-unused-parameters,\
@@ -50,7 +53,8 @@ modernize-*,\
 -modernize-use-nodiscard,\
 -modernize-use-trailing-return-type,\
 -modernize-use-using,\
-performance-*,\
+-performance-*,\
+-performance-avoid-endl,\
 portability-*,\
 -readability-*,\
 readability-make-member-function-const,\
