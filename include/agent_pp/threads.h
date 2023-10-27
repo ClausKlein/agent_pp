@@ -422,7 +422,7 @@ public:
      * Clone this thread. This method must not be called on
      * running threads.
      */
-    Thread* clone() { return new Thread(get_runnable()); }
+    [[nodiscard]] Thread* clone() { return new Thread(get_runnable()); }
 
 private:
     Runnable*                 runnable;
@@ -574,7 +574,7 @@ public:
      * @return
      *   the stack size of each thread in this thread pool.
      */
-    int stack_size() { return stackSize; }
+    int stack_size() const { return stackSize; }
 
     /**
      * Notifies the thread pool about an idle thread (synchronized).
@@ -610,7 +610,7 @@ public:
      * false if it can execute arbitrary tasks.
      * @since 4.3.0
      */
-    bool is_one_time_execution() { return oneTimeExecution; }
+    bool is_one_time_execution() const { return oneTimeExecution; }
 
     /**
      * Defines if a thread (i.e. task manager) in this pool is used to
@@ -807,7 +807,7 @@ public:
     /**
      * Clone this TaskManager.
      */
-    TaskManager* clone()
+    [[nodiscard]] TaskManager* clone()
     {
         return new TaskManager(new ThreadPool(threadPool->size(), threadPool->stack_size()));
     }

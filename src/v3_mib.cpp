@@ -324,7 +324,7 @@ void UsmUserTableStatus::addUsmUser()
     usm->add_localized_user(engineID, userName, userName, authProt, authKey, privProt, privKey);
 }
 
-MibEntryPtr UsmUserTableStatus::clone()
+MibEntryPtr UsmUserTableStatus::clone() const
 {
     snmpRowStatus* other = new UsmUserTableStatus(oid, base_len, usm);
 
@@ -1200,7 +1200,7 @@ bool UsmCloneFrom::value_ok(const Vbx& vb)
     return true;
 }
 
-MibEntryPtr UsmCloneFrom::clone()
+MibEntryPtr UsmCloneFrom::clone() const
 {
     MibEntryPtr other = new UsmCloneFrom(oid, usm);
 
@@ -1539,7 +1539,7 @@ bool UsmKeyChange::process_key_change(OctetStr& os)
     return true;
 }
 
-MibEntryPtr UsmKeyChange::clone()
+MibEntryPtr UsmKeyChange::clone() const
 {
     MibEntryPtr other =
         new UsmKeyChange(oid, key_len, hash_function, type_of_key, otherKeyChangeObject, usm);
@@ -1551,7 +1551,7 @@ MibEntryPtr UsmKeyChange::clone()
 
 UsmOwnKeyChange::~UsmOwnKeyChange() { }
 
-MibEntryPtr UsmOwnKeyChange::clone()
+MibEntryPtr UsmOwnKeyChange::clone() const
 {
     MibEntryPtr other =
         new UsmOwnKeyChange(oid, key_len, hash_function, type_of_key, otherKeyChangeObject, usm);
@@ -1793,7 +1793,7 @@ bool usmUserAuthProtocol::value_ok(const Vbx& vb)
     return false;
 }
 
-MibEntryPtr usmUserAuthProtocol::clone()
+MibEntryPtr usmUserAuthProtocol::clone() const
 {
     MibEntryPtr other = new usmUserAuthProtocol(oid, usm);
 
@@ -1860,7 +1860,7 @@ bool usmUserPrivProtocol::value_ok(const Vbx& vb)
     return false;
 }
 
-MibEntryPtr usmUserPrivProtocol::clone()
+MibEntryPtr usmUserPrivProtocol::clone() const
 {
     MibEntryPtr other = new usmUserPrivProtocol(oid, usm);
 

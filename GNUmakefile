@@ -3,8 +3,8 @@ BUILD_TYPE?=Debug
 # export CXX=clang++
 # export CC=clang
 
-# export CXX=g++-12
-# export CC=gcc-12
+export CXX=g++
+export CC=gcc
 
 export CMAKE_BUILD_TYPE=$(BUILD_TYPE)
 export CPM_USE_LOCAL_PACKAGES=0
@@ -15,7 +15,7 @@ PROJECT_NAME:=$(shell basename $(CURDIR))
 
 MACHINE:=$(shell uname -m)
 PROJECT_NAME:=$(shell basename $(CURDIR))
-BUILD_DIR?=../build-$(PROJECT_NAME)-$(MACHINE)-$(BUILD_TYPE)
+BUILD_DIR?=./build-$(PROJECT_NAME)-$(MACHINE)-$(BUILD_TYPE)
 
 
 .PHONY: all build test install check clean distclean format
@@ -39,8 +39,8 @@ $(BUILD_DIR):
 	mkdir -p $@ gcovr
 
 check: $(BUILD_DIR)/compile_commands.json
-	#XXX run-clang-tidy -p $(BUILD_DIR) -checks='-*,hicpp-named-parameter,modernize-loop-convert,modernize-return-braced-init-list,modernize-deprecated-headers,modernize-redundant-void-arg,modernize-use-bool-literals,modernize-use-auto,modernize-use-nullptr,misc-const-correctness,cppcoreguidelines-explicit-virtual-functions,cppcoreguidelines-pro-type-*cast' -j1 -fix .
-	run-clang-tidy -p $(BUILD_DIR) -checks='-clang-analyzer-optin.*,-hicpp-multiway-paths-covered,-*-use-equals-delete' .
+	#XXX run-clang-tidy -p $(BUILD_DIR) -checks='-*,hicpp-named-parameter,modernize-loop-convert,modernize-return-braced-init-list,modernize-deprecated-headers,modernize-redundant-void-arg,modernize-use-bool-literals,modernize-use-auto,modernize-use-nullptr,misc-const-correctness,cppcoreguidelines-explicit-virtual-functions,cppcoreguidelines-pro-type-*cast,readability-make-member-function-const' -j1 -fix
+	run-clang-tidy -p $(BUILD_DIR) -checks='-clang-analyzer-optin.*,-hicpp-multiway-paths-covered,-*-use-equals-delete'
 
 clean:
 	rm -f include/agent_pp/agent++.h
@@ -49,7 +49,7 @@ clean:
 	-ninja -C $(BUILD_DIR) clean
 
 distclean: clean
-	rm -rf $(BUILD_DIR) build
+	rm -rf $(BUILD_DIR) cmake-build*
 
 format: distclean
 	find . -name CMakeLists.txt | xargs cmake-format -i

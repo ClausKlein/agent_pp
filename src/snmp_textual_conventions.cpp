@@ -59,7 +59,7 @@ SnmpDisplayString::SnmpDisplayString(
 
 SnmpDisplayString::~SnmpDisplayString() { }
 
-MibEntryPtr SnmpDisplayString::clone()
+MibEntryPtr SnmpDisplayString::clone() const
 {
     MibEntryPtr other = new SnmpDisplayString(
         oid, access, dynamic_cast<OctetStr*>(value->clone()), (value_mode == VMODE_DEFAULT));
@@ -136,7 +136,7 @@ SnmpAdminString::SnmpAdminString(
 
 SnmpAdminString::~SnmpAdminString() { }
 
-MibEntryPtr SnmpAdminString::clone()
+MibEntryPtr SnmpAdminString::clone() const
 {
     MibEntryPtr other = new SnmpAdminString(
         oid, access, dynamic_cast<OctetStr*>(value->clone()), value_mode, min, max);
@@ -155,7 +155,7 @@ SnmpEngineID::SnmpEngineID(const Oidx& id, mib_access a, OctetStr* s, int d) : M
 
 SnmpEngineID::~SnmpEngineID() { }
 
-MibEntryPtr SnmpEngineID::clone()
+MibEntryPtr SnmpEngineID::clone() const
 {
     MibEntryPtr other =
         new SnmpEngineID(oid, access, dynamic_cast<OctetStr*>(value->clone()), value_mode);
@@ -238,7 +238,7 @@ SnmpTagValue::SnmpTagValue(const Oidx& id, mib_access a, OctetStr* v, int m) : M
 
 SnmpTagValue::~SnmpTagValue() { }
 
-MibEntryPtr SnmpTagValue::clone()
+MibEntryPtr SnmpTagValue::clone() const
 {
     MibEntryPtr other = new SnmpTagValue(oid);
 
@@ -310,7 +310,7 @@ SnmpTagList::SnmpTagList(const Oidx& id) : MibLeaf(id, READCREATE, new OctetStr(
 
 SnmpTagList::~SnmpTagList() { }
 
-MibEntryPtr SnmpTagList::clone()
+MibEntryPtr SnmpTagList::clone() const
 {
     MibEntryPtr other = new SnmpTagList(oid, access, nullptr, get_value_mode());
 
@@ -458,7 +458,7 @@ StorageType::StorageType(const Oidx& o, int def)
     : MibLeaf(o, READCREATE, new SnmpInt32(def), VMODE_DEFAULT)
 { }
 
-MibEntryPtr StorageType::clone()
+MibEntryPtr StorageType::clone() const
 {
     MibEntryPtr other = new StorageType(oid, get_state());
 
@@ -500,7 +500,7 @@ void StorageType::set_state(int32_t state)
     }
 }
 
-int32_t StorageType::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
+int32_t StorageType::get_state() const { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
 
 /*--------------------------- class StorageTypeVoter ------------------------*/
 
@@ -659,7 +659,7 @@ SnmpInt32MinMax::SnmpInt32MinMax(const Oidx& o, mib_access _access, int _min, in
     max = _max;
 }
 
-MibEntryPtr SnmpInt32MinMax::clone()
+MibEntryPtr SnmpInt32MinMax::clone() const
 {
     MibEntryPtr other = new SnmpInt32MinMax(oid, access, 0, get_value_mode(), min, max);
 
@@ -704,7 +704,7 @@ OctetStrMinMax::OctetStrMinMax(const Oidx& o, mib_access _access, unsigned int _
     max = _max;
 }
 
-MibEntryPtr OctetStrMinMax::clone()
+MibEntryPtr OctetStrMinMax::clone() const
 {
     MibEntryPtr other = new OctetStrMinMax(oid, access, nullptr, get_value_mode(), min, max);
 
@@ -737,7 +737,7 @@ SnmpMessageProcessingModel::SnmpMessageProcessingModel(const Oidx& id, mib_acces
 
 SnmpMessageProcessingModel::~SnmpMessageProcessingModel() { }
 
-MibEntryPtr SnmpMessageProcessingModel::clone()
+MibEntryPtr SnmpMessageProcessingModel::clone() const
 {
     MibEntryPtr other = new SnmpMessageProcessingModel(oid, access, 0, get_value_mode());
 
@@ -754,7 +754,7 @@ SnmpSecurityLevel::SnmpSecurityLevel(const Oidx& id, mib_access a, int i, int m)
 
 SnmpSecurityLevel::~SnmpSecurityLevel() { }
 
-MibEntryPtr SnmpSecurityLevel::clone()
+MibEntryPtr SnmpSecurityLevel::clone() const
 {
     MibEntryPtr other = new SnmpSecurityLevel(oid, access, 0, get_value_mode());
 
@@ -771,7 +771,7 @@ SnmpSecurityModel::SnmpSecurityModel(const Oidx& id, mib_access a, int i, int m)
 
 SnmpSecurityModel::~SnmpSecurityModel() { }
 
-MibEntryPtr SnmpSecurityModel::clone()
+MibEntryPtr SnmpSecurityModel::clone() const
 {
     MibEntryPtr other = new SnmpSecurityModel(oid, access, 0, get_value_mode());
 
@@ -788,7 +788,7 @@ TimeStamp::~TimeStamp() { }
 
 void TimeStamp::update() TS_SYNCHRONIZED({ *dynamic_cast<TimeTicks*>(value) = sysUpTime::get(); })
 
-    MibEntryPtr TimeStamp::clone()
+    MibEntryPtr TimeStamp::clone() const
 {
     MibEntryPtr other = new TimeStamp(oid, access, value_mode);
 
@@ -828,7 +828,7 @@ DateAndTime::DateAndTime(const Oidx& id, mib_access a, int mode) : MibLeaf(id, a
 
 DateAndTime::~DateAndTime() { }
 
-MibEntryPtr DateAndTime::clone()
+MibEntryPtr DateAndTime::clone() const
 {
     MibEntryPtr other = new DateAndTime(oid, access, value_mode);
 

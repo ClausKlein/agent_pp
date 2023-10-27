@@ -159,7 +159,7 @@ agentppTestSharedTableCreationTime::~agentppTestSharedTableCreationTime()
     //--AgentGen END
 }
 
-MibEntryPtr agentppTestSharedTableCreationTime::clone()
+MibEntryPtr agentppTestSharedTableCreationTime::clone() const
 {
     MibEntryPtr other = new agentppTestSharedTableCreationTime(oid);
 
@@ -193,7 +193,7 @@ agentppTestSharedTableDelay::~agentppTestSharedTableDelay()
     //--AgentGen END
 }
 
-MibEntryPtr agentppTestSharedTableDelay::clone()
+MibEntryPtr agentppTestSharedTableDelay::clone() const
 {
     MibEntryPtr other = new agentppTestSharedTableDelay(oid);
 
@@ -227,7 +227,7 @@ agentppTestSharedTableSession::~agentppTestSharedTableSession()
     //--AgentGen END
 }
 
-MibEntryPtr agentppTestSharedTableSession::clone()
+MibEntryPtr agentppTestSharedTableSession::clone() const
 {
     MibEntryPtr other = new agentppTestSharedTableSession(oid);
 
@@ -260,7 +260,7 @@ agentppTestSharedTableRowStatus::~agentppTestSharedTableRowStatus()
     //--AgentGen END
 }
 
-MibEntryPtr agentppTestSharedTableRowStatus::clone()
+MibEntryPtr agentppTestSharedTableRowStatus::clone() const
 {
     MibEntryPtr other = new agentppTestSharedTableRowStatus(oid);
 
@@ -296,7 +296,7 @@ agentppTestRowCreation::~agentppTestRowCreation()
     //--AgentGen END
 }
 
-MibEntryPtr agentppTestRowCreation::clone()
+MibEntryPtr agentppTestRowCreation::clone() const
 {
     MibEntryPtr other = new agentppTestRowCreation(oid);
 
@@ -331,7 +331,7 @@ agentppTestSparseCol1::~agentppTestSparseCol1()
     //--AgentGen END
 }
 
-MibEntryPtr agentppTestSparseCol1::clone()
+MibEntryPtr agentppTestSparseCol1::clone() const
 {
     MibEntryPtr other = new agentppTestSparseCol1(oid);
 
@@ -422,7 +422,7 @@ agentppTestSparseCol2::~agentppTestSparseCol2()
     //--AgentGen END
 }
 
-MibEntryPtr agentppTestSparseCol2::clone()
+MibEntryPtr agentppTestSparseCol2::clone() const
 {
     MibEntryPtr other = new agentppTestSparseCol2(oid);
 
@@ -513,7 +513,7 @@ agentppTestSparseCol3::~agentppTestSparseCol3()
     //--AgentGen END
 }
 
-MibEntryPtr agentppTestSparseCol3::clone()
+MibEntryPtr agentppTestSparseCol3::clone() const
 {
     MibEntryPtr other = new agentppTestSparseCol3(oid);
 
@@ -608,7 +608,7 @@ agentppTestSparseRowStatus::~agentppTestSparseRowStatus()
     //--AgentGen END
 }
 
-MibEntryPtr agentppTestSparseRowStatus::clone()
+MibEntryPtr agentppTestSparseRowStatus::clone() const
 {
     MibEntryPtr other = new agentppTestSparseRowStatus(oid);
 

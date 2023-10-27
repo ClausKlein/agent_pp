@@ -45,9 +45,9 @@ public:
     snmpTargetAddrTDomain(const Oidx&);
     ~snmpTargetAddrTDomain() override;
 
-    MibEntryPtr clone() override;
-    bool        value_ok(const Vbx& /*unused*/) override;
-    virtual int get_state();
+    [[nodiscard]] MibEntryPtr clone() const override;
+    bool                      value_ok(const Vbx& /*unused*/) override;
+    virtual int               get_state();
 };
 
 /**
@@ -64,8 +64,8 @@ public:
     snmpTargetAddrTAddress(const Oidx&, mib_access, NS_SNMP OctetStr*, int);
     ~snmpTargetAddrTAddress() override;
 
-    MibEntryPtr clone() override;
-    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
+    int                       prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
 
     /**
      * @note The caller has to delete the returned pointer.
@@ -121,9 +121,9 @@ public:
     snmpTargetAddrParams(const Oidx&);
     ~snmpTargetAddrParams() override;
 
-    MibEntryPtr clone() override;
-    int         prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
-    bool        value_ok(const Vbx& /*unused*/) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
+    int                       prepare_set_request(Request* /*unused*/, int& /*unused*/) override;
+    bool                      value_ok(const Vbx& /*unused*/) override;
 };
 
 /**

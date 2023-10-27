@@ -303,7 +303,7 @@ public:
      *
      * @return A transaction id.
      */
-    uint32_t get_transaction_id() { return transaction_id; }
+    uint32_t get_transaction_id() const { return transaction_id; }
 
     /**
      * Return the error status of the receiver request.
@@ -347,7 +347,7 @@ public:
      *
      * @return The request size.
      */
-    int subrequests() { return size; }
+    int subrequests() const { return size; }
 
     /**
      * Return the count of non repetition variable bindings of a
@@ -355,7 +355,7 @@ public:
      *
      * @return The number of non-repetition variable bindings.
      */
-    int get_non_rep() { return non_rep; }
+    int get_non_rep() const { return non_rep; }
 
     /**
      * Return the count of repetition variable bindings of a
@@ -363,7 +363,7 @@ public:
      *
      * @return The number of non-repetition variable bindings.
      */
-    int get_rep() { return repeater; }
+    int get_rep() const { return repeater; }
 
     /**
      * Return the maximum repetition of repetition variable bindings
@@ -371,7 +371,7 @@ public:
      *
      * @return The number of non-repetition variable bindings.
      */
-    int get_max_rep() { return max_rep; }
+    int get_max_rep() const { return max_rep; }
 
     /**
      * Add a repetition row to the GETBULK request PDU.
@@ -667,7 +667,7 @@ public:
      * Default constructor
      * @deprecated Use RequestList(Mib*) instead
      */
-    RequestList();
+    [[deprecated]] RequestList();
 
     /**
      * Create a RequestList for the provided Mib instance. Target and
@@ -702,7 +702,7 @@ public:
      * @return
      *    true if source address validation is activated.
      */
-    bool get_address_validation() { return sourceAddressValidation; }
+    bool get_address_validation() const { return sourceAddressValidation; }
 
     /**
      * Set the Snmpx session to be used for incoming requests.

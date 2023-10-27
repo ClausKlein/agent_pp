@@ -255,6 +255,7 @@ int main()
     assert(strlen(firstTestString)
         == strlen(first->as_string(true).get_printable_clear()));   // NOTE: withoutLength == true
     assert(StringIndex == *first);
+    assert(firstTestString == first->as_string(true).as_string());
 
     std::cout << second->as_string().get_printable_clear() << std::endl;
     assert(2 == (*second)[0]);

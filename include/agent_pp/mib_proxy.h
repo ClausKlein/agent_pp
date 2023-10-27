@@ -127,7 +127,7 @@ public:
      * @return
      *    a pointer to a clone of the receiver
      */
-    virtual MibEntry* clone() { return new MibProxy(*this); }
+    [[nodiscard]] virtual MibEntry* clone() { return new MibProxy(*this); }
 
     /**
      * Return the immediate successor of the greatest object identifier
@@ -279,7 +279,7 @@ public:
      * @return
      *    a pointer to a clone of the receiver
      */
-    virtual MibEntry* clone() { return new MibProxyV3(*this); }
+    [[nodiscard]] virtual MibEntry* clone() { return new MibProxyV3(*this); }
 
     /**
      * Return the immediate successor of the greatest object identifier

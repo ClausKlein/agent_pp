@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 3.21...3.26)
+cmake_minimum_required(VERSION 3.21...3.27)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # NOTE: We need LANGUAGE C too for libdes. It may be required to build at Windows! CK
 project(
   agent_pp
-  VERSION 4.5.1.10
+  VERSION 4.5.1.11
   LANGUAGES CXX C
 )
 
@@ -194,18 +194,21 @@ endif()
 
 include(CPM)
 
-CPMAddPackage("gh:aminya/project_options@0.27.1")
+CPMAddPackage("gh:aminya/project_options@0.32.2")
 list(APPEND CMAKE_MODULE_PATH ${ProjectOptions_SRC_DIR})
 
 set(SNMP_PP_VERSION 3.4.7)
 option(SNMP_PP_LOGGING "build all libaries with logging" NO)
 CPMAddPackage(
   NAME snmp_pp
-  # GIT_TAG 6d3318ad76a2d987da6aeb867837789de3d5cf01
-  VERSION ${SNMP_PP_VERSION}.13
+  VERSION ${SNMP_PP_VERSION}.14
   GITHUB_REPOSITORY ClausKlein/snmp_pp
+  SYSTEM ON
   OPTIONS "SNMP_PP_EXAMPLES YES" "CMAKE_SKIP_INSTALL_RULES NO"
 )
+if(TARGET snmp_pp)
+  target_disable_clang_tidy(snmp_pp)
+endif()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake_config.h.in config.h)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake_libagent.h.in libagent.h)
@@ -448,7 +451,7 @@ endif()
 
 install(FILES ${MY_HEADER_LIB_FILES} DESTINATION include)
 
-CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.10.0")
+CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.11.0")
 packageProject(
   # the name of the target to export
   NAME ${PROJECT_NAME}

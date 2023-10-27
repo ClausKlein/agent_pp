@@ -195,7 +195,7 @@ public:
      *    be used.
      * @since 3.5
      */
-    unsigned int get_timeout() { return timeout; }
+    unsigned int get_timeout() const { return timeout; }
 
 protected:
     List<MibEntry>    content;
@@ -300,7 +300,7 @@ public:
      *    the input pointer, or 0 if the object could not be
      *    registered.
      */
-    virtual MibEntry* add(MibEntry*);
+    [[nodiscard]] virtual MibEntry* add(MibEntry*);
 
     /**
      * Unregister a MIB object from the context.
@@ -314,7 +314,7 @@ public:
      *    a pointer to the removed object, or 0 if such an object
      *    could not be found.
      */
-    virtual MibEntry* remove(const Oidx&);
+    [[nodiscard]] virtual MibEntry* remove(const Oidx&);
 
     /**
      * Get the MIB object with a given object id.
@@ -325,7 +325,7 @@ public:
      *    a pointer to a MibEntry instance if an object with the
      *    given key could be found or 0 otherwise.
      */
-    virtual MibEntry* get(const Oidx&);
+    [[nodiscard]] virtual MibEntry* get(const Oidx&);
 
     /**
      * Get the MIB entry with a given object id if such an entry
@@ -337,7 +337,7 @@ public:
      *    a pointer to a MibEntry instance if an object could be
      *    found or 0 otherwise.
      */
-    virtual MibEntry* seek(const Oidx&);
+    [[nodiscard]] virtual MibEntry* seek(const Oidx&);
 
     /**
      * Find a MIB entry with a given oid.
@@ -351,7 +351,7 @@ public:
      *    SNMP_ERROR_SUCCESS if an entry has been found and
      *    SNMP_ERROR_NO_SUCH_NAME otherwise.
      */
-    virtual int find(const Oidx&, MibEntryPtr&);
+    [[nodiscard]] virtual int find(const Oidx&, MibEntryPtr&);
 
     /**
      * Find a MIB entry with an oid less or equal to a given oid.
@@ -365,7 +365,7 @@ public:
      *    SNMP_ERROR_SUCCESS if an entry has been found and
      *    SNMP_ERROR_NO_SUCH_NAME otherwise.
      */
-    virtual int find_lower(const Oidx&, MibEntryPtr&);
+    [[nodiscard]] virtual int find_lower(const Oidx&, MibEntryPtr&);
 
     /**
      * Find a MIB entry with an oid greater or equal to a given oid.
@@ -379,7 +379,7 @@ public:
      *    SNMP_ERROR_SUCCESS if an entry has been found and
      *    SNMP_ERROR_NO_SUCH_NAME otherwise.
      */
-    virtual int find_upper(const Oidx&, MibEntryPtr&);
+    [[nodiscard]] virtual int find_upper(const Oidx&, MibEntryPtr&);
 
     /**
      * Find the successor of a given MibEntry.
@@ -391,7 +391,7 @@ public:
      *    a pointer to the successor MibEntry if the specified object
      *    could be found, 0 otherwise.
      */
-    virtual MibEntry* find_next(const Oidx&);
+    [[nodiscard]] virtual MibEntry* find_next(const Oidx&);
 
     /**
      * Get a OidListCursor at the first element of the receiver.
@@ -399,7 +399,7 @@ public:
      * @return
      *    an OidListCursor instance.
      */
-    OidListCursor<MibEntry> get_content();
+    [[nodiscard]] OidListCursor<MibEntry> get_content();
 
     /**
      * Get a Cursor at the first element of registered groups.
@@ -407,7 +407,7 @@ public:
      * @return
      *    a ListCursor instance.
      */
-    OidListCursor<MibGroup> get_groups();
+    [[nodiscard]] OidListCursor<MibGroup> get_groups();
 
     /**
      * Find a group with a given OID.
@@ -418,7 +418,7 @@ public:
      * @return
      *    a pointer a MibGroup instance, or 0 if no such group exists.
      */
-    virtual MibGroup* find_group(const Oidx&);
+    [[nodiscard]] virtual MibGroup* find_group(const Oidx&);
 
     /**
      * Remove a group and all its entries from the context.
@@ -442,7 +442,7 @@ public:
      *    a pointer to the MibGroup instance that contains an
      *    instance with the given oid, or 0 otherwise.
      */
-    virtual MibGroup* find_group_of(const Oidx&);
+    [[nodiscard]] virtual MibGroup* find_group_of(const Oidx&);
 
     /**
      * Get the name of the context.
@@ -450,7 +450,7 @@ public:
      * @return
      *    an OctetStr instance.
      */
-    NS_SNMP OctetStr get_name() { return context; }
+    [[nodiscard]] NS_SNMP OctetStr get_name() { return context; }
 
     /**
      * Get the number of MibGroup instances in this context.
@@ -470,7 +470,7 @@ public:
      *    a pointer to the n-th MibGroup of this context or
      *    0 if n is out of range.
      */
-    MibGroup* get_group(int n)
+    [[nodiscard]] MibGroup* get_group(int n)
     {
         return ((n >= 0) && (n < groups.size())) ? groups.getNth(n) : nullptr;
     }
