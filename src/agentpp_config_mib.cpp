@@ -251,7 +251,7 @@ agentppCfgStoragePath::~agentppCfgStoragePath()
     //--AgentGen END
 }
 
-MibEntryPtr agentppCfgStoragePath::clone()
+MibEntryPtr agentppCfgStoragePath::clone() const
 {
     MibEntryPtr other = new agentppCfgStoragePath(oid);
 
@@ -376,7 +376,7 @@ agentppCfgStorageFormat::~agentppCfgStorageFormat()
     //--AgentGen END
 }
 
-MibEntryPtr agentppCfgStorageFormat::clone()
+MibEntryPtr agentppCfgStorageFormat::clone() const
 {
     MibEntryPtr other = new agentppCfgStorageFormat(oid);
 
@@ -490,7 +490,7 @@ agentppCfgStorageOperation::~agentppCfgStorageOperation()
     //--AgentGen END
 }
 
-MibEntryPtr agentppCfgStorageOperation::clone()
+MibEntryPtr agentppCfgStorageOperation::clone() const
 {
     MibEntryPtr other = new agentppCfgStorageOperation(oid);
 
@@ -614,7 +614,7 @@ agentppCfgStorageStorageType::~agentppCfgStorageStorageType()
     //--AgentGen END
 }
 
-MibEntryPtr agentppCfgStorageStorageType::clone()
+MibEntryPtr agentppCfgStorageStorageType::clone() const
 {
     MibEntryPtr other = new agentppCfgStorageStorageType(oid);
 
@@ -632,7 +632,7 @@ void agentppCfgStorageStorageType::get_request(Request* req, int ind)
     StorageType::get_request(req, ind);
 }
 
-int32_t agentppCfgStorageStorageType::get_state()
+int32_t agentppCfgStorageStorageType::get_state() const
 {
     //--AgentGen BEGIN=agentppCfgStorageStorageType::get_state
     //--AgentGen END
@@ -689,7 +689,7 @@ agentppCfgStorageStatus::~agentppCfgStorageStatus()
     //--AgentGen END
 }
 
-MibEntryPtr agentppCfgStorageStatus::clone()
+MibEntryPtr agentppCfgStorageStatus::clone() const
 {
     MibEntryPtr other = new agentppCfgStorageStatus(oid);
 

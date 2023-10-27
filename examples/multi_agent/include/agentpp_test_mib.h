@@ -153,7 +153,7 @@ public:
     agentppTestSharedTableCreationTime(const Oidx& /*id*/);
     ~agentppTestSharedTableCreationTime() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 
     //--AgentGen BEGIN=agentppTestSharedTableCreationTime
     //--AgentGen END
@@ -171,7 +171,7 @@ public:
     agentppTestSharedTableDelay(const Oidx& /*id*/);
     ~agentppTestSharedTableDelay() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 
     //--AgentGen BEGIN=agentppTestSharedTableDelay
     //--AgentGen END
@@ -189,7 +189,7 @@ public:
     agentppTestSharedTableSession(const Oidx& /*id*/);
     ~agentppTestSharedTableSession() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 
     //--AgentGen BEGIN=agentppTestSharedTableSession
     //--AgentGen END
@@ -206,7 +206,7 @@ public:
     agentppTestSharedTableRowStatus(const Oidx& /*id*/);
     ~agentppTestSharedTableRowStatus() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 
     enum labels {
         e_active        = 1,
@@ -235,7 +235,7 @@ public:
     agentppTestRowCreation(const Oidx& /*id*/);
     ~agentppTestRowCreation() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
 
     //--AgentGen BEGIN=agentppTestRowCreation
     //--AgentGen END
@@ -254,7 +254,7 @@ public:
     agentppTestSparseCol1(const Oidx& /*id*/);
     ~agentppTestSparseCol1() override;
 
-    MibEntryPtr     clone() override;
+    MibEntryPtr     clone() const override;
     void            get_request(Request* /*req*/ /*unused*/, int /*ind*/ /*unused*/) override;
     virtual int32_t get_state();
     virtual void    set_state(int32_t /*l*/);
@@ -279,7 +279,7 @@ public:
     agentppTestSparseCol2(const Oidx& /*id*/);
     ~agentppTestSparseCol2() override;
 
-    MibEntryPtr      clone() override;
+    MibEntryPtr      clone() const override;
     void             get_request(Request* /*req*/ /*unused*/, int /*ind*/ /*unused*/) override;
     virtual uint32_t get_state();
     virtual void     set_state(uint32_t /*l*/);
@@ -304,7 +304,7 @@ public:
     agentppTestSparseCol3(const Oidx& /*id*/);
     ~agentppTestSparseCol3() override;
 
-    MibEntryPtr              clone() override;
+    MibEntryPtr              clone() const override;
     void                     get_request(Request* /*req*/ /*unused*/, int /*ind*/ /*unused*/) override;
     virtual NS_SNMP OctetStr get_state();
     virtual void             set_state(const NS_SNMP OctetStr& /*s*/);
@@ -327,7 +327,7 @@ public:
     agentppTestSparseRowStatus(const Oidx& /*id*/);
     ~agentppTestSparseRowStatus() override;
 
-    MibEntryPtr     clone() override;
+    MibEntryPtr     clone() const override;
     virtual int32_t get_state();
     virtual void    set_state(int32_t /*l*/);
     int             set(const Vbx& /*unused*/ /*vb*/) override;

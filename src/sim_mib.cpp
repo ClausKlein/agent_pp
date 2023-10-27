@@ -46,7 +46,7 @@ SimMibLeaf::SimMibLeaf(const SimMibLeaf& other) : MibLeaf(other) { }
 
 SimMibLeaf::~SimMibLeaf() { }
 
-MibEntryPtr SimMibLeaf::clone()
+MibEntryPtr SimMibLeaf::clone() const
 {
     MibEntryPtr other = new SimMibLeaf(*this);
 
@@ -86,7 +86,7 @@ int SimMibTable::check_creation(Request* req, int& ind)
     }
 }
 
-MibEntryPtr SimRowStatus::clone()
+MibEntryPtr SimRowStatus::clone() const
 {
     MibEntryPtr other = new SimRowStatus(oid, access);
 

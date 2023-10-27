@@ -86,7 +86,7 @@ public:
      * @return
      *    a pointer to a clone of the MibComplexEntry object.
      */
-    MibEntry* clone() override = 0;
+    [[nodiscard]] MibEntry* clone() const override = 0;
 
     /**
      * Return the successor of a given object identifier within the
@@ -290,7 +290,7 @@ public:
      * @param other
      *    another MibComplexEntry instance.
      */
-    MibStaticTable(MibStaticTable&);
+    MibStaticTable(const MibStaticTable&);
 
     /**
      * Destructor
@@ -303,7 +303,7 @@ public:
      * @return
      *    a pointer to a clone of the MibStaticTable object.
      */
-    MibEntry* clone() override { return new MibStaticTable(*this); }
+    [[nodiscard]] MibEntry* clone() const override { return new MibStaticTable(*this); }
 
     /**
      * Add an instance to the table. If such an instance already

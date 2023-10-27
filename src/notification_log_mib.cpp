@@ -94,7 +94,7 @@ void nlmConfigLogOperStatus::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-MibEntryPtr nlmConfigLogOperStatus::clone()
+MibEntryPtr nlmConfigLogOperStatus::clone() const
 {
     MibEntryPtr other = new nlmConfigLogOperStatus(oid);
 
@@ -268,7 +268,7 @@ nlmConfigLogFilterName::~nlmConfigLogFilterName()
     //--AgentGen END
 }
 
-MibEntryPtr nlmConfigLogFilterName::clone()
+MibEntryPtr nlmConfigLogFilterName::clone() const
 {
     MibEntryPtr other = new nlmConfigLogFilterName(oid);
 
@@ -362,7 +362,7 @@ nlmConfigLogEntryLimit::~nlmConfigLogEntryLimit()
     //--AgentGen END
 }
 
-MibEntryPtr nlmConfigLogEntryLimit::clone()
+MibEntryPtr nlmConfigLogEntryLimit::clone() const
 {
     MibEntryPtr other = new nlmConfigLogEntryLimit(oid);
 
@@ -439,7 +439,7 @@ nlmConfigLogAdminStatus::~nlmConfigLogAdminStatus()
     //--AgentGen END
 }
 
-MibEntryPtr nlmConfigLogAdminStatus::clone()
+MibEntryPtr nlmConfigLogAdminStatus::clone() const
 {
     MibEntryPtr other = new nlmConfigLogAdminStatus(oid);
 
@@ -526,7 +526,7 @@ nlmConfigLogStorageType::~nlmConfigLogStorageType()
     //--AgentGen END
 }
 
-MibEntryPtr nlmConfigLogStorageType::clone()
+MibEntryPtr nlmConfigLogStorageType::clone() const
 {
     MibEntryPtr other = new nlmConfigLogStorageType(oid);
 
@@ -545,7 +545,10 @@ void nlmConfigLogStorageType::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-int32_t nlmConfigLogStorageType::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
+int32_t nlmConfigLogStorageType::get_state() const
+{
+    return (int32_t) * (dynamic_cast<SnmpInt32*>(value));
+}
 
 void nlmConfigLogStorageType::set_state(int32_t l)
 {
@@ -614,7 +617,7 @@ nlmConfigLogEntryStatus::~nlmConfigLogEntryStatus()
     //--AgentGen END
 }
 
-MibEntryPtr nlmConfigLogEntryStatus::clone()
+MibEntryPtr nlmConfigLogEntryStatus::clone() const
 {
     MibEntryPtr other = new nlmConfigLogEntryStatus(oid);
 

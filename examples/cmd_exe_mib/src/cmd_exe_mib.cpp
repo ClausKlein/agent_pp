@@ -165,7 +165,7 @@ cmdExecutionCmdConfigLine::cmdExecutionCmdConfigLine(const Oidx& id)
 
 cmdExecutionCmdConfigLine::~cmdExecutionCmdConfigLine() { }
 
-MibEntryPtr cmdExecutionCmdConfigLine::clone()
+MibEntryPtr cmdExecutionCmdConfigLine::clone() const
 {
     MibEntryPtr other = new cmdExecutionCmdConfigLine(oid);
 
@@ -230,7 +230,7 @@ cmdExecutionCmdName::cmdExecutionCmdName(const Oidx& id)
 
 cmdExecutionCmdName::~cmdExecutionCmdName() { }
 
-MibEntryPtr cmdExecutionCmdName::clone()
+MibEntryPtr cmdExecutionCmdName::clone() const
 {
     MibEntryPtr other = new cmdExecutionCmdName(oid);
 
@@ -271,7 +271,7 @@ cmdExecutionCmdStatus::cmdExecutionCmdStatus(const Oidx& id)
 
 cmdExecutionCmdStatus::~cmdExecutionCmdStatus() { }
 
-MibEntryPtr cmdExecutionCmdStatus::clone()
+MibEntryPtr cmdExecutionCmdStatus::clone() const
 {
     MibEntryPtr other = new cmdExecutionCmdStatus(oid);
 
@@ -304,7 +304,7 @@ cmdExecutionCmdRunTime::cmdExecutionCmdRunTime(const Oidx& id)
 
 cmdExecutionCmdRunTime::~cmdExecutionCmdRunTime() { }
 
-MibEntryPtr cmdExecutionCmdRunTime::clone()
+MibEntryPtr cmdExecutionCmdRunTime::clone() const
 {
     MibEntryPtr other = new cmdExecutionCmdRunTime(oid);
 
@@ -350,7 +350,7 @@ cmdExecutionCmdRowStatus::cmdExecutionCmdRowStatus(const Oidx& id) : snmpRowStat
 
 cmdExecutionCmdRowStatus::~cmdExecutionCmdRowStatus() { }
 
-MibEntryPtr cmdExecutionCmdRowStatus::clone()
+MibEntryPtr cmdExecutionCmdRowStatus::clone() const
 {
     MibEntryPtr other = new cmdExecutionCmdRowStatus(oid);
 
@@ -444,7 +444,7 @@ cmdExecutionOutputLine::cmdExecutionOutputLine(const Oidx& id) : MibLeaf(id, REA
 
 cmdExecutionOutputLine::~cmdExecutionOutputLine() { }
 
-MibEntryPtr cmdExecutionOutputLine::clone()
+MibEntryPtr cmdExecutionOutputLine::clone() const
 {
     MibEntryPtr other = new cmdExecutionOutputLine(oid);
 

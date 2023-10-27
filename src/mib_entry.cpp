@@ -98,7 +98,7 @@ int MibEntry::operator==(const MibEntry& other) const { return oid == other.oid;
  *
  * @return A pointer to a clone of the MibEntry object.
  */
-MibEntryPtr MibEntry::clone()
+MibEntryPtr MibEntry::clone() const
 {
     auto                 aClone = new MibEntry(oid, access);
     ListCursor<MibEntry> cur;

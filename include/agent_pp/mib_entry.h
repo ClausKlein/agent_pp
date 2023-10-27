@@ -116,7 +116,7 @@ public:
      *
      * @return A pointer to a clone of the MibEntry object.
      */
-    virtual MibEntry* clone();
+    [[nodiscard]] virtual MibEntry* clone() const;
 
     /**
      * Return the successor of a given object identifier within the
@@ -274,7 +274,8 @@ public:
      * Wrapper function for register_for_notifications.
      * @deprecated
      */
-    // XXX virtual void add_change_notification(MibEntry* e) { register_for_notifications(e); }
+    // [[deprecated]] virtual void add_change_notification(MibEntry* e) {
+    // register_for_notifications(e); }
 
     /**
      * Receive a notification about changes to a managed object. This

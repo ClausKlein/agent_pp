@@ -59,7 +59,7 @@ public:
      * @deprecated Use NotificationOriginator(Mib*) instead to avoid static
      * references.
      */
-    NotificationOriginator();
+    [[deprecated]] NotificationOriginator();
 
     /**
      * Constructs a notification originator instance for using a static

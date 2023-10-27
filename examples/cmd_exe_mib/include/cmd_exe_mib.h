@@ -37,7 +37,7 @@ public:
     cmdExecutionCmdConfigName(const Oidx&);
     ~cmdExecutionCmdConfigName() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     void        get_request(Request* /*unused*/, int /*unused*/) override;
 };
 
@@ -52,7 +52,7 @@ public:
     cmdExecutionCmdConfigLine(const Oidx& /*id*/);
     ~cmdExecutionCmdConfigLine() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     void        get_request(Request* /*req*/ /*unused*/, int /*ind*/ /*unused*/) override;
     int         set(const Vbx& /*vb*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
@@ -90,7 +90,7 @@ public:
     cmdExecutionCmdIndex(const Oidx&);
     ~cmdExecutionCmdIndex() override;
 
-    MibEntryPtr     clone() override;
+    MibEntryPtr     clone() const override;
     void            get_request(Request* /*unused*/, int /*unused*/) override;
     virtual int32_t get_state();
     virtual void    set_state(int32_t);
@@ -108,7 +108,7 @@ public:
     cmdExecutionCmdName(const Oidx& /*id*/);
     ~cmdExecutionCmdName() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     void        get_request(Request* /*req*/ /*unused*/, int /*ind*/ /*unused*/) override;
     int         set(const Vbx& /*vb*/) override;
     bool        value_ok(const Vbx& /*unused*/ /*vb*/) override;
@@ -125,7 +125,7 @@ public:
     cmdExecutionCmdStatus(const Oidx& /*id*/);
     ~cmdExecutionCmdStatus() override;
 
-    MibEntryPtr     clone() override;
+    MibEntryPtr     clone() const override;
     void            get_request(Request* /*req*/ /*unused*/, int /*ind*/ /*unused*/) override;
     virtual int32_t get_state();
     virtual void    set_state(int32_t /*l*/);
@@ -142,7 +142,7 @@ public:
     cmdExecutionCmdRunTime(const Oidx& /*id*/);
     ~cmdExecutionCmdRunTime() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     void        get_request(Request* /*req*/ /*unused*/, int /*ind*/ /*unused*/) override;
 
     virtual int32_t get_state();
@@ -168,7 +168,7 @@ public:
     cmdExecutionCmdRowStatus(const Oidx& /*id*/);
     ~cmdExecutionCmdRowStatus() override;
 
-    MibEntryPtr     clone() override;
+    MibEntryPtr     clone() const override;
     virtual int32_t get_state();
     virtual void    set_state(int32_t /*l*/);
     int             set(const Vbx& /*unused*/ /*vb*/) override;
@@ -186,7 +186,7 @@ public:
     cmdExecutionOutputLineNumber(const Oidx&);
     ~cmdExecutionOutputLineNumber() override;
 
-    MibEntryPtr     clone() override;
+    MibEntryPtr     clone() const override;
     void            get_request(Request* /*unused*/, int /*unused*/) override;
     virtual int32_t get_state();
     virtual void    set_state(int32_t);
@@ -203,7 +203,7 @@ public:
     cmdExecutionOutputLine(const Oidx& /*id*/);
     ~cmdExecutionOutputLine() override;
 
-    MibEntryPtr clone() override;
+    MibEntryPtr clone() const override;
     void        get_request(Request* /*req*/ /*unused*/, int /*ind*/ /*unused*/) override;
 };
 

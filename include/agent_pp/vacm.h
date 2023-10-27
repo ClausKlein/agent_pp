@@ -349,7 +349,7 @@ public:
     void clear() override
     {
         MibTable::clear();
-        add_row("0");
+        (void)add_row("0");
     }
 };
 
@@ -407,7 +407,7 @@ public:
     VacmAccessTableStatus(const Oidx&, int);
     ~VacmAccessTableStatus() override { }
 
-    MibEntryPtr clone() override;
+    [[nodiscard]] MibEntryPtr clone() const override;
 
 protected:
     int base_len;
@@ -426,7 +426,7 @@ public:
 
     void remove(MibTableRow* row) { views.remove(row); }
 
-    bool isEmpty() { return views.empty(); }
+    bool isEmpty() const { return views.empty(); }
 
     NS_SNMP OctetStr  name;
     List<MibTableRow> views;
@@ -486,8 +486,8 @@ public:
     VacmViewTreeFamilyTableStatus(const Oidx&, int);
     ~VacmViewTreeFamilyTableStatus() override { }
 
-    int         set(const Vbx& /*unused*/) override;
-    MibEntryPtr clone() override;
+    int                       set(const Vbx& /*unused*/) override;
+    [[nodiscard]] MibEntryPtr clone() const override;
 
 protected:
     int base_len;

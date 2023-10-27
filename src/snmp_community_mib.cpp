@@ -45,7 +45,7 @@ snmpTargetAddrTMask::snmpTargetAddrTMask(const Oidx& id)
 
 snmpTargetAddrTMask::~snmpTargetAddrTMask() { }
 
-MibEntryPtr snmpTargetAddrTMask::clone()
+MibEntryPtr snmpTargetAddrTMask::clone() const
 {
     MibEntryPtr other = new snmpTargetAddrTMask(oid);
 

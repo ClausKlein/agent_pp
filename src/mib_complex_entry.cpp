@@ -46,11 +46,16 @@ MibComplexEntry::~MibComplexEntry() { }
 
 MibStaticTable::MibStaticTable(const Oidx& o) : MibComplexEntry(o, NOACCESS) { }
 
-MibStaticTable::MibStaticTable(MibStaticTable& other) : MibComplexEntry(other)
+MibStaticTable::MibStaticTable(const MibStaticTable& other) : MibComplexEntry(other)
 {
     OidListCursor<MibStaticEntry> cur;
 
-    for (cur.init(&other.contents); cur.get(); cur.next())
+    // FIXME(CK): cannot initialize a parameter of type 'OidList<Agentpp::MibStaticEntry> *'
+    //                     with an rvalue of type 'const OidList<Agentpp::MibStaticEntry> *'
+    // Error: for (cur.init(&other.contents); cur.get(); cur.next())
+    auto* ncOther = PP_CONST_CAST(MibStaticTable*, &other);
+    for (cur.init(&ncOther->contents); cur.get(); cur.next())
+
     {
         contents.add(new MibStaticEntry(*cur.get()));
     }
