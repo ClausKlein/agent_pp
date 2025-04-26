@@ -1708,7 +1708,7 @@ Request* RequestList::receive(int sec)
             return nullptr;
         }
         } // switch
-#else     // #ifdef _SNMPv3
+#else  // #ifdef _SNMPv3
         // access for GETNEXT and GETBULK can�t be checked here
         // community_ok increments inBadCommunityUses
         if (!community_ok(pdu.get_type(), security_name))
@@ -1725,7 +1725,7 @@ Request* RequestList::receive(int sec)
             return 0;
         }
         else
-#endif    // _SNMPv3
+#endif // _SNMPv3
         {
             auto* req = new Request(pdu, target);
 #ifdef _SNMPv3

@@ -173,7 +173,7 @@ int32_t agentppCfgSecSrcAddrValidation::get_state()
 {
     //--AgentGen BEGIN=agentppCfgSecSrcAddrValidation::get_state
     //--AgentGen END
-    return (int32_t) * (dynamic_cast<SnmpInt32*>(value));
+    return (int32_t)*(dynamic_cast<SnmpInt32*>(value));
 }
 
 void agentppCfgSecSrcAddrValidation::set_state(int32_t l)
@@ -398,7 +398,7 @@ int32_t agentppCfgStorageFormat::get_state()
 {
     //--AgentGen BEGIN=agentppCfgStorageFormat::get_state
     //--AgentGen END
-    return (int32_t) * (dynamic_cast<SnmpInt32*>(value));
+    return (int32_t)*(dynamic_cast<SnmpInt32*>(value));
 }
 
 void agentppCfgStorageFormat::set_state(int32_t l)
@@ -422,8 +422,8 @@ bool agentppCfgStorageFormat::value_ok(const Vbx& vb)
     }
     //--AgentGen BEGIN=agentppCfgStorageFormat::value_ok
     if (!(dynamic_cast<agentppCfgStorageEntry*>(my_table))
-             ->get_mib()
-             ->get_config_format((unsigned int)v))
+            ->get_mib()
+            ->get_config_format((unsigned int)v))
     {
         return false;
     }
@@ -512,7 +512,7 @@ int32_t agentppCfgStorageOperation::get_state()
 {
     //--AgentGen BEGIN=agentppCfgStorageOperation::get_state
     //--AgentGen END
-    return (int32_t) * (dynamic_cast<SnmpInt32*>(value));
+    return (int32_t)*(dynamic_cast<SnmpInt32*>(value));
 }
 
 void agentppCfgStorageOperation::set_state(int32_t l)
@@ -636,7 +636,7 @@ int32_t agentppCfgStorageStorageType::get_state() const
 {
     //--AgentGen BEGIN=agentppCfgStorageStorageType::get_state
     //--AgentGen END
-    return (int32_t) * (dynamic_cast<SnmpInt32*>(value));
+    return (int32_t)*(dynamic_cast<SnmpInt32*>(value));
 }
 
 void agentppCfgStorageStorageType::set_state(int32_t l)
@@ -704,7 +704,7 @@ int32_t agentppCfgStorageStatus::get_state()
 {
     //--AgentGen BEGIN=agentppCfgStorageStatus::get_state
     //--AgentGen END
-    return (int32_t) * (dynamic_cast<SnmpInt32*>(value));
+    return (int32_t)*(dynamic_cast<SnmpInt32*>(value));
 }
 
 void agentppCfgStorageStatus::set_state(int32_t l)
@@ -909,7 +909,7 @@ void agentppCfgLogLevel::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-int32_t agentppCfgLogLevel::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
+int32_t agentppCfgLogLevel::get_state() { return (int32_t)*(dynamic_cast<SnmpInt32*>(value)); }
 
 void agentppCfgLogLevel::set_state(int32_t l) { *(dynamic_cast<SnmpInt32*>(value)) = l; }
 

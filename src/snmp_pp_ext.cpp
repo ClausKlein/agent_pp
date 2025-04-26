@@ -419,21 +419,21 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
         // timeticks
         case sNMP_SYNTAX_TIMETICKS: {
             // FIXME: Warning C6011 Dereferencing NULL pointer! CK
-            TimeTicks const timeticks((uint32_t) * (vp->val.integer));
+            TimeTicks const timeticks((uint32_t)*(vp->val.integer));
             vbs[i].set_value(timeticks);
         }
         break;
 
         // 32 bit counter
         case sNMP_SYNTAX_CNTR32: {
-            Counter32 const counter32((uint32_t) * (vp->val.integer));
+            Counter32 const counter32((uint32_t)*(vp->val.integer));
             vbs[i].set_value(counter32);
         }
         break;
 
         // 32 bit gauge
         case sNMP_SYNTAX_GAUGE32: {
-            Gauge32 const gauge32((uint32_t) * (vp->val.integer));
+            Gauge32 const gauge32((uint32_t)*(vp->val.integer));
             vbs[i].set_value(gauge32);
         }
         break;
@@ -451,7 +451,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
 
         // 32 bit integer
         case sNMP_SYNTAX_INT: {
-            SnmpInt32 const int32((int32_t) * (vp->val.integer));
+            SnmpInt32 const int32((int32_t)*(vp->val.integer));
             vbs[i].set_value(int32);
         }
         break;
@@ -935,14 +935,14 @@ int Snmpx::receive(
     SocketLengthType fromlen;
     SnmpMessage      snmpmsg;
 
-    int           nfound           = 0;
-    bool          can_receive_ipv4 = false;
+    int  nfound           = 0;
+    bool can_receive_ipv4 = false;
 #    ifdef SNMP_PP_IPv6
-    bool          can_receive_ipv6 = false;
+    bool can_receive_ipv6 = false;
 #    endif
 
 #    ifdef HAVE_POLL_SYSCALL
-    int           nfds             = 0;
+    int           nfds = 0;
     struct pollfd readfds[2];
     int           timeout = tvptr ? (tvptr->tv_sec * 1000 + tvptr->tv_usec / 1000) : -1;
 
@@ -1255,8 +1255,8 @@ int Snmpx::send(
 #    ifdef _THREADS
     static ThreadManager smutex;
 #    endif
-    SnmpMessage          snmpmsg;
-    int                  status;
+    SnmpMessage snmpmsg;
+    int         status;
     status = snmpmsg.load(pdu, community, version);
     if (status != SNMP_CLASS_SUCCESS)
     {

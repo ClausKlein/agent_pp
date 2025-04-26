@@ -69,7 +69,7 @@ agentppNotifyTest::~agentppNotifyTest()
     //--AgentGen END
 }
 
-int32_t agentppNotifyTest::get_state() { return (int32_t) * ((SnmpInt32*)value); }
+int32_t agentppNotifyTest::get_state() { return (int32_t)*((SnmpInt32*)value); }
 
 void agentppNotifyTest::set_state(int32_t l)
 {

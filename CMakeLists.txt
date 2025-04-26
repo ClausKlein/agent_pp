@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21...3.27)
+cmake_minimum_required(VERSION 3.21...3.31)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -17,6 +17,10 @@ include(CheckStructHasMember)
 include(CheckTypeSize)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
+
+if(CMAKE_EXPORT_COMPILE_COMMANDS)
+  set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
+endif()
 
 # =======================================
 set(CMAKE_CXX_STANDARD 17)
@@ -194,7 +198,7 @@ endif()
 
 include(CPM)
 
-CPMAddPackage("gh:aminya/project_options@0.32.2")
+CPMAddPackage("gh:aminya/project_options@0.41.0")
 list(APPEND CMAKE_MODULE_PATH ${ProjectOptions_SRC_DIR})
 
 set(SNMP_PP_VERSION 3.4.7)
@@ -202,8 +206,8 @@ option(SNMP_PP_LOGGING "build all libaries with logging" NO)
 CPMAddPackage(
   NAME snmp_pp
   VERSION ${SNMP_PP_VERSION}.14
-  GITHUB_REPOSITORY ClausKlein/snmp_pp
-  SYSTEM ON
+  GITHUB_REPOSITORY ClausKlein/snmp_pp SYSTEM ON
+  SYSTEM YES
   OPTIONS "SNMP_PP_EXAMPLES YES" "CMAKE_SKIP_INSTALL_RULES NO"
 )
 if(TARGET snmp_pp)
@@ -293,7 +297,15 @@ set(MY_SRC_FILES
 )
 
 project_options(
-  PREFIX ${PROJECT_NAME} ENABLE_CACHE ${ENABLE_COVERAGE} ${OPTION_ENABLED_SANITIZER}
+  PREFIX
+  ${PROJECT_NAME}
+  ENABLE_CACHE
+  ${ENABLE_COVERAGE}
+  ${OPTION_ENABLED_SANITIZER}
+  #XXX ENABLE_SANITIZER_ADDRESS
+  #XXX ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+  #XXX ENABLE_SANITIZER_THREAD
+  #XXX ENABLE_SANITIZER_MEMORY
   # TODO: WARNINGS_AS_ERRORS
 )
 
@@ -301,18 +313,17 @@ set(PROJECT_EXPORT_HEADER ${PROJECT_NAME}/export.h)
 add_library(${PROJECT_NAME} ${MY_HEADER_FILES} ${MY_HEADER_LIB_FILES} ${CMAKE_CURRENT_BINARY_DIR}/config.h ${MY_SRC_FILES})
 
 if(CMAKE_SKIP_INSTALL_RULES)
+  # NOTE: we need to generate header if packageProject() is not called:
   include(GenerateExportHeader)
   generate_export_header(
     ${PROJECT_NAME} EXPORT_FILE_NAME ${CMAKE_CURRENT_BINARY_DIR}/PackageProjectInclude/${PROJECT_EXPORT_HEADER}
   )
   add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
-  target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_project_options ${PROJECT_NAME}_project_warnings)
 
-  # target_link_libraries(
-  #   ${PROJECT_NAME} PRIVATE $<BUILD_LOCAL_INTERFACE:${PROJECT_NAME}_project_options>
-  #                           $<BUILD_LOCAL_INTERFACE:${PROJECT_NAME}_project_warnings>
-  # )
+  # NOTE: project_options are only used if the project is not installed!
+  target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_project_options ${PROJECT_NAME}_project_warnings)
 endif()
+
 set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ${OPTION_ENABLE_UNITY})
 
 if(MSVC)
@@ -449,9 +460,11 @@ if(CMAKE_SKIP_INSTALL_RULES)
   return()
 endif()
 
+include(AddUninstallTarget)
+
 install(FILES ${MY_HEADER_LIB_FILES} DESTINATION include)
 
-CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.11.0")
+CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.13.0")
 packageProject(
   # the name of the target to export
   NAME ${PROJECT_NAME}

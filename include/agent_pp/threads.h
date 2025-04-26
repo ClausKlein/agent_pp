@@ -237,9 +237,9 @@ private:
     pthread_mutex_t monitor;
 #    else
 #        ifdef WIN32
-    char         numNotifies;
-    HANDLE       semEvent;
-    HANDLE       semMutex;
+    char   numNotifies;
+    HANDLE semEvent;
+    HANDLE semMutex;
 #        endif
 #    endif
     bool isLocked;
@@ -432,9 +432,9 @@ private:
     pthread_t tid;
 #    else
 #        if WIN32
-    HANDLE       threadHandle;
-    DWORD        tid;
-    HANDLE       threadEndEvent;
+    HANDLE threadHandle;
+    DWORD  tid;
+    HANDLE threadEndEvent;
 #        endif
 #    endif
     static ThreadList threadList;

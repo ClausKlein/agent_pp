@@ -353,7 +353,7 @@ int32_t agentppTestSparseCol1::get_state()
 {
     //--AgentGen BEGIN=agentppTestSparseCol1::get_state
     //--AgentGen END
-    return (int32_t) * (dynamic_cast<SnmpInt32*>(value));
+    return (int32_t)*(dynamic_cast<SnmpInt32*>(value));
 }
 
 void agentppTestSparseCol1::set_state(int32_t l)
@@ -444,7 +444,7 @@ uint32_t agentppTestSparseCol2::get_state()
 {
     //--AgentGen BEGIN=agentppTestSparseCol2::get_state
     //--AgentGen END
-    return (uint32_t) * (dynamic_cast<Gauge32*>(value));
+    return (uint32_t)*(dynamic_cast<Gauge32*>(value));
 }
 
 void agentppTestSparseCol2::set_state(uint32_t l)
@@ -623,7 +623,7 @@ int32_t agentppTestSparseRowStatus::get_state()
 {
     //--AgentGen BEGIN=agentppTestSparseRowStatus::get_state
     //--AgentGen END
-    return (int32_t) * (dynamic_cast<SnmpInt32*>(value));
+    return (int32_t)*(dynamic_cast<SnmpInt32*>(value));
 }
 
 void agentppTestSparseRowStatus::set_state(int32_t l)

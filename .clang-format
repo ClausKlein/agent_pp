@@ -1,5 +1,5 @@
 ---
-# This configuration requires clang-format 13 or higher.
+# This configuration requires clang-format 17 or higher.
 BasedOnStyle:  WebKit
 #NOTE: keep // AgentGen BEGIN=... in one line! CK
 ColumnLimit: 103
@@ -60,9 +60,9 @@ IndentPPDirectives: AfterHash
 MaxEmptyLinesToKeep: 1
 PenaltyReturnTypeOnItsOwnLine: 60
 PointerAlignment: Left
-# clangV16: RemoveSemicolon: Yes
+RemoveSemicolon: Yes
 SpaceAfterTemplateKeyword: true
-Standard: Cpp11
+Standard: Auto
 # ---
 SortIncludes:    true
 SortUsingDeclarations: true

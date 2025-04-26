@@ -32,13 +32,13 @@ jobs:
           key: ${{ github.workflow }}-cpm-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
 
 
-      - name: Install llvm-13 Ubuntu Host
+      - name: Install llvm-18 Ubuntu Host
         if: startsWith(matrix.os, 'ubuntu')
         shell: bash
         run: |
           sudo apt-get install snmp snmp-mibs-downloader
           sudo apt-get install \
-            llvm-13 clang-13 libclang-13-dev clang-tidy-13 || echo IGNORED
+            llvm-18 clang-18 libclang-18-dev clang-tidy-18 || echo IGNORED
 
       - name: Configure
         run: |
@@ -61,7 +61,7 @@ jobs:
         #   run: |
         #     cmake -S examples -B build/test -D CMAKE_PREFIX_PATH=$PWD/stage -D CMAKE_EXPORT_COMPILE_COMMANDS=1
         #     cmake --build build/test --config Release -j 4
-
+        #
         # - name: TestWithInstalledVersion
         #   working-directory: build/test
         #   run: ctest -C Release --output-on-failure
@@ -79,4 +79,4 @@ jobs:
         shell: bash
         run: |
           perl -i.bak -pe 's#-I($CPM_SOURCE_CACHE)#-isystem $1#g;' -e 's#-W[-\w=\d]+\b##g;'  build/compile_commands.json
-          run-clang-tidy-13 -p build .
+          run-clang-tidy-18 -p build .

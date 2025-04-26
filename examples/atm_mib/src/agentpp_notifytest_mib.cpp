@@ -67,7 +67,7 @@ agentppNotifyTest::~agentppNotifyTest()
     //--AgentGen END
 }
 
-int32_t agentppNotifyTest::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
+int32_t agentppNotifyTest::get_state() { return (int32_t)*(dynamic_cast<SnmpInt32*>(value)); }
 
 void agentppNotifyTest::set_state(int32_t l)
 {

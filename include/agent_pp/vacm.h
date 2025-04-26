@@ -417,10 +417,7 @@ class AGENTPP_DECL ViewNameIndex {
 public:
     ViewNameIndex(const NS_SNMP OctetStr& vname) : name(vname) { }
 
-    ~ViewNameIndex()
-    { /* avoid deletion of original rows: */
-        views.clear();
-    }
+    ~ViewNameIndex() { /* avoid deletion of original rows: */ views.clear(); }
 
     void add(MibTableRow* row) { views.add(row); }
 

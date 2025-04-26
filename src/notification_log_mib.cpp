@@ -136,10 +136,7 @@ void nlmConfigGlobalEntryLimit::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-uint32_t nlmConfigGlobalEntryLimit::get_state()
-{
-    return (uint32_t) * (dynamic_cast<Gauge32*>(value));
-}
+uint32_t nlmConfigGlobalEntryLimit::get_state() { return (uint32_t)*(dynamic_cast<Gauge32*>(value)); }
 
 void nlmConfigGlobalEntryLimit::set_state(uint32_t l)
 {
@@ -210,7 +207,7 @@ void nlmConfigGlobalAgeOut::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-uint32_t nlmConfigGlobalAgeOut::get_state() { return (uint32_t) * (dynamic_cast<Gauge32*>(value)); }
+uint32_t nlmConfigGlobalAgeOut::get_state() { return (uint32_t)*(dynamic_cast<Gauge32*>(value)); }
 
 void nlmConfigGlobalAgeOut::set_state(uint32_t l)
 {
@@ -381,7 +378,7 @@ void nlmConfigLogEntryLimit::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-uint32_t nlmConfigLogEntryLimit::get_state() { return (uint32_t) * (dynamic_cast<Gauge32*>(value)); }
+uint32_t nlmConfigLogEntryLimit::get_state() { return (uint32_t)*(dynamic_cast<Gauge32*>(value)); }
 
 void nlmConfigLogEntryLimit::set_state(uint32_t l)
 {
@@ -458,7 +455,7 @@ void nlmConfigLogAdminStatus::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-int32_t nlmConfigLogAdminStatus::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
+int32_t nlmConfigLogAdminStatus::get_state() { return (int32_t)*(dynamic_cast<SnmpInt32*>(value)); }
 
 void nlmConfigLogAdminStatus::set_state(int32_t l)
 {
@@ -547,7 +544,7 @@ void nlmConfigLogStorageType::get_request(Request* req, int ind)
 
 int32_t nlmConfigLogStorageType::get_state() const
 {
-    return (int32_t) * (dynamic_cast<SnmpInt32*>(value));
+    return (int32_t)*(dynamic_cast<SnmpInt32*>(value));
 }
 
 void nlmConfigLogStorageType::set_state(int32_t l)
@@ -629,7 +626,7 @@ MibEntryPtr nlmConfigLogEntryStatus::clone() const
     return other;
 }
 
-int32_t nlmConfigLogEntryStatus::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
+int32_t nlmConfigLogEntryStatus::get_state() { return (int32_t)*(dynamic_cast<SnmpInt32*>(value)); }
 
 void nlmConfigLogEntryStatus::set_state(int32_t l)
 {
@@ -758,7 +755,7 @@ void nlmStatsGlobalNotificationsLogged::get_request(Request* req, int ind)
 
 uint32_t nlmStatsGlobalNotificationsLogged::get_state()
 {
-    return (uint32_t) * (dynamic_cast<Counter32*>(value));
+    return (uint32_t)*(dynamic_cast<Counter32*>(value));
 }
 
 void nlmStatsGlobalNotificationsLogged::set_state(uint32_t l)
@@ -814,7 +811,7 @@ void nlmStatsGlobalNotificationsBumped::get_request(Request* req, int ind)
 
 uint32_t nlmStatsGlobalNotificationsBumped::get_state()
 {
-    return (uint32_t) * (dynamic_cast<Counter32*>(value));
+    return (uint32_t)*(dynamic_cast<Counter32*>(value));
 }
 
 void nlmStatsGlobalNotificationsBumped::set_state(uint32_t l)

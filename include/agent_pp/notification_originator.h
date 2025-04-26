@@ -349,8 +349,7 @@ protected:
         NS_SNMP CTarget* target;
 #endif
 
-    private:
-        NotificationOriginatorParams();
+        NotificationOriginatorParams() = delete;
     };
 
     /**

@@ -524,7 +524,7 @@ bool Synchronized::lock(long timeout)
     {
         ts.tv_sec += 1;
     }
-    ts.tv_nsec            = (millis % 1000) * 1000000;
+    ts.tv_nsec = (millis % 1000) * 1000000;
 #        endif
 
     int error = 0;
@@ -1024,8 +1024,8 @@ void Thread::nsleep(int secs, long nanos)
     DWORD millis = secs * 1000 + nanos / 1000000;
     Sleep(millis);
 #    else
-    long const      s        = secs + nanos / 1000000000;
-    long const      n        = nanos % 1000000000;
+    long const s = secs + nanos / 1000000000;
+    long const n = nanos % 1000000000;
 
 #        ifdef _POSIX_TIMERS
     struct timespec interval = {}, remainder = {};

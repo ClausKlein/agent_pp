@@ -2424,7 +2424,7 @@ public:
 #ifndef STATIC_REQUEST_LIST
     void set_request_list(RequestList*);
 #else
-    static void          set_request_list(RequestList*);
+    static void set_request_list(RequestList*);
 #endif
 
     /**
@@ -2436,7 +2436,7 @@ public:
 #ifndef STATIC_REQUEST_LIST
     RequestList* get_request_list() const { return requestList; }
 #else
-    static RequestList*  get_request_list() { return requestList; }
+    static RequestList* get_request_list() { return requestList; }
 #endif
 
     /**
@@ -2791,7 +2791,7 @@ public:
 #ifndef STATIC_REQUEST_LIST
     RequestList* requestList;
 #else
-    static RequestList*  requestList;
+    static RequestList* requestList;
 #endif
 
     /**

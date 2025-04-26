@@ -401,7 +401,7 @@ TestAndIncr::TestAndIncr(const Oidx& o) : MibLeaf(o, READWRITE, new SnmpInt32(0)
 
 TestAndIncr::~TestAndIncr() { }
 
-int32_t TestAndIncr::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
+int32_t TestAndIncr::get_state() { return (int32_t)*(dynamic_cast<SnmpInt32*>(value)); }
 
 void TestAndIncr::set_state(int32_t l) { *(dynamic_cast<SnmpInt32*>(value)) = l; }
 
@@ -500,7 +500,7 @@ void StorageType::set_state(int32_t state)
     }
 }
 
-int32_t StorageType::get_state() const { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
+int32_t StorageType::get_state() const { return (int32_t)*(dynamic_cast<SnmpInt32*>(value)); }
 
 /*--------------------------- class StorageTypeVoter ------------------------*/
 
@@ -844,7 +844,7 @@ void DateAndTime::set_state(const OctetStr& s) { *(dynamic_cast<OctetStr*>(value
 void DateAndTime::update()
 {
     time_t const c = sysUpTime::get_currentTime();
-    struct tm    stm { };
+    struct tm    stm {};
     struct tm*   dt = nullptr;
 
 #ifdef HAVE_LOCALTIME_R

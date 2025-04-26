@@ -55,7 +55,7 @@ SnmpUnavailableContexts::SnmpUnavailableContexts()
 
 void SnmpUnavailableContexts::incValue()
 {
-    *(dynamic_cast<SnmpUInt32*>(value)) = (uint32_t) * (dynamic_cast<SnmpUInt32*>(value)) + 1;
+    *(dynamic_cast<SnmpUInt32*>(value)) = (uint32_t)*(dynamic_cast<SnmpUInt32*>(value)) + 1;
 }
 
 SnmpUInt32 SnmpUnavailableContexts::getValue() { return *(dynamic_cast<SnmpUInt32*>(value)); }
@@ -66,7 +66,7 @@ SnmpUnknownContexts::SnmpUnknownContexts()
 
 void SnmpUnknownContexts::incValue()
 {
-    *(dynamic_cast<SnmpUInt32*>(value)) = (uint32_t) * (dynamic_cast<SnmpUInt32*>(value)) + 1;
+    *(dynamic_cast<SnmpUInt32*>(value)) = (uint32_t)*(dynamic_cast<SnmpUInt32*>(value)) + 1;
 }
 
 SnmpUInt32 SnmpUnknownContexts::getValue() { return *(dynamic_cast<SnmpUInt32*>(value)); }

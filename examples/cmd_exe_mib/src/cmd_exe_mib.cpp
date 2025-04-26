@@ -216,7 +216,7 @@ void cmdExecutionCmdNextIndex::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-int32_t cmdExecutionCmdNextIndex::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
+int32_t cmdExecutionCmdNextIndex::get_state() { return (int32_t)*(dynamic_cast<SnmpInt32*>(value)); }
 
 void cmdExecutionCmdNextIndex::set_state(int32_t l) { *(dynamic_cast<SnmpInt32*>(value)) = l; }
 
@@ -286,7 +286,7 @@ void cmdExecutionCmdStatus::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-int32_t cmdExecutionCmdStatus::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
+int32_t cmdExecutionCmdStatus::get_state() { return (int32_t)*(dynamic_cast<SnmpInt32*>(value)); }
 
 void cmdExecutionCmdStatus::set_state(int32_t l) { *(dynamic_cast<SnmpInt32*>(value)) = l; }
 
@@ -329,7 +329,7 @@ void cmdExecutionCmdRunTime::get_request(Request* req, int ind)
     MibLeaf::get_request(req, ind);
 }
 
-int32_t cmdExecutionCmdRunTime::get_state() { return (int32_t) * (dynamic_cast<TimeTicks*>(value)); }
+int32_t cmdExecutionCmdRunTime::get_state() { return (int32_t)*(dynamic_cast<TimeTicks*>(value)); }
 
 void cmdExecutionCmdRunTime::set_state(int32_t l) { *(dynamic_cast<TimeTicks*>(value)) = l; }
 
@@ -359,7 +359,7 @@ MibEntryPtr cmdExecutionCmdRowStatus::clone() const
     return other;
 }
 
-int32_t cmdExecutionCmdRowStatus::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
+int32_t cmdExecutionCmdRowStatus::get_state() { return (int32_t)*(dynamic_cast<SnmpInt32*>(value)); }
 
 void cmdExecutionCmdRowStatus::set_state(int32_t l) { *(dynamic_cast<SnmpInt32*>(value)) = l; }
 

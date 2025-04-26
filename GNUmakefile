@@ -32,7 +32,7 @@ install: test
 build: $(BUILD_DIR)
 build: $(BUILD_DIR)/compile_commands.json
 $(BUILD_DIR)/compile_commands.json: GNUmakefile CMakeLists.txt
-	cmake -B $(BUILD_DIR) -S . -G Ninja -D CMAKE_SKIP_INSTALL_RULES=YES -D OPTION_ENABLE_COVERAGE=YES -D SNMP_PP_LOGGING=NO
+	cmake -B $(BUILD_DIR) -S . -G Ninja -D CMAKE_SKIP_INSTALL_RULES=YES -D OPTION_ENABLE_COVERAGE=YES -D SNMP_PP_LOGGING=NO -D OPTION_ENABLE_UNITY=NO
 	perl -i.bak -p -e 's#-W[-\w=\d]+\b##g;' -e 's#-I(${CPM_SOURCE_CACHE})#-isystem $$1#g;' $(BUILD_DIR)/compile_commands.json
 
 $(BUILD_DIR):
@@ -40,7 +40,7 @@ $(BUILD_DIR):
 
 check: $(BUILD_DIR)/compile_commands.json
 	#XXX run-clang-tidy -p $(BUILD_DIR) -checks='-*,hicpp-named-parameter,modernize-loop-convert,modernize-return-braced-init-list,modernize-deprecated-headers,modernize-redundant-void-arg,modernize-use-bool-literals,modernize-use-auto,modernize-use-nullptr,misc-const-correctness,cppcoreguidelines-explicit-virtual-functions,cppcoreguidelines-pro-type-*cast,readability-make-member-function-const' -j1 -fix
-	run-clang-tidy -p $(BUILD_DIR) -checks='-clang-analyzer-optin.*,-hicpp-multiway-paths-covered,-*-use-equals-delete'
+	run-clang-tidy -p $(BUILD_DIR) src examples tools tests
 
 clean:
 	rm -f include/agent_pp/agent++.h
@@ -49,11 +49,10 @@ clean:
 	-ninja -C $(BUILD_DIR) clean
 
 distclean: clean
-	rm -rf $(BUILD_DIR) cmake-build*
+	rm -rf $(BUILD_DIR) build*
 
 format: distclean
-	find . -name CMakeLists.txt | xargs cmake-format -i
-	find . -type f -name '*.cmake' | xargs cmake-format -i
-	find . -type f -name '*.cpp' | xargs clang-format -i
-	find . -type f -name '*.h' | xargs clang-format -i
+	git ls-files ::*.cmake ::*CMakeLists.txt | xargs cmake-format -i
+	git ls-files ::*.cpp ::*.h | xargs clang-format -i
+	git ls-files ::*.cpp ::*.h | xargs grep  --color '\/\/ BEGIN=' || echo OK
 

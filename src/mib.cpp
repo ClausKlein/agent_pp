@@ -1868,7 +1868,7 @@ MibTableRow* MibTable::init_row(const Oidx& ind, Vbx* vbs)
 #ifdef USE_ARRAY_TEMPLATE
     ArrayCursor<MibLeaf> cur;
 #else
-    ListCursor<MibLeaf>        cur;
+    ListCursor<MibLeaf> cur;
 #endif
     for (cur.init(&row->row); cur.get(); cur.next(), i++)
     {
@@ -2800,7 +2800,7 @@ void MibTable::remove_obsolete_rows(OrderedList<Oidx>& confirmed_rows)
     for (cur.init(&content); cur.get();)
     {
         for (con.init(&confirmed_rows); ((con.get()) && (*con.get() < cur.get()->get_index()));
-             con.next())
+            con.next())
         { }
 
         // not confirmed -> delete row

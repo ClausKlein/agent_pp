@@ -49,7 +49,7 @@ sysUpTime::sysUpTime() : MibLeaf(oidSysUpTime, READONLY, new TimeTicks(0))
 #if defined(HAVE_CLOCK_GETTIME)
     clock_gettime(CLOCK_MONOTONIC, &start);
 #else
-    start             = get();
+    start = get();
 #endif
 }
 

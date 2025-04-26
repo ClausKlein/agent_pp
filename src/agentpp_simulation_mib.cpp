@@ -62,7 +62,7 @@ void agentppSimMode::init(SnmpSyntax* v, int m)
     }
 }
 
-int32_t agentppSimMode::get_state() { return (int32_t) * (dynamic_cast<SnmpInt32*>(value)); }
+int32_t agentppSimMode::get_state() { return (int32_t)*(dynamic_cast<SnmpInt32*>(value)); }
 
 void agentppSimMode::set_state(int32_t l)
 {

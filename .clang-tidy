@@ -1,8 +1,12 @@
 ---
 Checks: "-*,\
 boost-*,\
+bugprone,\
+-bugprone-implicit-widening-of-multiplication-result,\
+-bugprone-easily-swappable-parameters,\
+-bugprone-narrowing-conversions,\
+-bugprone-macro-parentheses,\
 bugprone-misplaced-widening-cast,\
-bugprone-implicit-widening-of-multiplication-result,\
 bugprone-suspicious-semicolon,\
 bugprone-unused-raii,\
 bugprone-unused-return-value,\
@@ -16,18 +20,15 @@ cert-*,\
 clang-analyzer-*,\
 -clang-analyzer-security.insecureAPI.*,\
 -cppcoreguidelines-*,\
-cppcoreguidelines-init-variables,\
 cppcoreguidelines-explicit-virtual-functions,\
+cppcoreguidelines-init-variables,\
 cppcoreguidelines-slicing,\
--cppcoreguidelines-pro-type-*,\
--cppcoreguidelines-pro-type-cstyle-cast,\
--cppcoreguidelines-pro-type-union-access,\
--cppcoreguidelines-pro-type-vararg,\
 -cppcoreguidelines-avoid-*,\
--cppcoreguidelines-special-*,\
 -cppcoreguidelines-macro-usage,\
--cppcoreguidelines-owning-memory,\
 -cppcoreguidelines-narrowing-conversions,\
+-cppcoreguidelines-owning-memory,\
+-cppcoreguidelines-pro-type-*,\
+-cppcoreguidelines-special-*,\
 -google-*,\
 -google-readability-casting,\
 hicpp-*,\
@@ -39,22 +40,25 @@ hicpp-*,\
 -hicpp-special-member-functions,\
 -hicpp-uppercase-literal-suffix,\
 -hicpp-vararg,\
--misc-*,\
+misc-*,\
 -misc-const-correctness,\
+-misc-header-include-cycle,\
 -misc-include-cleaner,\
 -misc-non-private-member-variables-in-classes,\
 -misc-no-recursion,\
 -misc-unused-parameters,\
 -misc-unconventional-assign-operator,\
 -misc-use-anonymous-namespace,\
+-misc-use-internal-linkage,\
 modernize-*,\
 -modernize-macro-to-enum,\
 -modernize-use-default-member-init,\
 -modernize-use-nodiscard,\
 -modernize-use-trailing-return-type,\
 -modernize-use-using,\
--performance-*,\
+performance-*,\
 -performance-avoid-endl,\
+-performance-enum-size,\
 portability-*,\
 -readability-*,\
 readability-make-member-function-const,\
@@ -63,9 +67,8 @@ readability-make-member-function-const,\
 -*-no-array-decay,\
 -*-use-equals-default,\
 "
-WarningsAsErrors: ''
-HeaderFilterRegex: '.*'
-AnalyzeTemporaryDtors: false
+WarningsAsErrors: 'clang-*'
+HeaderFilterRegex: 'include/agent_pp/.*'
 FormatStyle:     none
 User:            clausklein
 ...
