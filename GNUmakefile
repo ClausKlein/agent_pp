@@ -39,7 +39,7 @@ $(BUILD_DIR):
 	mkdir -p $@ gcovr
 
 check: $(BUILD_DIR)/compile_commands.json
-	#XXX run-clang-tidy -p $(BUILD_DIR) -checks='-*,hicpp-named-parameter,modernize-loop-convert,modernize-return-braced-init-list,modernize-deprecated-headers,modernize-redundant-void-arg,modernize-use-bool-literals,modernize-use-auto,modernize-use-nullptr,misc-const-correctness,cppcoreguidelines-explicit-virtual-functions,cppcoreguidelines-pro-type-*cast,readability-make-member-function-const' -j1 -fix
+	#XXX run-clang-tidy -p $(BUILD_DIR) -checks='-*,bugprone-macro-parentheses' -fix -j1 .
 	run-clang-tidy -p $(BUILD_DIR) src examples tools tests
 
 clean:

@@ -1709,8 +1709,8 @@ Request* RequestList::receive(int sec)
         }
         } // switch
 #else  // #ifdef _SNMPv3
-        // access for GETNEXT and GETBULK can�t be checked here
-        // community_ok increments inBadCommunityUses
+       // access for GETNEXT and GETBULK can�t be checked here
+       // community_ok increments inBadCommunityUses
         if (!community_ok(pdu.get_type(), security_name))
         {
             LOG_BEGIN(loggerModuleName, EVENT_LOG | 1);

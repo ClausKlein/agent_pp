@@ -192,7 +192,8 @@ int main()
     Agentpp::Oidx const IpaddressIndex("127.0.0.1");
     Agentpp::Oidx const oidWithoutLen(testOidWithoutLen);
 
-    Agentpp::Oidx StringIndex = Agentpp::Oidx::from_string(firstTestString, withLength); // add the len
+    Agentpp::Oidx const StringIndex =
+        Agentpp::Oidx::from_string(firstTestString, withLength); // add the len
 
     assert(std::string(firstTestString)
         == StringIndex.as_string(true).get_printable());         // get back withoutLength == true!

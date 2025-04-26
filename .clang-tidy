@@ -5,7 +5,7 @@ bugprone,\
 -bugprone-implicit-widening-of-multiplication-result,\
 -bugprone-easily-swappable-parameters,\
 -bugprone-narrowing-conversions,\
--bugprone-macro-parentheses,\
+bugprone-macro-parentheses,\
 bugprone-misplaced-widening-cast,\
 bugprone-suspicious-semicolon,\
 bugprone-unused-raii,\
@@ -35,6 +35,7 @@ hicpp-*,\
 -hicpp-braces-around-statements,\
 -hicpp-explicit-conversions,\
 -hicpp-member-init,\
+-hicpp-multiway-paths-covered,\
 -hicpp-no-malloc,\
 -hicpp-signed-bitwise,\
 -hicpp-special-member-functions,\
@@ -67,7 +68,7 @@ readability-make-member-function-const,\
 -*-no-array-decay,\
 -*-use-equals-default,\
 "
-WarningsAsErrors: 'clang-*'
+# TODO: WarningsAsErrors: 'clang-*'
 HeaderFilterRegex: 'include/agent_pp/.*'
 FormatStyle:     none
 User:            clausklein
