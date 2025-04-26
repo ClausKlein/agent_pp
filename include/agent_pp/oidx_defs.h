@@ -49,17 +49,17 @@ using namespace Snmp_pp;
 
 // equality operator
 #ifndef OidxPtrEQ
-#    define OidxPtrEQ(a, b) ((*a) == (*b))
+#    define OidxPtrEQ(a, b) ((*(a)) == (*(b)))
 #endif
 
 // less-than-or-equal
 #ifndef OidxPtrLE
-#    define OidxPtrLE(a, b) ((*a) <= (*b))
+#    define OidxPtrLE(a, b) ((*(a)) <= (*(b)))
 #endif
 
 // comparison : less-than -> < 0; equal -> 0; greater-than -> > 0
 #ifndef OidxPtrCMP
-#    define OidxPtrCMP(a, b) (((*a) <= (*b)) ? (((*a) == (*b)) ? 0 : -1) : 1)
+#    define OidxPtrCMP(a, b) (((*(a)) <= (*(b))) ? (((*(a)) == (*(b))) ? 0 : -1) : 1)
 #endif
 
 // hash function

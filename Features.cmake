@@ -13,17 +13,10 @@ endif()
 
 option(BUILD_SHARED_LIBS "Global flag to cause add_library() to create shared libraries if on." YES)
 
-if(APPLE)
-  set(OPTION_ENABLED_SANITIZER
-      "ENABLE_SANITIZER_ADDRESS; ENABLE_SANITIZER_UNDEFINED_BEHAVIOR"
-      CACHE STRING "Enabled sanitizer for debug build"
-  )
-else()
-  set(OPTION_ENABLED_SANITIZER
-      "ENABLE_SANITIZER_MEMORY"
-      CACHE STRING "Enabled sanitizer for debug build"
-  )
-endif()
+set(OPTION_ENABLED_SANITIZER
+    "ENABLE_SANITIZER_ADDRESS;ENABLE_SANITIZER_UNDEFINED"
+    CACHE STRING "Enabled sanitizer for debug build"
+)
 option(OPTION_ENABLE_COVERAGE "Enable test coverage of projects" OFF)
 if(OPTION_ENABLE_COVERAGE)
   set(ENABLE_COVERAGE "ENABLE_COVERAGE")
