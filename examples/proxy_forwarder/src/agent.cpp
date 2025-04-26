@@ -361,7 +361,7 @@ int main(int argc, char* argv[])
     vacm->addNewView("restricted", "1.3.6.1.6.3.11.2.1", "", view_included, storageType_nonVolatile);
     vacm->addNewView("restricted", "1.3.6.1.6.3.15.1.1", "", view_included, storageType_nonVolatile);
 #endif
-    // load persitent objects from disk
+    // load persistent objects from disk
     mib->init();
 
     Vbx*                   vbs = nullptr;

@@ -202,7 +202,7 @@ CPMAddPackage("gh:aminya/project_options@0.41.0")
 list(APPEND CMAKE_MODULE_PATH ${ProjectOptions_SRC_DIR})
 
 set(SNMP_PP_VERSION 3.4.7)
-option(SNMP_PP_LOGGING "build all libaries with logging" NO)
+option(SNMP_PP_LOGGING "build all libraries with logging" NO)
 CPMAddPackage(
   NAME snmp_pp
   VERSION ${SNMP_PP_VERSION}.15
@@ -357,7 +357,7 @@ target_include_directories(
          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>
 )
 
-# Note: for SameMajorVersion upgrade stategy
+# Note: for SameMajorVersion upgrade strategy
 set_target_properties(
   ${PROJECT_NAME}
   PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR}

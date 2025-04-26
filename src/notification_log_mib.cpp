@@ -995,7 +995,7 @@ void nlmStatsLogEntry::row_delete(MibTableRow* /*row*/, const Oidx& index, MibTa
 
 void nlmStatsLogEntry::row_init(MibTableRow* /*row*/, const Oidx& index, MibTable* src)
 {
-    // The row 'row' with 'index' has been intialized.
+    // The row 'row' with 'index' has been initialized.
 
     //--AgentGen BEGIN=nlmStatsLogEntry::row_init
     if (src)
@@ -1278,7 +1278,7 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, con
                     && !snmpNotifyFilterEntry->passes_filter(
                         Oidx::from_string(profileName, WITH_LENGTH), nid, vbs, vbcount)))
             {
-                std::cerr << "nlmLogEntry::add_notification() filterd out: " << std::quoted(logName)
+                std::cerr << "nlmLogEntry::add_notification() filtered out: " << std::quoted(logName)
                           << std::endl;
                 continue;
             }

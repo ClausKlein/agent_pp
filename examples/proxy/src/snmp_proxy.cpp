@@ -356,7 +356,7 @@ main(int argc, char* argv[])
 
     init_signals();
 
-    // load persitent objects from disk
+    // load persistent objects from disk
     mib->init();
 
     Request* req;

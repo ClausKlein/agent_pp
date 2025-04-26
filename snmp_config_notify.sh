@@ -34,7 +34,7 @@ SNMP_HOST="-v${SNMP_VERSION} -r0 ${HOST}"
 
 
 set -e  # exit on error
-set -u  # exit on undefind vars
+set -u  # exit on undefined vars
 
 # GetHostByName and append udp port number:
 ###XXX### ping -c 1 ${TRAP_HOST}

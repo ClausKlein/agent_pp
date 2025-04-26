@@ -72,7 +72,7 @@ public:
      *    a pointer to an OctetStr containing the initial value for
      *    the object.
      * @param hasdefault
-     *    if true treat the inital value as default value (this
+     *    if true treat the initial value as default value (this
      *    applies to columnar objects only)
      */
     SnmpDisplayString(const Oidx&, mib_access, NS_SNMP OctetStr*, bool);
@@ -1111,7 +1111,7 @@ public:
      * @param min_size
      *    the minimum size of the SnmpAdminString.
      * @param max_size
-     *    the maxmimum size of the SnmpAdminString.
+     *    the maximum size of the SnmpAdminString.
      */
     SnmpAdminString(const Oidx&, mib_access, NS_SNMP OctetStr*, int, int, int);
     ~SnmpAdminString() override;
@@ -1188,7 +1188,7 @@ public:
      * A value of -1 represents a implied variable length string or oid.
      * A value of 0 a variable length string or oid index object.
      * A value greater than 0 determines the length of the index object
-     * meassured in subidentifiers.
+     * measured in subidentifiers.
      *
      * @param o
      *    the object identifier of the table, which has to be
@@ -1207,7 +1207,7 @@ public:
     void row_delete(MibTableRow* /*unused*/, const Oidx& /*unused*/, MibTable* /*t*/) override;
 
     /**
-     * This method should be called whenever the reciever is changed,
+     * This method should be called whenever the receiver is changed,
      * except when a row is added or deleted (row_added and row_deleted
      * already call updated())
      */

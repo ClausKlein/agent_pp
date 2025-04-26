@@ -10,7 +10,7 @@ agentppRegMIB MODULE-IDENTITY
 	LAST-UPDATED "200405151012Z"	-- May 15, 2004 10:12:00 AM
 	ORGANIZATION "AGENT++"
 	CONTACT-INFO
-		"Intenet: http://www.agentpp.com
+		"Internet: http://www.agentpp.com
 		 Email:   fock@agentpp.com"
 	DESCRIPTION
 		"Global registration MIB module for the AGENT++

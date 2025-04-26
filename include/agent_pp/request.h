@@ -930,7 +930,7 @@ protected:
      * MIB object is enabled.
      *
      * @param context
-     *    in which the failure occured. In most cases this is the
+     *    in which the failure occurred. In most cases this is the
      *    default context ("").
      * @param sourceAddress
      *    the source address of the host that sent the unauthenticated

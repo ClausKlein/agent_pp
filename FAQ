@@ -27,7 +27,7 @@ A: Since AGENT++v3.5.10 notifications (and informs) should be
    sent via Mib::notify, which supports notification sending 
    via the NotificationOriginator class by default. When using
    the AgentX++ subagent or Win32 subagent APIs, this method will
-   send notifications with the correspondig subagent protocol 
+   send notifications with the corresponding subagent protocol 
    instead of using the NotificationOrigintor.
 
    You can send a trap in AGENT++v3.5.10 or later for example by:
@@ -101,7 +101,7 @@ A: 1) Ensure that the include paths for snmp++ and agent++
       more files) get included.
 
    2) Compile using the Debug Multithread or just Multithread
-      swithces on! Remember to define the flags 
+      switches on! Remember to define the flags 
       SNMP_PP_NATIVE_EXPORTS and AGENT_PP_NATIVE_EXPORTS.
 
    3) Start compiling as a lib, _not_ as dll.
@@ -119,7 +119,7 @@ A: 1) Ensure that the include paths for snmp++ and agent++
       - Define the SNMP_PP_NATIVE_EXPORTS and
         AGENT_PP_NATIVE_EXPORTS flags
 --
-Q: I have succesfully compiled and linked my agent with 
+Q: I have successfully compiled and linked my agent with 
    VC++, but when it starts or when sending requests to 
    the agent it crashes. Why?
 
@@ -158,7 +158,7 @@ A: You may overwrite the MibEntry::is_presistent method
 
 --
 Q: When running an AgenPro generated (simulation) agent
-   for some MIB modules persitent storage support fails
+   for some MIB modules persistent storage support fails
    to save MIB module content to disk, why?
 
 A: AgenPro generates a MibGroup for each MIB module by

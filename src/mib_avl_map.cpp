@@ -216,7 +216,7 @@ Pix OidxPtrMibEntryPtrAVLMap::seek_inexact(OidxPtr key)
  * The combination of threads and AVL bits make adding & deleting
  * interesting, but very awkward.
  *
- * We use the following statics to avoid passing them around recursively
+ * We use the following statistics to avoid passing them around recursively
  */
 
 static int                        _need_rebalancing; // to send back balance info from rec. calls

@@ -103,7 +103,7 @@ public:
      * @param sysUpTime
      *    the timestamp to be used
      * @param contextName
-     *    the context in which the trap occured.
+     *    the context in which the trap occurred.
      */
     void generate(Vbx*, int, const Oidx&, unsigned int, const NS_SNMP OctetStr&);
 
@@ -367,13 +367,13 @@ protected:
      *    the enterprise oid. For v2,v3 and enterprise specific v1 traps
      *    this parameter should be "" (empty OID).
      * @param contextName
-     *    the context in which the trap occured.
+     *    the context in which the trap occurred.
      */
     int generate(Vbx*, int, const Oidx&, unsigned int, const Oidx&, const NS_SNMP OctetStr&);
 
     /**
      * Check notification access for a management target.
-     * Call this to validate access before sending the notificaiton.  The
+     * Call this to validate access before sending the notification.  The
      * NotificationOriginatorParams parameter must have the vbs, size, id,
      * and contextName parameters filled in.  Upon a true return, the
      * securityName, securityModel, securityLevel, mpModel, and target

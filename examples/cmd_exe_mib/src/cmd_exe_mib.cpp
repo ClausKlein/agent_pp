@@ -141,7 +141,7 @@ void CmdThread::run()
                 r->get_nth(0)->replace_value(line);
 
                 LOG_BEGIN(loggerModuleName, DEBUG_LOG | 2);
-                LOG("Added ouput (line)(output)");
+                LOG("Added output (line)(output)");
                 LOG(index.get_printable());
                 LOG(line->get_printable());
                 LOG_END;
@@ -489,7 +489,7 @@ bool cmdExecutionCmdConfigEntry::deserialize(char* buf, int& sz)
     bool const b = MibTable::deserialize(buf, sz);
     if (!b)
     {
-        add_row("2.108.115");       // NOTE: "ls" with firts element as length! CK
+        add_row("2.108.115");       // NOTE: "ls" with first element as length! CK
         set_row(0, "ls -la", 3, 1); // add active row(0)
     }
 

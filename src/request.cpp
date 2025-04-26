@@ -1431,7 +1431,7 @@ Request* RequestList::receive(int sec)
         security_name = community;
 #endif
         LOG_BEGIN(loggerModuleName, EVENT_LOG | 2);
-        LOG("RequestList: request received (id)(siz)(fro)(ver)(com)(type)");
+        LOG("RequestList: request received (id)(size)(from)(ver)(com)(type)");
         LOG(pdu.get_request_id());
         LOG(pdu.get_vb_count());
         LOG(from.get_printable());

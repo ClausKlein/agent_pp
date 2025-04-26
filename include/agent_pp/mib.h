@@ -392,7 +392,7 @@ public:
 
     /**
      * Check whether the receiver's value may be set to the given new value.
-     * @note Override this mehtod in subclasses.
+     * @note Override this method in subclasses.
      *
      * @param v - A new value.
      * @return true if the new value is valid, otherwise false.
@@ -401,7 +401,7 @@ public:
 
     /**
      * Set the receiver's value and backup its old value for a later undo.
-     * @note Override this mehtod in subclasses.
+     * @note Override this method in subclasses.
      *
      * @param vb - The variable binding that holds the new value.
      * @return SNMP_ERROR_SUCCESS if the new value has been set,
@@ -1085,7 +1085,7 @@ protected:
     /**
      * Set a reference to the receiver�s table in all of its columns.
      *
-     * @param t - The MibTable object the reciever belongs to.
+     * @param t - The MibTable object the receiver belongs to.
      */
     void set_reference_to_table(MibTable*);
 
@@ -1734,7 +1734,7 @@ public:
      *
      * This method is synchronized on its receiver.
      *
-     * @note This method is escpecially useful for tables where rows
+     * @note This method is especially useful for tables where rows
      *       are deleted, because you get copies of the rows rather
      *       than references.
      *
@@ -1755,7 +1755,7 @@ public:
      *
      * This method is synchronized on its receiver.
      *
-     * @note This method is escpecially useful for tables where rows
+     * @note This method is especially useful for tables where rows
      *       are deleted, because you get copies of the rows rather
      *       than references.
      *
@@ -1829,11 +1829,11 @@ public:
      * when calling their methods. See also Request::set_locked.
      *
      * @param event
-     *    describes the event that occured:
+     *    describes the event that occurred:
      *      rowCreateAndGo, rowCreateAndWait for row_added,
      *      rowActive for row_activated,
      *      rowNotInService for row_deactivated, and
-     *      rowDestroy fro row_delete.
+     *      rowDestroy from row_delete.
      * @param row
      *    a pointer to the MibTableRow instance to be changed.
      * @param index
@@ -2338,7 +2338,7 @@ public:
  * process_request calls the appropriate of the above mentioned
  * functions for each target managed object.
  *
- * When the agent ist multi-threaded the method routines called by a
+ * When the agent it multi-threaded the method routines called by a
  * request are executed within the same thread. This thread is then
  * different from the master thread accepting new request.
  *

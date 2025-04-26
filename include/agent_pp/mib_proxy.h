@@ -157,7 +157,7 @@ public:
     virtual Oidx find_succ(const Oidx&, Request* r = 0);
 
     /**
-     * Check whether the reciever node contains any instance of a
+     * Check whether the receiver node contains any instance of a
      * managed object.
      *
      * @return true if the node currently manages an instance.
@@ -252,7 +252,7 @@ public:
     MibProxyV3(snmpProxyEntry*, const Oidx&, mib_access);
 
     /**
-     * Creates a proxy forwared application for that will be able
+     * Creates a proxy forwarded application for that will be able
      * to forward messages with the given contextEngineID.
      *
      * @param contextEngineID

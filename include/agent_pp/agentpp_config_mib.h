@@ -394,7 +394,7 @@ public:
     Mib* get_mib() { return mib; }
 
     /**
-     * Do not remove any rows when resetted, because a restore operation
+     * Do not remove any rows when reset, because a restore operation
      * may need a row.
      */
     void reset() override { }

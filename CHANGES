@@ -185,7 +185,7 @@ Version 4.0: CHANGES since Version 3.5.31
   of clock_gettime(CLOCK_MONOTONIC,..).
 * Fixed [APP-17]: Performance optimization: MibEntry->find_succ was called 
   more often than needed when processing get_next and get_bulk PDUs.
-* Improved [APP-22]: Sychronized::trylock behavior to support detection of 
+* Improved [APP-22]: Synchronized::trylock behavior to support detection of 
   recursive locking. This feature is needed by AgentX++ to support recursive 
   Posix Thread locks.
 * Fixed [APP-12]: Removed incorrect _NOTIFICATION_LOG_BY_SENT_NOTIFICATIONS 
@@ -204,7 +204,7 @@ Version 4.0: CHANGES since Version 3.5.31
 * Fixed: Compiler warnings regarding empty array creating in List.h Array.
 * Fixed: Two MibTable constructors used unsigned int instead of int
 * Improved: Made init_lock_queue and delete_lock_queue static.
-* Fxed: Prevent memory leaks when calling snmp_community_mib::add_public() 
+* Fixed: Prevent memory leaks when calling snmp_community_mib::add_public() 
   twice or if the rows where loaded from file before.
 * Improved: Allow to set security level for add_v3_trap_destination() function.
 * Fixed: Added missing namespaces in notification_log_mib.h.
@@ -214,7 +214,7 @@ Version 4.0: CHANGES since Version 3.5.31
   RequestID can be used by a table to associate
   an operation (request_id) with an Oid.
 * Improved: Replaced all usages of boolean with bool. This fixes some
-  inconsitencies, where boolean was used as int.
+  inconsistencies, where boolean was used as int.
 * Fixed: Two MibTable constructors used unsigned int instead of int
   (found from Stephen Agate)
 * Improved: Added some notes about memory handling; Moved some initializations 
@@ -360,7 +360,7 @@ Version 3.5.22c: CHANGES since Version 3.5.21
   for the "public" community.
 
 * Fixed: The noSuchInstance error is now also
-  returned on a GET request on a leaf wiht a
+  returned on a GET request on a leaf with a
   wrong instance identifier (e.g. .1 or .1.2
   instead of .0).
 * Fixed: Setting agentppCfgSecSrcAddrValidation
@@ -462,7 +462,7 @@ Version 3.5.17a: CHANGES since Version 3.5.16e
 
 Version 3.5.16e: CHANGES since Version 3.5.15a
 ==============================================
-* Fixed: Unitialized pointer in Mib::remove.
+* Fixed: Uninitialized pointer in Mib::remove.
 
 * Fixed: Memory leak in snmp_notification_mib.cpp.
 * Fixed: Memory leak in proxy_forwarder.cpp.
@@ -492,7 +492,7 @@ Version 3.5.15a: CHANGES since Version 3.5.14a
 * Changed: Changes according to SNMP++v3.2.10.
 * Improved: MibGroup no longer checks the OIDs
   of objects added to it. This fixes problems that
-  occured occasionally when there were agents
+  occurred occasionally when there were agents
   generated from SMIv1 MIBs with AgenPro.
 
 Version 3.5.14a: CHANGES since Version 3.5.13a
@@ -855,7 +855,7 @@ Version 3.5.3a: CHANGES since Version 3.5.2b
   implementations that do not allow a
   thread to release a lock which the thread
   does not own in FAST mode. This fixes 
-  also a problem that occured on WIN32 
+  also a problem that occurred on WIN32 
   operating systems which caused AgentX++
   subagents to crash when performing SET
   request in parallel on the same object or
@@ -928,7 +928,7 @@ Version 3.5e: CHANGES since Version 3.5c
   RequestList::answer() accidentally 
   removed in version 3.5c.
 
-* Added: Handling of unkown security model
+* Added: Handling of unknown security model
   error in request.cpp.
 
 Version 3.5c: CHANGES since Version 3.5a
@@ -1155,7 +1155,7 @@ Version 3.4.3:  CHANGES since Version 3.4.2a
 * Fixed: Problem with row creation and non-
   default columns that had valid initial values.
 * Fixed: Validity flag of MibLeaf was not well
-  defined and used. Clarified defintion and
+  defined and used. Clarified definition and
   usage. (See also above bug fix.)
 * Fixed: Chance of a crash when terminating
   agent while requests are currently processed.
@@ -1254,7 +1254,7 @@ Version 3.4.1:  CHANGES since Version 3.4p
   around the RowStatus state changes. 
   PLEASE NOTE: The RowStatus column is now set
   after all other subrequests for that row have
-  been commited. The preparation of a set request
+  been committed. The preparation of a set request
   now looks ahead. Thus, before an attempt to
   change the RowStatus of a row is processed, all
   other variable bindings are collected, that will
@@ -1360,7 +1360,7 @@ Version 3.4m:  CHANGES since Version 3.4l
 * Fixed: GETBULK with zero repetitions failed with
   AgentX++. Insert the following line into mib.cpp
   at line 3427:
-	// If no repetetions, then do not wait for them 
+	// If no repetitions, then do not wait for them 
 	if (maxrep == 0) req->dec_outstanding();
 
 * Fixed: GETBULK: If the non-repeater value was less
@@ -1392,7 +1392,7 @@ Version 3.4k:  CHANGES since Version 3.4j
 * Added: Support for dynamic tables. Although dynamic
   tables could be implemented with previous versions of
   AGENT++, it was not clear which methods needed to be
-  be overriden. Now there is a single method which can do
+  be overridden. Now there is a single method which can do
   the job. The MibTable::update(Request*) method triggers
   a table to be updated before a (sub-)request is 
   processed on it. 
@@ -1592,7 +1592,7 @@ Version 3.4:  CHANGES since Version 3.3b
   constructor and the file's extension is the context the
   group is part of. 
 
-  If a MibGroup is created using only one paramter all its
+  If a MibGroup is created using only one parameter all its
   objects are volatile.
 
 * Removed snmpUnavailableContexts and snmpUnknownContexts 
@@ -1631,7 +1631,7 @@ Version 3.4:  CHANGES since Version 3.3b
   start_synch() of deleted mib entries).
 
 * Fixed: Mib::process_set_request did not call 
-  Mib::process_cleanup_set_request if prepare faild.
+  Mib::process_cleanup_set_request if prepare failed.
 
 * Fixed: Mib::add as well as MibContext::add detect duplicate
   registrations. 
@@ -1682,13 +1682,13 @@ Version 3.3:  CHANGES since Version 3.2b
   of an MibLeaf's value. 
 
   A new mode (besides has default value or not) has been
-  introduced which determins whether the columnar object
+  introduced which determines whether the columnar object
   may be changed when its row has a rowStatus of active(1),
   or not.
 
 * Constructors of MibTable. Since version 3.3 the index
-  of new rows can be checked more precisly than in earlier
-  versions. Unfortunatly, a new constructor had to be
+  of new rows can be checked more precisely than in earlier
+  versions. Unfortunately, a new constructor had to be
   introduced that accepts an array of the index_info
   structure. This array contains an element for each
   object in the INDEX clause of a table. Each index_info
@@ -1697,9 +1697,9 @@ Version 3.3:  CHANGES since Version 3.2b
   2. a boolean value that determines whether the (sub-)index
      has an implied length or not. This may only be specified
      for the last element in an array of index_infos.
-  3. the minimum length of the index object meassured in
+  3. the minimum length of the index object measured in
      oid sub-identifiers.
-  4. the maximum length of the index object meassured in
+  4. the maximum length of the index object measured in
      oid sub-identifiers. (Note: for constant length
      index objects like sNMP_SYNTAX_INT or sNMP_SYNTAX_IPADDR
      min and max are equal and 1 or 4, respectively)
@@ -1808,7 +1808,7 @@ Version 3.1:  CHANGES since Version 3.03
 ========================================
 
 * Replaced collection class for rows of MibTable with a AVL
-  tree based colection class (was double chained list before).
+  tree based collection class (was double chained list before).
   This speeds up table lookups - especially for large tables.
   
   Attention! If you used OrderedListCursor to traverse the
@@ -1895,7 +1895,7 @@ Version 3.0:  CHANGES since Version 2.11
 * Snmpx no longer overrides Snmp::snmp_engine and Snmp::MyMakeReqID.  
 
 * Fixed: User created rows in MibTables with snmpRowStatus had
-  disappered (an event log of level 2 was generated) although their 
+  disappeared (an event log of level 2 was generated) although their 
   rowStatus had been set to notInService or active within 5 minutes.
   This situation was very unlikely, but could have been happen. 
   Now only rows that are notReady for a minimum of 5 minutes will be
@@ -1962,7 +1962,7 @@ Version 2.02: CHANGES since Version 2.01a
 
 * Added trapDestGroup containing trapDestTable and trapDestIndexNext,
   which support the (de)registration of trap destinations and 
-  sending them depending on the registrated destinations.
+  sending them depending on the registered destinations.
 
 
 Version 2.01a: CHANGES since Version 2.01

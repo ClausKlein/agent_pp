@@ -1242,7 +1242,7 @@ void MibTableRow::get_vblist(Vbx* vbs, int sz, bool returnVolatileAsNull)
 /**
  * Set a reference to the receivers table in all of its columns.
  *
- * @param t - The MibTable object the reciever belongs to.
+ * @param t - The MibTable object the receiver belongs to.
  */
 void MibTableRow::set_reference_to_table(MibTable* t)
 {
@@ -1629,7 +1629,7 @@ int MibTable::set_value(Request* req, int reqind)
         {
             Oidx const   ind(index(tmpoid));
             MibTableRow* row = find_index(ind);
-            // check for status upgrade only if it is nessesary
+            // check for status upgrade only if it is necessary
             if (get_row_status(row) == rowNotReady)
             {
                 Vbx* pvbs = new Vbx[row->size()];
@@ -1687,14 +1687,14 @@ int MibTable::set_value(Request* req, int reqind)
         }
         // default values are assigned by cloning from the
         // generator row
-        // the index ist set by MibTable automatically
+        // the index is set by MibTable automatically
         notify_change(ind, CREATE);
         // check whether row can now be set active
         if (row_status)
         {
             Oidx const   myind(index(tmpoid));
             MibTableRow* row = find_index(myind);
-            // check for status upgrade only if it is nessesary
+            // check for status upgrade only if it is necessary
             if (get_row_status(row) == rowNotReady)
             {
                 Vbx* pvbs = new Vbx[row->size()];
@@ -1999,10 +1999,10 @@ Oidx MibTable::find_succ(const Oidx& o, Request* /*req*/)
 }
 
 /**
- * Find the lexicographical predessor MibLeaf object to a given oid.
+ * Find the lexicographical predecessor MibLeaf object to a given oid.
  *
  * @param o - An oid.
- * @return A pointer to the predessor object, 0 otherwise.
+ * @return A pointer to the predecessor object, 0 otherwise.
  */
 MibLeaf* MibTable::find_prev(const Oidx& o)
 {
@@ -2789,7 +2789,7 @@ Oidx MibTable::get_next_avail_index() const
 /**
  * Remove all rows that are not in the given list.
  *
- * @param confirmed_rows - A list of row indecies of rows which
+ * @param confirmed_rows - A list of row indices of rows which
  *                         should not be removed from the receiver.
  */
 void MibTable::remove_obsolete_rows(OrderedList<Oidx>& confirmed_rows)
@@ -2968,7 +2968,7 @@ List<MibTableRow>* MibTable::get_rows(int discriminator)
  * corresponding MibTableRow instances. If the receiver table
  * does not have any snmpRowStatus column all rows are returned.
  *
- * @note This method is escpecially useful for tables where rows
+ * @note This method is especially useful for tables where rows
  *       are deleted, because you get copies of the rows rather
  *       than references.
  *

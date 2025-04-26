@@ -304,7 +304,7 @@ public:
      * between 0 and 255.
      *
      * @param withoutLength
-     *    if true there will be no preceeding subid containing
+     *    if true there will be no preceding subid containing
      *    the length of the string
      * @return An OctetStr.
      */
@@ -329,7 +329,7 @@ public:
      * following subidentifier represents one character.
      *
      * @param withExplicitLength
-     *    if false there will be no preceeding subid containing
+     *    if false there will be no preceding subid containing
      *    the length of the string will be generated.
      * @return An Oidx.
      */

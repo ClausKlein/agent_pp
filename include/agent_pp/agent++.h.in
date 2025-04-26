@@ -39,7 +39,7 @@
 
 #include <agent_pp/export.h>
 
-// system dependend witches
+// system dependent witches
 #ifndef NO_NANOSLEEP
 #    define nanosleep nanosleep
 #endif
@@ -129,7 +129,7 @@ typedef enum
 #    else
 #        define AGENTPP_DECL AGENT_PP_EXPORT
 #        define AGENTPP_DECL_TEMPL
-// Seems that a eplicit extern declaration is needed on some
+// Seems that a explicit extern declaration is needed on some
 // systems. If you encounter linking problems you may uncomment
 // the following:
 // #        ifdef WIN32
@@ -144,7 +144,7 @@ typedef enum
 // TODO: should be set in snmp_pp.h! CK
 #    define WIN32_LEAN_AND_MEAN
 #
-#    include <time.h>   // XXX neded? CK
+#    include <time.h>   // XXX needed? CK
 #    include <process.h>
 #endif
 

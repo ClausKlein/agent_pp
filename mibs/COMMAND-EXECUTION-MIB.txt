@@ -38,7 +38,7 @@ cmdExecutionModule MODULE-IDENTITY
                 sub-tree."
         REVISION "0004070000Z"  -- Apr 7, 1900 12:00:00 AM
         DESCRIPTION
-                "Changed syntax Timeticks ot TimeTicks and added
+                "Changed syntax Timeticks to TimeTicks and added
                 object groups."
  -- 1.3.6.1.4.1.4976.6.1 --  ::= { agentppExpr 1 }
 

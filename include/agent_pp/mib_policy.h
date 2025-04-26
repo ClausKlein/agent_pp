@@ -104,7 +104,7 @@ public:
     virtual void remove_policy(const Oidx&);
 
     /**
-     * Register the given MibTableSizePolicy instance wiht all
+     * Register the given MibTableSizePolicy instance with all
      * tables currently known by the given Mib instance.
      *
      * @param mib

@@ -211,7 +211,7 @@ protected:
  * an empty string.
  *
  * The MibEntry instances within an context can be loaded/stored from/to
- * persitent storage. Whenever a context is loaded from disk by calling
+ * persistent storage. Whenever a context is loaded from disk by calling
  * the init_from method, the context's content is stored to disk to the
  * same location when the context is deleted.
  *
@@ -305,7 +305,7 @@ public:
     /**
      * Unregister a MIB object from the context.
      * This method does not work for MibGroups, instead you have
-     * to remove each MibGroup's MIB object seperately.
+     * to remove each MibGroup's MIB object separately.
      * (SYNCHRONIZED)
      *
      * @param oid
@@ -386,7 +386,7 @@ public:
      *
      * @param oid
      *    an object identifier of an existing MibEntry. If the
-     *    receiver doesnot contain such an object, 0 will be returned.
+     *    receiver doesn't contain such an object, 0 will be returned.
      * @return
      *    a pointer to the successor MibEntry if the specified object
      *    could be found, 0 otherwise.

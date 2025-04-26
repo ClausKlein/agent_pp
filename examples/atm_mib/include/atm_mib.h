@@ -837,7 +837,7 @@ public:
 /**
  *  atmVplAdminStatus
  *
- * "This object is instanciated only for a VPL
+ * "This object is instantiated only for a VPL
  * which terminates a VPC (i.e., one which is
  * NOT cross-connected to other VPLs).
  * Its value specifies the desired
@@ -1009,7 +1009,7 @@ public:
 /**
  *  atmVclAdminStatus
  *
- * "This object is instanciated only for a VCL which
+ * "This object is instantiated only for a VCL which
  * terminates a VCC (i.e., one which is NOT
  * cross-connected to other VCLs). Its value
  * specifies the desired administrative state of

@@ -671,7 +671,7 @@ int main(int argc, char** argv)
                 return -4;
             }
         }
-        // last vb becomes seed of next rquest
+        // last vb becomes seed of next request
         srcPdu.set_vblist(&vb, 1);
     }
     set_config_mode(destPdu, targetDest, snmp, 1);

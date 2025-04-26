@@ -153,7 +153,7 @@ void MibProxy::get_request(Request* req, int reqind)
 /**
  * Find next proxied oid. This method must be called at least once
  * before calling get_next_request, because find_next cashes the
- * retreived values for get_next_request.
+ * retrieved values for get_next_request.
  *
  * @param id
  *    a oid for which its successor is searched for
@@ -518,7 +518,7 @@ void MibProxyV3::get_request(Request* req, int reqind)
 /**
  * Find next proxied oid. This method must be called at least once
  * before calling get_next_request, because find_next cashes the
- * retreived values for get_next_request.
+ * retrieved values for get_next_request.
  *
  * @param id
  *    a oid for which its successor is searched for

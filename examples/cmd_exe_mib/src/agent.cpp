@@ -365,7 +365,7 @@ int main(int argc, char* argv[])
 
     // vacm->deleteView("newView", "1.3");
 #endif
-    // load persitent objects from disk and do initializations
+    // load persistent objects from disk and do initializations
     mib->init();
 
     Vbx*                   vbs = nullptr;

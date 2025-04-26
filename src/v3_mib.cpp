@@ -714,7 +714,7 @@ MibTableRow* UsmUserTable::addNewRow(const OctetStr& userName, const OctetStr& s
         else
         {
             LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
-            LOG("UsmUserTable: Cant add User (Errorcode)");
+            LOG("UsmUserTable: Can't add User (Errorcode)");
             LOG(res);
             LOG_END;
         }
@@ -735,7 +735,7 @@ MibTableRow* UsmUserTable::addNewRow(const OctetStr& userName, const OctetStr& s
         else
         {
             LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
-            LOG("UsmUserTable: Cant add User (Errorcode)");
+            LOG("UsmUserTable: Can't add User (Errorcode)");
             LOG(res);
             LOG_END;
         }

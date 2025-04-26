@@ -241,7 +241,7 @@ int main(int argc, char* argv[])
     init(*mib, engineId);
     // add user modules
     module_init(mib);
-    // load persitent objects from disk
+    // load persistent objects from disk
     mib->init();
 
     reqList->set_snmp(&snmp);

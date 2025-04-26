@@ -49,7 +49,7 @@ public:
     SimMib();
 
     /**
-     * Desctructor
+     * Destructor
      */
     ~SimMib() override;
 };

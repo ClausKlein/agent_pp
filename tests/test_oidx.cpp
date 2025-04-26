@@ -125,7 +125,7 @@ getRowIndicesCloned(const Agentpp::Oidx& index)
 
         if (index_struct[i].implied)      // NOTE: subindex without length
         {
-            assert(i == (INDEX_LEN - 1)); // IMPLIED only alowed for last subindex!
+            assert(i == (INDEX_LEN - 1)); // IMPLIED only allowed for last subindex!
 
             *cur = index.cut_left(pos);   // last part
             pos  = index.len();           // after the END!
@@ -216,7 +216,7 @@ int main()
     index += oidWithoutLen;       // index c: string in this case!
     index += 4;                   // index d
     index += IpaddressIndex;      // index e
-    index += OidIndex;            // index f: vaiable len oid without len: IMPLIED
+    index += OidIndex;            // index f: variable len oid without len: IMPLIED
 
     std::cout << index.get_printable() << std::endl;
     //  7.99.111.110.116.101.120.116.2.4.1.2.3.4.4.127.0.0.1.1.3.6.1.6.3.13.1.2.1
