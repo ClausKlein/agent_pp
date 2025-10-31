@@ -25,7 +25,7 @@ clang-analyzer-*,\
 -cppcoreguidelines-*,\
 cppcoreguidelines-explicit-virtual-functions,\
 cppcoreguidelines-init-variables,\
-cppcoreguidelines-slicing,\
+-cppcoreguidelines-slicing,\
 -cppcoreguidelines-avoid-*,\
 -cppcoreguidelines-macro-usage,\
 -cppcoreguidelines-narrowing-conversions,\

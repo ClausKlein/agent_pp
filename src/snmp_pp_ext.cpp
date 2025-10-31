@@ -1244,8 +1244,11 @@ int Snmpx::send(Pdux const& pdu, SnmpTarget* target)
     }
     else
 #    endif
+    {
         status = send_snmp_request(
             iv_snmp_session, snmpmsg.data(), static_cast<size_t>(snmpmsg.len()), udp_address);
+    }
+
 #    ifdef _THREADS
     smutex.end_synch();
 #    endif

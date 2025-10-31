@@ -5,7 +5,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # NOTE: We need LANGUAGE C too for libdes. It may be required to build at Windows! CK
 project(
   agent_pp
-  VERSION 4.5.1.12
+  VERSION 4.5.1.13
   LANGUAGES CXX C
 )
 
@@ -208,7 +208,7 @@ set(SNMP_PP_VERSION 3.4.7)
 option(SNMP_PP_LOGGING "build all libraries with logging" NO)
 CPMAddPackage(
   NAME snmp_pp
-  VERSION ${SNMP_PP_VERSION}.15
+  VERSION ${SNMP_PP_VERSION}-rc16
   GITHUB_REPOSITORY ClausKlein/snmp_pp SYSTEM ON SYSTEM YES
   OPTIONS "SNMP_PP_EXAMPLES YES" "CMAKE_SKIP_INSTALL_RULES NO"
 )
