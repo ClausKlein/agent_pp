@@ -1223,7 +1223,7 @@ void nlmLogEntry::add_notification(const SnmpTarget* target, const Oid& nid, con
 
         auto*     udpAddress = new UdpAddress(addr);
         IpAddress ip(*udpAddress);
-        for (int i = 0; i < ip.get_length(); i++) { address += (unsigned char)ip[i]; }
+        for (int i = 0; i < ip.get_length(); i++) { address += ip[i]; }
         address += (udpAddress->get_port() >> 8);
         address += (udpAddress->get_port() & 0x00FF);
         delete udpAddress;
@@ -1594,7 +1594,7 @@ void nlmLogVariableEntry::set_row(MibTableRow* r, const char* p0, int32_t p1, ui
 void nlmLogVariableEntry::add_variable(const Oidx& index, unsigned int i, const Vbx& vb)
 {
     Oidx newIndex(index);
-    newIndex += (uint32_t)i;
+    newIndex += static_cast<uint32_t>(i);
     MibTableRow* r = add_row(newIndex);
     for (int j = nNlmLogVariableCounter32Val; j < r->size(); j++)
     {

@@ -37,15 +37,15 @@
  */
 
 #ifndef _OidxPtrEntryPtrAVLMap_h
-#define _OidxPtrEntryPtrAVLMap_h 1
+#    define _OidxPtrEntryPtrAVLMap_h 1
 
-#include <agent_pp/map.h>
+#    include <agent_pp/map.h>
 
-#ifdef AGENTPP_NAMESPACE
+#    ifdef AGENTPP_NAMESPACE
 namespace Agentpp
 {
 using namespace Snmp_pp;
-#endif
+#    endif
 
 // NOLINTBEGIN
 
@@ -169,7 +169,7 @@ inline bool OidxPtrEntryPtrAVLMap::contains(OidxPtr key_) const { return seek(ke
 
 // NOLINTEND
 
-#ifdef AGENTPP_NAMESPACE
+#    ifdef AGENTPP_NAMESPACE
 }
-#endif
+#    endif
 #endif

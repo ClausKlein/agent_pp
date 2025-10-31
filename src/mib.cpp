@@ -322,7 +322,7 @@ bool MibLeaf::deserialize(char* buf, int& sz)
 {
     Vbx*      vbs    = nullptr;
     int       size   = 0;
-    auto*     data   = (unsigned char*)buf;
+    auto*     data   = reinterpret_cast<unsigned char*>(buf);
     int const status = Vbx::from_asn1(vbs, size, data, sz);
 
     if (status == SNMP_CLASS_SUCCESS)
@@ -1477,8 +1477,8 @@ bool MibTable::serialize(char*& buf, int& sz)
     int const size     = stream.len();
     buf                = new char[size + 10];
     int            len = size + 10;
-    unsigned char* cp  = asn_build_header(
-        (unsigned char*)buf, &len, (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR), size);
+    unsigned char* cp  = asn_build_header(reinterpret_cast<unsigned char*>(buf), &len,
+         static_cast<unsigned char>(ASN_SEQUENCE | ASN_CONSTRUCTOR), size);
     if (size > 0)
     {
         memcpy(cp, stream.data(), size);
@@ -1492,7 +1492,8 @@ bool MibTable::deserialize(char* buf, int& sz)
     unsigned char type = 0;
     int           size = sz;
 
-    buf = (char*)asn_parse_header((unsigned char*)buf, &size, &type);
+    buf =
+        reinterpret_cast<char*>(asn_parse_header(reinterpret_cast<unsigned char*>(buf), &size, &type));
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 4);
     LOG("MibTable: deserialize: reading table (table)(size)");
     LOG(key()->get_printable());
@@ -1507,7 +1508,7 @@ bool MibTable::deserialize(char* buf, int& sz)
         sz = 0;
         return false;
     }
-    if (type != (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR))
+    if (type != static_cast<unsigned char>(ASN_SEQUENCE | ASN_CONSTRUCTOR))
     {
         LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
         LOG("MibTable: deserialize: wrong header - no sequence (table)");
@@ -1518,11 +1519,11 @@ bool MibTable::deserialize(char* buf, int& sz)
     }
     while (size > 0)
     {
-        auto*     data   = (unsigned char*)buf;
+        auto*     data   = reinterpret_cast<unsigned char*>(buf);
         Vbx*      vbs    = nullptr;
         int       vbsz   = 0;
         int const status = Vbx::from_asn1(vbs, vbsz, data, size);
-        buf              = (char*)data;
+        buf              = reinterpret_cast<char*>(data);
         if ((status != SNMP_CLASS_SUCCESS) || (vbsz == 0) || (vbsz != generator.size()))
         {
             LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
@@ -2657,8 +2658,8 @@ int MibTable::prepare_set_request(Request* req, int& ind)
                             {
                                 int nrs = -1;
                                 vb.get_value(nrs);
-                                return perform_voting(
-                                    o->my_row, (int)(dynamic_cast<snmpRowStatus*>(o))->get(), nrs);
+                                return perform_voting(o->my_row,
+                                    static_cast<int>((dynamic_cast<snmpRowStatus*>(o))->get()), nrs);
                             }
                             else
                             {
@@ -3389,7 +3390,7 @@ bool Mib::save(unsigned int format, const OctetStr& path)
 
 MibConfigFormat* Mib::add_config_format(unsigned int formatID, MibConfigFormat* format)
 {
-    while ((unsigned int)configFormats.size() < formatID) { configFormats.add(nullptr); }
+    while (static_cast<unsigned int>(configFormats.size()) < formatID) { configFormats.add(nullptr); }
     return configFormats.overwriteNth(formatID - 1, format);
 }
 
@@ -3555,7 +3556,8 @@ int Mib::find_next(MibContext* context, const Oidx& oid, MibEntryPtr& entry, Req
     {
         return SNMP_ERROR_SUCCESS;
     }
-    do {
+    do
+    {
         MibEntry* e = context->find_next(*entry->key());
         if (!e)
         {
@@ -3625,7 +3627,8 @@ int Mib::next_access_control(Request* req, MibEntry* entry, Oidx& oid, const Oid
         {
             oid = entry->find_succ(oid, req);
         }
-        do {
+        do
+        {
             if (oid.len() <= 0)
             {
                 oid = *entry->max_key();
@@ -3733,7 +3736,8 @@ bool Mib::process_request(Request* req, int reqind)
         lock_mib();
 #ifdef _SNMPv3
         int vacmErrorCode = VACM_otherError;
-        do {
+        do
+        {
             nextOid.clear();
             if (find_next(get_context(req->get_context()), tmpoid, entry, req, reqind, nextOid)
                 != SNMP_ERROR_SUCCESS)
@@ -4288,7 +4292,8 @@ void Mib::process_get_bulk_request(Request* req)
         Oidx nextOid;
 #ifdef _SNMPv3
         int vacmErrorCode = VACM_otherError;
-        do {
+        do
+        {
             nextOid.clear();
             if (find_next(get_context(req->get_context()), tmpoid, entry, req, id, nextOid)
                 != SNMP_ERROR_SUCCESS)
@@ -4415,7 +4420,8 @@ void Mib::process_get_bulk_request(Request* req)
 #ifdef _SNMPv3
                 bool contin        = false;
                 int  vacmErrorCode = VACM_otherError;
-                do {
+                do
+                {
                     nextOid.clear();
                     if (find_next(get_context(req->get_context()), tmpoid, entry, req, id, nextOid) !=
 #else

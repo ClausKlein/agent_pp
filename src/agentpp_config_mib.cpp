@@ -423,7 +423,7 @@ bool agentppCfgStorageFormat::value_ok(const Vbx& vb)
     //--AgentGen BEGIN=agentppCfgStorageFormat::value_ok
     if (!(dynamic_cast<agentppCfgStorageEntry*>(my_table))
             ->get_mib()
-            ->get_config_format((unsigned int)v))
+            ->get_config_format(static_cast<unsigned int>(v)))
     {
         return false;
     }

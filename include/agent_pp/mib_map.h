@@ -37,18 +37,18 @@
  */
 
 #ifndef _OidxPtrMibEntryPtrMap_h
-#define _OidxPtrMibEntryPtrMap_h 1
+#    define _OidxPtrMibEntryPtrMap_h 1
 
 typedef void* Pix;
 
-#include <agent_pp/mib_entry.h>
-#include <agent_pp/oidx_defs.h>
+#    include <agent_pp/mib_entry.h>
+#    include <agent_pp/oidx_defs.h>
 
-#ifdef AGENTPP_NAMESPACE
+#    ifdef AGENTPP_NAMESPACE
 namespace Agentpp
 {
 using namespace Snmp_pp;
-#endif
+#    endif
 
 class AGENTPP_DECL OidxPtrMibEntryPtrMap {
 protected:
@@ -92,8 +92,8 @@ public:
     virtual bool OK() = 0; // rep invariant
 };
 
-#ifdef AGENTPP_NAMESPACE
+#    ifdef AGENTPP_NAMESPACE
 }
-#endif
+#    endif
 
 #endif

@@ -455,14 +455,14 @@ bool VacmAccessTable::getViewName(const OctetStr& group, const OctetStr& context
                         .get_printable());
                 LOG_END;
 
-                if ((((int)ind[ind.len() - 2] == securityModel) ||
+                if (((static_cast<int>(ind[ind.len() - 2]) == securityModel) ||
 #ifdef _SNMPv3
-                        ((int)ind[ind.len() - 2] == SNMP_SECURITY_MODEL_ANY)
+                        (static_cast<int>(ind[ind.len() - 2]) == SNMP_SECURITY_MODEL_ANY)
 #else
                         (ind[ind.len() - 2] == 0)
 #endif
                             )
-                    && ((int)ind[ind.len() - 1] <= securityLevel))
+                    && (static_cast<int>(ind[ind.len() - 1]) <= securityLevel))
                 {
                     OctetStr const pref = OctetStr(ind.cut_left(ind[0] + 2).cut_right(2).as_string());
                     int            exactMatch = 0;
@@ -488,11 +488,13 @@ bool VacmAccessTable::getViewName(const OctetStr& group, const OctetStr& context
                         if (found)
                         { // found a row before
                             bool replace = false;
-                            if ((!foundMatchModel) && ((int)ind[ind.len() - 2] == securityModel))
+                            if ((!foundMatchModel)
+                                && (static_cast<int>(ind[ind.len() - 2]) == securityModel))
                             {
                                 replace = true;
                             }
-                            else if ((!foundMatchModel) || ((int)ind[ind.len() - 2] == securityModel))
+                            else if ((!foundMatchModel)
+                                || (static_cast<int>(ind[ind.len() - 2]) == securityModel))
                             {
                                 if ((!foundMatchContextExact) && (exactMatch == 1))
                                 {
@@ -516,7 +518,8 @@ bool VacmAccessTable::getViewName(const OctetStr& group, const OctetStr& context
 
                             if (replace)
                             {
-                                foundMatchModel          = ((int)ind[ind.len() - 2] == securityModel);
+                                foundMatchModel =
+                                    (static_cast<int>(ind[ind.len() - 2]) == securityModel);
                                 foundMatchContextExact   = (exactMatch == 1);
                                 foundContextPrefixLength = pref.len();
                                 foundSecurityLevel       = ind[ind.len() - 1];
@@ -525,8 +528,8 @@ bool VacmAccessTable::getViewName(const OctetStr& group, const OctetStr& context
                         }
                         else
                         { // this is the first row that was found
-                            found                    = true;
-                            foundMatchModel          = ((int)ind[ind.len() - 2] == securityModel);
+                            found           = true;
+                            foundMatchModel = (static_cast<int>(ind[ind.len() - 2]) == securityModel);
                             foundMatchContextExact   = (exactMatch == 1);
                             foundContextPrefixLength = pref.len();
                             foundSecurityLevel       = ind[ind.len() - 1];

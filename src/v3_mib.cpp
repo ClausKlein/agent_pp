@@ -427,7 +427,8 @@ UsmUserTable::UsmUserTable(v3MP* v3mp) : StorageTable(oidUsmUserEntry, iUsmUserT
 
         MibTableRow* newRow = add_row(o);
 
-        newRow->get_nth(2)->replace_value(new OctetStr((char*)(user->usmUserSecurityName)));
+        newRow->get_nth(2)->replace_value(
+            new OctetStr(reinterpret_cast<char*>(user->usmUserSecurityName)));
         newRow->get_nth(3)->replace_value(o.clone());
 
         auto* ukc5 = dynamic_cast<UsmKeyChange*>(newRow->get_nth(5));
@@ -1276,7 +1277,7 @@ int UsmKeyChange::prepare_set_request(Request* req, int& ind)
                 {
                     return SNMP_ERROR_WRONG_TYPE;
                 }
-                if ((int)os.len() != 2 * key_len)
+                if (static_cast<int>(os.len()) != 2 * key_len)
                 { // Fixed key_len
                     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 1);
                     LOG("Keychange value has wrong length (len) (expected)");

@@ -18,7 +18,10 @@ cert-*,\
 -cert-msc30-c,\
 -cert-msc50-cpp,\
 clang-analyzer-*,\
+-clang-analyzer-core.StackAddressEscape,\
+-clang-analyzer-security.ArrayBound,\
 -clang-analyzer-security.insecureAPI.*,\
+-clang-analyzer-optin.cplusplus.VirtualCall,\
 -cppcoreguidelines-*,\
 cppcoreguidelines-explicit-virtual-functions,\
 cppcoreguidelines-init-variables,\
@@ -32,7 +35,7 @@ cppcoreguidelines-slicing,\
 -google-*,\
 -google-readability-casting,\
 hicpp-*,\
--hicpp-braces-around-statements,\
+hicpp-braces-around-statements,\
 -hicpp-explicit-conversions,\
 -hicpp-member-init,\
 -hicpp-multiway-paths-covered,\
@@ -62,7 +65,7 @@ performance-*,\
 -performance-enum-size,\
 portability-*,\
 -readability-*,\
-readability-make-member-function-const,\
+-readability-make-member-function-const,\
 -*magic-numbers,\
 -*avoid-c-arrays,\
 -*-no-array-decay,\

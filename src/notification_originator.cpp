@@ -145,7 +145,7 @@ int NotificationOriginator::generate(Vbx* vbs, int size, const Oidx& id, unsigne
             typeCur.get()->first()->get_value(tag);
             int const len    = tag.len();         // NOTE: without \0! CK
             char*     tagstr = new char[len + 1]; // TODO(CK): use std::array<char>
-            memcpy(tagstr, (char*)tag.data(), len);
+            memcpy(tagstr, reinterpret_cast<char*>(tag.data()), len);
             tagstr[len] = 0;                      // OK, CK
 
             if ((dynamic_cast<SnmpTagList*>(cur.get()->get_nth(4)))->contains(tagstr))
@@ -567,7 +567,7 @@ bool NotificationOriginator::add_v1_trap_destination(
     OctetStr  address;
     IpAddress ip(addr);
 
-    for (int i = 0; i < addr.get_length() - 2; i++) { address += (unsigned char)ip[i]; }
+    for (int i = 0; i < addr.get_length() - 2; i++) { address += ip[i]; }
     address += (addr.get_port() >> 8);
     address += (addr.get_port() & 0x00FF);
 
@@ -602,7 +602,7 @@ bool NotificationOriginator::add_v2_trap_destination(
     OctetStr  address;
     IpAddress ip(addr);
 
-    for (int i = 0; i < addr.get_length() - 2; i++) { address += (unsigned char)ip[i]; }
+    for (int i = 0; i < addr.get_length() - 2; i++) { address += ip[i]; }
     address += (addr.get_port() >> 8);
     address += (addr.get_port() & 0x00FF);
 
@@ -637,7 +637,7 @@ bool NotificationOriginator::add_v3_trap_destination(const UdpAddress& addr, con
     OctetStr  address;
     IpAddress ip(addr);
 
-    for (int i = 0; i < addr.get_length() - 2; i++) { address += (unsigned char)ip[i]; }
+    for (int i = 0; i < addr.get_length() - 2; i++) { address += ip[i]; }
     address += (addr.get_port() >> 8);
     address += (addr.get_port() & 0x00FF);
 

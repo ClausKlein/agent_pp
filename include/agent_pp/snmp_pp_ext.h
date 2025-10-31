@@ -201,7 +201,7 @@ public:
     }
 
     using NS_SNMP Oid::operator=;
-    virtual Oidx&      operator=(uint32_t l)
+    virtual Oidx& operator=(uint32_t l)
     {
         // delete the old value
         if (smival.value.oid.ptr)
@@ -210,15 +210,15 @@ public:
             smival.value.oid.ptr = nullptr;
         }
         smival.value.oid.len    = 1;
-        smival.value.oid.ptr    = (SmiLPUINT32) new SmiUINT32[1];
+        smival.value.oid.ptr    = static_cast<SmiLPUINT32>(new SmiUINT32[1]);
         smival.value.oid.ptr[0] = l;
         return *this;
     }
 
     using NS_SNMP Oid::operator+=;
-    Oidx&              operator+=(NS_SNMP IpAddress const& ip)
+    Oidx&         operator+=(NS_SNMP IpAddress const& ip)
     {
-        for (int i = 0; i < ip.get_length(); i++) { *this += (uint32_t)ip[i]; }
+        for (int i = 0; i < ip.get_length(); i++) { *this += static_cast<uint32_t>(ip[i]); }
         return *this;
     }
 
@@ -319,7 +319,7 @@ public:
         {
             i++; // first oid seems to be the len
         }
-        for (; i < (int)len(); i++) { str += (unsigned char)(*this)[i]; }
+        for (; i < static_cast<int>(len()); i++) { str += static_cast<unsigned char>((*this)[i]); }
         return str;
     }
 

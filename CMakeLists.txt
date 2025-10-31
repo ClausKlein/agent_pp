@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21...3.31)
+cmake_minimum_required(VERSION 3.25...4.2)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -23,7 +23,9 @@ if(CMAKE_EXPORT_COMPILE_COMMANDS)
 endif()
 
 # =======================================
-set(CMAKE_CXX_STANDARD 17)
+if(NOT DEFINED CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+endif()
 # =======================================
 # NOTE: in consideration of std=c++17! CK
 set(CNF_STDCXX_98_HEADERS YES)
@@ -197,6 +199,7 @@ endif()
 # see https://github.com/cpm-cmake/CPM.cmake for more info
 
 include(CPM)
+CPMUsePackageLock(package-lock.cmake)
 
 CPMAddPackage("gh:aminya/project_options@0.41.0")
 list(APPEND CMAKE_MODULE_PATH ${ProjectOptions_SRC_DIR})
@@ -343,7 +346,7 @@ set_target_properties(
   ${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}
                              SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
 )
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD ${CMAKE_CXX_STANDARD})
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17})
 target_link_libraries(${PROJECT_NAME} PUBLIC snmp_pp::snmp_pp)
 target_compile_definitions(${PROJECT_NAME} PRIVATE HAVE_CONFIG_H)
 

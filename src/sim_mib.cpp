@@ -145,7 +145,7 @@ time_t simSysUpTime::get() { return (get_currentTime() - start) * 100; }
 
 void simSysUpTime::get_request(Request* req, int ind)
 {
-    *(dynamic_cast<TimeTicks*>(value)) = (uint32_t)get();
+    *(dynamic_cast<TimeTicks*>(value)) = static_cast<uint32_t>(get());
     MibLeaf::get_request(req, ind);
 }
 

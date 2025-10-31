@@ -37,52 +37,52 @@
  */
 
 #ifndef _OidxPtrdefs_h
-#define _OidxPtrdefs_h 1
+#    define _OidxPtrdefs_h 1
 
-#include <agent_pp/oidx_ptr.h>
+#    include <agent_pp/oidx_ptr.h>
 
-#ifdef AGENTPP_NAMESPACE
+#    ifdef AGENTPP_NAMESPACE
 namespace Agentpp
 {
 using namespace Snmp_pp;
-#endif
+#    endif
 
 // equality operator
-#ifndef OidxPtrEQ
-#    define OidxPtrEQ(a, b) ((*(a)) == (*(b)))
-#endif
+#    ifndef OidxPtrEQ
+#        define OidxPtrEQ(a, b) ((*(a)) == (*(b)))
+#    endif
 
 // less-than-or-equal
-#ifndef OidxPtrLE
-#    define OidxPtrLE(a, b) ((*(a)) <= (*(b)))
-#endif
+#    ifndef OidxPtrLE
+#        define OidxPtrLE(a, b) ((*(a)) <= (*(b)))
+#    endif
 
 // comparison : less-than -> < 0; equal -> 0; greater-than -> > 0
-#ifndef OidxPtrCMP
-#    define OidxPtrCMP(a, b) (((*(a)) <= (*(b))) ? (((*(a)) == (*(b))) ? 0 : -1) : 1)
-#endif
+#    ifndef OidxPtrCMP
+#        define OidxPtrCMP(a, b) (((*(a)) <= (*(b))) ? (((*(a)) == (*(b))) ? 0 : -1) : 1)
+#    endif
 
 // hash function
-#ifndef OidxPtrHASH
+#    ifndef OidxPtrHASH
 extern unsigned int hash(OidxPtr);
 
-#    define OidxPtrHASH(x) hash(x)
-#endif
+#        define OidxPtrHASH(x) hash(x)
+#    endif
 
 // initial capacity for structures requiring one
 
-#ifndef DEFAULT_INITIAL_CAPACITY
-#    define DEFAULT_INITIAL_CAPACITY 100
-#endif
+#    ifndef DEFAULT_INITIAL_CAPACITY
+#        define DEFAULT_INITIAL_CAPACITY 100
+#    endif
 
 // HASHTABLE_TOO_CROWDED(COUNT, SIZE) is true iff a hash table with COUNT
 // elements and SIZE slots is too full, and should be resized.
 // This is so if available space is less than 1/8.
 
-#define HASHTABLE_TOO_CROWDED(COUNT, SIZE) ((SIZE) - ((SIZE) >> 3) <= (COUNT))
+#    define HASHTABLE_TOO_CROWDED(COUNT, SIZE) ((SIZE) - ((SIZE) >> 3) <= (COUNT))
 
-#ifdef AGENTPP_NAMESPACE
+#    ifdef AGENTPP_NAMESPACE
 }
-#endif
+#    endif
 
 #endif

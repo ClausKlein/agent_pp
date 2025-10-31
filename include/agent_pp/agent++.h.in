@@ -31,7 +31,7 @@
 // Setting a limit can improve the responsiveness of an agent if
 // there are slow instrumented objects or AgentX subrequests involved.
 // If that is the case, the upper limit should be 25 or less.
-#define AGENTPP_MAX_GETBULK_REPETITIONS 0
+#define AGENTPP_MAX_GETBULK_REPETITIONS (0)
 
 #ifndef __LIBAGENT_H_INCLUDED__
 #    include <libagent.h>
@@ -82,14 +82,14 @@
 #include <snmp_pp/smi.h>
 
 #ifndef GENERIC_CLASS_SUCCESS
-#    define GENERIC_CLASS_SUCCESS 0
+#    define GENERIC_CLASS_SUCCESS (0)
 #endif
 #ifndef GENERIC_CLASS_ERROR
-#    define GENERIC_CLASS_ERROR 1
+#    define GENERIC_CLASS_ERROR (1)
 #endif
 
 #ifndef GENERIC_CLASS_TYPE_MISMATCH
-#    define GENERIC_CLASS_TYPE_MISMATCH -1
+#    define GENERIC_CLASS_TYPE_MISMATCH (-1)
 #endif
 
 #if @WITH_NAMESPACE@

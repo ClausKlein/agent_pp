@@ -158,7 +158,7 @@ int Vbx::to_asn1(Vbx* vbs, int sz, unsigned char*& buf, int& length)
     buf = new unsigned char[length + 4];
     len = length + 4;
     cp  = asn_build_long_len_sequence(
-        buf, &len, (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR), length, 3);
+        buf, &len, static_cast<unsigned char>(ASN_SEQUENCE | ASN_CONSTRUCTOR), length, 3);
     if (cp == nullptr)
     {
         delete[] buf;
@@ -206,7 +206,7 @@ unsigned char* Vbx::asn_build_long_length(
             ASNERROR("build_length");
             return nullptr;
         }
-        *data++ = (unsigned char)length;
+        *data++ = static_cast<unsigned char>(length);
         break;
     }
 
@@ -216,8 +216,8 @@ unsigned char* Vbx::asn_build_long_length(
             ASNERROR("build_length");
             return nullptr;
         }
-        *data++ = (unsigned char)(0x01 | ASN_LONG_LEN);
-        *data++ = (unsigned char)length;
+        *data++ = static_cast<unsigned char>(0x01 | ASN_LONG_LEN);
+        *data++ = static_cast<unsigned char>(length);
         break;
     }
 
@@ -227,9 +227,9 @@ unsigned char* Vbx::asn_build_long_length(
             ASNERROR("build_length");
             return nullptr;
         }
-        *data++ = (unsigned char)(0x02 | ASN_LONG_LEN);
-        *data++ = (unsigned char)((length >> 8) & 0xFF);
-        *data++ = (unsigned char)(length & 0xFF);
+        *data++ = static_cast<unsigned char>(0x02 | ASN_LONG_LEN);
+        *data++ = static_cast<unsigned char>((length >> 8) & 0xFF);
+        *data++ = static_cast<unsigned char>(length & 0xFF);
         break;
     }
 
@@ -239,10 +239,10 @@ unsigned char* Vbx::asn_build_long_length(
             ASNERROR("build_length");
             return nullptr;
         }
-        *data++ = (unsigned char)(0x03 | ASN_LONG_LEN);
-        *data++ = (unsigned char)((length >> 16) & 0xFF);
-        *data++ = (unsigned char)((length >> 8) & 0xFF);
-        *data++ = (unsigned char)(length & 0xFF);
+        *data++ = static_cast<unsigned char>(0x03 | ASN_LONG_LEN);
+        *data++ = static_cast<unsigned char>((length >> 16) & 0xFF);
+        *data++ = static_cast<unsigned char>((length >> 8) & 0xFF);
+        *data++ = static_cast<unsigned char>(length & 0xFF);
         break;
     }
 
@@ -252,11 +252,11 @@ unsigned char* Vbx::asn_build_long_length(
             ASNERROR("build_length");
             return nullptr;
         }
-        *data++ = (unsigned char)(0x04 | ASN_LONG_LEN);
-        *data++ = (unsigned char)((length >> 24) & 0xFF);
-        *data++ = (unsigned char)((length >> 16) & 0xFF);
-        *data++ = (unsigned char)((length >> 8) & 0xFF);
-        *data++ = (unsigned char)(length & 0xFF);
+        *data++ = static_cast<unsigned char>(0x04 | ASN_LONG_LEN);
+        *data++ = static_cast<unsigned char>((length >> 24) & 0xFF);
+        *data++ = static_cast<unsigned char>((length >> 16) & 0xFF);
+        *data++ = static_cast<unsigned char>((length >> 8) & 0xFF);
+        *data++ = static_cast<unsigned char>(length & 0xFF);
     }
     }
     *datalength -= (data - start_data);
@@ -277,7 +277,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
     {
         return SNMP_CLASS_ERROR;
     }
-    if (type != (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR))
+    if (type != static_cast<unsigned char>(ASN_SEQUENCE | ASN_CONSTRUCTOR))
     {
         return SNMP_CLASS_ERROR;
     }
@@ -289,22 +289,24 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
         sz++;
         if (pdu->variables == nullptr)
         {
-            pdu->variables = vp = (struct variable_list*)malloc(sizeof(struct variable_list));
+            pdu->variables = vp =
+                static_cast<struct variable_list*>(malloc(sizeof(struct variable_list)));
         }
         else
         {
             assert(vp != nullptr);
 
             // NOLINTNEXTLINE(clang-analyzer-core.NullDereference)
-            vp->next_variable = (struct variable_list*)malloc(sizeof(struct variable_list));
-            vp                = vp->next_variable;
+            vp->next_variable =
+                static_cast<struct variable_list*>(malloc(sizeof(struct variable_list)));
+            vp = vp->next_variable;
         }
         vp->next_variable = nullptr;
         vp->val.string    = nullptr;
         vp->name          = nullptr;
         vp->name_length   = ASN_MAX_NAME_LEN;
         data              = snmp_parse_var_op(
-            data, objid, &vp->name_length, &vp->type, &vp->val_len, &var_val, (int*)&seqLength);
+            data, objid, &vp->name_length, &vp->type, &vp->val_len, &var_val, &seqLength);
         if (data == nullptr)
         {
             snmp_free_pdu(pdu);
@@ -314,16 +316,17 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
             return SNMP_CLASS_ERROR;
 #endif
         }
-        op = (oid_t*)malloc((unsigned)vp->name_length * sizeof(oid_t));
+        op = static_cast<oid_t*>(malloc(static_cast<unsigned>(vp->name_length) * sizeof(oid_t)));
         // fixed
-        memcpy((char*)op, (char*)objid, vp->name_length * sizeof(oid_t));
+        memcpy(reinterpret_cast<char*>(op), reinterpret_cast<char*>(objid),
+            vp->name_length * sizeof(oid_t));
         vp->name = op;
 
         int len = MAX_SNMP_PACKET;
-        switch ((short)vp->type)
+        switch (static_cast<short>(vp->type))
         {
         case ASN_INTEGER: {
-            vp->val.integer = (SmiINT32*)malloc(sizeof(SmiINT32));
+            vp->val.integer = static_cast<SmiINT32*>(malloc(sizeof(SmiINT32)));
             vp->val_len     = sizeof(SmiINT32);
             asn_parse_int(var_val, &len, &vp->type, vp->val.integer);
             break;
@@ -333,14 +336,14 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
         case SMI_GAUGE:
         case SMI_TIMETICKS:
         case SMI_UINTEGER: {
-            vp->val.integer = (SmiINT32*)malloc(sizeof(SmiINT32));
+            vp->val.integer = static_cast<SmiINT32*>(malloc(sizeof(SmiINT32)));
             vp->val_len     = sizeof(SmiINT32);
             asn_parse_unsigned_int(var_val, &len, &vp->type, vp->val.integer);
             break;
         }
 
         case SMI_COUNTER64: {
-            vp->val.counter64 = (struct counter64*)malloc(sizeof(struct counter64));
+            vp->val.counter64 = static_cast<struct counter64*>(malloc(sizeof(struct counter64)));
             vp->val_len       = sizeof(struct counter64);
             asn_parse_unsigned_int64(var_val, &len, &vp->type, vp->val.counter64);
             break;
@@ -350,7 +353,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
         case SMI_IPADDRESS:
         case SMI_OPAQUE:
         case SMI_NSAP: {
-            vp->val.string = (unsigned char*)malloc((unsigned)vp->val_len);
+            vp->val.string = static_cast<unsigned char*>(malloc(static_cast<unsigned>(vp->val_len)));
             asn_parse_string(var_val, &len, &vp->type, vp->val.string, &vp->val_len);
             break;
         }
@@ -359,9 +362,11 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
             vp->val_len = ASN_MAX_NAME_LEN;
             asn_parse_objid(var_val, &len, &vp->type, objid, &vp->val_len);
             // vp->val_len *= sizeof(oid_t);
-            vp->val.objid = (oid_t*)malloc((unsigned)vp->val_len * sizeof(oid_t));
+            vp->val.objid =
+                static_cast<oid_t*>(malloc(static_cast<unsigned>(vp->val_len) * sizeof(oid_t)));
             // fixed
-            memcpy((char*)vp->val.objid, (char*)objid, vp->val_len * sizeof(oid_t));
+            memcpy(reinterpret_cast<char*>(vp->val.objid), reinterpret_cast<char*>(objid),
+                vp->val_len * sizeof(oid_t));
             break;
         }
 
@@ -391,27 +396,27 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
     for (vp = pdu->variables; vp; vp = vp->next_variable, i++)
     {
         // extract the oid portion
-        tempoid.set_data((SmiLPUINT32)vp->name, (uint32_t)vp->name_length);
+        tempoid.set_data(static_cast<SmiLPUINT32>(vp->name), static_cast<uint32_t>(vp->name_length));
         vbs[i].set_oid(tempoid);
         // extract the value portion
         switch (vp->type)
         {
         // octet string
         case sNMP_SYNTAX_OPAQUE: {
-            OpaqueStr const octets(vp->val.string, (uint32_t)vp->val_len);
+            OpaqueStr const octets(vp->val.string, static_cast<uint32_t>(vp->val_len));
             vbs[i].set_value(octets);
         }
         break;
 
         case sNMP_SYNTAX_OCTETS: {
-            OctetStr const octets(vp->val.string, (uint32_t)vp->val_len);
+            OctetStr const octets(vp->val.string, static_cast<uint32_t>(vp->val_len));
             vbs[i].set_value(octets);
         }
         break;
 
         // object id
         case sNMP_SYNTAX_OID: {
-            Oid const oid((SmiLPUINT32)vp->val.objid, vp->val_len);
+            Oid const oid(static_cast<SmiLPUINT32>(vp->val.objid), vp->val_len);
             vbs[i].set_value(oid);
         }
         break;
@@ -419,21 +424,21 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
         // timeticks
         case sNMP_SYNTAX_TIMETICKS: {
             // FIXME: Warning C6011 Dereferencing NULL pointer! CK
-            TimeTicks const timeticks((uint32_t)*(vp->val.integer));
+            TimeTicks const timeticks(static_cast<uint32_t>(*(vp->val.integer)));
             vbs[i].set_value(timeticks);
         }
         break;
 
         // 32 bit counter
         case sNMP_SYNTAX_CNTR32: {
-            Counter32 const counter32((uint32_t)*(vp->val.integer));
+            Counter32 const counter32(static_cast<uint32_t>(*(vp->val.integer)));
             vbs[i].set_value(counter32);
         }
         break;
 
         // 32 bit gauge
         case sNMP_SYNTAX_GAUGE32: {
-            Gauge32 const gauge32((uint32_t)*(vp->val.integer));
+            Gauge32 const gauge32(static_cast<uint32_t>(*(vp->val.integer)));
             vbs[i].set_value(gauge32);
         }
         break;
@@ -451,7 +456,7 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
 
         // 32 bit integer
         case sNMP_SYNTAX_INT: {
-            SnmpInt32 const int32((int32_t)*(vp->val.integer));
+            SnmpInt32 const int32(static_cast<int32_t>(*(vp->val.integer)));
             vbs[i].set_value(int32);
         }
         break;
@@ -459,8 +464,8 @@ int Vbx::from_asn1(Vbx*& vbs, int& sz, unsigned char*& data, int& length)
         // v2 counter 64's
         case sNMP_SYNTAX_CNTR64: { // Frank Fock (was empty before)
             // FIXME: Warning C6011 Dereferencing NULL pointer! CK
-            Counter64 const c64(
-                ((counter64*)vp->val.counter64)->high, ((counter64*)vp->val.counter64)->low);
+            Counter64 const c64((static_cast<counter64*>(vp->val.counter64))->high,
+                (static_cast<counter64*>(vp->val.counter64))->low);
             vbs[i].set_value(c64);
             break;
         }
@@ -684,7 +689,8 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
 #        endif
 #    endif // HAVE_POLL_SYSCALL
 
-    do {
+    do
+    {
 #    ifdef HAVE_POLL_SYSCALL
         nfound = poll(readfds, nfds, timeout);
 
@@ -742,9 +748,10 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
         if (can_receive_ipv4)
         {
             fromlen = sizeof(from_addr);
-            do {
-                receive_buffer_len = recvfrom(iv_snmp_session, (char*)receive_buffer, MAX_SNMP_PACKET,
-                    0, (struct sockaddr*)&from_addr, &fromlen);
+            do
+            {
+                receive_buffer_len = recvfrom(iv_snmp_session, reinterpret_cast<char*>(receive_buffer),
+                    MAX_SNMP_PACKET, 0, reinterpret_cast<struct sockaddr*>(&from_addr), &fromlen);
             } while (receive_buffer_len < 0 && EINTR == errno);
 
             if (receive_buffer_len <= 0) // error or no data pending
@@ -770,7 +777,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
             OctetStr security_name;
             SmiINT32 security_model = 0;
 
-            int status = snmpmsg.load(receive_buffer, (uint32_t)receive_buffer_len);
+            int status = snmpmsg.load(receive_buffer, static_cast<uint32_t>(receive_buffer_len));
             if (status != SNMP_CLASS_SUCCESS)
             {
                 return status;
@@ -830,9 +837,11 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
         if (can_receive_ipv6)
         {
             fromlen = sizeof((from_addr));
-            do {
-                receive_buffer_len = recvfrom(iv_snmp_session_ipv6, (char*)receive_buffer,
-                    MAX_SNMP_PACKET, 0, (struct sockaddr*)&from_addr, &fromlen);
+            do
+            {
+                receive_buffer_len =
+                    recvfrom(iv_snmp_session_ipv6, reinterpret_cast<char*>(receive_buffer),
+                        MAX_SNMP_PACKET, 0, reinterpret_cast<struct sockaddr*>(&from_addr), &fromlen);
             } while (receive_buffer_len < 0 && EINTR == errno);
 
             if (receive_buffer_len <= 0) // error or no data pending
@@ -859,7 +868,7 @@ int Snmpx::receive(struct timeval* tvptr, Pdux& pdu, UTarget& target)
                 fromaddr.get_port());
             debughexprintf(5, receive_buffer, receive_buffer_len);
 
-            int status = snmpmsg.load(receive_buffer, (uint32_t)receive_buffer_len);
+            int status = snmpmsg.load(receive_buffer, static_cast<uint32_t>(receive_buffer_len));
             if (status != SNMP_CLASS_SUCCESS)
             {
                 return status;
@@ -989,7 +998,8 @@ int Snmpx::receive(
 #        endif
 #    endif     // HAVE_POLL_SYSCALL
 
-    do {
+    do
+    {
 #    ifdef HAVE_POLL_SYSCALL
         nfound = poll(readfds, nfds, timeout);
 
@@ -1047,7 +1057,8 @@ int Snmpx::receive(
         if (can_receive_ipv4)
         {
             fromlen = sizeof(from_addr);
-            do {
+            do
+            {
                 receive_buffer_len = (long)recvfrom(iv_snmp_session, (char*)receive_buffer,
                     MAX_SNMP_PACKET, 0, (struct sockaddr*)&from_addr, &fromlen);
             } while (receive_buffer_len < 0 && EINTR == errno);
@@ -1079,7 +1090,8 @@ int Snmpx::receive(
         if (can_receive_ipv6)
         {
             fromlen = sizeof(from_addr);
-            do {
+            do
+            {
                 receive_buffer_len = (long)recvfrom(iv_snmp_session_ipv6, (char*)receive_buffer,
                     MAX_SNMP_PACKET, 0, (struct sockaddr*)&from_addr, &fromlen);
             } while (receive_buffer_len < 0 && EINTR == errno);
@@ -1228,12 +1240,12 @@ int Snmpx::send(Pdux const& pdu, SnmpTarget* target)
     if (udp_address.get_ip_version() == Address::version_ipv6)
     {
         status = send_snmp_request(
-            iv_snmp_session_ipv6, snmpmsg.data(), (size_t)snmpmsg.len(), udp_address);
+            iv_snmp_session_ipv6, snmpmsg.data(), static_cast<size_t>(snmpmsg.len()), udp_address);
     }
     else
 #    endif
-        status =
-            send_snmp_request(iv_snmp_session, snmpmsg.data(), (size_t)snmpmsg.len(), udp_address);
+        status = send_snmp_request(
+            iv_snmp_session, snmpmsg.data(), static_cast<size_t>(snmpmsg.len()), udp_address);
 #    ifdef _THREADS
     smutex.end_synch();
 #    endif

@@ -315,7 +315,8 @@ public:
             return nullptr;
         }
         tmp = head;
-        do {
+        do
+        {
             if (tmp->item == i)
             {
                 return remove(tmp);
@@ -1352,7 +1353,7 @@ public:
      */
     T* getNth(int n) const
     {
-        if ((n < 0) || (((unsigned int)n) >= sz))
+        if ((n < 0) || ((static_cast<unsigned int>(n)) >= sz))
         {
             return nullptr;
         }
@@ -1409,7 +1410,7 @@ public:
      */
     T* overwriteNth(int n, T* t)
     {
-        if ((n < 0) || ((unsigned int)n >= sz))
+        if ((n < 0) || (static_cast<unsigned int>(n) >= sz))
         {
             return 0;
         }

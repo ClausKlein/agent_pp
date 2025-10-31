@@ -183,8 +183,8 @@ void MibGroup::load_from_file(const char* fname)
             hlen = 0;
         }
         unsigned char type = 0;
-        asn_parse_header((unsigned char*)header, &sz, &type);
-        if ((bytes != hlen) || (type != (unsigned char)(ASN_SEQUENCE | ASN_CONSTRUCTOR)))
+        asn_parse_header(reinterpret_cast<unsigned char*>(header), &sz, &type);
+        if ((bytes != hlen) || (type != static_cast<unsigned char>(ASN_SEQUENCE | ASN_CONSTRUCTOR)))
         {
             LOG_BEGIN(loggerModuleName, ERROR_LOG | 1);
             LOG("MibGroup: loading from file failed "

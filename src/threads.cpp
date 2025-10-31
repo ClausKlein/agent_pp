@@ -122,7 +122,8 @@ unsigned int Synchronized::next_id = 0;
 #    endif
 
 #    define ERR_CHK_WITHOUT_EXCEPTIONS(x)                                          \
-        do {                                                                       \
+        do                                                                         \
+        {                                                                          \
             int result = (x);                                                      \
             if (result)                                                            \
             {                                                                      \
@@ -266,7 +267,7 @@ bool Synchronized::wait(long timeout)
     struct timespec ts = {};
 #        ifdef HAVE_CLOCK_GETTIME
     clock_gettime(CLOCK_REALTIME, &ts);
-    ts.tv_sec += (time_t)timeout / 1000;
+    ts.tv_sec += static_cast<time_t>(timeout) / 1000;
     int const millis = ts.tv_nsec / 1000000 + (timeout % 1000);
     if (millis >= 1000)
     {
@@ -508,7 +509,7 @@ bool Synchronized::lock(long timeout)
     struct timespec ts = {};
 #        ifdef HAVE_CLOCK_GETTIME
     clock_gettime(CLOCK_REALTIME, &ts);
-    ts.tv_sec += (time_t)timeout / 1000;
+    ts.tv_sec += static_cast<time_t>(timeout) / 1000;
     int const millis = ts.tv_nsec / 1000000 + (timeout % 1000);
     if (millis >= 1000)
     {
@@ -533,7 +534,8 @@ bool Synchronized::lock(long timeout)
     {
 #        else
     long remaining_millis = timeout;
-    do {
+    do
+    {
         error = pthread_mutex_trylock(&monitor);
         if (error == EBUSY)
         {
@@ -775,7 +777,7 @@ ThreadList Thread::threadList;
 #    ifdef POSIX_THREADS
 void* thread_starter(void* t)
 {
-    auto* thread = (Thread*)t;
+    auto* thread = static_cast<Thread*>(t);
 
     Thread::threadList.add(thread);
 
@@ -1005,7 +1007,7 @@ void Thread::sleep(long millis)
 #    ifdef WIN32
     Sleep(millis);
 #    else
-    nsleep((int)(millis / 1000), (millis % 1000) * 1000000);
+    nsleep(static_cast<int>(millis / 1000), (millis % 1000) * 1000000);
 #    endif
 }
 
@@ -1014,7 +1016,7 @@ void Thread::sleep(long millis, int nanos)
 #    ifdef WIN32
     sleep(millis);
 #    else
-    nsleep((int)(millis / 1000), (millis % 1000) * 1000000 + nanos);
+    nsleep(static_cast<int>(millis / 1000), (millis % 1000) * 1000000 + nanos);
 #    endif
 }
 

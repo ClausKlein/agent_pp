@@ -143,7 +143,10 @@ void agentppNotifyTest::send_agentppNotifyTestAllTypes()
     vbs[n].set_oid("1.3.6.1.2.1.92.1.3.2.1.8.0.1");
     OctetStr  s;
     int const length = rand() / (RAND_MAX / 5);
-    for (int i = 0; i < length; i++) { s += (unsigned char)(rand() / (RAND_MAX / 128) + 64); }
+    for (int i = 0; i < length; i++)
+    {
+        s += static_cast<unsigned char>(rand() / (RAND_MAX / 128) + 64);
+    }
     vbs[n++].set_value(s);
     vbs[n].set_oid("1.3.6.1.2.1.92.1.3.2.1.9.0.1");
     char ipaddr[30];

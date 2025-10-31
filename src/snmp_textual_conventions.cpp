@@ -189,7 +189,7 @@ int SnmpEngineID::prepare_set_request(Request* req, int& ind)
 OctetStr SnmpEngineID::create_engine_id(const OctetStr& userText)
 {
     // 8 = v3EngineID, 1370h = 4976 = AGENT++ enterprise ID
-    OctetStr engineID((const unsigned char*)"\x80\x00\x13\x70\x05", 5);
+    OctetStr engineID(reinterpret_cast<const unsigned char*>("\x80\x00\x13\x70\x05"), 5);
 
     engineID += userText;
     return engineID;
@@ -198,7 +198,7 @@ OctetStr SnmpEngineID::create_engine_id(const OctetStr& userText)
 OctetStr SnmpEngineID::create_engine_id(unsigned short p)
 {
     // 8 = v3EngineID, 1370h = 4976 = AGENT++ enterprise ID
-    OctetStr      engineID((const unsigned char*)"\x80\x00\x13\x70\x05", 5);
+    OctetStr      engineID(reinterpret_cast<const unsigned char*>("\x80\x00\x13\x70\x05"), 5);
     unsigned char port[3] {};
 
     port[0] = static_cast<uint8_t>(p / 256);
@@ -209,7 +209,8 @@ OctetStr SnmpEngineID::create_engine_id(unsigned short p)
     char             hname[LEN];
     if (gethostname(hname, LEN) == 0)
     {
-        OctetStr const host((const unsigned char*)hname, std::min(strlen(hname), MAX_LEN));
+        OctetStr const host(
+            reinterpret_cast<const unsigned char*>(hname), std::min(strlen(hname), MAX_LEN));
         engineID += OctetStr(host);
         engineID += OctetStr(port, 2);
     }
@@ -217,7 +218,7 @@ OctetStr SnmpEngineID::create_engine_id(unsigned short p)
     {
         time_t const   ct = time(nullptr);
         char*          tp = ctime(&ct); // TODO(CK): use ctime_s()!
-        OctetStr const t((const unsigned char*)tp, std::min(strlen(hname), MAX_LEN));
+        OctetStr const t(reinterpret_cast<const unsigned char*>(tp), std::min(strlen(hname), MAX_LEN));
         engineID += t;
         engineID += OctetStr(port, 2);
     }
@@ -329,7 +330,7 @@ bool SnmpTagList::value_ok(const Vbx& vb)
     }
 
     // pointer into ostr!
-    char* s = (char*)ostr.data();
+    char* s = reinterpret_cast<char*>(ostr.data());
     if (s)
     {
         int const length = ostr.len();
@@ -367,7 +368,7 @@ bool SnmpTagList::contains(const char* tag)
 
     int const len = (dynamic_cast<OctetStr*>(value))->len(); // NOTE: without \0! CK
     char*     l   = new char[len + 1];                       // TODO(CK): use std::array<char>
-    memcpy(l, (char*)(dynamic_cast<OctetStr*>(value))->data(), len);
+    memcpy(l, reinterpret_cast<char*>((dynamic_cast<OctetStr*>(value))->data()), len);
     l[len] = 0;                                              // OK, CK
 
     LOG_BEGIN(loggerModuleName, DEBUG_LOG | 10);
@@ -377,10 +378,10 @@ bool SnmpTagList::contains(const char* tag)
     LOG_END;
 
     char* start = l;
-    while ((l + strlen(l) - start >= (int)strlen(tag)) && (start = strstr(start, tag)))
+    while ((l + strlen(l) - start >= static_cast<int>(strlen(tag))) && (start = strstr(start, tag)))
     {
         if (((start == l) || (SnmpTagValue::is_delimiter(*(start - 1))))
-            && ((l + strlen(l) - start == (int)strlen(tag))
+            && ((l + strlen(l) - start == static_cast<int>(strlen(tag)))
                 || (SnmpTagValue::is_delimiter(*(start + strlen(tag))))))
         {
             delete[] l;
@@ -858,14 +859,14 @@ void DateAndTime::update()
         return; // TODO: possibly log an error;
     }
     OctetStr val;
-    val += (unsigned char)((dt->tm_year + 1900) >> 8) & 0xFF;
-    val += (unsigned char)(dt->tm_year + 1900) & 0xFF;
-    val += (unsigned char)dt->tm_mon + 1;
-    val += (unsigned char)dt->tm_mday;
-    val += (unsigned char)dt->tm_hour;
-    val += (unsigned char)dt->tm_min;
-    val += (unsigned char)dt->tm_sec;
-    val += (unsigned char)0;
+    val += static_cast<unsigned char>((dt->tm_year + 1900) >> 8) & 0xFF;
+    val += static_cast<unsigned char>(dt->tm_year + 1900) & 0xFF;
+    val += static_cast<unsigned char>(dt->tm_mon) + 1;
+    val += static_cast<unsigned char>(dt->tm_mday);
+    val += static_cast<unsigned char>(dt->tm_hour);
+    val += static_cast<unsigned char>(dt->tm_min);
+    val += static_cast<unsigned char>(dt->tm_sec);
+    val += static_cast<unsigned char>(0);
 
 #if defined __FreeBSD__ || defined __APPLE__
     if (dt->tm_gmtoff >= 0)
@@ -876,7 +877,7 @@ void DateAndTime::update()
     {
         val += '-';
     }
-    auto const tz           = (unsigned int)abs(dt->tm_gmtoff);
+    auto const tz           = static_cast<unsigned int>(abs(dt->tm_gmtoff));
     /*long const*/ timezone = dt->tm_gmtoff;
 #else
     // initialize timezone needed?
@@ -895,7 +896,8 @@ void DateAndTime::update()
     unsigned int tz = std::abs(timezone);
 #endif
 
-    val += (unsigned char)((tz / 3600) + ((dt->tm_isdst > 0) ? ((timezone > 0) ? -1 : 1) : 0));
-    val += (unsigned char)((tz % 3600) / 60);
+    val +=
+        static_cast<unsigned char>((tz / 3600) + ((dt->tm_isdst > 0) ? ((timezone > 0) ? -1 : 1) : 0));
+    val += static_cast<unsigned char>((tz % 3600) / 60);
     set_state(val);
 }

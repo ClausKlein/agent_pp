@@ -1251,7 +1251,8 @@ void RequestList::answer(Request* req)
 
         if (pdu->get_type() == sNMP_PDU_GETBULK)
         {
-            do {
+            do
+            {
                 pdu->trim(req->get_rep());
             } while ((pdu->get_vb_count() > req->get_non_rep())
                 && (pdu->get_asn1_length() > req->get_max_response_length()));
@@ -1311,7 +1312,8 @@ void RequestList::answer(Request* req)
 
         if (ptype == sNMP_PDU_GETBULK)
         {
-            do {
+            do
+            {
                 pdu->trim(req->get_rep());
 #ifdef _SNMPv3
                 status = snmp->send(*pdu, &(req->target));

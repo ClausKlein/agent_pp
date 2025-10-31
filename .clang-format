@@ -1,10 +1,15 @@
 ---
 # This configuration requires clang-format 17 or higher.
 BasedOnStyle:  WebKit
+IndentWidth: 2
+UseTab: Never
+---
+Language: Cpp
+Standard: c++17
+#NO! Standard: Auto
 #NOTE: keep // AgentGen BEGIN=... in one line! CK
 ColumnLimit: 103
 IndentWidth: 4
-UseTab: Never
 # ---
 ### see BinPack... too
 AlignAfterOpenBracket: DontAlign
@@ -62,7 +67,6 @@ PenaltyReturnTypeOnItsOwnLine: 60
 PointerAlignment: Left
 RemoveSemicolon: Yes
 SpaceAfterTemplateKeyword: true
-Standard: Auto
 # ---
 SortIncludes:    true
 SortUsingDeclarations: true

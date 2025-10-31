@@ -37,17 +37,17 @@
  */
 
 #ifndef _OidxPtrMibEntryPtrAVLMap_h
-#define _OidxPtrMibEntryPtrAVLMap_h 1
+#    define _OidxPtrMibEntryPtrAVLMap_h 1
 
-#include <agent_pp/agent++.h>
+#    include <agent_pp/agent++.h>
 
-#include <agent_pp/mib_map.h>
+#    include <agent_pp/mib_map.h>
 
-#ifdef AGENTPP_NAMESPACE
+#    ifdef AGENTPP_NAMESPACE
 namespace Agentpp
 {
 using namespace Snmp_pp;
-#endif
+#    endif
 
 // NOLINTBEGIN
 
@@ -164,8 +164,8 @@ inline int OidxPtrMibEntryPtrAVLMap::contains(OidxPtr key_) { return seek(key_) 
 
 // NOLINTEND
 
-#ifdef AGENTPP_NAMESPACE
+#    ifdef AGENTPP_NAMESPACE
 }
-#endif
+#    endif
 
 #endif
